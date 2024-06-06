@@ -1,5 +1,9 @@
+import Dashboard from '@/modules/admin/dashboard';
+
 export default function AdminHomePage() {
   return (
-    <div className='min-w-screen'>Admin Home</div>
+    <div className='min-w-screen'>
+      <Dashboard />
+    </div>
   );
 }

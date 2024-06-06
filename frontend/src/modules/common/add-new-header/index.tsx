@@ -21,7 +21,7 @@ export enum AddNewType {
 
 interface HeaderProps {
   name: string; // Dynamic header title
-  buttonName: string; // Use the enum for button name
+  buttonName?: string; // Use the enum for button name
 }
 
 const AddNewHeader = ({
@@ -47,10 +47,15 @@ const AddNewHeader = ({
       <h1 className='text-lg font-semibold dark:text-white'>
         {name}
       </h1>
-      <Button onClick={handleButtonClick}>
-        <PlusSquare className='h-4 w-4' />
-        {buttonName} {/* Display button name */}
-      </Button>
+      {buttonName && (
+        <>
+          <Button onClick={handleButtonClick}>
+            <PlusSquare className='h-4 w-4' />
+            {buttonName}{' '}
+            {/* Display button name */}
+          </Button>
+        </>
+      )}
 
       {isOpen &&
         buttonName === AddNewType.NEW_FORM && (
