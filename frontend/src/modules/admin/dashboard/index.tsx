@@ -1,4 +1,5 @@
 import { Card } from '@/components/ui/card';
+import { formatCount } from '@/lib/utils';
 import AddNewHeader from '@/modules/common/add-new-header';
 import {
   FaBook,
@@ -119,7 +120,7 @@ export default function Dashboard() {
                   {stat.title}
                 </h3>
                 <p className='text-2xl font-bold text-gray-600'>
-                  {stat.count}
+                  {formatCount(stat.count)}
                 </p>
               </div>
             </div>

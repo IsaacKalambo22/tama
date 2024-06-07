@@ -1,21 +1,11 @@
 import { Card } from '@/components/ui/card';
+import { formatCount } from '@/lib/utils';
 
 interface StatisticBlockProps {
   count: string | number;
   label: string;
   icon: JSX.Element; // Icon prop
 }
-
-const formatCount = (count: string | number) => {
-  const number =
-    typeof count === 'string'
-      ? parseInt(count, 10)
-      : count;
-  return new Intl.NumberFormat('en-US', {
-    notation: 'compact',
-    compactDisplay: 'short',
-  }).format(number);
-};
 
 const StatisticBlock = ({
   count,

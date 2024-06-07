@@ -18,6 +18,18 @@ export function formatDate(date: string) {
   );
 }
 
+export const formatCount = (
+  count: string | number
+) => {
+  const number =
+    typeof count === 'string'
+      ? parseInt(count, 10)
+      : count;
+  return new Intl.NumberFormat('en-US', {
+    notation: 'compact',
+    compactDisplay: 'short',
+  }).format(number);
+};
 export function parseServerActionResponse<T>(
   response: T
 ) {
