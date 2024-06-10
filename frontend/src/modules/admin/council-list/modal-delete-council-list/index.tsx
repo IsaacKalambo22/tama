@@ -59,11 +59,11 @@ const ModalDeleteCouncilList = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      name={`Delete ${councilList.councillor}`}
+      name={`Delete ${councilList.council}`}
     >
       <DialogDescription>
         Are you sure you want to delete{' '}
-        {councilList.councillor}?
+        {councilList.council}?
       </DialogDescription>
       <DialogFooter className='flex flex-col gap-3 md:flex-row'>
         <DialogClose asChild>

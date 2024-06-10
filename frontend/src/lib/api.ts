@@ -4,8 +4,8 @@ import { BASE_URL } from './utils';
 export interface CouncilListProps {
   id: string;
   demarcation: string;
-  tobaccoType: string;
-  councillor: string;
+  councilArea: string;
+  council: string;
   firstAlternateCouncillor: string;
   secondAlternateCouncillor: string;
   createdAt: string;

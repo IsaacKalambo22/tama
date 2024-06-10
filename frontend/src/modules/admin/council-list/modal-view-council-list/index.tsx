@@ -31,8 +31,8 @@ const ModalViewCouncilList = ({
             {councilList.demarcation}
           </h2>
           <p className='text-gray-600 text-sm mt-2'>
-            Tobacco Type:{' '}
-            {councilList.tobaccoType}
+            Council Area:{' '}
+            {councilList.councilArea}
           </p>
         </div>
 
@@ -42,7 +42,7 @@ const ModalViewCouncilList = ({
             <span className='font-medium'>
               Councillor:
             </span>{' '}
-            {councilList.councillor}
+            {councilList.council}
           </p>
           <p className='text-sm'>
             <span className='font-medium'>

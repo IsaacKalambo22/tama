@@ -98,8 +98,8 @@ model News {
 model CouncilList {
   id                        String   @id @default(uuid())
   demarcation               String
-  tobaccoType               String
-  councillor                String
+  councilArea               String
+  council                   String
   firstAlternateCouncillor  String
   secondAlternateCouncillor String
   createdAt                 DateTime @default(now())

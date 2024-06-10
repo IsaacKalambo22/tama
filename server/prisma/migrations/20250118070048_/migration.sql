@@ -99,8 +99,8 @@ CREATE TABLE "News" (
 CREATE TABLE "CouncilList" (
     "id" TEXT NOT NULL,
     "demarcation" TEXT NOT NULL,
-    "tobaccoType" TEXT NOT NULL,
-    "councillor" TEXT NOT NULL,
+    "councilArea" TEXT NOT NULL,
+    "council" TEXT NOT NULL,
     "firstAlternateCouncillor" TEXT NOT NULL,
     "secondAlternateCouncillor" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

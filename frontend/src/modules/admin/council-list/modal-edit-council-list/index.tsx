@@ -27,8 +27,8 @@ type Props = {
   councilList: {
     id: string;
     demarcation: string;
-    tobaccoType: string;
-    councillor: string;
+    councilArea: string;
+    council: string;
     firstAlternateCouncillor: string;
     secondAlternateCouncillor: string;
   };
@@ -47,11 +47,11 @@ const ModalEditCouncilList = ({
       message:
         'Demarcation must be at least 2 characters.',
     }),
-    tobaccoType: zod.string().min(2, {
+    councilArea: zod.string().min(2, {
       message:
-        'Tobacco type must be at least 2 characters.',
+        'Council area must be at least 2 characters.',
     }),
-    councillor: zod.string().min(2, {
+    council: zod.string().min(2, {
       message:
         'Councillor must be at least 2 characters.',
     }),
@@ -78,8 +78,8 @@ const ModalEditCouncilList = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       demarcation: councilList.demarcation || '',
-      tobaccoType: councilList.tobaccoType || '',
-      councillor: councilList.councillor || '',
+      councilArea: councilList.councilArea || '',
+      council: councilList.council || '',
       firstAlternateCouncillor:
         councilList.firstAlternateCouncillor ||
         '',
@@ -95,15 +95,15 @@ const ModalEditCouncilList = ({
     setIsLoading(true);
     const {
       demarcation,
-      tobaccoType,
-      councillor,
+      councilArea,
+      council,
       firstAlternateCouncillor,
       secondAlternateCouncillor,
     } = values;
     const payload = {
       demarcation,
-      tobaccoType,
-      councillor,
+      councilArea,
+      council,
       firstAlternateCouncillor,
       secondAlternateCouncillor,
     };
@@ -151,31 +151,31 @@ const ModalEditCouncilList = ({
             />
             <CustomFormField
               fieldType={FormFieldType.INPUT}
-              name='tobaccoType'
-              label='Tobacco Type'
+              name='councilArea'
+              label='Council Area'
               control={form.control}
-              placeholder='Enter tobacco type'
+              placeholder='Enter council area'
             />
             <CustomFormField
               fieldType={FormFieldType.INPUT}
-              name='councillor'
-              label='Councillor'
+              name='council'
+              label='Council'
               control={form.control}
-              placeholder='Enter councillor'
+              placeholder='Enter council'
             />
             <CustomFormField
               fieldType={FormFieldType.INPUT}
               name='firstAlternateCouncillor'
               label='First Alternate Councillor'
               control={form.control}
-              placeholder='Enter first alternate councillor'
+              placeholder='Enter first alternate council'
             />
             <CustomFormField
               fieldType={FormFieldType.INPUT}
               name='secondAlternateCouncillor'
               label='Second Alternate Councillor'
               control={form.control}
-              placeholder='Enter second alternate councillor'
+              placeholder='Enter second alternate council'
             />
 
             <SubmitButton

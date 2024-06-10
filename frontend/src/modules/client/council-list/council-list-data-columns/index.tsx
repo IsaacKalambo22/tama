@@ -18,6 +18,34 @@ export const councilListDataColumns: ColumnDef<CouncilListProps>[] =
       },
     },
     {
+      accessorKey: 'councilArea',
+      header: ({ column }) => {
+        return (
+          <Button
+            className='h-8 max-sm:hidden'
+            variant='ghost'
+            onClick={() =>
+              column.toggleSorting(
+                column.getIsSorted() === 'asc'
+              )
+            }
+          >
+            Council Area
+            <ArrowUpDown className='ml-2 h-4 w-4 ' />
+          </Button>
+        );
+      },
+      cell: ({ row }) => {
+        return (
+          <div className='flex ml-4 gap-2 items-center'>
+            <div className='capitalize'>
+              {row.getValue('councilArea')}
+            </div>
+          </div>
+        );
+      },
+    },
+    {
       accessorKey: 'demarcation',
       header: ({ column }) => {
         return (
@@ -45,36 +73,9 @@ export const councilListDataColumns: ColumnDef<CouncilListProps>[] =
         );
       },
     },
+
     {
-      accessorKey: 'tobaccoType',
-      header: ({ column }) => {
-        return (
-          <Button
-            className='h-8 max-sm:hidden'
-            variant='ghost'
-            onClick={() =>
-              column.toggleSorting(
-                column.getIsSorted() === 'asc'
-              )
-            }
-          >
-            Tobacco Type
-            <ArrowUpDown className='ml-2 h-4 w-4 ' />
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        return (
-          <div className='flex ml-4 gap-2 items-center'>
-            <div className='capitalize'>
-              {row.getValue('tobaccoType')}
-            </div>
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: 'councillor',
+      accessorKey: 'council',
       header: ({ column }) => {
         return (
           <Button
@@ -86,7 +87,7 @@ export const councilListDataColumns: ColumnDef<CouncilListProps>[] =
               )
             }
           >
-            Councillor
+            Council
             <ArrowUpDown className='ml-2 h-4 w-4' />
           </Button>
         );
@@ -95,7 +96,7 @@ export const councilListDataColumns: ColumnDef<CouncilListProps>[] =
         return (
           <div className='flex ml-4 gap-2 items-center'>
             <div className='capitalize'>
-              {row.getValue('councillor')}
+              {row.getValue('council')}
             </div>
           </div>
         );

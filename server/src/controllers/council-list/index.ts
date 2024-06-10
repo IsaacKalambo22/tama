@@ -10,23 +10,23 @@ export const createCouncilList = async (
 ): Promise<void> => {
   const {
     demarcation,
-    tobaccoType,
-    councillor,
+    councilArea,
+    council,
     firstAlternateCouncillor,
     secondAlternateCouncillor,
   } = req.body;
   // Validate input
   if (
     !demarcation ||
-    !tobaccoType ||
-    !councillor ||
+    !councilArea ||
+    !council ||
     !firstAlternateCouncillor ||
     !secondAlternateCouncillor
   ) {
     res.status(400).json({
       success: false,
       message:
-        'Demarcation, tobacco type, councillor, first alternate councillor, and second alternate councillor are required.',
+        'Demarcation, council area, council, first alternate council, and second alternate council are required.',
       error: 'Validation error',
     });
     return;
@@ -38,8 +38,8 @@ export const createCouncilList = async (
       await prisma.councilList.create({
         data: {
           demarcation,
-          tobaccoType,
-          councillor,
+          councilArea,
+          council,
           firstAlternateCouncillor,
           secondAlternateCouncillor,
         },
@@ -104,8 +104,8 @@ export const updateCouncilList = async (
   const { id } = req.params;
   const {
     demarcation,
-    tobaccoType,
-    councillor,
+    councilArea,
+    council,
     firstAlternateCouncillor,
     secondAlternateCouncillor,
   } = req.body;
@@ -143,12 +143,12 @@ export const updateCouncilList = async (
           demarcation:
             demarcation ??
             existingCouncilList.demarcation,
-          tobaccoType:
-            tobaccoType ??
-            existingCouncilList.tobaccoType,
-          councillor:
-            councillor ??
-            existingCouncilList.councillor,
+          councilArea:
+            councilArea ??
+            existingCouncilList.councilArea,
+          council:
+            council ??
+            existingCouncilList.council,
           firstAlternateCouncillor:
             firstAlternateCouncillor ??
             existingCouncilList.firstAlternateCouncillor,
