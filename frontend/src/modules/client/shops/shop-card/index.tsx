@@ -14,13 +14,13 @@ const ShopCard = ({
   address,
   openingHours,
 }: ShopCardProps) => (
-  <Card className='p-6 shadow-none hover:shadow-lg cursor-pointer transition-shadow'>
+  <Card className='p-6 shadow-none rounded-3xl hover:shadow-lg cursor-pointer transition-shadow'>
     <Image
       src={imageUrl}
       alt={name}
       width={300}
       height={200}
-      className='rounded-lg mb-4'
+      className='rounded-2xl mb-4'
     />
     <h2 className='text-xl font-semibold mb-2'>
       {name}
