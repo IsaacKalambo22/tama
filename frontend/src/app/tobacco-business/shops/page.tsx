@@ -1,5 +1,7 @@
+import Shops from '@/modules/client/shops';
+
 const ShopsPage = () => {
-  return <div>ShopsPage</div>;
+  return <Shops />;
 };
 
 export default ShopsPage;

@@ -1,4 +1,5 @@
 import { Card } from '@/components/ui/card';
+import HeaderText from '@/modules/common/header-text';
 import { FrequentlyAskedQuestions } from './faquestion';
 import HomeTextCard from './home-text-card';
 import StatisticBlock from './statistic-block';
@@ -6,18 +7,12 @@ import StatisticBlock from './statistic-block';
 const Home = () => {
   return (
     <div className='flex flex-col items-center gap-16 mb-16'>
-      <h1 className='text-center mt-10 font-bold text-3xl sm:text-5xl leading-snug'>
-        <span className='green_gradient'>
-          TAMA Farmers Trust
-        </span>
-        <br />
-        <span className='green_subtitle'>
-          Leading farmers to prosperity
-        </span>
-        <br />
-      </h1>
+      <HeaderText
+        title='TAMA Farmers Trust'
+        subtitle='Leading farmers to prosperity'
+      />
 
-      <div className='grid grid-cols-1 sm:grid-cols-2 w-full gap-12 '>
+      <div className='grid grid-cols-1 sm:grid-cols-2 w-full  gap-12 '>
         <HomeTextCard
           title='Working Together with Farmers'
           description='TAMA Farmers Trust works together with smallholder farmers, medium to large farmers, and corporate farmers for the sustainability of the Malawi economy.'

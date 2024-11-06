@@ -49,11 +49,11 @@ body,
 }
 
 .green_gradient {
-  @apply bg-gradient-to-r from-green-600 to-amber-500 bg-clip-text text-transparent leading-snug;
+  @apply bg-gradient-to-r from-green-600 to-amber-500 bg-clip-text text-transparent leading-snug capitalize;
 }
 
 .green_subtitle {
-  @apply bg-gradient-to-r from-green-600 to-amber-500 bg-clip-text text-transparent text-[2rem] leading-snug;
+  @apply bg-gradient-to-r from-green-600 to-amber-500 bg-clip-text text-transparent text-[1.7rem] leading-snug capitalize;
 }
 
 .desc {
