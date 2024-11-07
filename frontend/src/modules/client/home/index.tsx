@@ -17,7 +17,7 @@ const Home = () => {
         <br />
       </h1>
 
-      <div className='flex w-full flex-wrap justify-center gap-12 '>
+      <div className='grid grid-cols-1 sm:grid-cols-2 w-full gap-12 '>
         <HomeTextCard
           title='Working Together with Farmers'
           description='TAMA Farmers Trust works together with smallholder farmers, medium to large farmers, and corporate farmers for the sustainability of the Malawi economy.'
@@ -35,21 +35,27 @@ const Home = () => {
           description='To be the most effective and successful Association in the representation of grower member interests in promoting tobacco production and marketing.'
         />
       </div>
-      <Card className='flex mx-auto w-full flex-wrap justify-around items-center h-32 shadow-none'>
-        <StatisticBlock
-          count={51_000}
-          label='Registered customers'
-        />
-        <StatisticBlock
-          count={63}
-          label='Councilors'
-        />
-        <StatisticBlock
-          count={50}
-          label='Cooperatives'
-        />
-        <StatisticBlock count={5} label='Shops' />
+      <Card className='mx-auto w-full h-auto p-6 shadow-none'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 py-8'>
+          <StatisticBlock
+            count={51_000}
+            label='Registered customers'
+          />
+          <StatisticBlock
+            count={63}
+            label='Councilors'
+          />
+          <StatisticBlock
+            count={50}
+            label='Cooperatives'
+          />
+          <StatisticBlock
+            count={5}
+            label='Shops'
+          />
+        </div>
       </Card>
+
       <FrequentlyAskedQuestions />
     </div>
   );

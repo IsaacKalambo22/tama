@@ -4,7 +4,7 @@ import FAQAccordionItem from '../faqaccordion-content';
 
 export function FrequentlyAskedQuestions() {
   return (
-    <Card className='shadow-none p-8 w-full flex flex-col gap-8'>
+    <Card className='shadow-none p-8 w-full flex flex-col gap-8 '>
       <Accordion
         type='multiple'
         className='w-full'

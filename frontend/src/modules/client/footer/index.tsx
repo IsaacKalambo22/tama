@@ -26,12 +26,11 @@ const Footer = () => {
               height={50}
             />
           </Link>
-          <p className='mb-4 text-gray-600 text-[.9rem] font-sans font-normal'>
-            Your go-to platform for stylish, easy,
-            and streamlined buying and selling.
+          <p className='my-4 text-gray-600 text-[.9rem] font-sans font-normal'>
+            Leading farmers to prosperity.
           </p>
           <p className='mb-4 text-gray-600 text-[.9rem] font-sans font-normal'>
-            © 2024 malonda.co
+            © 2024 tama@tamalawi.com
           </p>
           <div className='flex space-x-4'>
             <Link href='https://twitter.com/'>
@@ -178,20 +177,23 @@ const Footer = () => {
           </h3>
           <div className='flex flex-col gap-3'>
             <address className='text-gray-600 text-[.9rem] font-sans font-normal'>
-              Area 36 (In TEVETA), <br />
-              Lilongwe, Malawi
+              TAMA HOUSE, Independence Avenue,
+              <br />
+              P.O. Box 31360, Capital City,
+              <br />
+              Lilongwe 3, Malawi
             </address>
             <p className='text-gray-600 text-[.9rem] font-sans font-normal'>
               Email:{' '}
               <a
-                href='mailto:info@malonda.co'
+                href='mailto:tama@tamalawi.com'
                 className='hover:text-gray-900'
               >
-                info@malonda.co
+                tama@tamalawi.com
               </a>
             </p>
             <p className='text-gray-600 text-[.9rem] font-sans font-normal'>
-              Phone: +265 99 35 85 213
+              Phone: 01 773 099
             </p>
           </div>
         </div>
