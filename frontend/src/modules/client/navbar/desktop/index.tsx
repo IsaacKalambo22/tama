@@ -32,10 +32,10 @@ const Desktop = () => {
             <div className='w-full h-full  justify-center items-center'>
               <Image
                 src='/assets/images/logo.png'
-                width={40} // Double the dimensions to improve quality on higher-DPI screens
+                width={40}
                 height={40}
                 alt='logo'
-                layout='fixed' // Ensures Next.js optimizes the image size and quality
+                layout='fixed'
                 className='object-contain'
               />
             </div>
@@ -160,7 +160,7 @@ const Desktop = () => {
                 Sign Out
               </Button>
             ) : (
-              <Link href='/register'>
+              <Link href='/login'>
                 <Button className='h-7 font-normal'>
                   Sign in
                 </Button>
