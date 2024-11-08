@@ -13,184 +13,180 @@ export type NavItem = {
 // Create and export the navigation items object.
 export const navItems: NavItem[] = [
   {
-    title: 'Genres',
-    href: '#', // Main path for genres, can be updated as needed.
+    title: 'Tobacco Business',
+    href: '#',
     submenu: true,
     subMenuItems: [
       {
-        title: 'Pop',
-        href: '/genres/pop',
+        title: 'Services',
+        href: '/tobacco-business/services',
         description:
-          'Top pop hits and new releases.',
+          'Various business services for the tobacco industry.',
         icon: (
           <Icon
-            icon='lucide:music'
+            icon='lucide:briefcase'
             width='16'
             height='16'
           />
         ),
       },
       {
-        title: 'Rock',
-        href: '/genres/rock',
+        title: 'Event Calendar',
+        href: '/tobacco-business/event-calendar',
         description:
-          'Classic rock and modern hits.',
+          'Upcoming industry events and important dates.',
         icon: (
           <Icon
-            icon='lucide:drum'
+            icon='lucide:calendar'
             width='16'
             height='16'
           />
         ),
       },
       {
-        title: 'Hip-Hop/Rap',
-        href: '/genres/hip-hop-rap',
+        title: 'Shops',
+        href: '/tobacco-business/shops',
         description:
-          'The latest in hip-hop and rap.',
+          'Local and online shops for tobacco products.',
         icon: (
           <Icon
-            icon='lucide:mic'
+            icon='lucide:shopping-bag'
             width='16'
             height='16'
           />
         ),
       },
-      {
-        title: 'Jazz',
-        href: '/genres/jazz',
-        description:
-          'Smooth jazz and contemporary sounds.',
-        icon: (
-          <Icon
-            icon='lucide:guitar'
-            width='16'
-            height='16'
-          />
-        ),
-      },
-      // Add more genres as needed
     ],
   },
   {
-    title: 'Top Charts',
-    href: '#', // Main path for top charts, can be updated as needed.
+    title: 'News & Updates',
+    href: '#',
     submenu: true,
     subMenuItems: [
       {
-        title: 'Top 10 This Week',
-        href: '/top-charts/top-10-this-week',
+        title: 'News',
+        href: '/news-updates/news',
         description:
-          'Most popular songs this week.',
+          'Latest news in the tobacco industry.',
         icon: (
           <Icon
-            icon='lucide:trending-up'
+            icon='lucide:newspaper'
             width='16'
             height='16'
           />
         ),
       },
       {
-        title: 'Most Popular',
-        href: '/top-charts/most-popular',
-        description: 'Songs everyone is loving.',
-        icon: (
-          <Icon
-            icon='lucide:heart'
-            width='16'
-            height='16'
-          />
-        ),
-      },
-      {
-        title: 'New Releases',
-        href: '/top-charts/new-releases',
+        title: 'Press Releases',
+        href: '/news-updates/press-release',
         description:
-          'Fresh songs and albums just for you.',
+          'Official statements and press releases.',
         icon: (
           <Icon
-            icon='lucide:sparkles'
+            icon='lucide:megaphone'
             width='16'
             height='16'
           />
         ),
       },
-      {
-        title: 'Trending Now',
-        href: '/top-charts/trending-now',
-        description: 'Currently trending tracks.',
-        icon: (
-          <Icon
-            icon='lucide:flame'
-            width='16'
-            height='16'
-          />
-        ),
-      },
-      // Add more top charts as needed
     ],
   },
   {
-    title: 'Explore',
-    href: '#', // Main path for explore, can be updated as needed.
+    title: 'Resources',
+    href: '#',
     submenu: true,
     subMenuItems: [
       {
-        title: 'Discover New Artists',
-        href: '/explore/new-artists',
+        title: 'Reports',
+        href: '/resources/reports',
         description:
-          'Emerging talents and new artists.',
+          'Industry reports and data analysis.',
         icon: (
           <Icon
-            icon='lucide:user'
+            icon='lucide:bar-chart'
             width='16'
             height='16'
           />
         ),
       },
       {
-        title: 'Recommended For You',
-        href: '/explore/recommended',
-        description: 'Personalized music picks.',
+        title: 'Publications',
+        href: '/resources/publications',
+        description:
+          'Research and publications related to tobacco.',
         icon: (
           <Icon
-            icon='lucide:thumbs-up'
+            icon='lucide:book-open'
             width='16'
             height='16'
           />
         ),
       },
       {
-        title: 'Top Playlists',
-        href: '/explore/top-playlists',
+        title: 'Forms',
+        href: '/resources/forms',
         description:
-          'Curated playlists to match your mood.',
+          'Documents and forms for industry use.',
         icon: (
           <Icon
-            icon='lucide:square-play'
+            icon='lucide:file-text'
             width='16'
             height='16'
           />
         ),
       },
       {
-        title: 'Live & Acoustic',
-        href: '/explore/live-acoustic',
+        title: 'Council List',
+        href: '/resources/council-list',
         description:
-          'Unplugged and live performances.',
+          'List of council members and representatives.',
         icon: (
           <Icon
-            icon='lucide:mic-vocal'
+            icon='lucide:list'
             width='16'
             height='16'
           />
         ),
       },
-      // Add more explore items as needed
+      {
+        title: 'Vacancies',
+        href: '/resources/vacancies',
+        description:
+          'Open job positions and career opportunities.',
+        icon: (
+          <Icon
+            icon='lucide:briefcase'
+            width='16'
+            height='16'
+          />
+        ),
+      },
     ],
   },
   {
-    title: 'About',
-    href: '/about-us', // The main path for categories, can be updated as needed.
+    title: 'Blogs',
+    href: '/blogs',
+    description:
+      'Industry insights and articles from experts.',
+    icon: (
+      <Icon
+        icon='lucide:pen-tool'
+        width='16'
+        height='16'
+      />
+    ),
   },
+  // {
+  //   title: 'About Us',
+  //   href: '/about-us',
+  //   description:
+  //     'Learn more about our organization and mission.',
+  //   icon: (
+  //     <Icon
+  //       icon='lucide:info'
+  //       width='16'
+  //       height='16'
+  //     />
+  //   ),
+  // },
 ];
