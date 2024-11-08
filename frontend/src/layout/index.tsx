@@ -2,6 +2,7 @@
 'use client';
 
 import { Toaster } from '@/components/ui/toaster';
+import Footer from '@/modules/client/footer';
 import { Navbar } from '@/modules/client/navbar';
 import { usePathname } from 'next/navigation';
 
@@ -21,16 +22,17 @@ const MainLayout = ({
 
   return (
     <>
-      <div className='main'>
-        <div className='gradient' />
-      </div>
       <main className='app'>
         {!isAuthPage && !isAdminPage && (
           <Navbar />
         )}
-        {children}
+        <div className='max-w-7xl mx-auto sm:px-16 px-6 grow h-screen'>
+          {children}
+        </div>
         <Toaster />
-        {/* {!isAuthPage && <Footer />} */}
+        {!isAuthPage && !isAdminPage && (
+          <Footer />
+        )}
       </main>
     </>
   );
