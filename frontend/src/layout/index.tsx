@@ -26,7 +26,7 @@ const MainLayout = ({
         {!isAuthPage && !isAdminPage && (
           <Navbar />
         )}
-        <div className='max-w-7xl mx-auto sm:px-16 px-6 grow h-screen'>
+        <div className='max-w-7xl mx-auto max-sm:px-6 grow h-screen'>
           {children}
         </div>
         <Toaster />

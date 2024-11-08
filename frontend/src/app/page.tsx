@@ -1,9 +1,5 @@
-import { Button } from '@/components/ui/button';
+import Home from '@/modules/client/home';
 
-export default function Home() {
-  return (
-    <div className='flex h-full justify-center items-center'>
-      <Button>Welcome</Button>
-    </div>
-  );
+export default function HomePage() {
+  return <Home />;
 }
