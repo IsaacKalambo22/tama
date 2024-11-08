@@ -3,7 +3,6 @@
 
 import { Toaster } from '@/components/ui/toaster';
 import { Navbar } from '@/modules/client/navbar';
-import AuthProvider from '@/providers/auth-provider';
 import { usePathname } from 'next/navigation';
 
 const MainLayout = ({
@@ -21,7 +20,7 @@ const MainLayout = ({
     pathname.startsWith('/admin');
 
   return (
-    <AuthProvider>
+    <>
       <div className='main'>
         <div className='gradient' />
       </div>
@@ -33,7 +32,7 @@ const MainLayout = ({
         <Toaster />
         {/* {!isAuthPage && <Footer />} */}
       </main>
-    </AuthProvider>
+    </>
   );
 };
 
