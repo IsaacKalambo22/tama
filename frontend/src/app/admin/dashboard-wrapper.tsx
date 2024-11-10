@@ -1,7 +1,7 @@
 'use client';
 
 import { ADMIN_LINKS } from '@/modules/admin/constants';
-import Navbar from '@/modules/common/navbar';
+import { Navbar } from '@/modules/common/navbar';
 import Sidebar from '@/modules/common/sidebar';
 import { useSidebarStore } from '@/providers/sidebar-state'; // Import Zustand store
 import React from 'react';
@@ -17,16 +17,16 @@ const DashboardLayout = ({
   );
 
   return (
-    <div className='flex w-full bg-gray-50 text-gray-900 '>
+    <div className='flex min-h-screen w-full bg-gray-50 text-gray-900 overflow-hidden'>
       {/* Sidebar */}
       <Sidebar links={ADMIN_LINKS} />
 
       {/* Main content area */}
       <main
-        className={`flex flex-col w-full min-h-screen bg-gray-50 dark:bg-dark-bg transition-all duration-300 ${
+        className={`flex flex-col w-full h-screen overflow-auto bg-gray-50 dark:bg-dark-bg ${
           isSidebarCollapsed
-            ? 'md:pl-16' // Reduced padding when collapsed
-            : 'md:pl-64' // More padding when expanded
+            ? 'md:pl-16'
+            : 'md:pl-64'
         }`}
       >
         <Navbar />
