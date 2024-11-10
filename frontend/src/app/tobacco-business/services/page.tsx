@@ -1,5 +1,7 @@
+import Services from '@/modules/client/services';
+
 const ServicesPage = () => {
-  return <div>ServicesPage</div>;
+  return <Services />;
 };
 
 export default ServicesPage;
