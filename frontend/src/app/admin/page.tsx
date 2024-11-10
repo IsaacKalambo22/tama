@@ -1,3 +1,5 @@
 export default function AdminHomePage() {
-  return <div>UpdatesPage</div>;
+  return (
+    <div className='min-w-screen'>Admin Home</div>
+  );
 }

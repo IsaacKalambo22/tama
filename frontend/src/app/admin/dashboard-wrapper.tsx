@@ -1,7 +1,7 @@
 'use client';
 
 import { ADMIN_LINKS } from '@/modules/admin/constants';
-import { Navbar } from '@/modules/common/navbar';
+import Navbar from '@/modules/common/navbar';
 import Sidebar from '@/modules/common/sidebar';
 import { useSidebarStore } from '@/providers/sidebar-state'; // Import Zustand store
 import React from 'react';
