@@ -1,5 +1,5 @@
-export default function AdminHomePage() {
-  return (
-    <div className='min-w-screen'>Admin Home</div>
-  );
-}
+const AdminHome = () => {
+  return <div>AdminHome</div>;
+};
+
+export default AdminHome;
