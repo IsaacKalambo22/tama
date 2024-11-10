@@ -1,11 +1,17 @@
-import ReportsAndPublicationsTemplate from '@/modules/client/reports-publications';
+import CustomForm from '@/modules/admin/custom-form';
+import AddNewHeader from '@/modules/common/add-new-header';
+import { files } from '../forms/page';
 
-const ReportsAndPublications = () => {
+const ReportsAndPublicationsPage = () => {
   return (
     <div>
-      <ReportsAndPublicationsTemplate />
+      <AddNewHeader
+        name='Reports and Publications'
+        buttonName='New Report or Publication'
+      />
+      <CustomForm files={files} />;
     </div>
   );
 };
 
-export default ReportsAndPublications;
+export default ReportsAndPublicationsPage;

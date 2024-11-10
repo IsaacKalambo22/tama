@@ -26,7 +26,7 @@ type Props = {
   id?: string | null;
 };
 
-const ModalNewForm = ({
+const ModalNewPublication = ({
   isOpen,
   onClose,
 }: Props) => {
@@ -38,20 +38,7 @@ const ModalNewForm = ({
       message:
         'Filename must be at least 2 characters.',
     }),
-    files: zod
-      .array(zod.instanceof(File)) // Validate each item is a File instance
-      .nonempty('At least one file is required.') // Ensure the array is not empty
-      .refine(
-        (files) =>
-          files.every(
-            (file) =>
-              file.size <= 100 * 1024 * 1024
-          ), // Limit size to 100MB per file
-        {
-          message:
-            'Each file must be less than 100MB.',
-        }
-      ),
+    files: zod.custom<File[]>(),
   });
 
   const form = useForm<
@@ -120,7 +107,7 @@ const ModalNewForm = ({
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
           <DialogTitle>
-            Add New Form or Document
+            Add New Report or Publication
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -158,7 +145,7 @@ const ModalNewForm = ({
               }
               isLoading={isLoading}
               className='w-full  h-9'
-              loadingText='Saving in...'
+              loadingText='Saving...'
             >
               Save
             </SubmitButton>
@@ -170,4 +157,4 @@ const ModalNewForm = ({
   );
 };
 
-export default ModalNewForm;
+export default ModalNewPublication;

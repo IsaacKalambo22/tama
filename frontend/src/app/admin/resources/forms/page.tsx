@@ -33,7 +33,7 @@ export const files: FileCardProps[] = [
   },
   {
     file: {
-      id: 'file2',
+      id: 'file3',
       url: '/assets/files/The Ultimate Nextjs Crash Course.pdf',
       type: 'document',
       extension: 'pdf',
@@ -47,7 +47,49 @@ export const files: FileCardProps[] = [
   },
   {
     file: {
-      id: 'file2',
+      id: 'file4',
+      url: '/assets/files/The Ultimate Nextjs Crash Course.pdf',
+      type: 'document',
+      extension: 'pdf',
+      size: 1500000, // 1.5 MB
+      name: 'The Ultimate Nextjs Crash Course',
+      createdAt: new Date(
+        Date.now() - 10000000
+      ).toISOString(),
+      owner: { fullName: 'John Doe' },
+    },
+  },
+  {
+    file: {
+      id: 'file5',
+      url: '/assets/files/The Ultimate Nextjs Crash Course.pdf',
+      type: 'document',
+      extension: 'pdf',
+      size: 1500000, // 1.5 MB
+      name: 'The Ultimate Nextjs Crash Course',
+      createdAt: new Date(
+        Date.now() - 10000000
+      ).toISOString(),
+      owner: { fullName: 'John Doe' },
+    },
+  },
+  {
+    file: {
+      id: 'file6',
+      url: '/assets/files/The Ultimate Nextjs Crash Course.pdf',
+      type: 'document',
+      extension: 'pdf',
+      size: 1500000, // 1.5 MB
+      name: 'The Ultimate Nextjs Crash Course',
+      createdAt: new Date(
+        Date.now() - 10000000
+      ).toISOString(),
+      owner: { fullName: 'John Doe' },
+    },
+  },
+  {
+    file: {
+      id: 'file7',
       url: '/assets/files/The Ultimate Nextjs Crash Course.pdf',
       type: 'document',
       extension: 'pdf',

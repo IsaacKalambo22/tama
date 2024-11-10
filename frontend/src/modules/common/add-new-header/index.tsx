@@ -2,12 +2,13 @@
 
 import { Button } from '@/components/ui/button';
 import ModalNewForm from '@/modules/admin/modal-new-form';
+import ModalNewPublication from '@/modules/admin/modal-new-publication';
 import { PlusSquare } from 'lucide-react';
 import { ReactElement, useState } from 'react';
 
 export enum AddNewType {
   NEW_FORM = 'New Form',
-  NEW_DOCUMENT = 'New Document',
+  NEW_REPORT_OR_PUBLICATION = 'New Report or Publication',
   NEW_PROJECT = 'New Project',
 }
 
@@ -47,6 +48,14 @@ const AddNewHeader = ({
       {isOpen &&
         buttonName === AddNewType.NEW_FORM && (
           <ModalNewForm
+            isOpen={isOpen}
+            onClose={handleClose}
+          />
+        )}
+      {isOpen &&
+        buttonName ===
+          AddNewType.NEW_REPORT_OR_PUBLICATION && (
+          <ModalNewPublication
             isOpen={isOpen}
             onClose={handleClose}
           />
