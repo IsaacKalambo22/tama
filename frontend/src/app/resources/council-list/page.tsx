@@ -1,5 +1,7 @@
+import CouncilList from '@/modules/client/council-list';
+
 const CouncilListPage = () => {
-  return <div>CouncilListPage</div>;
+  return <CouncilList />;
 };
 
 export default CouncilListPage;
