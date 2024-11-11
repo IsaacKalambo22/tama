@@ -82,7 +82,7 @@ export function CouncilListDataTable() {
     );
 
   return (
-    <div className='w-full min-w-full'>
+    <div className='w-full'>
       <CustomDataTable
         data={data}
         columns={councilListDataColumns}

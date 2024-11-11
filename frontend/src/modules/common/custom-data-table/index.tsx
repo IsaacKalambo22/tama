@@ -80,7 +80,7 @@ export function CustomDataTable<T>({
   });
 
   return (
-    <div className='w-full'>
+    <div className='w-full min-w-full'>
       <div className='flex justify-between items-center py-4'>
         <Input
           placeholder={filterPlaceholder}
@@ -141,7 +141,7 @@ export function CustomDataTable<T>({
           </DropdownMenu>
         </div>
       </div>
-      <div className='rounded-md border'>
+      <div className='rounded-md border min-w-full w-full'>
         <Table>
           <TableHeader>
             {table
@@ -212,18 +212,6 @@ export function CustomDataTable<T>({
         </Table>
       </div>
       <div className='flex items-center justify-end space-x-2 py-4'>
-        <div className='flex-1  text-sm text-muted-foreground'>
-          {
-            table.getFilteredSelectedRowModel()
-              .rows.length
-          }{' '}
-          of{' '}
-          {
-            table.getFilteredRowModel().rows
-              .length
-          }{' '}
-          row(s) selected.
-        </div>
         <div className='flex items-center space-x-2'>
           <Button
             className='h-8'
