@@ -212,3 +212,58 @@ export const updateNews = async (
     });
   }
 };
+
+export const deleteNews = async (
+  req: Request,
+  res: Response<APIResponse>
+): Promise<void> => {
+  const { id } = req.params;
+
+  // Validate input
+  if (!id) {
+    res.status(400).json({
+      success: false,
+      message: 'News ID is required.',
+      error: 'Validation error',
+    });
+    return;
+  }
+
+  try {
+    // Check if the news exists
+    const existingNews =
+      await prisma.news.findUnique({
+        where: { id },
+      });
+
+    if (!existingNews) {
+      res.status(404).json({
+        success: false,
+        message: 'News not found.',
+      });
+      return;
+    }
+
+    // Delete the news
+    await prisma.news.delete({
+      where: { id },
+    });
+
+    // Respond with success
+    res.status(200).json({
+      success: true,
+      message: 'News deleted successfully',
+    });
+  } catch (error: any) {
+    console.error(
+      'Error deleting news:',
+      error.message
+    );
+    res.status(500).json({
+      success: false,
+      message:
+        'An error occurred while deleting the news. Please try again later.',
+      error: error.message,
+    });
+  }
+};
