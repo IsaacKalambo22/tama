@@ -1,5 +1,7 @@
+import Forms from '@/modules/client/forms';
+
 const FormsPage = () => {
-  return <div>FormsPage</div>;
+  return <Forms />;
 };
 
 export default FormsPage;

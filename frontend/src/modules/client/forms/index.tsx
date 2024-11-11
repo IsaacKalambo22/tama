@@ -109,12 +109,12 @@ export const files: FileCardProps[] = [
     },
   },
 ];
-const ReportsAndPublicationsTemplate = () => {
+const Forms = () => {
   return (
     <div className='flex flex-col items-center gap-16 mb-16'>
       <HeaderText
-        title='Reports and Publications'
-        subtitle='Explore our latest research and insights.'
+        title='Forms and Documents'
+        subtitle='Access and download important forms for your needs.'
       />
 
       {/* Render the files */}
@@ -136,4 +136,4 @@ const ReportsAndPublicationsTemplate = () => {
   );
 };
 
-export default ReportsAndPublicationsTemplate;
+export default Forms;
