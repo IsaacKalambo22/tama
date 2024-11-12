@@ -120,14 +120,14 @@ const ReportsAndPublicationsTemplate = () => {
 
       {/* Render the files */}
       {files.length > 0 ? (
-        <section className='file-list grid grid-cols-1 md:grid-cols-5 lg:grid-cols-6 gap-4'>
+        <div className='file-list w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5  gap-4'>
           {files.map((file: FileCardProps) => (
             <FileCard
               key={file.file.url}
               file={file.file}
             />
           ))}
-        </section>
+        </div>
       ) : (
         <p className='empty-list'>
           No files uploaded

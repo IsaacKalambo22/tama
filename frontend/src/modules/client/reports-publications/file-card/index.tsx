@@ -1,7 +1,13 @@
+'use client';
+
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { convertFileSize } from '@/lib/utils';
+import {
+  constructDownloadUrl,
+  convertFileSize,
+} from '@/lib/utils';
 import Thumbnail from '@/modules/common/thumbnail';
-import ActionDropdown from '../../action-dropdown';
+import Image from 'next/image';
 
 export interface FileCardProps {
   file: {
@@ -16,6 +22,25 @@ export interface FileCardProps {
     };
   };
 }
+const handleDownload = (
+  fileName: string,
+  fileExtension: string
+) => {
+  const fullFileName = `${fileName}.${fileExtension}`; // Combine filename and extension
+
+  const downloadLink =
+    document.createElement('a');
+  downloadLink.href =
+    constructDownloadUrl(fullFileName); // Use the full file name with extension
+  downloadLink.download = fullFileName; // Set the combined file name for download
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+
+  console.log(
+    `Downloading file: ${fullFileName}`
+  ); // Log the full file name
+};
 const FileCard = ({ file }: FileCardProps) => {
   return (
     <Card className='file-card'>
@@ -29,7 +54,25 @@ const FileCard = ({ file }: FileCardProps) => {
         />
 
         <div className='flex flex-col items-end justify-between'>
-          <ActionDropdown file={file} />
+          <Button
+            size='icon'
+            onClick={() =>
+              handleDownload(
+                file.name,
+                file.extension
+              )
+            }
+            variant='ghost'
+            className='rounded-full'
+          >
+            <Image
+              src='/assets/icons/download.svg'
+              alt='dots'
+              width={35}
+              height={35}
+            />
+          </Button>
+          {/* <ActionDropdown file={file} /> */}
           <p className='body-1'>
             {convertFileSize(file.size)}
           </p>
