@@ -30,8 +30,8 @@ const Home = () => {
           description='To be the most effective and successful Association in the representation of grower member interests in promoting tobacco production and marketing.'
         />
       </div>
-      <Card className='mx-auto w-full h-auto p-6 shadow-none'>
-        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 py-8'>
+      <Card className='mx-auto w-full h-auto p-4 shadow-none'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 py-4'>
           <StatisticBlock
             count={51_000}
             label='Registered customers'
