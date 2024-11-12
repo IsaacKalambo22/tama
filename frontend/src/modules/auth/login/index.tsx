@@ -15,9 +15,11 @@ import Link from 'next/link';
 import { useActionState, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { toast } from '@/hooks/use-toast';
 import SubmitButton from '@/modules/common/submit-button';
 import { Eye, EyeOff } from 'lucide-react';
 import * as zod from 'zod';
+import { login } from '../actions';
 import { LoginSchema } from '../login-schema';
 
 const Login = () => {
@@ -37,34 +39,51 @@ const Login = () => {
   });
 
   const handleFormSubmit = async (
-    values: zod.infer<typeof LoginSchema>,
-    formData: FormData
+    values: zod.infer<typeof LoginSchema>
   ) => {
-    console.log({ formData });
-    console.log({ values });
     try {
-      console.log({ values });
+      const formValues = {
+        email: values.email as string,
+        password: values.password as string,
+      };
+
+      await LoginSchema.parseAsync(formValues);
+
+      const result = await login(values);
+
+      if (result.status == 'SUCCESS') {
+        toast({
+          title: 'Success',
+          description:
+            'Your startup pitch has been created successfully',
+        });
+      }
+
+      return result;
+    } catch (error) {
+      console.log({ error });
+
+      toast({
+        title: 'Error',
+        description:
+          'An unexpected error has occurred',
+        variant: 'destructive',
+      });
 
       return {
-        status: 'SUCCESS',
-        error: '',
-      };
-    } catch (error) {
-      return {
+        error: 'An unexpected error has occurred',
         status: 'ERROR',
-        error:
-          error instanceof Error
-            ? error.message
-            : 'An error occurred',
       };
     }
   };
 
-  const [state, formAction, isPending] =
-    useActionState(handleFormSubmit, {
+  const [formAction, isPending] = useActionState(
+    handleFormSubmit,
+    {
       error: '',
       status: 'INITIAL',
-    });
+    }
+  );
   return (
     <>
       <main className='min-h-screen px-4 w-[330px] flex flex-col justify-center items-center'>
