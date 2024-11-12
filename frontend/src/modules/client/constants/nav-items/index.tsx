@@ -97,21 +97,8 @@ export const navItems: NavItem[] = [
     submenu: true,
     subMenuItems: [
       {
-        title: 'Reports',
-        href: '/resources/reports',
-        description:
-          'Industry reports and data analysis.',
-        icon: (
-          <Icon
-            icon='lucide:bar-chart'
-            width='16'
-            height='16'
-          />
-        ),
-      },
-      {
-        title: 'Publications',
-        href: '/resources/publications',
+        title: 'Reports & Publications',
+        href: '/resources/reports-publications',
         description:
           'Research and publications related to tobacco.',
         icon: (
