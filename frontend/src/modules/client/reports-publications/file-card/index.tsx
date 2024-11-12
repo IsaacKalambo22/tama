@@ -1,6 +1,7 @@
 import { Card } from '@/components/ui/card';
 import { convertFileSize } from '@/lib/utils';
 import Thumbnail from '@/modules/common/thumbnail';
+import ActionDropdown from '../../action-dropdown';
 
 export interface FileCardProps {
   file: {
@@ -28,7 +29,7 @@ const FileCard = ({ file }: FileCardProps) => {
         />
 
         <div className='flex flex-col items-end justify-between'>
-          {/* <ActionDropdown file={file} /> */}
+          <ActionDropdown file={file} />
           <p className='body-1'>
             {convertFileSize(file.size)}
           </p>

@@ -1,13 +1,6 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { Dialog } from '@/components/ui/dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,114 +9,40 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
 
 import { constructDownloadUrl } from '@/lib/utils';
 import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { actionsDropdownItems } from '../constants/nav-items/action-dropdown';
+import { FileCardProps } from '../reports-publications/file-card';
 
 const ActionDropdown = ({
   file,
-}: {
-  file: Models.Document;
-}) => {
+}: FileCardProps) => {
   const [isModalOpen, setIsModalOpen] =
     useState(false);
   const [isDropdownOpen, setIsDropdownOpen] =
     useState(false);
-  const [action, setAction] =
-    useState<ActionType | null>(null);
-  const [name, setName] = useState(file.name);
-  const [isLoading, setIsLoading] =
-    useState(false);
-  const [emails, setEmails] = useState<string[]>(
-    []
-  );
 
-  const path = usePathname();
+  // Function to trigger file download
+  const handleDownload = (
+    fileName: string,
+    fileExtension: string
+  ) => {
+    const fullFileName = `${fileName}.${fileExtension}`; // Combine filename and extension
 
-  const closeAllModals = () => {
-    setIsModalOpen(false);
-    setIsDropdownOpen(false);
-    setAction(null);
-    setName(file.name);
-    //   setEmails([]);
-  };
-  const handleAction = async () => {
-    if (!action) return;
-    setIsLoading(true);
-    let success = false;
+    const downloadLink =
+      document.createElement('a');
+    downloadLink.href =
+      constructDownloadUrl(fullFileName); // Use the full file name with extension
+    downloadLink.download = fullFileName; // Set the combined file name for download
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
 
-    const actions = {
-      rename: () => () => ({}),
-      share: () => () => ({}),
-      delete: () => ({}),
-    };
-
-    success = await actions[
-      action.value as keyof typeof actions
-    ]();
-
-    if (success) closeAllModals();
-
-    setIsLoading(false);
-  };
-
-  const renderDialogContent = () => {
-    if (!action) return null;
-
-    const { value, label } = action;
-
-    return (
-      <DialogContent className='shad-dialog button'>
-        <DialogHeader className='flex flex-col gap-3'>
-          <DialogTitle className='text-center text-light-100'>
-            {label}
-          </DialogTitle>
-          {value === 'rename' && (
-            <Input
-              type='text'
-              value={name}
-              onChange={(e) =>
-                setName(e.target.value)
-              }
-            />
-          )}
-        </DialogHeader>
-        {['rename', 'delete', 'share'].includes(
-          value
-        ) && (
-          <DialogFooter className='flex flex-col gap-3 md:flex-row'>
-            <Button
-              onClick={closeAllModals}
-              className='modal-cancel-button'
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleAction}
-              className='modal-submit-button'
-            >
-              <p className='capitalize'>
-                {value}
-              </p>
-              {isLoading && (
-                <Image
-                  src='/assets/icons/loader.svg'
-                  alt='loader'
-                  width={24}
-                  height={24}
-                  className='animate-spin'
-                />
-              )}
-            </Button>
-          </DialogFooter>
-        )}
-      </DialogContent>
-    );
+    console.log(
+      `Downloading file: ${fullFileName}`
+    ); // Log the full file name
   };
 
   return (
@@ -139,8 +58,8 @@ const ActionDropdown = ({
           <Image
             src='/assets/icons/dots.svg'
             alt='dots'
-            width={34}
-            height={34}
+            width={24}
+            height={24}
           />
         </DropdownMenuTrigger>
         <DropdownMenuContent>
@@ -153,29 +72,17 @@ const ActionDropdown = ({
               <DropdownMenuItem
                 key={actionItem.value}
                 className='shad-dropdown-item'
-                onClick={() => {
-                  setAction(actionItem);
-
-                  if (
-                    [
-                      'rename',
-                      'share',
-                      'delete',
-                      'details',
-                    ].includes(actionItem.value)
-                  ) {
-                    setIsModalOpen(true);
-                  }
-                }}
               >
                 {actionItem.value ===
                 'download' ? (
-                  <Link
-                    href={constructDownloadUrl(
-                      file.bucketFileId
-                    )}
-                    download={file.name}
-                    className='flex items-center gap-2'
+                  <div
+                    className='flex items-center gap-2 cursor-pointer'
+                    onClick={() =>
+                      handleDownload(
+                        file.name,
+                        file.extension
+                      )
+                    }
                   >
                     <Image
                       src={actionItem.icon}
@@ -184,7 +91,7 @@ const ActionDropdown = ({
                       height={30}
                     />
                     {actionItem.label}
-                  </Link>
+                  </div>
                 ) : (
                   <div className='flex items-center gap-2'>
                     <Image
@@ -201,9 +108,8 @@ const ActionDropdown = ({
           )}
         </DropdownMenuContent>
       </DropdownMenu>
-
-      {renderDialogContent()}
     </Dialog>
   );
 };
+
 export default ActionDropdown;

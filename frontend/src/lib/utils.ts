@@ -237,9 +237,10 @@ export const constructFileUrl = (
 };
 
 export const constructDownloadUrl = (
-  bucketFileId: string
+  fileName: string
 ) => {
-  return `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/storage/buckets/${process.env.NEXT_PUBLIC_APPWRITE_BUCKET}/files/${bucketFileId}/download?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT}`;
+  // Reference the file directly in the local assets directory
+  return `/assets/files/${fileName}`;
 };
 
 // DASHBOARD UTILS

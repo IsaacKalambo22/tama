@@ -7,11 +7,11 @@ const ReportsAndPublicationsTemplate = () => {
   const files: FileCardProps[] = [
     {
       file: {
-        url: '/assets/files/file_1.pdf',
+        url: '/assets/files/The Ultimate Nextjs Crash Course.pdf',
         type: 'document',
         extension: 'pdf',
         size: 1500000, // 1.5 MB
-        name: 'Annual_Report_2024',
+        name: 'The Ultimate Nextjs Crash Course',
         $createdAt: new Date(
           Date.now() - 10000000
         ).toISOString(),
@@ -20,7 +20,7 @@ const ReportsAndPublicationsTemplate = () => {
     },
     {
       file: {
-        url: '/assets/files/file_2.jpg',
+        url: '/assets/files/file2.pdf',
         type: 'document',
         extension: 'pdf',
         size: 500000, // 500 KB
@@ -33,7 +33,7 @@ const ReportsAndPublicationsTemplate = () => {
     },
     {
       file: {
-        url: '/assets/files/file_3.mp4',
+        url: '/assets/files/file3.pdf',
         type: 'document',
         extension: 'csv',
         size: 30000000, // 30 MB
