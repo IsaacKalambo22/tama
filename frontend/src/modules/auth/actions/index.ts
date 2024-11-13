@@ -1,13 +1,15 @@
 'use server';
 
 import { parseServerActionResponse } from '@/lib/utils';
-import * as zod from 'zod';
-import { LoginSchema } from '../login-schema';
+import { FormState } from '../login';
 
 export const login = async (
-  values: zod.infer<typeof LoginSchema>
+  state: FormState,
+  form: FormData
 ) => {
-  const { email, password } = values;
+  const { email, password } = Object.fromEntries(
+    Array.from(form)
+  );
 
   try {
     const credentials = {

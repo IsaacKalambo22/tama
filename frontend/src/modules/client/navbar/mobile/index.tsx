@@ -334,9 +334,9 @@ const Mobile: React.FC = () => {
             className='flex items-center gap-2'
           >
             <Image
-              src='/assets/images/logo-text.png'
-              width={100}
-              height={100}
+              src='/assets/images/logo.png'
+              width={30}
+              height={30}
               alt='logo'
               className='ml-2'
             />

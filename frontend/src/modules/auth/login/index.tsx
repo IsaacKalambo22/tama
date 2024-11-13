@@ -18,14 +18,24 @@ import { useForm } from 'react-hook-form';
 import { toast } from '@/hooks/use-toast';
 import SubmitButton from '@/modules/common/submit-button';
 import { Eye, EyeOff } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import * as zod from 'zod';
 import { login } from '../actions';
 import { LoginSchema } from '../login-schema';
 
+export type FormState = {
+  error: string;
+  status: 'INITIAL' | 'SUCCESS' | 'ERROR';
+};
+
 const Login = () => {
   const [showPassword, setShowPassword] =
     useState(false);
-
+  const [errors, setErrors] = useState<
+    Record<string, string>
+  >({});
+  const router = useRouter();
+  console.log({ errors });
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -39,17 +49,24 @@ const Login = () => {
   });
 
   const handleFormSubmit = async (
-    values: zod.infer<typeof LoginSchema>
+    prevState: FormState,
+    formData: FormData
   ) => {
     try {
+      console.log({ formData });
       const formValues = {
-        email: values.email as string,
-        password: values.password as string,
+        title: formData.get('email') as string,
+        description: formData.get(
+          'password'
+        ) as string,
       };
 
       await LoginSchema.parseAsync(formValues);
 
-      const result = await login(values);
+      const result = await login(
+        prevState,
+        formData
+      );
 
       if (result.status == 'SUCCESS') {
         toast({
@@ -57,11 +74,36 @@ const Login = () => {
           description:
             'Your startup pitch has been created successfully',
         });
+
+        router.push(`/`);
       }
 
       return result;
     } catch (error) {
-      console.log({ error });
+      if (error instanceof zod.ZodError) {
+        const fieldErrors =
+          error.flatten().fieldErrors;
+
+        setErrors(
+          fieldErrors as unknown as Record<
+            string,
+            string
+          >
+        );
+
+        toast({
+          title: 'Error',
+          description:
+            'Please check your inputs and try again',
+          variant: 'destructive',
+        });
+
+        return {
+          ...prevState,
+          error: 'Validation failed',
+          status: 'ERROR',
+        };
+      }
 
       toast({
         title: 'Error',
@@ -71,19 +113,19 @@ const Login = () => {
       });
 
       return {
+        ...prevState,
         error: 'An unexpected error has occurred',
         status: 'ERROR',
       };
     }
   };
 
-  const [formAction, isPending] = useActionState(
-    handleFormSubmit,
-    {
+  const [state, formAction, isPending] =
+    useActionState(handleFormSubmit, {
       error: '',
       status: 'INITIAL',
-    }
-  );
+    });
+  console.log({ state });
   return (
     <>
       <main className='min-h-screen px-4 w-[330px] flex flex-col justify-center items-center'>
