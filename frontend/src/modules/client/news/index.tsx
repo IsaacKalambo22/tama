@@ -114,16 +114,16 @@ export default function News() {
         title='TAMA News'
         subtitle='Stay Informed with the Latest Updates and Announcements'
       />
-      <div className='space-y-6'>
+      <div className='space-y-10'>
         {/* Most Recent Story */}
         {mostRecent && (
-          <Card className='shadow-none rounded-lg border-none flex flex-col md:flex-row items-center sm:h-[17rem] gap-10'>
+          <Card className='shadow-none rounded-lg border-none flex flex-col sm:flex-row items-center h-auto sm:h-[17rem] gap-10'>
             <Image
               src={mostRecent.imageUrl}
               alt={mostRecent.title}
               width={400}
               height={300}
-              className='rounded-2xl object-cover h-full w-full md:w-1/2'
+              className='rounded-2xl object-cover h-full w-full sm:w-1/2'
             />
             <div className='flex flex-col justify-between w-full md:w-1/2 h-full space-y-4'>
               <div className='flex gap-2 items-center'>
@@ -138,7 +138,7 @@ export default function News() {
                   {mostRecent.date}
                 </p>
               </div>
-              <h3 className='text-3xl font-bold text-green-600'>
+              <h3 className='md:text-3xl text-2xl font-bold text-green-600'>
                 {mostRecent.title}
               </h3>
               <p className='text-gray-700 mt-2 line-clamp-3'>
@@ -152,7 +152,7 @@ export default function News() {
         )}
 
         {/* Other News Stories */}
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
+        <div className='grid mt-5 sm:mt-0 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
           {otherNews.slice(0, 4).map((item) => (
             <SmallNewsCard
               key={item.id}
