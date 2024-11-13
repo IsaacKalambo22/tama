@@ -85,11 +85,73 @@ export const getAllShops = async (
     });
   }
 };
-export const deleteShop = async (
+
+export const updateShop = async (
   req: Request,
   res: Response<APIResponse>
-): Promise<void> => {};
-export const updateShop = async (
+): Promise<void> => {
+  const { id } = req.params;
+  const { name, imageUrl, address, openHours } =
+    req.body;
+
+  // Validate input
+  if (!id) {
+    res.status(400).json({
+      success: false,
+      message: 'Shop ID is required.',
+      error: 'Validation error',
+    });
+    return;
+  }
+
+  try {
+    // Check if the shop exists
+    const existingShop =
+      await prisma.shop.findUnique({
+        where: { id },
+      });
+
+    if (!existingShop) {
+      res.status(404).json({
+        success: false,
+        message: 'Shop not found.',
+      });
+      return;
+    }
+
+    // Update the shop details
+    const updatedShop = await prisma.shop.update({
+      where: { id },
+      data: {
+        name: name ?? existingShop.name,
+        imageUrl:
+          imageUrl ?? existingShop.imageUrl,
+        address: address ?? existingShop.address,
+        openHours:
+          openHours ?? existingShop.openHours,
+      },
+    });
+
+    // Respond with success
+    res.status(200).json({
+      success: true,
+      message: 'Shop updated successfully',
+      data: updatedShop,
+    });
+  } catch (error: any) {
+    console.error(
+      'Error updating shop:',
+      error.message
+    );
+    res.status(500).json({
+      success: false,
+      message:
+        'An error occurred while updating the shop. Please try again later.',
+      error: error.message,
+    });
+  }
+};
+export const deleteShop = async (
   req: Request,
   res: Response<APIResponse>
 ): Promise<void> => {};
