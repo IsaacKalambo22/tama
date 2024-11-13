@@ -7,7 +7,6 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import CustomError from '@/modules/common/custom-error';
 import CustomLoader from '@/modules/common/custom-loader';
@@ -67,7 +66,7 @@ export default function News() {
         date: '2024-10-20',
         content:
           'Join us for the upcoming annual conference to discuss advancements in farming techniques, technology, and industry trends. The conference will feature guest speakers from leading agricultural research institutions, as well as interactive sessions on topics such as crop management, soil health, and climate-resilient farming. Networking opportunities will allow farmers to connect with industry professionals, share experiences, and learn from one another. Don’t miss this opportunity to stay informed and connected in the ever-evolving field of agriculture.',
-        imageUrl: '/assets/images/news/news2.jpg',
+        imageUrl: '/assets/images/shop1.jpg',
       },
       {
         id: 3,
@@ -76,7 +75,7 @@ export default function News() {
         date: '2024-10-15',
         content:
           'Our latest report on market trends for farmers is now available. This comprehensive report covers price changes, consumer demand, and emerging markets. Key insights include the growing demand for organic produce, the impact of global supply chains on local markets, and predictions for next season’s most profitable crops. The report also provides data-driven recommendations to help farmers make informed decisions about their crop choices and sales strategies.',
-        imageUrl: '/assets/images/news/news3.jpg',
+        imageUrl: '/assets/images/shop1.jpg',
       },
       {
         id: 4,
@@ -85,7 +84,7 @@ export default function News() {
         date: '2024-10-10',
         content:
           'Register for our free webinar on innovative farming techniques that are transforming agriculture today. Topics include precision agriculture, regenerative soil management, and eco-friendly pest control. The webinar will feature experts who will share their insights on optimizing crop yield, conserving water, and reducing costs. This online event is designed to provide practical knowledge that farmers can immediately apply to improve their productivity and sustainability efforts.',
-        imageUrl: '/assets/images/news/news4.jpg',
+        imageUrl: '/assets/images/shop1.jpg',
       },
       {
         id: 5,
@@ -94,7 +93,7 @@ export default function News() {
         date: '2024-10-05',
         content:
           'Learn about our sustainable agriculture initiatives aimed at reducing environmental impact while maintaining high productivity. TAMA is committed to promoting practices that conserve water, enhance soil fertility, and reduce chemical use. Recent projects include partnerships with eco-friendly technology providers and the implementation of renewable energy sources on farms. These efforts aim to create a more sustainable and resilient agricultural sector for future generations.',
-        imageUrl: '/assets/images/news/news5.jpg',
+        imageUrl: '/assets/images/shop1.jpg',
       },
     ];
   };
@@ -118,38 +117,36 @@ export default function News() {
       <div className='space-y-6'>
         {/* Most Recent Story */}
         {mostRecent && (
-          <Card className='shadow-none rounded-lg border-none flex flex-col md:flex-row items-center gap-10'>
+          <Card className='shadow-none rounded-lg border-none flex flex-col md:flex-row items-center sm:h-[17rem] gap-10'>
             <Image
               src={mostRecent.imageUrl}
               alt={mostRecent.title}
               width={400}
               height={300}
-              className='rounded-lg object-cover  h-[17rem] w-full md:w-1/2'
+              className='rounded-2xl object-cover h-full w-full md:w-1/2'
             />
-            <div className='flex flex-col justify-between w-full md:w-1/2 '>
-              <div>
-                <div className='flex gap-2 items-center'>
-                  <Avatar>
-                    <AvatarImage src='' />
-                    <AvatarFallback>
-                      A
-                    </AvatarFallback>
-                  </Avatar>
-                  <p className='text-sm text-gray-500'>
-                    {mostRecent.author} |{' '}
-                    {mostRecent.date}
-                  </p>
-                </div>
-                <h3 className='text-3xl font-bold text-green-600'>
-                  {mostRecent.title}
-                </h3>
-                <p className='text-gray-700 mt-2 truncate'>
-                  {mostRecent.content}
-                </p>
-                <p className='text-gray-700 mt-2'>
-                  4 min read
+            <div className='flex flex-col justify-between w-full md:w-1/2 h-full space-y-4'>
+              <div className='flex gap-2 items-center'>
+                <Avatar>
+                  <AvatarImage src='' />
+                  <AvatarFallback>
+                    A
+                  </AvatarFallback>
+                </Avatar>
+                <p className='text-sm text-gray-500'>
+                  {mostRecent.author} |{' '}
+                  {mostRecent.date}
                 </p>
               </div>
+              <h3 className='text-3xl font-bold text-green-600'>
+                {mostRecent.title}
+              </h3>
+              <p className='text-gray-700 mt-2 line-clamp-3'>
+                {mostRecent.content}
+              </p>
+              <p className='text-gray-700 mt-2'>
+                4 min read
+              </p>
             </div>
           </Card>
         )}
@@ -176,26 +173,28 @@ const SmallNewsCard = ({
   newsItem,
 }: NewsCardProps) => {
   return (
-    <Card className='p-4 rounded-lg shadow-md space-y-4 transition-transform transform hover:scale-105'>
+    <Card className='p-4 shadow-none cursor-pointer rounded-3xl space-y-4 transition-transform transform hover:scale-105'>
       <Image
         src={newsItem.imageUrl}
         alt={newsItem.title}
         width={400}
         height={200}
-        className='rounded-lg object-cover w-full'
+        className='rounded-2xl object-cover w-full'
       />
-      <div>
-        <h4 className='text-xl font-bold text-green-600'>
-          {newsItem.title}
-        </h4>
-        <p className='text-sm text-gray-500'>
-          By {newsItem.author} | {newsItem.date}
-        </p>
+      <div className='flex flex-col w-full h-full'>
+        <div className='flex w-full gap-2 items-center'>
+          <Avatar>
+            <AvatarImage src='' />
+            <AvatarFallback>A</AvatarFallback>
+          </Avatar>
+          <p className='text-sm text-gray-500'>
+            {newsItem.author} | {newsItem.date}
+          </p>
+        </div>
         <p className='text-gray-700 mt-2 line-clamp-3'>
           {newsItem.content}
         </p>
       </div>
-      <Button variant='link'>Read More</Button>
     </Card>
   );
 };
