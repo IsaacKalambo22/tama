@@ -37,9 +37,11 @@ const DownloadButton = ({
   return (
     <Button
       size='icon'
-      onClick={() =>
-        handleDownload(fileName, fileExtension)
-      } // Handle download when clicked
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        handleDownload(fileName, fileExtension);
+      }} // Handle download when clicked
       variant='ghost'
       className='rounded-full'
     >
