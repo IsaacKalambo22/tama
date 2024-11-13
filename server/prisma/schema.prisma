@@ -85,7 +85,11 @@ model News {
 }
 
 model CouncilList {
+<<<<<<< HEAD
   id                        String   @id @default(uuid())
+=======
+  id                        Int      @id @default(autoincrement())
+>>>>>>> 64fdc74 (create council list)
   demarcation               String
   tobaccoType               String
   councillor                String

@@ -65,6 +65,7 @@ export const createCouncilList = async (
     });
   }
 };
+<<<<<<< HEAD
 
 export const getAllCouncilLists = async (
   req: Request,
@@ -231,3 +232,5 @@ export const deleteCouncilList = async (
     });
   }
 };
+=======
+>>>>>>> 64fdc74 (create council list)
