@@ -151,7 +151,58 @@ export const updateShop = async (
     });
   }
 };
+
 export const deleteShop = async (
   req: Request,
   res: Response<APIResponse>
-): Promise<void> => {};
+): Promise<void> => {
+  const { id } = req.params;
+
+  // Validate input
+  if (!id) {
+    res.status(400).json({
+      success: false,
+      message: 'Shop ID is required.',
+      error: 'Validation error',
+    });
+    return;
+  }
+
+  try {
+    // Check if the shop exists
+    const existingShop =
+      await prisma.shop.findUnique({
+        where: { id },
+      });
+
+    if (!existingShop) {
+      res.status(404).json({
+        success: false,
+        message: 'Shop not found.',
+      });
+      return;
+    }
+
+    // Delete the shop
+    await prisma.shop.delete({
+      where: { id },
+    });
+
+    // Respond with success
+    res.status(200).json({
+      success: true,
+      message: 'Shop deleted successfully',
+    });
+  } catch (error: any) {
+    console.error(
+      'Error deleting shop:',
+      error.message
+    );
+    res.status(500).json({
+      success: false,
+      message:
+        'An error occurred while deleting the shop. Please try again later.',
+      error: error.message,
+    });
+  }
+};
