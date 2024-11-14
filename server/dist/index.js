@@ -11,6 +11,7 @@ const helmet_1 = __importDefault(require("helmet"));
 const morgan_1 = __importDefault(require("morgan"));
 /* ROUTE IMPORTS */
 const auth_1 = __importDefault(require("./routes/auth"));
+const shop_1 = __importDefault(require("./routes/shop"));
 /* CONFIGURATIONS */
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -28,6 +29,7 @@ app.get('/', (req, res) => {
     res.send('This is home route');
 });
 app.use('/api/v1/auth', auth_1.default);
+app.use('/api/v1/shops', shop_1.default);
 /* SERVER */
 const PORT = Number(process.env.PORT) || 8000;
 app.listen(PORT, () => {

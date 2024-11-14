@@ -7,6 +7,7 @@ import morgan from 'morgan';
 
 /* ROUTE IMPORTS */
 import auth from './routes/auth';
+import shops from './routes/shop';
 
 /* CONFIGURATIONS */
 dotenv.config();
@@ -31,6 +32,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1/auth', auth);
+app.use('/api/v1/shops', shops);
 
 /* SERVER */
 const PORT = Number(process.env.PORT) || 8000;
