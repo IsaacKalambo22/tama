@@ -8,30 +8,63 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.registerUser = void 0;
 const client_1 = require("@prisma/client");
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const prisma = new client_1.PrismaClient();
 const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { name, email, password, role } = req.body;
+    // Validate user input
+    if (!name || !email || !password) {
+        res.status(400).json({
+            success: false,
+            message: 'Name, email, and password are required.',
+        });
+        return; // Ensure early exit after sending response
+    }
     try {
-        const { name, email, password } = req.body;
-        console.log(req.body);
+        // Check if the email already exists
+        const existingUser = yield prisma.user.findUnique({
+            where: { email },
+        });
+        if (existingUser) {
+            res.status(409).json({
+                success: false,
+                message: 'Email already in use. Please use a different email.',
+            });
+            return; // Ensure early exit after sending response
+        }
+        // Hash the password
+        const hashedPassword = yield bcrypt_1.default.hash(password, 10);
+        // Create the user
         const newUser = yield prisma.user.create({
             data: {
                 name,
                 email,
-                password,
-                role: client_1.Role.USER,
+                password: hashedPassword,
+                role: role || client_1.Role.USER,
             },
         });
-        res.json({
-            message: 'User Created Successfully',
-            newUser,
+        res.status(201).json({
+            success: true,
+            message: 'User created successfully',
+            user: {
+                id: newUser.id,
+                name: newUser.name,
+                email: newUser.email,
+                role: newUser.role,
+            },
         });
     }
     catch (error) {
+        console.error('Error creating user:', error);
         res.status(500).json({
-            message: `Error retrieving users: ${error.message}`,
+            success: false,
+            message: 'An error occurred while creating the user. Please try again later.',
         });
     }
 });
