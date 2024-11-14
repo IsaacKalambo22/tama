@@ -4,3 +4,9 @@ export interface APIResponse {
   message: string;
   [key: string]: any; // Optional additional data
 }
+
+export interface TokenPayloadProps {
+  id: string;
+  email: string;
+  role: string;
+}

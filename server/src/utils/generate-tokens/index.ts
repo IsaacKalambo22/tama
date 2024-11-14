@@ -1,3 +1,4 @@
+import { Role } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 
 interface TokenResponse {
@@ -8,7 +9,7 @@ interface TokenResponse {
 export const generateTokens = (
   id: string,
   email: string,
-  role: string
+  role: Role
 ): TokenResponse => {
   const access_token = jwt.sign(
     {
