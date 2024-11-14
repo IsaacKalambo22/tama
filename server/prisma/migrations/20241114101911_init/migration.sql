@@ -7,6 +7,7 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "role" "Role" NOT NULL DEFAULT 'USER',
     "lastLogin" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "isVerified" BOOLEAN NOT NULL DEFAULT false,
     "resetPasswordToken" TEXT,

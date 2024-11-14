@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 
 /* ROUTE IMPORTS */
+import auth from './routes/auth';
 
 /* CONFIGURATIONS */
 dotenv.config();
@@ -28,6 +29,8 @@ app.use(cors());
 app.get('/', (req, res) => {
   res.send('This is home route');
 });
+
+app.use('/api/v1/auth', auth);
 
 /* SERVER */
 const PORT = Number(process.env.PORT) || 8000;
