@@ -7,20 +7,21 @@ import {
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { TokenPayloadProps } from '../../types';
 
+// Extend Express Request interface to include user information
 declare global {
   namespace Express {
     interface Request {
-      user?: TokenPayloadProps; // Add user to the request object
+      user?: TokenPayloadProps;
     }
   }
 }
 
-export const verifyJWT = (
+// Middleware to verify JWT and add user information to the request object
+export const verifyToken = (
   req: Request,
   res: Response,
   next: NextFunction
-): Response | void => {
-  // Retrieve the authorization header or assign an empty string if it's null/undefined
+): void => {
   const authorizationHeader =
     req.headers['authorization'] ||
     req.headers['Authorization'] ||
@@ -30,16 +31,15 @@ export const verifyJWT = (
     authorizationHeader.toString();
 
   if (!authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({
+    res.status(401).json({
       message:
         'Unauthorized: Invalid token format',
     });
+    return;
   }
 
-  // Extract the token from the authorization header
   const token = authHeader.split(' ')[1];
 
-  // Verify the token with JWT
   jwt.verify(
     token,
     process.env.JWT_ACCESS_SECRET_KEY as string,
@@ -51,54 +51,63 @@ export const verifyJWT = (
         });
       }
 
-      // Extract user information from the decoded payload
       const { id, email, role } =
         decoded as JwtPayload & {
           payload: TokenPayloadProps;
         };
 
-      // Attach user information to the request object
       req.user = { id, email, role };
       next();
     }
   );
 };
 
+// Middleware to check if the user is an Admin
 export const verifyAdmin = (
   req: Request,
   res: Response,
   next: NextFunction
 ): Response | void => {
-  // Ensure the token is verified first
-  verifyJWT(req, res, () => {
-    if (req.user?.role === Role.ADMIN) {
-      // Proceed if the user is an admin
-      return next();
-    } else {
-      // Directly return a 403 Forbidden response if the user is not an admin
-      return res.status(403).json({
-        message:
-          'You are not authorized to access this resource',
-      });
-    }
-  });
+  if (req.user?.role === Role.ADMIN) {
+    return next();
+  } else {
+    res.status(403).json({
+      message:
+        'You are not authorized to access this resource',
+    });
+    return;
+  }
 };
+
+// Middleware to check if the user is a Manager
 export const verifyManager = (
   req: Request,
   res: Response,
   next: NextFunction
 ): Response | void => {
-  // Ensure the token is verified first
-  verifyJWT(req, res, () => {
-    if (req.user?.role === Role.MANAGER) {
-      // Proceed if the user is an admin
-      return next();
-    } else {
-      // Directly return a 403 Forbidden response if the user is not an admin
-      return res.status(403).json({
-        message:
-          'You are not authorized to access this resource',
-      });
-    }
-  });
+  if (req.user?.role === Role.MANAGER) {
+    return next();
+  } else {
+    res.status(403).json({
+      message:
+        'You are not authorized to access this resource',
+    });
+    return;
+  }
+};
+
+// Middleware to check if the user is authenticated but does not require a specific role
+export const verifyUser = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Response | void => {
+  if (req.user) {
+    return next();
+  } else {
+    return res.status(401).json({
+      message:
+        'You need to be logged in to access this resource',
+    });
+  }
 };

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createShop = void 0;
+exports.updateShop = exports.deleteShop = exports.getAllShops = exports.createShop = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const createShop = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -53,3 +53,9 @@ const createShop = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.createShop = createShop;
+const getAllShops = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });
+exports.getAllShops = getAllShops;
+const deleteShop = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });
+exports.deleteShop = deleteShop;
+const updateShop = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });
+exports.updateShop = updateShop;

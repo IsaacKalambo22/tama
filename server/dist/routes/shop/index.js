@@ -2,6 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const shop_1 = require("../../controllers/shop");
+const index_1 = require("../../middlewares/verify-token/index");
 const router = (0, express_1.Router)();
-router.post('/', shop_1.createShop);
+router.post('/', index_1.verifyToken, shop_1.createShop);
+router.get('/', shop_1.getAllShops);
+router.patch('/:id', shop_1.updateShop);
+router.delete('/:id', shop_1.deleteShop);
 exports.default = router;

@@ -57,3 +57,17 @@ export const createShop = async (
     });
   }
 };
+
+export const getAllShops = async (
+  req: Request,
+  res: Response<APIResponse>
+): Promise<void> => {};
+
+export const deleteShop = async (
+  req: Request,
+  res: Response<APIResponse>
+): Promise<void> => {};
+export const updateShop = async (
+  req: Request,
+  res: Response<APIResponse>
+): Promise<void> => {};
