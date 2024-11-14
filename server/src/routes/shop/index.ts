@@ -5,13 +5,13 @@ import {
   getAllShops,
   updateShop,
 } from '../../controllers/shop';
-import { verifyToken } from '../../middlewares/verify-token/index';
+import { verifyAdmin } from '../../middlewares/verify-token/index';
 
 const router = Router();
 
-router.post('/', verifyToken, createShop);
+router.post('/', verifyAdmin, createShop);
 router.get('/', getAllShops);
-router.patch('/:id', updateShop);
-router.delete('/:id', deleteShop);
+router.patch('/:id', verifyAdmin, updateShop);
+router.delete('/:id', verifyAdmin, deleteShop);
 
 export default router;

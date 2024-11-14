@@ -67,7 +67,7 @@ export const verifyAdmin = (
   req: Request,
   res: Response,
   next: NextFunction
-): Response | void => {
+): void => {
   if (req.user?.role === Role.ADMIN) {
     return next();
   } else {
@@ -84,7 +84,7 @@ export const verifyManager = (
   req: Request,
   res: Response,
   next: NextFunction
-): Response | void => {
+): void => {
   if (req.user?.role === Role.MANAGER) {
     return next();
   } else {

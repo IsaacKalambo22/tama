@@ -1,52 +1,52 @@
 services:
-  # tama-farmers-web:
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile.dev # Or Dockerfile.prod, as needed
-  #   volumes:
-  #     - ./frontend:/app # Mount the source code for live-reloading
-  #     - /app/node_modules # Separate node_modules to avoid conflicts
-  #   ports:
-  #     - '3000:3000' # Expose development port
-  #   environment:
-  #     NODE_ENV: development # Set environment variable to development
-  #     PORT: 3000 # Application port
-  #     HOSTNAME: '0.0.0.0' # Allow access from all IP addresses
-  #     PNPM_HOME: '/pnpm'
-  #     PATH: '/pnpm:$PATH'
-  #     NEXT_TELEMETRY_DISABLED: '1' # Disable telemetry
-  #     AUTH_SECRET: wTFm+Txkfy/kbsrVQP8AsMIi3rD+d+LdQcFdXPTCYrRefHhBrsxEoJ7
-  #     NEXT_PUBLIC_SERVER_URL: http://localhost:3000
-  #     NEXT_PUBLIC_API_BASE_URL: http://192.168.1.130:8222/api/v1
-  #     AUTH_TRUST_HOST: true
+  tama-farmers-web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev # Or Dockerfile.prod, as needed
+    volumes:
+      - ./frontend:/app # Mount the source code for live-reloading
+      - /app/node_modules # Separate node_modules to avoid conflicts
+    ports:
+      - '3000:3000' # Expose development port
+    environment:
+      NODE_ENV: development # Set environment variable to development
+      PORT: 3000 # Application port
+      HOSTNAME: '0.0.0.0' # Allow access from all IP addresses
+      PNPM_HOME: '/pnpm'
+      PATH: '/pnpm:$PATH'
+      NEXT_TELEMETRY_DISABLED: '1' # Disable telemetry
+      AUTH_SECRET: wTFm+Txkfy/kbsrVQP8AsMIi3rD+d+LdQcFdXPTCYrRefHhBrsxEoJ7
+      NEXT_PUBLIC_SERVER_URL: http://localhost:3000
+      NEXT_PUBLIC_API_BASE_URL: http://192.168.1.130:8222/api/v1
+      AUTH_TRUST_HOST: true
 
-  #   command: pnpm dev # Run development mode with hot-reloading
-  #   networks:
-  #     - tama-farmers-network
-  #   restart: unless-stopped
+    command: pnpm dev # Run development mode with hot-reloading
+    networks:
+      - tama-farmers-network
+    restart: unless-stopped
 
-  # tama-farmers-server:
-  #   build:
-  #     context: ./server
-  #     dockerfile: Dockerfile.dev # Or Dockerfile.prod, as needed
-  #   volumes:
-  #     - ./server:/app # Mount the source code for live-reloading
-  #     - /app/node_modules # Separate node_modules to avoid conflicts
-  #   ports:
-  #     - '8000:8000' # Expose development port
-  #   environment:
-  #     NODE_ENV: development # Set environment variable to development
-  #     PORT: 8000 # Application port
-  #     HOSTNAME: '0.0.0.0' # Allow access from all IP addresses
-  #     AUTH_SECRET: wTFm+Txkfy/kbsrVQP8AsMIi3rD+d+LdQcFdXPTCYrRefHhBrsxEoJ7
-  #     NEXT_PUBLIC_SERVER_URL: http://localhost:3000
-  #     NEXT_PUBLIC_API_BASE_URL: http://192.168.1.130:8222/api/v1
-  #     AUTH_TRUST_HOST: true
+  tama-farmers-server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev # Or Dockerfile.prod, as needed
+    volumes:
+      - ./server:/app # Mount the source code for live-reloading
+      - /app/node_modules # Separate node_modules to avoid conflicts
+    ports:
+      - '8000:8000' # Expose development port
+    environment:
+      NODE_ENV: development # Set environment variable to development
+      PORT: 8000 # Application port
+      HOSTNAME: '0.0.0.0' # Allow access from all IP addresses
+      AUTH_SECRET: wTFm+Txkfy/kbsrVQP8AsMIi3rD+d+LdQcFdXPTCYrRefHhBrsxEoJ7
+      NEXT_PUBLIC_SERVER_URL: http://localhost:3000
+      NEXT_PUBLIC_API_BASE_URL: http://192.168.1.130:8222/api/v1
+      AUTH_TRUST_HOST: true
 
-  #   command: npm dev # Run development mode with hot-reloading
-  #   networks:
-  #     - tama-farmers-network
-  #   restart: unless-stopped
+    command: npm dev # Run development mode with hot-reloading
+    networks:
+      - tama-farmers-network
+    restart: unless-stopped
 
   postgreSQL_DB:
     image: postgres:16-alpine3.19
@@ -69,4 +69,3 @@ volumes:
 
 networks:
   tama-farmers-network:
-    driver: bridge

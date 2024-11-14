@@ -40,7 +40,7 @@ export const createShop = async (
 
     // Respond with success
     res.status(201).json({
-      success: false,
+      success: true,
       message: 'Shop created successfully',
       data: newShop,
     });
@@ -61,8 +61,30 @@ export const createShop = async (
 export const getAllShops = async (
   req: Request,
   res: Response<APIResponse>
-): Promise<void> => {};
+): Promise<void> => {
+  try {
+    // Fetch all shops from the database
+    const shops = await prisma.shop.findMany();
 
+    // Respond with success
+    res.status(200).json({
+      success: true,
+      message: 'Shops retrieved successfully',
+      data: shops,
+    });
+  } catch (error: any) {
+    console.error(
+      'Error fetching shops:',
+      error.message
+    );
+    res.status(500).json({
+      success: false,
+      message:
+        'An error occurred while fetching shops. Please try again later.',
+      error: error.message,
+    });
+  }
+};
 export const deleteShop = async (
   req: Request,
   res: Response<APIResponse>
