@@ -1,0 +1,22 @@
+# Dockerfile.dev
+
+# Use a lightweight base image
+FROM node:23-alpine3.19
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code
+COPY . .
+
+# Expose port 8000 to access the application
+EXPOSE 8000
+
+# Start the application in development mode
+CMD ["npm", "run", "dev"]

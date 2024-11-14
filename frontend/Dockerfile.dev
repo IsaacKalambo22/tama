@@ -1,0 +1,39 @@
+# Dockerfile.dev
+
+# Use a lightweight base image
+FROM node:23-alpine3.19
+
+RUN apk add --no-cache libc6-compat git
+
+# Setup pnpm environment
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+RUN corepack prepare pnpm@latest --activate
+
+WORKDIR /app
+
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile --prefer-frozen-lockfile
+RUN corepack enable
+RUN corepack prepare pnpm@latest --activate
+
+ENV NODE_ENV development
+
+# Disable Next.js telemetry
+# Learn more here: https://nextjs.org/telemetry
+ENV NEXT_TELEMETRY_DISABLED 1
+
+# Copy the rest of the source code
+COPY . .
+
+
+# Expose the port for development
+# Exposed port (for orchestrators and dynamic reverse proxies)
+EXPOSE 3000
+ENV PORT 3000
+ENV HOSTNAME "0.0.0.0"
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD [ "wget", "-q0", "http://localhost:3000/health" ]
+
+# Start the application in development mode
+CMD ["pnpm", "run", "dev"]
