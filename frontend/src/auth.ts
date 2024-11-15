@@ -21,7 +21,7 @@ export const { handlers, auth, signIn, signOut } =
 
           try {
             const response = await fetch(
-              'https://02c7-105-234-166-11.ngrok-free.app/api/v1/auth/login',
+              'http://localhost:8000/api/v1/auth/login',
               {
                 method: 'POST',
                 headers: {

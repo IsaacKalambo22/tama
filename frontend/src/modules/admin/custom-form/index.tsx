@@ -1,5 +1,7 @@
+import { Button } from '@/components/ui/button';
 import { FileCardProps } from '@/modules/client/file-card';
-import HeaderText from '@/modules/common/header-text';
+import Header from '@/modules/common/header';
+import { PlusSquare } from 'lucide-react';
 import CustomFileCard from '../custom-file-card';
 
 export const files: FileCardProps[] = [
@@ -119,10 +121,15 @@ export const files: FileCardProps[] = [
 
 const CustomForm = () => {
   return (
-    <div className='flex flex-col items-center gap-16 mb-16'>
-      <HeaderText
-        title='Forms and Documents'
-        subtitle='Access and download important forms for your needs.'
+    <div className='flex flex-col items-center gap-4 mb-16'>
+      <Header
+        name='Forms and Documents'
+        buttonComponent={
+          <Button>
+            <PlusSquare className='h-4 w-4' /> New
+            Form
+          </Button>
+        }
       />
 
       {/* Render the files */}
