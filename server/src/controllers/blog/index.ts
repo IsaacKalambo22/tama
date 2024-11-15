@@ -85,6 +85,55 @@ export const getAllBlogs = async (
     });
   }
 };
+export const getBlogById = async (
+  req: Request,
+  res: Response<APIResponse>
+): Promise<void> => {
+  const { id } = req.params;
+
+  // Validate input
+  if (!id) {
+    res.status(400).json({
+      success: false,
+      message: 'Blog ID is required.',
+      error: 'Validation error',
+    });
+    return;
+  }
+
+  try {
+    // Check if the blog exists
+    const blog = await prisma.blog.findUnique({
+      where: { id },
+    });
+
+    if (!blog) {
+      res.status(404).json({
+        success: false,
+        message: 'Blog not found.',
+      });
+      return;
+    }
+
+    // Respond with success
+    res.status(200).json({
+      success: true,
+      message: 'Blog retrieved successfully',
+      data: blog,
+    });
+  } catch (error: any) {
+    console.error(
+      'Error fetching blogs:',
+      error.message
+    );
+    res.status(500).json({
+      success: false,
+      message:
+        'An error occurred while fetching blogs. Please try again later.',
+      error: error.message,
+    });
+  }
+};
 
 export const updateBlog = async (
   req: Request,
