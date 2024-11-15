@@ -7,6 +7,9 @@ import morgan from 'morgan';
 
 /* ROUTE IMPORTS */
 import auth from './routes/auth';
+import blogs from './routes/blog';
+import forms from './routes/form';
+import reportsPublications from './routes/reports-publications';
 import shops from './routes/shop';
 
 /* CONFIGURATIONS */
@@ -33,6 +36,12 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/shops', shops);
+app.use('/api/v1/forms', forms);
+app.use('/api/v1/blogs', blogs);
+app.use(
+  '/api/v1/reports-publications',
+  reportsPublications
+);
 
 /* SERVER */
 const PORT = Number(process.env.PORT) || 8000;
