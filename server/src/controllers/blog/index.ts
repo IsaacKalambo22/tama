@@ -57,3 +57,31 @@ export const createBlog = async (
     });
   }
 };
+
+export const getAllBlogs = async (
+  req: Request,
+  res: Response<APIResponse>
+): Promise<void> => {
+  try {
+    // Fetch all blogs from the database
+    const blogs = await prisma.blog.findMany();
+
+    // Respond with success
+    res.status(200).json({
+      success: true,
+      message: 'Blogs retrieved successfully',
+      data: blogs,
+    });
+  } catch (error: any) {
+    console.error(
+      'Error fetching blogs:',
+      error.message
+    );
+    res.status(500).json({
+      success: false,
+      message:
+        'An error occurred while fetching blogs. Please try again later.',
+      error: error.message,
+    });
+  }
+};
