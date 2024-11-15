@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
   createBlog,
+  deleteBlog,
   getAllBlogs,
   updateBlog,
 } from '../../controllers/blog';
@@ -11,5 +12,6 @@ const router = Router();
 router.post('/', verifyToken, createBlog);
 router.get('/', getAllBlogs);
 router.patch('/:id', verifyToken, updateBlog);
+router.delete('/:id', verifyToken, deleteBlog);
 
 export default router;
