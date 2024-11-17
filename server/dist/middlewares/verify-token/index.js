@@ -39,7 +39,7 @@ const verifyAdmin = (req, res, next) => {
     }
     else {
         res.status(403).json({
-            message: 'You are not authorized to access this resource',
+            message: 'Unauthorized',
         });
         return;
     }
@@ -53,7 +53,7 @@ const verifyManager = (req, res, next) => {
     }
     else {
         res.status(403).json({
-            message: 'You are not authorized to access this resource',
+            message: 'Unauthorized',
         });
         return;
     }

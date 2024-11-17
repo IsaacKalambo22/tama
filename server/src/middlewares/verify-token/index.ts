@@ -72,8 +72,7 @@ export const verifyAdmin = (
     return next();
   } else {
     res.status(403).json({
-      message:
-        'You are not authorized to access this resource',
+      message: 'Unauthorized',
     });
     return;
   }
@@ -89,8 +88,7 @@ export const verifyManager = (
     return next();
   } else {
     res.status(403).json({
-      message:
-        'You are not authorized to access this resource',
+      message: 'Unauthorized',
     });
     return;
   }

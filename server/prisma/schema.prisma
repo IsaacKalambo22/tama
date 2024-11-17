@@ -44,3 +44,12 @@ model Shop {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model ReportsAndPublications {
+  id        String   @id @default(uuid())
+  fileUrl   String
+  filename  String
+  size      Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
