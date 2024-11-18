@@ -34,7 +34,13 @@ export const middleware = auth(async (req) => {
   const isPublicRoute =
     publicRoutes.includes(nextUrl.pathname) ||
     nextUrl.pathname.startsWith('/blogs') ||
-    nextUrl.pathname.startsWith('/picks') ||
+    nextUrl.pathname.startsWith(
+      '/tobacco-business'
+    ) ||
+    nextUrl.pathname.startsWith(
+      '/news-updates'
+    ) ||
+    nextUrl.pathname.startsWith('/resources') ||
     nextUrl.pathname.startsWith('/about');
 
   // Skip API auth routes

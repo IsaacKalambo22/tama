@@ -17,13 +17,13 @@ const DashboardLayout = ({
   );
 
   return (
-    <div className='flex min-h-screen w-full bg-gray-50 text-gray-900 overflow-hidden'>
+    <div className='flex w-full bg-gray-50 text-gray-900 '>
       {/* Sidebar */}
       <Sidebar links={ADMIN_LINKS} />
 
       {/* Main content area */}
       <main
-        className={`flex flex-col w-full h-screen overflow-auto bg-gray-50 dark:bg-dark-bg transition-all duration-300 ${
+        className={`flex flex-col w-full min-h-screen bg-gray-50 dark:bg-dark-bg transition-all duration-300 ${
           isSidebarCollapsed
             ? 'md:pl-16' // Reduced padding when collapsed
             : 'md:pl-64' // More padding when expanded
