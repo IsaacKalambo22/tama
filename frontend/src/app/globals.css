@@ -27,9 +27,6 @@ body,
   }
 }
 
-/* .app {
-  @apply relative z-10 flex items-center flex-col min-h-screen;
-} */
 .orange_gradient {
   @apply bg-gradient-to-r from-amber-500 via-orange-600 to-yellow-500 bg-clip-text text-transparent;
 }
@@ -72,7 +69,7 @@ body,
   @apply flex cursor-pointer flex-col gap-6 rounded-[18px] bg-white p-5 shadow-sm transition-all !important;
 }
 .file-card-details {
-  @apply flex flex-col gap-2 !important;
+  @apply flex flex-col !important;
 }
 
 @layer base {

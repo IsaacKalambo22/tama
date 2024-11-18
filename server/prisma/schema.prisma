@@ -45,7 +45,16 @@ model Shop {
   updatedAt DateTime @updatedAt
 }
 
-model ReportsAndPublications {
+model ReportAndPublication {
+  id        String   @id @default(uuid())
+  fileUrl   String
+  filename  String
+  size      Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Form {
   id        String   @id @default(uuid())
   fileUrl   String
   filename  String
@@ -62,4 +71,26 @@ model Blog {
   author    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model News {
+  id          String   @id @default(uuid())
+  title       String
+  content     String
+  imageUrl    String
+  author      String
+  readingTime Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model CouncilList {
+  id                        String   @id @default(uuid())
+  demarcation               String
+  tobaccoType               String
+  councillor                String
+  firstAlternateCouncillor  String
+  secondAlternateCouncillor String
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
 }

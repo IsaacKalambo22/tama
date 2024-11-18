@@ -119,7 +119,7 @@ const ReportsAndPublicationsTemplate = () => {
 
       {/* Render the files */}
       {files.length > 0 ? (
-        <div className='file-list w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5  gap-4'>
+        <div className='file-list w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4  gap-4'>
           {files.map((file: FileCardProps) => (
             <FileCard
               key={file.file.url}

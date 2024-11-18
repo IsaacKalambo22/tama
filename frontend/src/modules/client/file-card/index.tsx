@@ -1,17 +1,19 @@
 import { Card } from '@/components/ui/card';
 import { convertFileSize } from '@/lib/utils';
 import DownloadButton from '@/modules/common/download-button';
+import FormattedDateTime from '@/modules/common/formatted-date-time';
 import Thumbnail from '@/modules/common/thumbnail';
 import Link from 'next/link';
 
 export interface FileCardProps {
   file: {
+    id: string;
     url: string;
     type: string;
     extension: string;
     size: number;
     name: string;
-    $createdAt: string;
+    createdAt: string;
     owner: {
       fullName: string;
     };
@@ -31,22 +33,27 @@ const FileCard = ({ file }: FileCardProps) => {
             imageClassName='!size-11'
           />
 
-          <div className='flex flex-col items-end justify-between'>
+          <div className='flex h-full flex-col items-end justify-between'>
             <DownloadButton
               fileName={file.name}
               fileExtension={file.extension}
             />
-            {/* <ActionDropdown file={file} /> */}
-            <p className='body-1'>
-              {convertFileSize(file.size)}
-            </p>
           </div>
         </div>
 
-        <div className='file-card-details'>
+        <div className='file-card-details gap-2'>
           <p className='subtitle-2 line-clamp-1'>
             {file.name}
           </p>
+          <div className='flex justify-between w-full'>
+            <FormattedDateTime
+              date={file.createdAt}
+              className='body-2 text-light-100'
+            />
+            <p className='body-2 align-bottom'>
+              {convertFileSize(file.size)}
+            </p>
+          </div>
         </div>
       </Card>
     </Link>

@@ -8,7 +8,9 @@ import morgan from 'morgan';
 /* ROUTE IMPORTS */
 import auth from './routes/auth';
 import blogs from './routes/blog';
+import councilLists from './routes/council-list';
 import forms from './routes/form';
+import news from './routes/news';
 import reportsPublications from './routes/reports-publications';
 import shops from './routes/shop';
 
@@ -38,6 +40,8 @@ app.use('/api/v1/auth', auth);
 app.use('/api/v1/shops', shops);
 app.use('/api/v1/forms', forms);
 app.use('/api/v1/blogs', blogs);
+app.use('/api/v1/news', news);
+app.use('/api/v1/council-lists', councilLists);
 app.use(
   '/api/v1/reports-publications',
   reportsPublications

@@ -136,7 +136,15 @@ export const login = async (
     });
 
     // Return a success response with the generated token
-    res.status(200).json({ access_token });
+    res.status(200).json({
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        accessToken: access_token,
+      },
+    });
   } catch (error) {
     console.error('Error logging in:', error);
     res.status(500).json({

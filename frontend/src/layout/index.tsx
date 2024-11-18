@@ -2,6 +2,7 @@
 'use client';
 
 import { Toaster } from '@/components/ui/toaster';
+import { cn } from '@/lib/utils';
 import Footer from '@/modules/client/footer';
 import { Navbar } from '@/modules/client/navbar';
 import { usePathname } from 'next/navigation';
@@ -26,7 +27,12 @@ const MainLayout = ({
         {!isAuthPage && !isAdminPage && (
           <Navbar />
         )}
-        <div className='max-w-7xl mx-auto px-6 sm:px-16 h-screen'>
+        <div
+          className={cn(' ', {
+            'max-w-7xl mx-auto px-6 sm:px-16 h-screen':
+              !isAdminPage,
+          })}
+        >
           {children}
         </div>
         <Toaster />

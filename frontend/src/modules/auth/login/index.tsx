@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useActionState, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { toast } from '@/hooks/use-toast';
@@ -31,14 +31,12 @@ export type FormState = {
 const Login = () => {
   const [showPassword, setShowPassword] =
     useState(false);
-  const [errors, setErrors] = useState<
-    Record<string, string>
-  >({});
   const router = useRouter();
-  console.log({ errors });
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
+  const [isLoading, setIsLoading] =
+    useState(false);
 
   const form = useForm<
     zod.infer<typeof LoginSchema>
@@ -47,85 +45,42 @@ const Login = () => {
     mode: 'all',
     defaultValues: { email: '', password: '' },
   });
-
-  const handleFormSubmit = async (
-    prevState: FormState,
-    formData: FormData
+  const onSubmit = async (
+    values: zod.infer<typeof LoginSchema>
   ) => {
+    setIsLoading(true);
+
     try {
-      console.log({ formData });
-      const formValues = {
-        title: formData.get('email') as string,
-        description: formData.get(
-          'password'
-        ) as string,
-      };
+      console.log({ values });
 
-      await LoginSchema.parseAsync(formValues);
+      const result = await login(values);
 
-      const result = await login(
-        prevState,
-        formData
-      );
-
-      if (result.status == 'SUCCESS') {
+      if (result.status === 'ERROR') {
         toast({
-          title: 'Success',
+          title: 'Failed to log in',
           description:
-            'Your startup pitch has been created successfully',
-        });
-
-        router.push(`/`);
-      }
-
-      return result;
-    } catch (error) {
-      if (error instanceof zod.ZodError) {
-        const fieldErrors =
-          error.flatten().fieldErrors;
-
-        setErrors(
-          fieldErrors as unknown as Record<
-            string,
-            string
-          >
-        );
-
-        toast({
-          title: 'Error',
-          description:
-            'Please check your inputs and try again',
+            result.error ||
+            'Failed to log in. Please try again.',
           variant: 'destructive',
         });
 
-        return {
-          ...prevState,
-          error: 'Validation failed',
-          status: 'ERROR',
-        };
+        return;
       }
 
+      router.push('/');
+    } catch (error) {
+      console.error('Unexpected error:', error);
       toast({
-        title: 'Error',
+        title: 'Unexpected Error',
         description:
-          'An unexpected error has occurred',
+          'An unexpected error occurred. Please try again later.',
         variant: 'destructive',
       });
-
-      return {
-        ...prevState,
-        error: 'An unexpected error has occurred',
-        status: 'ERROR',
-      };
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const [state, formAction, isPending] =
-    useActionState(handleFormSubmit, {
-      error: '',
-      status: 'INITIAL',
-    });
-  console.log({ state });
   return (
     <>
       <main className='min-h-screen px-4 w-[330px] flex flex-col justify-center items-center'>
@@ -150,7 +105,9 @@ const Login = () => {
             <Form {...form}>
               <form
                 className='flex flex-col gap-5 w-full max-w-[400px]'
-                action={formAction}
+                onSubmit={form.handleSubmit(
+                  onSubmit
+                )}
               >
                 <FormField
                   control={form.control}
@@ -209,10 +166,10 @@ const Login = () => {
 
                 <SubmitButton
                   disabled={
-                    isPending ||
+                    isLoading ||
                     !form.formState.isValid
                   }
-                  isLoading={isPending}
+                  isLoading={isLoading}
                   className='w-full  h-9'
                   loadingText='Signing in...'
                 >

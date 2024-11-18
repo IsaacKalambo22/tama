@@ -1,33 +1,32 @@
 'use server';
 
-import { parseServerActionResponse } from '@/lib/utils';
-import { FormState } from '../login';
+import { signIn } from '@/auth';
+import * as zod from 'zod';
+import { LoginSchema } from '../login-schema';
 
 export const login = async (
-  state: FormState,
-  form: FormData
+  values: zod.infer<typeof LoginSchema>
 ) => {
-  const { email, password } = Object.fromEntries(
-    Array.from(form)
-  );
+  const { email, password } = values;
 
   try {
-    const credentials = {
+    const result = await signIn('credentials', {
       email,
       password,
-    };
+      redirect: false,
+    });
 
-    return parseServerActionResponse({
-      ...credentials,
-      error: '',
+    console.log('Sign-in Result:', result);
+
+    return {
       status: 'SUCCESS',
-    });
+      user: result.user,
+    };
   } catch (error) {
-    console.log(error);
-
-    return parseServerActionResponse({
-      error: JSON.stringify(error),
+    console.error('Error during login:', error);
+    return {
       status: 'ERROR',
-    });
+      error: 'Email or password is incorrect.',
+    };
   }
 };
