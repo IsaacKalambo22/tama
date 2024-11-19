@@ -70,10 +70,6 @@ export const createNews = async (
     });
   }
 };
-<<<<<<< HEAD
-=======
-
->>>>>>> 9a3f3d0 (get all news)
 export const getAllNews = async (
   req: Request,
   res: Response<APIResponse>
@@ -101,7 +97,6 @@ export const getAllNews = async (
     });
   }
 };
-<<<<<<< HEAD
 
 export const getNewsById = async (
   req: Request,
@@ -272,5 +267,3 @@ export const deleteNews = async (
     });
   }
 };
-=======
->>>>>>> 9a3f3d0 (get all news)
