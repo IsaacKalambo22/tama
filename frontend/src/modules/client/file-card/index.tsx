@@ -1,6 +1,7 @@
 import { Card } from '@/components/ui/card';
 import { FileProps } from '@/lib/api';
 import {
+  constructFileUrl,
   convertFileSize,
   getFileType,
 } from '@/lib/utils';
@@ -18,8 +19,9 @@ const FileCard = ({ file }: Props) => {
   console.log(fileProps);
   return (
     <Link
-      href={file.fileUrl}
-      target='_blank w-full'
+      href={constructFileUrl(file.fileUrl)}
+      target='_blank'
+      rel='noopener noreferrer'
     >
       <Card className='file-card w-full'>
         <div className='flex justify-between'>

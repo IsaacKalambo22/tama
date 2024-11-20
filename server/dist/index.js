@@ -54,6 +54,17 @@ app.post('/api/v1/forms', upload.single('file'), form_1.default);
 app.get('/', (req, res) => {
     res.send('This is home route');
 });
+app.get('/api/v1/uploads/:filename', (req, res) => {
+    console.log(req.params.filename);
+    const filename = req.params.filename;
+    const filepath = path_1.default.join(uploadDir, filename);
+    if (fs_1.default.existsSync(filepath)) {
+        res.sendFile(filepath);
+    }
+    else {
+        res.status(404).send('File not found');
+    }
+});
 app.use('/api/v1/auth', auth_1.default);
 app.use('/api/v1/shops', shop_1.default);
 app.use('/api/v1/forms', form_1.default);
