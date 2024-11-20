@@ -2,6 +2,7 @@
 
 import { auth } from '@/auth';
 import { parseServerActionResponse } from '@/lib/utils';
+import { revalidatePath } from 'next/cache';
 
 export const uploadFile = async () => {};
 export const createForm = async (
@@ -37,6 +38,7 @@ export const createForm = async (
     }
 
     const result = await response.json();
+    revalidatePath('/');
     return result; // You can return the result or handle it based on your needs
   } catch (error) {
     console.error(
@@ -79,6 +81,7 @@ export const createReportAndPublication = async (
     }
 
     const result = await response.json();
+    revalidatePath('/');
     return result; // You can return the result or handle it based on your needs
   } catch (error) {
     console.error(

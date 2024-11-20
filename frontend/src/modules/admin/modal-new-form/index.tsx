@@ -11,6 +11,7 @@ import {
   Form,
   FormControl,
 } from '@/components/ui/form';
+import { toast } from '@/hooks/use-toast';
 import CustomFormField, {
   FormFieldType,
 } from '@/modules/common/custom-form-field';
@@ -82,8 +83,20 @@ const ModalNewForm = ({
       const result = await createForm(formData);
 
       console.log('Upload result:', result);
+      onClose();
+      toast({
+        title: 'Success',
+        description:
+          'New form or document has been created successfully',
+      });
       // Handle the result, such as showing success or error messages
     } catch (error) {
+      toast({
+        title: 'Error',
+        description:
+          'An unexpected error has occurred',
+        variant: 'destructive',
+      });
       console.log('Upload error:', error);
     } finally {
       setIsLoading(false);
