@@ -62,17 +62,18 @@ export const FileUploader = ({
                   getFileType(file.name);
 
                 return (
-                  <li
+                  <div
                     key={`${file.name}-${index}`}
-                    className='uploader-preview-item'
+                    className='uploader-preview-item h-full w-full'
                   >
-                    <div className='flex items-center gap-2'>
+                    <div className='flex items-center gap-1'>
                       <Thumbnail
                         type={type}
                         extension={extension}
                         url={convertFileToUrl(
                           file
                         )}
+                        imageClassName='h-12 w-10'
                       />
 
                       <div className='preview-item-name'>
@@ -92,7 +93,7 @@ export const FileUploader = ({
                         )
                       }
                     />
-                  </li>
+                  </div>
                 );
               })}
             </ul>
