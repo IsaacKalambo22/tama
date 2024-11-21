@@ -20,6 +20,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
+import { createForm } from '../actions';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
@@ -50,14 +51,12 @@ const ModalNewPublication = ({
       files: [],
     },
   });
-
   const onSubmit = async (
     values: zod.infer<typeof formSchema>
   ) => {
     setIsLoading(true);
-
+    console.log({ values });
     try {
-      console.log({ values });
       // Create FormData instance
       const formData = new FormData();
       formData.append(
@@ -65,38 +64,27 @@ const ModalNewPublication = ({
         values.filename
       );
 
-      if (
-        values.files &&
-        values.files.length > 0
-      ) {
-        values.files.forEach((file, index) => {
-          formData.append(
-            `files[${index}]`,
-            file
-          ); // Append files to FormData
-        });
+      // Directly append the file
+      const file = values.files[0];
+      formData.append('file', file); // This will send the file as is, without converting it to Blob
+
+      // Optionally, you can still append other fields (e.g., fileUrl, size)
+      formData.append('fileUrl', file.name);
+      const size = Number(file.size);
+      formData.append('size', size.toString()); // Ensure size is a number
+
+      // Log the FormData entries to verify
+      for (const pair of formData.entries()) {
+        console.log(pair); // Logs each key-value pair in the FormData object
       }
 
-      // Simulate form data handling
-      console.log('FormData entries:');
-      for (const [
-        key,
-        value,
-      ] of formData.entries()) {
-        console.log(`${key}:`, value);
-      }
+      // Call the createForm function to send data to the server
+      const result = await createForm(formData);
 
-      // Example: Send FormData to an API endpoint
-      // const response = await fetch('/api/upload', {
-      //   method: 'POST',
-      //   body: formData,
-      // });
-      // const result = await response.json();
-
-      // Handle response here
+      console.log('Upload result:', result);
+      // Handle the result, such as showing success or error messages
     } catch (error) {
-      console.error('Unexpected error:', error);
-      // Handle error
+      console.log('Upload error:', error);
     } finally {
       setIsLoading(false);
     }

@@ -19,7 +19,7 @@ export const generateTokens = (
     },
     process.env.JWT_ACCESS_SECRET_KEY as string,
     {
-      expiresIn: '30min',
+      expiresIn: '7d',
       algorithm: 'HS256', // Correct algorithm here
     }
   );

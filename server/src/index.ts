@@ -2,8 +2,11 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
+import fs from 'fs';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import multer from 'multer';
+import path from 'path';
 
 /* ROUTE IMPORTS */
 import auth from './routes/auth';
@@ -30,6 +33,32 @@ app.use(
   bodyParser.urlencoded({ extended: false })
 );
 app.use(cors());
+app.use(express.static('uploads'));
+
+/* FILE STORAGE */
+const uploadDir = path.join(__dirname, 'uploads');
+
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadDir); // Relative path for saving files
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname); // Save the file with its original name
+  },
+});
+
+const upload = multer({ storage });
+
+/* ROUTES WITH FILES */
+app.post(
+  '/api/v1/reports-publications',
+  upload.single('file'),
+  reportsPublications
+);
 
 /* ROUTES */
 app.get('/', (req, res) => {
@@ -50,5 +79,5 @@ app.use(
 /* SERVER */
 const PORT = Number(process.env.PORT) || 8000;
 app.listen(PORT, () => {
-  console.log(`Server Listening on part ${PORT}`);
+  console.log(`Server Listening on port ${PORT}`);
 });
