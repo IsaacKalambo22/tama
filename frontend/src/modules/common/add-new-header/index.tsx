@@ -1,0 +1,58 @@
+'use client';
+
+import { Button } from '@/components/ui/button';
+import ModalNewForm from '@/modules/admin/modal-new-form';
+import { PlusSquare } from 'lucide-react';
+import { ReactElement, useState } from 'react';
+
+export enum AddNewType {
+  NEW_FORM = 'New Form',
+  NEW_DOCUMENT = 'New Document',
+  NEW_PROJECT = 'New Project',
+}
+
+interface HeaderProps {
+  name: string; // Dynamic header title
+  buttonName: string; // Use the enum for button name
+}
+
+const AddNewHeader = ({
+  name,
+  buttonName,
+}: HeaderProps): ReactElement => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleButtonClick = () => {
+    console.log({ buttonName });
+    console.log('Button name:', buttonName); // Debugging log
+    setIsOpen((prev) => !prev); // Toggle isOpen state
+    console.log(`${buttonName} button clicked!`);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false); // Close modal
+    console.log('Modal closed!');
+  };
+
+  return (
+    <div className='mb-5 flex w-full items-center justify-between'>
+      <h1 className='text-lg font-semibold dark:text-white'>
+        {name}
+      </h1>
+      <Button onClick={handleButtonClick}>
+        <PlusSquare className='h-4 w-4 mr-2' />
+        {buttonName} {/* Display button name */}
+      </Button>
+
+      {isOpen &&
+        buttonName === AddNewType.NEW_FORM && (
+          <ModalNewForm
+            isOpen={isOpen}
+            onClose={handleClose}
+          />
+        )}
+    </div>
+  );
+};
+
+export default AddNewHeader;

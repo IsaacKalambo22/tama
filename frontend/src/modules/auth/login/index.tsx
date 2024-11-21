@@ -42,7 +42,7 @@ const Login = () => {
     zod.infer<typeof LoginSchema>
   >({
     resolver: zodResolver(LoginSchema),
-    mode: 'all',
+    mode: 'onBlur',
     defaultValues: { email: '', password: '' },
   });
   const onSubmit = async (
