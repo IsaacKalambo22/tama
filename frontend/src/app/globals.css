@@ -27,6 +27,15 @@ body,
   }
 }
 
+@layer utilities {
+  .subtitle-1 {
+    @apply text-[16px] leading-[24px] font-medium;
+  }
+  .subtitle-2 {
+    @apply text-[14px] leading-[20px] font-semibold;
+  }
+}
+
 .orange_gradient {
   @apply bg-gradient-to-r from-amber-500 via-orange-600 to-yellow-500 bg-clip-text text-transparent;
 }
@@ -70,6 +79,24 @@ body,
 }
 .file-card-details {
   @apply flex flex-col !important;
+}
+
+.file-upload {
+  @apply flex cursor-pointer  flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed border-gray-200 bg-white p-8;
+}
+
+.file-upload_label {
+  @apply flex flex-col justify-center gap-2 text-center text-gray-600;
+}
+
+.uploader-preview-list {
+  @apply fixed  z-50 flex size-full h-fit  flex-col gap-3 rounded-[20px] bg-white p-2 !important;
+}
+.uploader-preview-item {
+  @apply flex items-center justify-between gap-3 rounded-xl p-3 !important;
+}
+.preview-item-name {
+  @apply subtitle-2 mb-2 line-clamp-1 max-w-[300px] !important;
 }
 
 @layer base {

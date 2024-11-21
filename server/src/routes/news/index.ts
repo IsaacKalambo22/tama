@@ -13,7 +13,7 @@ const router = Router();
 router.post('/', verifyToken, createNews);
 router.get('/', getAllNews);
 router.get('/:id', getNewsById);
-router.patch('/:id', updateNews);
-router.delete('/:id', deleteNews);
+router.patch('/:id', verifyToken, updateNews);
+router.delete('/:id', verifyToken, deleteNews);
 
 export default router;

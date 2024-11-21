@@ -7,10 +7,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Form } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+} from '@/components/ui/form';
 import CustomFormField, {
   FormFieldType,
 } from '@/modules/common/custom-form-field';
+import { FileUploader } from '@/modules/common/file-uploader';
 import SubmitButton from '@/modules/common/submit-button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
@@ -34,6 +38,7 @@ const ModalNewForm = ({
       message:
         'Filename must be at least 2 characters.',
     }),
+    files: zod.custom<File[]>().optional(),
   });
 
   const form = useForm<
@@ -42,6 +47,7 @@ const ModalNewForm = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       filename: '',
+      files: [],
     },
   });
 
@@ -52,30 +58,45 @@ const ModalNewForm = ({
 
     try {
       console.log({ values });
+      // Create FormData instance
+      const formData = new FormData();
+      formData.append(
+        'filename',
+        values.filename
+      );
 
-      //  const result = await login(values);
+      if (
+        values.files &&
+        values.files.length > 0
+      ) {
+        values.files.forEach((file, index) => {
+          formData.append(
+            `files[${index}]`,
+            file
+          ); // Append files to FormData
+        });
+      }
 
-      //  if (result.status === 'ERROR') {
-      //    toast({
-      //      title: 'Failed to log in',
-      //      description:
-      //        result.error ||
-      //        'Failed to log in. Please try again.',
-      //      variant: 'destructive',
-      //    });
+      // Simulate form data handling
+      console.log('FormData entries:');
+      for (const [
+        key,
+        value,
+      ] of formData.entries()) {
+        console.log(`${key}:`, value);
+      }
 
-      //    return;
-      //  }
+      // Example: Send FormData to an API endpoint
+      // const response = await fetch('/api/upload', {
+      //   method: 'POST',
+      //   body: formData,
+      // });
+      // const result = await response.json();
 
-      //  router.push('/');
+      // Handle response here
     } catch (error) {
       console.error('Unexpected error:', error);
-      //  toast({
-      //    title: 'Unexpected Error',
-      //    description:
-      //      'An unexpected error occurred. Please try again later.',
-      //    variant: 'destructive',
-      //  });
+      // Handle error
     } finally {
       setIsLoading(false);
     }
@@ -85,7 +106,9 @@ const ModalNewForm = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
-          <DialogTitle>Add New Form</DialogTitle>
+          <DialogTitle>
+            Add New Form or Document
+          </DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -98,6 +121,21 @@ const ModalNewForm = ({
               label='Filename'
               control={form.control}
               placeholder='Enter file name'
+            />
+
+            <CustomFormField
+              fieldType={FormFieldType.SKELETON}
+              control={form.control}
+              name='files'
+              label='Files'
+              renderSkeleton={(field) => (
+                <FormControl>
+                  <FileUploader
+                    files={field.value}
+                    onChange={field.onChange}
+                  />
+                </FormControl>
+              )}
             />
 
             <SubmitButton
