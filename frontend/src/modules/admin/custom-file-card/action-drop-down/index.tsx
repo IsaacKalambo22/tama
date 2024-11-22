@@ -21,7 +21,6 @@ import { Input } from '@/components/ui/input';
 import { FileProps } from '@/lib/api';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import {
   deleteFile,
@@ -43,13 +42,11 @@ const ActionDropdown = ({ file }: Props) => {
   const [isLoading, setIsLoading] =
     useState(false);
 
-  const path = usePathname();
-
   const closeAllModals = () => {
     setIsModalOpen(false);
     setIsDropdownOpen(false);
     setAction(null);
-    setName(file.name);
+    setName(file.filename);
     //   setEmails([]);
   };
 
@@ -124,7 +121,7 @@ const ActionDropdown = ({ file }: Props) => {
             <p className='delete-confirmation'>
               Are you sure you want to delete{` `}
               <span className='delete-file-name'>
-                {file.name}
+                {file.filename}
               </span>
               ?
             </p>
@@ -182,7 +179,7 @@ const ActionDropdown = ({ file }: Props) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuLabel className='max-w-[200px] truncate'>
-            {file.name}
+            {file.filename}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           {actionsDropdownItems.map(
@@ -212,7 +209,7 @@ const ActionDropdown = ({ file }: Props) => {
                     // {constructDownloadUrl(
                     //   file.name
                     // )}
-                    download={file.name}
+                    download={file.filename}
                     className='flex items-center gap-2'
                   >
                     <Image
