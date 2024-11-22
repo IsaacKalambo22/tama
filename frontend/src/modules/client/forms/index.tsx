@@ -1,139 +1,45 @@
-import FileCard, {
-  FileCardProps,
-} from '@/modules/client/file-card';
+import {
+  fetchFormsAndDocuments,
+  FileProps,
+} from '@/lib/api';
 import HeaderText from '@/modules/common/header-text';
+import FileCard from '../file-card';
 
-export const files: FileCardProps[] = [
-  {
-    file: {
-      id: 'file1',
-      url: '/assets/files/The Ultimate Nextjs Crash Course.pdf',
-      type: 'document',
-      extension: 'pdf',
-      size: 1500000, // 1.5 MB
-      name: 'The Ultimate Nextjs Crash Course',
-      createdAt: new Date(
-        Date.now() - 10000000
-      ).toISOString(),
-      owner: { fullName: 'John Doe' },
-    },
-  },
-  {
-    file: {
-      id: 'file2',
-      url: '/assets/files/file2.pdf',
-      type: 'document',
-      extension: 'pdf',
-      size: 500000, // 500 KB
-      name: 'Company_Event',
-      createdAt: new Date(
-        Date.now() - 5000000
-      ).toISOString(),
-      owner: { fullName: 'Jane Smith' },
-    },
-  },
-  {
-    file: {
-      id: 'file3',
-      url: '/assets/files/file3.pdf',
-      type: 'document',
-      extension: 'csv',
-      size: 30000000, // 30 MB
-      name: 'Product_Launch',
-      createdAt: new Date(
-        Date.now() - 15000000
-      ).toISOString(),
-      owner: { fullName: 'Alex Johnson' },
-    },
-  },
-  {
-    file: {
-      id: 'file4',
-      url: '/assets/files/file_4.mp3',
-      type: 'document',
-      extension: 'doc',
-      size: 4000000, // 4 MB
-      name: 'Theme_Song',
-      createdAt: new Date(
-        Date.now() - 7000000
-      ).toISOString(),
-      owner: { fullName: 'Chris Lee' },
-    },
-  },
-  {
-    file: {
-      id: 'file5',
-      url: '/assets/files/file_5.xlsx',
-      type: 'document',
-      extension: 'xlsx',
-      size: 250000, // 250 KB
-      name: 'Budget_2024',
-      createdAt: new Date(
-        Date.now() - 12000000
-      ).toISOString(),
-      owner: { fullName: 'Morgan Green' },
-    },
-  },
-  {
-    file: {
-      id: 'file6',
-      url: '/assets/files/file_6.svg',
-      type: 'document',
-      extension: 'docx',
-      size: 200000, // 200 KB
-      name: 'Logo_Variant',
-      createdAt: new Date(
-        Date.now() - 9000000
-      ).toISOString(),
-      owner: { fullName: 'Taylor Brown' },
-    },
-  },
-  {
-    file: {
-      id: 'file7',
-      url: '/assets/files/file_7.mov',
-      type: 'video',
-      extension: 'mov',
-      size: 50000000, // 50 MB
-      name: 'Tutorial_Video',
-      createdAt: new Date(
-        Date.now() - 20000000
-      ).toISOString(),
-      owner: { fullName: 'Jordan Gray' },
-    },
-  },
-  {
-    file: {
-      id: 'file8',
-      url: '/assets/files/file_8.docx',
-      type: 'document',
-      extension: 'docx',
-      size: 800000, // 800 KB
-      name: 'Project_Plan',
-      createdAt: new Date(
-        Date.now() - 2500000
-      ).toISOString(),
-      owner: { fullName: 'Jamie White' },
-    },
-  },
-];
+const Forms = async () => {
+  let forms = [];
+  try {
+    forms = await fetchFormsAndDocuments(); // Fetch the data directly
+  } catch (error) {
+    console.error(
+      'Failed to fetch forms:',
+      error
+    );
+    return (
+      <div className='flex flex-col w-full max-w-7xl mx-auto items-center gap-16 mb-16'>
+        <HeaderText
+          title='Forms and Documents'
+          subtitle='Access and download important forms for your needs.'
+        />
 
-const Forms = () => {
+        <p className='text-red-500'>
+          Failed to load forms and documents.
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className='flex flex-col items-center gap-16 mb-16'>
+    <div className='flex flex-col w-full max-w-7xl mx-auto gap-16 mb-16 px-4 sm:px-6 lg:px-8'>
       <HeaderText
         title='Forms and Documents'
         subtitle='Access and download important forms for your needs.'
       />
 
       {/* Render the files */}
-      {files.length > 0 ? (
-        <div className='file-list w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4  gap-4'>
-          {files.map((file: FileCardProps) => (
-            <FileCard
-              key={file.file.url}
-              file={file.file}
-            />
+      {forms.length > 0 ? (
+        <div className='file-list w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+          {forms.map((file: FileProps) => (
+            <FileCard key={file.id} file={file} />
           ))}
         </div>
       ) : (

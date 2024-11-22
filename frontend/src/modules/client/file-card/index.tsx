@@ -1,51 +1,48 @@
 import { Card } from '@/components/ui/card';
-import { convertFileSize } from '@/lib/utils';
+import { FileProps } from '@/lib/api';
+import {
+  convertFileSize,
+  getFileType,
+} from '@/lib/utils';
 import DownloadButton from '@/modules/common/download-button';
 import FormattedDateTime from '@/modules/common/formatted-date-time';
 import Thumbnail from '@/modules/common/thumbnail';
 import Link from 'next/link';
 
-export interface FileCardProps {
-  file: {
-    id: string;
-    url: string;
-    type: string;
-    extension: string;
-    size: number;
-    name: string;
-    createdAt: string;
-    owner: {
-      fullName: string;
-    };
-  };
+interface Props {
+  file: FileProps;
 }
 
-const FileCard = ({ file }: FileCardProps) => {
+const FileCard = ({ file }: Props) => {
+  const fileProps = getFileType(file.fileUrl);
+  console.log(fileProps);
   return (
-    <Link href={file.url} target='_blank'>
-      <Card className='file-card'>
+    <Link
+      href={file.fileUrl}
+      target='_blank w-full'
+    >
+      <Card className='file-card w-full'>
         <div className='flex justify-between'>
           <Thumbnail
-            type={file.type}
-            extension={file.extension}
-            url={file.url}
+            type={fileProps.type}
+            extension={fileProps.extension}
+            url={file.fileUrl}
             className='!size-20'
             imageClassName='!size-11'
           />
 
-          <div className='flex h-full flex-col items-end justify-between'>
+          <div className='flex flex-col items-end justify-between'>
             <DownloadButton
-              fileName={file.name}
-              fileExtension={file.extension}
+              fileName={file.filename}
+              fileExtension={fileProps.extension}
             />
           </div>
         </div>
-
         <div className='file-card-details gap-2'>
           <p className='subtitle-2 line-clamp-1'>
-            {file.name}
+            {file.filename}
           </p>
-          <div className='flex justify-between w-full'>
+          <div className='flex justify-between gap-10 w-full'>
             <FormattedDateTime
               date={file.createdAt}
               className='body-2 text-light-100'
