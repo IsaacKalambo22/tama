@@ -20,7 +20,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
-import { createForm } from '../actions';
+import { createReportAndPublication } from '../actions';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
@@ -79,7 +79,10 @@ const ModalNewPublication = ({
       }
 
       // Call the createForm function to send data to the server
-      const result = await createForm(formData);
+      const result =
+        await createReportAndPublication(
+          formData
+        );
 
       console.log('Upload result:', result);
       // Handle the result, such as showing success or error messages

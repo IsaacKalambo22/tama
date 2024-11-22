@@ -27,7 +27,7 @@ export const createForm = async (
       data: {
         fileUrl,
         filename,
-        size,
+        size: Number(size),
       },
     });
 

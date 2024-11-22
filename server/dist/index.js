@@ -49,6 +49,7 @@ const storage = multer_1.default.diskStorage({
 const upload = (0, multer_1.default)({ storage });
 /* ROUTES WITH FILES */
 app.post('/api/v1/reports-publications', upload.single('file'), reports_publications_1.default);
+app.post('/api/v1/forms', upload.single('file'), form_1.default);
 /* ROUTES */
 app.get('/', (req, res) => {
     res.send('This is home route');

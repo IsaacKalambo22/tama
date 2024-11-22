@@ -59,6 +59,11 @@ app.post(
   upload.single('file'),
   reportsPublications
 );
+app.post(
+  '/api/v1/forms',
+  upload.single('file'),
+  forms
+);
 
 /* ROUTES */
 app.get('/', (req, res) => {
