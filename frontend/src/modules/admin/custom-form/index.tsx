@@ -1,8 +1,8 @@
-import { FileCardProps } from '@/modules/client/file-card';
+import { FileProps } from '@/lib/api';
 import CustomFileCard from '../custom-file-card';
 
 type Props = {
-  files: FileCardProps[];
+  files: FileProps[];
 };
 
 const CustomForm = ({ files }: Props) => {
@@ -10,10 +10,10 @@ const CustomForm = ({ files }: Props) => {
     <div className='flex flex-col items-center gap-4 mb-16'>
       {files.length > 0 ? (
         <div className='file-list w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5  gap-4'>
-          {files.map((file: FileCardProps) => (
+          {files.map((file: FileProps) => (
             <CustomFileCard
-              key={file.file.id}
-              file={file.file}
+              key={file.id}
+              file={file}
             />
           ))}
         </div>

@@ -5,6 +5,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export const BASE_URL = `http://localhost:8000/api/v1`;
+
 export function formatDate(date: string) {
   return new Date(date).toLocaleDateString(
     'en-US',
@@ -241,48 +243,6 @@ export const constructDownloadUrl = (
 ) => {
   // Reference the file directly in the local assets directory
   return `/assets/files/${fileName}`;
-};
-
-// DASHBOARD UTILS
-export const getUsageSummary = (
-  totalSpace: any
-) => {
-  return [
-    {
-      title: 'Documents',
-      size: totalSpace.document.size,
-      latestDate: totalSpace.document.latestDate,
-      icon: '/assets/icons/file-document-light.svg',
-      url: '/documents',
-    },
-    {
-      title: 'Images',
-      size: totalSpace.image.size,
-      latestDate: totalSpace.image.latestDate,
-      icon: '/assets/icons/file-image-light.svg',
-      url: '/images',
-    },
-    {
-      title: 'Media',
-      size:
-        totalSpace.video.size +
-        totalSpace.audio.size,
-      latestDate:
-        totalSpace.video.latestDate >
-        totalSpace.audio.latestDate
-          ? totalSpace.video.latestDate
-          : totalSpace.audio.latestDate,
-      icon: '/assets/icons/file-video-light.svg',
-      url: '/media',
-    },
-    {
-      title: 'Others',
-      size: totalSpace.other.size,
-      latestDate: totalSpace.other.latestDate,
-      icon: '/assets/icons/file-other-light.svg',
-      url: '/others',
-    },
-  ];
 };
 
 export const getFileTypesParams = (

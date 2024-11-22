@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 
-import { FileCardProps } from '@/modules/client/file-card';
+import { FileProps } from '@/lib/api';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -29,10 +29,10 @@ import {
 } from '../../actions';
 import { actionsDropdownItems } from '../../constants';
 import { FileDetails } from '../actions-modal-content';
-
-const ActionDropdown = ({
-  file,
-}: FileCardProps) => {
+type Props = {
+  file: FileProps;
+};
+const ActionDropdown = ({ file }: Props) => {
   const [isModalOpen, setIsModalOpen] =
     useState(false);
   const [isDropdownOpen, setIsDropdownOpen] =

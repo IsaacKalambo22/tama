@@ -1,22 +1,29 @@
 import { Card } from '@/components/ui/card';
-import { convertFileSize } from '@/lib/utils';
-import { FileCardProps } from '@/modules/client/file-card';
+import { FileProps } from '@/lib/api';
+import {
+  convertFileSize,
+  getFileType,
+} from '@/lib/utils';
 import FormattedDateTime from '@/modules/common/formatted-date-time';
 import Thumbnail from '@/modules/common/thumbnail';
 import Link from 'next/link';
 import ActionDropdown from './action-drop-down';
 
-const CustomFileCard = ({
-  file,
-}: FileCardProps) => {
+type Props = {
+  file: FileProps;
+};
+const CustomFileCard = ({ file }: Props) => {
+  const fileProps = getFileType(file.fileUrl);
+  console.log(fileProps);
+
   return (
-    <Link href={file.url} target='_blank'>
+    <Link href={file.fileUrl} target='_blank'>
       <Card className='file-card'>
         <div className='flex justify-between'>
           <Thumbnail
-            type={file.type}
-            extension={file.extension}
-            url={file.url}
+            type={fileProps.type}
+            extension={fileProps.extension}
+            url={file.fileUrl}
             className='!size-20'
             imageClassName='!size-11'
           />
@@ -27,7 +34,7 @@ const CustomFileCard = ({
         </div>
         <div className='file-card-details gap-2'>
           <p className='subtitle-2 line-clamp-1'>
-            {file.name}
+            {file.filename}
           </p>
           <div className='flex justify-between w-full'>
             <FormattedDateTime
