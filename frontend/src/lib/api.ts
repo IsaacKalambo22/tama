@@ -55,3 +55,41 @@ export const fetchReportsAndPublications =
       throw error;
     }
   };
+// Function to fetch reports and publications
+export const fetchFormsAndDocuments =
+  async (): Promise<FileProps[]> => {
+    const endpoint = `${BASE_URL}/forms`;
+
+    try {
+      const response = await fetch(endpoint);
+
+      if (!response.ok) {
+        throw new Error(
+          `HTTP error! Status: ${response.status}`
+        );
+      }
+
+      const data: ApiResponse =
+        await response.json();
+
+      if (data.success) {
+        console.log(
+          'Forms and documents fetched successfully:',
+          data.data
+        );
+        return data.data;
+      } else {
+        console.error(
+          'Error fetching forms and documents:',
+          data.message
+        );
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      console.error(
+        'An error occurred while fetching forms and documents:',
+        error
+      );
+      throw error;
+    }
+  };

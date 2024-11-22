@@ -70,23 +70,6 @@ const ActionDropdown = ({ file }: Props) => {
     setIsLoading(false);
   };
 
-  //   const handleRemoveUser = async (
-  //     email: string
-  //   ) => {
-  //     const updatedEmails = emails.filter(
-  //       (e) => e !== email
-  //     );
-
-  //     const success = await updateFileUsers({
-  //       fileId: file.id,
-  //       emails: updatedEmails,
-  //       path,
-  //     });
-
-  //     if (success) setEmails(updatedEmails);
-  //     closeAllModals();
-  //   };
-
   const renderDialogContent = () => {
     if (!action) return null;
 
@@ -110,13 +93,7 @@ const ActionDropdown = ({ file }: Props) => {
           {value === 'details' && (
             <FileDetails file={file} />
           )}
-          {/* {value === 'share' && (
-            <ShareInput
-              file={file}
-              onInputChange={setEmails}
-              onRemove={handleRemoveUser}
-            />
-          )} */}
+
           {value === 'delete' && (
             <p className='delete-confirmation'>
               Are you sure you want to delete{` `}
