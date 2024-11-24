@@ -42,7 +42,7 @@ const Login = () => {
     zod.infer<typeof LoginSchema>
   >({
     resolver: zodResolver(LoginSchema),
-    mode: 'onBlur',
+    mode: 'onSubmit',
     defaultValues: { email: '', password: '' },
   });
   const onSubmit = async (
@@ -82,7 +82,7 @@ const Login = () => {
   };
 
   return (
-    <>
+    <div className='flex flex-col justify-center items-center'>
       <main className='min-h-screen px-4 w-[330px] flex flex-col justify-center items-center'>
         <div className='max-w-[600px] w-full flex flex-col justify-center items-center rounded-lg'>
           <div className='flex flex-col justify-center items-center'>
@@ -180,7 +180,7 @@ const Login = () => {
           </div>
         </div>
       </main>
-    </>
+    </div>
   );
 };
 
