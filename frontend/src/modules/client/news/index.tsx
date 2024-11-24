@@ -38,7 +38,7 @@ const News = async () => {
     .toUpperCase(); // Get the first letter of the author's name
 
   return (
-    <div className='w-full space-y-6'>
+    <div className='w-full space-y-6 mb-16'>
       <HeaderText
         title='TAMA News'
         subtitle='Stay Informed with the Latest Updates and Announcements'
