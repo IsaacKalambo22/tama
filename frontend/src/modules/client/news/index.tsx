@@ -33,6 +33,9 @@ const News = async () => {
 
   // Separate the most recent news item
   const [mostRecent, ...otherNews] = news;
+  const authorInitial = mostRecent.author
+    .charAt(0)
+    .toUpperCase(); // Get the first letter of the author's name
 
   return (
     <div className='w-full space-y-6'>
@@ -56,7 +59,7 @@ const News = async () => {
                 <Avatar>
                   <AvatarImage src='' />
                   <AvatarFallback>
-                    A
+                    {authorInitial}
                   </AvatarFallback>
                 </Avatar>
                 <p className='text-sm text-gray-500'>
@@ -73,7 +76,7 @@ const News = async () => {
                 {mostRecent.content}
               </p>
               <p className='text-gray-700 mt-2'>
-                4 min read
+                {mostRecent.readingTime} min read
               </p>
             </div>
           </Card>
