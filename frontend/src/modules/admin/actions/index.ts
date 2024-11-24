@@ -179,7 +179,7 @@ export const createNews = async (
   }
 };
 export const createCouncilList = async (
-  councilData: CouncilListProps
+  councilData: Partial<CouncilListProps>
 ) => {
   try {
     console.log('Input data:', councilData);

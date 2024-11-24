@@ -1,16 +1,9 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { CouncilListProps } from '@/lib/api';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
-
-export interface CouncilListProps {
-  demarcation: string;
-  tobaccoType: string;
-  councillor: string;
-  firstAlternateCouncillor: string;
-  secondAlternateCouncillor: string;
-}
 
 export const councilListDataColumns: ColumnDef<CouncilListProps>[] =
   [

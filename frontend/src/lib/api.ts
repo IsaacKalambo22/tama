@@ -1,11 +1,14 @@
 import { BASE_URL } from './utils';
 
 export interface CouncilListProps {
+  id: string;
   demarcation: string;
   tobaccoType: string;
   councillor: string;
   firstAlternateCouncillor: string;
   secondAlternateCouncillor: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface NewsProps {
@@ -225,6 +228,44 @@ export const fetchNews = async (): Promise<
     }
 
     const data: ApiResponse<NewsProps[]> =
+      await response.json();
+
+    if (data.success) {
+      console.log(
+        'News fetched successfully:',
+        data.data
+      );
+      return data.data;
+    } else {
+      console.error(
+        'Error fetching news:',
+        data.message
+      );
+      throw new Error(data.message);
+    }
+  } catch (error) {
+    console.error(
+      'An error occurred while fetching news:',
+      error
+    );
+    throw error;
+  }
+};
+export const fetchCouncilList = async (): Promise<
+  CouncilListProps[]
+> => {
+  const endpoint = `${BASE_URL}/council-lists`;
+
+  try {
+    const response = await fetch(endpoint);
+
+    if (!response.ok) {
+      throw new Error(
+        `HTTP error! Status: ${response.status}`
+      );
+    }
+
+    const data: ApiResponse<CouncilListProps[]> =
       await response.json();
 
     if (data.success) {
