@@ -1,7 +1,7 @@
-import CouncilList from '@/modules/client/council-list';
+import CustomCouncilList from '@/modules/admin/custom-council-list';
 
 const CouncilListPage = () => {
-  return <CouncilList />;
+  return <CustomCouncilList />;
 };
 
 export default CouncilListPage;

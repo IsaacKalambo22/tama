@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import ModalNewBlog from '@/modules/admin/modal-new-blog';
+import ModalNewCouncilList from '@/modules/admin/modal-new-council-list';
 import ModalNewForm from '@/modules/admin/modal-new-form';
 import ModalNewNews from '@/modules/admin/modal-new-news';
 import ModalNewPublication from '@/modules/admin/modal-new-publication';
@@ -15,6 +16,7 @@ export enum AddNewType {
   NEW_SHOP = 'New Shop',
   NEW_BLOG = 'New Blog',
   ADD_NEWS = 'Add News',
+  NEW_COUNCIL_LIST = 'New Council List',
 }
 
 interface HeaderProps {
@@ -82,6 +84,14 @@ const AddNewHeader = ({
       {isOpen &&
         buttonName === AddNewType.ADD_NEWS && (
           <ModalNewNews
+            isOpen={isOpen}
+            onClose={handleClose}
+          />
+        )}
+      {isOpen &&
+        buttonName ===
+          AddNewType.NEW_COUNCIL_LIST && (
+          <ModalNewCouncilList
             isOpen={isOpen}
             onClose={handleClose}
           />

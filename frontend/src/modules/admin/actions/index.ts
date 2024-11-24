@@ -1,6 +1,7 @@
 'use server';
 
 import { auth } from '@/auth';
+import { CouncilListProps } from '@/lib/api';
 import { parseServerActionResponse } from '@/lib/utils';
 import { revalidatePath } from 'next/cache';
 
@@ -177,6 +178,66 @@ export const createNews = async (
     throw error;
   }
 };
+export const createCouncilList = async (
+  councilData: CouncilListProps
+) => {
+  try {
+    console.log('Input data:', councilData);
+
+    const session = await auth();
+
+    if (!session) {
+      return parseServerActionResponse({
+        error: 'Not signed in',
+        status: 'ERROR',
+      });
+    }
+
+    const token = session?.accessToken; // Extract the token from session
+
+    // Convert the council data to a JSON string
+    const requestBody =
+      JSON.stringify(councilData);
+
+    // Make a POST request to the API
+    const response = await fetch(
+      'http://localhost:8000/api/v1/council-lists',
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`, // Include Bearer token
+          'Content-Type': 'application/json', // Specify JSON content type
+        },
+        body: requestBody, // Send JSON body
+      }
+    );
+
+    console.log(
+      'Response status:',
+      response.status
+    );
+
+    if (!response.ok) {
+      const errorDetails = await response.text();
+      console.error(
+        'Failed to upload data:',
+        errorDetails
+      );
+      throw new Error('Failed to upload data');
+    }
+
+    const result = await response.json();
+    revalidatePath('/'); // Revalidate the path
+    return result; // Return the response data
+  } catch (error) {
+    console.error(
+      'Error during data upload:',
+      error
+    );
+    throw error;
+  }
+};
+
 export const createReportAndPublication = async (
   formData: FormData
 ) => {

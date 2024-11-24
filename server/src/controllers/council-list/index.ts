@@ -15,7 +15,7 @@ export const createCouncilList = async (
     firstAlternateCouncillor,
     secondAlternateCouncillor,
   } = req.body;
-
+  console.log(req.body);
   // Validate input
   if (
     !demarcation ||
@@ -27,7 +27,7 @@ export const createCouncilList = async (
     res.status(400).json({
       success: false,
       message:
-        'Name, address, and open hours are required.',
+        'Demarcation, tobacco type, councillor, first alternate councillor, and second alternate councillor are required.',
       error: 'Validation error',
     });
     return;

@@ -1,5 +1,13 @@
 import { BASE_URL } from './utils';
 
+export interface CouncilListProps {
+  demarcation: string;
+  tobaccoType: string;
+  councillor: string;
+  firstAlternateCouncillor: string;
+  secondAlternateCouncillor: string;
+}
+
 export interface NewsProps {
   id: string;
   title: string;
