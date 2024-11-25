@@ -1,52 +1,18 @@
-// app/news/page.tsx
-
-'use client';
-
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
-import CustomError from '@/modules/common/custom-error';
-import CustomLoader from '@/modules/common/custom-loader';
+import { fetchNews, NewsProps } from '@/lib/api';
+import {
+  BASE_URL,
+  formatDateTime,
+} from '@/lib/utils';
 import HeaderText from '@/modules/common/header-text';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
 
-interface NewsItem {
-  id: number;
-  title: string;
-  date: string;
-  author: string;
-  content: string;
-  imageUrl: string;
-}
-
-export default function News() {
-  const [news, setNews] = useState<NewsItem[]>(
-    []
-  );
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    // Replace with actual data fetch
-    fetchNewsData()
-      .then((data) => {
-        setNews(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error(
-          'Error loading news:',
-          error
-        );
-        setError(true);
-        setLoading(false);
-      });
-  }, []);
-
+const News = async () => {
   const fetchNewsData = async () => {
     return [
       {
@@ -97,13 +63,23 @@ export default function News() {
       },
     ];
   };
-
-  if (loading) return <CustomLoader />;
-
-  if (error)
+  let news = [];
+  try {
+    news = await fetchNews(); // Fetch the data directly
+  } catch (error) {
+    console.error('Failed to fetch news:', error);
     return (
-      <CustomError message='Failed to load news.' />
+      <div>
+        <HeaderText
+          title='TAMA News'
+          subtitle='Stay Informed with the Latest Updates and Announcements'
+        />
+        <p className='text-red-500'>
+          Failed to load news and publications.
+        </p>
+      </div>
     );
+  }
 
   // Separate the most recent news item
   const [mostRecent, ...otherNews] = news;
@@ -117,15 +93,15 @@ export default function News() {
       <div className='space-y-10'>
         {/* Most Recent Story */}
         {mostRecent && (
-          <Card className='shadow-none rounded-lg border-none flex flex-col sm:flex-row items-center h-auto sm:h-[17rem] gap-10'>
+          <Card className='shadow-none rounded-lg border-none flex flex-col sm:flex-row items-center h-auto sm:h-[20rem] gap-10'>
             <Image
-              src={mostRecent.imageUrl}
+              src={`${BASE_URL}/uploads/${mostRecent.imageUrl}`}
               alt={mostRecent.title}
               width={400}
-              height={300}
+              height={350}
               className='rounded-2xl object-cover h-full w-full sm:w-1/2'
             />
-            <div className='flex flex-col justify-between w-full md:w-1/2 h-full space-y-4'>
+            <div className='flex py-8 pr-10 flex-col justify-between w-full md:w-1/2 h-full space-y-4'>
               <div className='flex gap-2 items-center'>
                 <Avatar>
                   <AvatarImage src='' />
@@ -135,13 +111,15 @@ export default function News() {
                 </Avatar>
                 <p className='text-sm text-gray-500'>
                   {mostRecent.author} |{' '}
-                  {mostRecent.date}
+                  {formatDateTime(
+                    mostRecent.createdAt
+                  )}
                 </p>
               </div>
-              <h3 className='md:text-3xl text-2xl font-bold text-green-600'>
+              <h3 className='md:text-3xl text-2xl font-bold'>
                 {mostRecent.title}
               </h3>
-              <p className='text-gray-700 mt-2 line-clamp-3'>
+              <p className='text-gray-700 mt-2 line-clamp-4'>
                 {mostRecent.content}
               </p>
               <p className='text-gray-700 mt-2'>
@@ -152,7 +130,7 @@ export default function News() {
         )}
 
         {/* Other News Stories */}
-        <div className='grid mt-5 sm:mt-0 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
+        <div className='grid mt-5 sm:mt-0 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6'>
           {otherNews.slice(0, 4).map((item) => (
             <SmallNewsCard
               key={item.id}
@@ -163,38 +141,52 @@ export default function News() {
       </div>
     </div>
   );
-}
+};
 
-interface NewsCardProps {
-  newsItem: NewsItem;
+interface SmallNewsProps {
+  newsItem: NewsProps;
 }
-
 const SmallNewsCard = ({
   newsItem,
-}: NewsCardProps) => {
+}: SmallNewsProps) => {
+  const {
+    author,
+    imageUrl,
+    title,
+    content,
+    createdAt,
+  } = newsItem;
+  const authorInitial = author
+    .charAt(0)
+    .toUpperCase(); // Get the first letter of the author's name
+
   return (
-    <Card className='p-4 shadow-none cursor-pointer rounded-3xl space-y-4 transition-transform transform hover:scale-105'>
+    <Card className='p-6 shadow-none cursor-pointer rounded-3xl space-y-4 transition-transform transform hover:scale-105'>
       <Image
-        src={newsItem.imageUrl}
-        alt={newsItem.title}
-        width={400}
-        height={200}
-        className='rounded-2xl object-cover w-full'
+        src={`${BASE_URL}/uploads/${imageUrl}`}
+        alt={title}
+        width={200}
+        height={150}
+        className='rounded-2xl w-full mb-4 h-[12rem]'
       />
       <div className='flex flex-col w-full h-full'>
         <div className='flex w-full gap-2 items-center'>
           <Avatar>
             <AvatarImage src='' />
-            <AvatarFallback>A</AvatarFallback>
+            <AvatarFallback>
+              {authorInitial}
+            </AvatarFallback>
           </Avatar>
           <p className='text-sm text-gray-500'>
-            {newsItem.author} | {newsItem.date}
+            {author} | {formatDateTime(createdAt)}
           </p>
         </div>
         <p className='text-gray-700 mt-2 line-clamp-3'>
-          {newsItem.content}
+          {content}
         </p>
       </div>
     </Card>
   );
 };
+
+export default News;
