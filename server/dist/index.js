@@ -52,6 +52,7 @@ app.post('/api/v1/reports-publications', upload.single('file'), reports_publicat
 app.post('/api/v1/shops', upload.single('file'), shop_1.default);
 app.post('/api/v1/forms', upload.single('file'), form_1.default);
 app.post('/api/v1/blogs', upload.single('file'), blog_1.default);
+app.post('/api/v1/news', upload.single('file'), news_1.default);
 /* ROUTES */
 app.get('/', (req, res) => {
     res.send('This is home route');

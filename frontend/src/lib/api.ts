@@ -1,4 +1,16 @@
 import { BASE_URL } from './utils';
+
+export interface NewsProps {
+  id: string;
+  title: string;
+  content: string;
+  imageUrl: string;
+  author: string;
+  readingTime: number; // in minutes
+  createdAt: string; // ISO date string
+  updatedAt: string; // optional ISO date string
+}
+
 export interface BlogProps {
   id: string; // Unique identifier for the blog
   title: string; // Title of the blog
@@ -171,20 +183,58 @@ export const fetchBlogs = async (): Promise<
 
     if (data.success) {
       console.log(
-        'Shops fetched successfully:',
+        'Blogs fetched successfully:',
         data.data
       );
       return data.data;
     } else {
       console.error(
-        'Error fetching shops:',
+        'Error fetching blogs:',
         data.message
       );
       throw new Error(data.message);
     }
   } catch (error) {
     console.error(
-      'An error occurred while fetching shops:',
+      'An error occurred while fetching blogs:',
+      error
+    );
+    throw error;
+  }
+};
+export const fetchNews = async (): Promise<
+  NewsProps[]
+> => {
+  const endpoint = `${BASE_URL}/news`;
+
+  try {
+    const response = await fetch(endpoint);
+
+    if (!response.ok) {
+      throw new Error(
+        `HTTP error! Status: ${response.status}`
+      );
+    }
+
+    const data: ApiResponse<NewsProps[]> =
+      await response.json();
+
+    if (data.success) {
+      console.log(
+        'News fetched successfully:',
+        data.data
+      );
+      return data.data;
+    } else {
+      console.error(
+        'Error fetching news:',
+        data.message
+      );
+      throw new Error(data.message);
+    }
+  } catch (error) {
+    console.error(
+      'An error occurred while fetching news:',
       error
     );
     throw error;

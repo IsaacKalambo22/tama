@@ -10,6 +10,7 @@ export const createNews = async (
 ): Promise<void> => {
   const { title, content, imageUrl, author } =
     req.body;
+  console.log(req.body);
 
   // Validate input
   if (

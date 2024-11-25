@@ -74,6 +74,11 @@ app.post(
   upload.single('file'),
   blogs
 );
+app.post(
+  '/api/v1/news',
+  upload.single('file'),
+  news
+);
 
 /* ROUTES */
 app.get('/', (req, res) => {
