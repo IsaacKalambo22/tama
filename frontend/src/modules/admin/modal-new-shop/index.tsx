@@ -114,9 +114,7 @@ const ModalNewShop = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
-          <DialogTitle>
-            Add New Form or Document
-          </DialogTitle>
+          <DialogTitle>Add New Shop</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -126,7 +124,7 @@ const ModalNewShop = ({
             <CustomFormField
               fieldType={FormFieldType.INPUT}
               name='name'
-              label='Name'
+              label='Shop name'
               control={form.control}
               placeholder='Enter file name'
             />

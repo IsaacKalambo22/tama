@@ -1,7 +1,7 @@
 import { fetchShops } from '@/lib/api';
 import { BASE_URL } from '@/lib/utils';
+import CustomShopCard from '@/modules/admin/custom-shop/custom-shop-card';
 import HeaderText from '@/modules/common/header-text';
-import ShopCard from './shop-card';
 import ShopItemCard from './shop-item-card';
 
 const Shops = async () => {
@@ -14,7 +14,7 @@ const Shops = async () => {
       error
     );
     return (
-      <div className='flex flex-col w-full max-w-7xl mx-auto items-center gap-16 mb-16'>
+      <div className='flex flex-col w-full max-w-7xl mx-auto items-center gap-10 mb-16'>
         <HeaderText
           title='Discover Our Locations'
           subtitle='Find Our Trusted Stores Near You'
@@ -28,7 +28,7 @@ const Shops = async () => {
   }
 
   return (
-    <div className='flex flex-col w-full max-w-7xl mx-auto gap-16 mb-16 px-4 sm:px-6 lg:px-8'>
+    <div className='flex flex-col w-full max-w-7xl mx-auto gap-10 px-4 sm:px-6 lg:px-8'>
       <HeaderText
         title='Discover Our Locations'
         subtitle='Find Our Trusted Stores Near You'
@@ -37,9 +37,9 @@ const Shops = async () => {
       {/* Render the files */}
       <>
         {shops.length > 0 ? (
-          <div className='file-list w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+          <div className='file-list w-full grid grid-cols-2 md:grid-cols-3  gap-4'>
             {shops.map((shop) => (
-              <ShopCard
+              <CustomShopCard
                 key={shop.id}
                 imageUrl={`${BASE_URL}/uploads/${shop.imageUrl}`}
                 name={shop.name}
