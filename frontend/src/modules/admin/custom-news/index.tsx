@@ -5,7 +5,10 @@ import {
 } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import { fetchNews, NewsProps } from '@/lib/api';
-import { BASE_URL } from '@/lib/utils';
+import {
+  BASE_URL,
+  formatDateTime,
+} from '@/lib/utils';
 import AddNewHeader from '@/modules/common/add-new-header';
 import Image from 'next/image';
 
@@ -108,7 +111,9 @@ const CustomNews = async () => {
                 </Avatar>
                 <p className='text-sm text-gray-500'>
                   {mostRecent.author} |{' '}
-                  {mostRecent.createdAt}
+                  {formatDateTime(
+                    mostRecent.createdAt
+                  )}
                 </p>
               </div>
               <h3 className='md:text-3xl text-2xl font-bold'>
@@ -173,10 +178,7 @@ const SmallNewsCard = ({
             </AvatarFallback>
           </Avatar>
           <p className='text-sm text-gray-500'>
-            {author} |{' '}
-            {new Date(
-              createdAt
-            ).toLocaleDateString()}
+            {author} | {formatDateTime(createdAt)}
           </p>
         </div>
         <p className='text-gray-700 mt-2 line-clamp-3'>

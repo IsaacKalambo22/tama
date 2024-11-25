@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button';
 import ModalNewBlog from '@/modules/admin/modal-new-blog';
 import ModalNewForm from '@/modules/admin/modal-new-form';
+import ModalNewNews from '@/modules/admin/modal-new-news';
 import ModalNewPublication from '@/modules/admin/modal-new-publication';
 import ModalNewShop from '@/modules/admin/modal-new-shop';
 import { PlusSquare } from 'lucide-react';
@@ -13,6 +14,7 @@ export enum AddNewType {
   NEW_REPORT_OR_PUBLICATION = 'New Report or Publication',
   NEW_SHOP = 'New Shop',
   NEW_BLOG = 'New Blog',
+  ADD_NEWS = 'Add News',
 }
 
 interface HeaderProps {
@@ -73,6 +75,13 @@ const AddNewHeader = ({
       {isOpen &&
         buttonName === AddNewType.NEW_BLOG && (
           <ModalNewBlog
+            isOpen={isOpen}
+            onClose={handleClose}
+          />
+        )}
+      {isOpen &&
+        buttonName === AddNewType.ADD_NEWS && (
+          <ModalNewNews
             isOpen={isOpen}
             onClose={handleClose}
           />
