@@ -1,4 +1,12 @@
 import { BASE_URL } from './utils';
+export interface BlogProps {
+  imageUrl: string; // The URL of the blog image
+  title: string; // The title of the blog
+  description: string; // A short description or excerpt of the blog
+  author: string; // The author's name
+  date: string; // The publication date of the blog
+  link: string; // The URL link to the full blog
+}
 
 // Define the type for a report/publication
 export interface FileProps {

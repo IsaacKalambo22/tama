@@ -10,7 +10,7 @@ export const createBlog = async (
 ): Promise<void> => {
   const { title, content, imageUrl, author } =
     req.body;
-
+  console.log(req.body);
   // Validate input
   if (
     !title ||

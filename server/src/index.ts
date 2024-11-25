@@ -69,6 +69,11 @@ app.post(
   upload.single('file'),
   forms
 );
+app.post(
+  '/api/v1/blogs',
+  upload.single('file'),
+  blogs
+);
 
 /* ROUTES */
 app.get('/', (req, res) => {

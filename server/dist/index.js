@@ -51,6 +51,7 @@ const upload = (0, multer_1.default)({ storage });
 app.post('/api/v1/reports-publications', upload.single('file'), reports_publications_1.default);
 app.post('/api/v1/shops', upload.single('file'), shop_1.default);
 app.post('/api/v1/forms', upload.single('file'), form_1.default);
+app.post('/api/v1/blogs', upload.single('file'), blog_1.default);
 /* ROUTES */
 app.get('/', (req, res) => {
     res.send('This is home route');

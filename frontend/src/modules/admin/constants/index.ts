@@ -1,5 +1,6 @@
 import { DashboardIcon } from '@radix-ui/react-icons';
 import {
+  Book,
   BookOpen,
   NewspaperIcon,
   ShoppingBag,
@@ -47,6 +48,11 @@ export const ADMIN_LINKS = [
     label: 'Shops',
     href: '/admin/shops',
     icon: ShoppingBag,
+  },
+  {
+    label: 'Blogs',
+    href: '/admin/blogs',
+    icon: Book,
   },
 ];
 

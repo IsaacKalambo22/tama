@@ -1,7 +1,7 @@
-import Blogs from '@/modules/client/blogs';
+import AdminBlogs from '@/modules/admin/blogs';
 
-const BlogsPage = () => {
-  return <Blogs />;
+const AdminBlogsPage = () => {
+  return <AdminBlogs />;
 };
 
-export default BlogsPage;
+export default AdminBlogsPage;
