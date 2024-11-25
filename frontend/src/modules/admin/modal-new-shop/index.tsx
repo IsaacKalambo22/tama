@@ -21,7 +21,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
-import { createForm } from '../actions';
+import { createShop } from '../actions';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
@@ -36,9 +36,17 @@ const ModalNewShop = ({
     useState(false);
 
   const formSchema = zod.object({
-    filename: zod.string().min(2, {
+    name: zod.string().min(2, {
       message:
-        'Filename must be at least 2 characters.',
+        'Name must be at least 2 characters.',
+    }),
+    address: zod.string().min(2, {
+      message:
+        'Address must be at least 2 characters.',
+    }),
+    openHours: zod.string().min(2, {
+      message:
+        'OpenHours must be at least 2 characters.',
     }),
     files: zod.custom<File[]>(),
   });
@@ -48,7 +56,9 @@ const ModalNewShop = ({
   >({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      filename: '',
+      name: '',
+      address: '',
+      openHours: '',
       files: [],
     },
   });
@@ -60,27 +70,23 @@ const ModalNewShop = ({
     try {
       // Create FormData instance
       const formData = new FormData();
+      formData.append('name', values.name);
       formData.append(
-        'filename',
-        values.filename
+        'openHours',
+        values.openHours
       );
+      formData.append('address', values.address);
 
       // Directly append the file
       const file = values.files[0];
-      formData.append('file', file); // This will send the file as is, without converting it to Blob
+      formData.append('file', file);
+      formData.append('imageUrl', file.name);
 
-      // Optionally, you can still append other fields (e.g., fileUrl, size)
-      formData.append('fileUrl', file.name);
-      const size = Number(file.size);
-      formData.append('size', size.toString()); // Ensure size is a number
-
-      // Log the FormData entries to verify
       for (const pair of formData.entries()) {
-        console.log(pair); // Logs each key-value pair in the FormData object
+        console.log(pair);
       }
 
-      // Call the createForm function to send data to the server
-      const result = await createForm(formData);
+      const result = await createShop(formData);
 
       console.log('Upload result:', result);
       onClose();
@@ -118,17 +124,31 @@ const ModalNewShop = ({
           >
             <CustomFormField
               fieldType={FormFieldType.INPUT}
-              name='filename'
-              label='Filename'
+              name='name'
+              label='Name'
               control={form.control}
               placeholder='Enter file name'
+            />
+            <CustomFormField
+              fieldType={FormFieldType.INPUT}
+              name='address'
+              label='Address'
+              control={form.control}
+              placeholder='Enter file address'
+            />
+            <CustomFormField
+              fieldType={FormFieldType.INPUT}
+              name='openHours'
+              label='Open Hours'
+              control={form.control}
+              placeholder='Enter file openHours'
             />
 
             <CustomFormField
               fieldType={FormFieldType.SKELETON}
               control={form.control}
               name='files'
-              label='File'
+              label='Image'
               renderSkeleton={(field) => (
                 <FormControl>
                   <FileUploader

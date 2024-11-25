@@ -60,6 +60,11 @@ app.post(
   reportsPublications
 );
 app.post(
+  '/api/v1/shops',
+  upload.single('file'),
+  shops
+);
+app.post(
   '/api/v1/forms',
   upload.single('file'),
   forms
