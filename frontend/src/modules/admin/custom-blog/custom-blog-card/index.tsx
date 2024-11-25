@@ -39,26 +39,22 @@ const CustomBlogCard = ({
           alt={title}
           width={400}
           height={250}
-          className='rounded-2xl mb-4'
+          className='rounded-2xl w-full mb-4 h-[12rem]'
         />
-        <h2 className='text-xl font-semibold mb-2'>
+        <h2 className='text-xl font-semibold mb-2 line-clamp-1'>
           {title}
         </h2>
-        <p className='text-gray-700 mb-4'>
+        <p className='text-gray-700 mb-4 line-clamp-3'>
           {content}
         </p>
         <div className='flex justify-between items-center text-sm text-gray-500 mb-1'>
           <span>{author}</span>
           <div>
             <span>
-              Created: {formatDateTime(createdAt)}
+              {updatedAt
+                ? formatDateTime(updatedAt)
+                : formatDateTime(createdAt)}
             </span>
-            {updatedAt && (
-              <span className='ml-2 text-gray-400'>
-                Updated:{' '}
-                {formatDateTime(updatedAt)}
-              </span>
-            )}
           </div>
         </div>
       </Card>
