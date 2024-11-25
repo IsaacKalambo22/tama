@@ -1,63 +1,44 @@
+import { fetchBlogs } from '@/lib/api';
+import CustomBlogCard from '@/modules/admin/custom-blog/custom-blog-card';
 import HeaderText from '@/modules/common/header-text';
-import BlogCard from './blog-card';
 
-const Blogs = () => {
+const Blogs = async () => {
+  let blogs = [];
+  try {
+    blogs = await fetchBlogs(); // Fetch the data directly
+  } catch (error) {
+    console.error(
+      'Failed to fetch blogs:',
+      error
+    );
+    return (
+      <div className='flex flex-col w-full max-w-7xl mx-auto items-center gap-16 mb-16'>
+        <HeaderText
+          title='Our Blogs'
+          subtitle='Stay Updated with the Latest News and Insights'
+        />
+
+        <p className='text-red-500'>
+          Failed to load blogs and documents.
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className='flex flex-col items-center gap-16 mb-16'>
+    <div className='flex flex-col items-center gap-8 mb-16'>
       <HeaderText
-        title='Our Blog'
+        title='Our Blogs'
         subtitle='Stay Updated with the Latest News and Insights'
       />
       <div className='grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>
-        {/* Example Blog Cards */}
-        <BlogCard
-          imageUrl='/assets/images/shop1.jpg'
-          title='Sustainable Farming Practices'
-          description='Learn about the best sustainable farming practices to enhance productivity and protect the environment...'
-          author='John Doe'
-          date='Oct 15, 2024'
-          link='/blog/sustainable-farming-practices'
-        />
-        <BlogCard
-          imageUrl='/assets/images/shop1.jpg'
-          title='How Technology is Changing Agriculture'
-          description='Explore the latest technological advancements that are transforming the agricultural industry...'
-          author='Jane Smith'
-          date='Nov 01, 2024'
-          link='/blog/technology-in-agriculture'
-        />
-        <BlogCard
-          imageUrl='/assets/images/shop1.jpg'
-          title='How Technology is Changing Agriculture'
-          description='Explore the latest technological advancements that are transforming the agricultural industry...'
-          author='Jane Smith'
-          date='Nov 01, 2024'
-          link='/blog/technology-in-agriculture'
-        />
-        <BlogCard
-          imageUrl='/assets/images/shop1.jpg'
-          title='How Technology is Changing Agriculture'
-          description='Explore the latest technological advancements that are transforming the agricultural industry...'
-          author='Jane Smith'
-          date='Nov 01, 2024'
-          link='/blog/technology-in-agriculture'
-        />
-        <BlogCard
-          imageUrl='/assets/images/shop1.jpg'
-          title='How Technology is Changing Agriculture'
-          description='Explore the latest technological advancements that are transforming the agricultural industry...'
-          author='Jane Smith'
-          date='Nov 01, 2024'
-          link='/blog/technology-in-agriculture'
-        />
-        <BlogCard
-          imageUrl='/assets/images/shop1.jpg'
-          title='How Technology is Changing Agriculture'
-          description='Explore the latest technological advancements that are transforming the agricultural industry...'
-          author='Jane Smith'
-          date='Nov 01, 2024'
-          link='/blog/technology-in-agriculture'
-        />
+        {blogs.map((blog) => (
+          <CustomBlogCard
+            key={blog.id}
+            blog={blog}
+            link={`/admin/blogs/${blog.id}`}
+          />
+        ))}
       </div>
     </div>
   );

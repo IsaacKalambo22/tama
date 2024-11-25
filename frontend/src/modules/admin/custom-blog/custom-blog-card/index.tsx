@@ -24,13 +24,6 @@ const CustomBlogCard = ({
     createdAt,
     updatedAt,
   } = blog;
-
-  // Function to format the date
-  // const formatDate = (dateString: string) => {
-  //   const date = new Date(dateString);
-  //   return date.toLocaleDateString();
-  // };
-
   return (
     <Link href={link}>
       <Card className='p-6 shadow-none rounded-3xl hover:shadow-lg transition-shadow'>
