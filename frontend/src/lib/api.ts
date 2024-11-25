@@ -10,11 +10,20 @@ export interface FileProps {
   updatedAt: string;
 }
 
-// Define the API response structure
-interface ApiResponse {
+export interface ShopProps {
+  id: string;
+  name: string;
+  imageUrl: string;
+  address: string;
+  openHours: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ApiResponse<T> {
   success: boolean;
   message: string;
-  data: FileProps[];
+  data: T;
 }
 
 // Function to fetch reports and publications
@@ -31,7 +40,7 @@ export const fetchReportsAndPublications =
         );
       }
 
-      const data: ApiResponse =
+      const data: ApiResponse<FileProps[]> =
         await response.json();
 
       if (data.success) {
@@ -55,7 +64,8 @@ export const fetchReportsAndPublications =
       throw error;
     }
   };
-// Function to fetch reports and publications
+
+// Function to fetch forms and documents
 export const fetchFormsAndDocuments =
   async (): Promise<FileProps[]> => {
     const endpoint = `${BASE_URL}/forms`;
@@ -69,7 +79,7 @@ export const fetchFormsAndDocuments =
         );
       }
 
-      const data: ApiResponse =
+      const data: ApiResponse<FileProps[]> =
         await response.json();
 
       if (data.success) {
@@ -93,3 +103,43 @@ export const fetchFormsAndDocuments =
       throw error;
     }
   };
+
+// Function to fetch shops
+export const fetchShops = async (): Promise<
+  ShopProps[]
+> => {
+  const endpoint = `${BASE_URL}/shops`;
+
+  try {
+    const response = await fetch(endpoint);
+
+    if (!response.ok) {
+      throw new Error(
+        `HTTP error! Status: ${response.status}`
+      );
+    }
+
+    const data: ApiResponse<ShopProps[]> =
+      await response.json();
+
+    if (data.success) {
+      console.log(
+        'Shops fetched successfully:',
+        data.data
+      );
+      return data.data;
+    } else {
+      console.error(
+        'Error fetching shops:',
+        data.message
+      );
+      throw new Error(data.message);
+    }
+  } catch (error) {
+    console.error(
+      'An error occurred while fetching shops:',
+      error
+    );
+    throw error;
+  }
+};

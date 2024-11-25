@@ -12,6 +12,16 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '100MB',
     },
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'example.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
 };
 
 export default nextConfig;
