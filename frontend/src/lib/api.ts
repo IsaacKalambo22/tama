@@ -1,11 +1,12 @@
 import { BASE_URL } from './utils';
 export interface BlogProps {
-  imageUrl: string; // The URL of the blog image
-  title: string; // The title of the blog
-  description: string; // A short description or excerpt of the blog
-  author: string; // The author's name
-  date: string; // The publication date of the blog
-  link: string; // The URL link to the full blog
+  id: string; // Unique identifier for the blog
+  title: string; // Title of the blog
+  content: string; // Content or body of the blog
+  imageUrl: string; // URL for the blog's image
+  author: string; // Author's name
+  createdAt: string; // Timestamp of when the blog was created
+  updatedAt: string; // Timestamp of the last update to the blog
 }
 
 // Define the type for a report/publication
@@ -128,6 +129,44 @@ export const fetchShops = async (): Promise<
     }
 
     const data: ApiResponse<ShopProps[]> =
+      await response.json();
+
+    if (data.success) {
+      console.log(
+        'Shops fetched successfully:',
+        data.data
+      );
+      return data.data;
+    } else {
+      console.error(
+        'Error fetching shops:',
+        data.message
+      );
+      throw new Error(data.message);
+    }
+  } catch (error) {
+    console.error(
+      'An error occurred while fetching shops:',
+      error
+    );
+    throw error;
+  }
+};
+export const fetchBlogs = async (): Promise<
+  BlogProps[]
+> => {
+  const endpoint = `${BASE_URL}/blogs`;
+
+  try {
+    const response = await fetch(endpoint);
+
+    if (!response.ok) {
+      throw new Error(
+        `HTTP error! Status: ${response.status}`
+      );
+    }
+
+    const data: ApiResponse<BlogProps[]> =
       await response.json();
 
     if (data.success) {
