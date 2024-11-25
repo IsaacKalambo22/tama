@@ -1,4 +1,5 @@
 import { fetchShops } from '@/lib/api';
+import { BASE_URL } from '@/lib/utils';
 import AddNewHeader from '@/modules/common/add-new-header';
 import CustomShopCard from './custom-shop-card';
 
@@ -27,14 +28,14 @@ const CustomShop = async () => {
   return (
     <div>
       <AddNewHeader
-        name='Shops and Publications'
-        buttonName='New Report or Publication'
+        name='Shop List'
+        buttonName='New Shop'
       />
       <div className='grid gap-8 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
         {shops.map((shop) => (
           <CustomShopCard
             key={shop.id}
-            imageUrl={shop.imageUrl}
+            imageUrl={`${BASE_URL}/uploads/${shop.imageUrl}`}
             name={shop.name}
             address={shop.address}
             openingHours={shop.openHours}
