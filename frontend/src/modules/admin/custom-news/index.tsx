@@ -131,6 +131,9 @@ const SmallNewsCard = ({
             {author} | {formatDateTime(createdAt)}
           </p>
         </div>
+        <h2 className='text-[1rem] font-semibold mt-2 line-clamp-1'>
+          {title}
+        </h2>
         <p className='text-gray-700 mt-2 line-clamp-3'>
           {content}
         </p>
