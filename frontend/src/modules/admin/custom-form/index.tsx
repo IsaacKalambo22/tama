@@ -7,9 +7,9 @@ type Props = {
 
 const CustomForm = ({ files }: Props) => {
   return (
-    <div className='flex flex-col items-center gap-4 mb-16'>
+    <div className='flex flex-col items-center mb-16'>
       {files.length > 0 ? (
-        <div className='file-list w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5  gap-4'>
+        <div className='file-list w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5  gap-8'>
           {files.map((file: FileProps) => (
             <CustomFileCard
               key={file.id}

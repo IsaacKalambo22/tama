@@ -21,7 +21,7 @@ const Navbar = () => {
   ); // Use toggle function from Zustand
 
   return (
-    <Card className='flex w-full items-center justify-between rounded-none bg-white px-4 py-2 shadow-none dark:bg-black'>
+    <Card className='flex w-full items-center justify-between rounded-none bg-white px-4 py-3 shadow-none dark:bg-black'>
       {/* Search Bar */}
       <div className='flex items-center gap-8'>
         {!isSidebarCollapsed ? (

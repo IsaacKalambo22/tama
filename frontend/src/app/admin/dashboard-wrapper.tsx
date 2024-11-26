@@ -26,11 +26,11 @@ const DashboardLayout = ({
         className={`flex flex-col w-full min-h-screen bg-gray-50 dark:bg-dark-bg transition-all duration-300 ${
           isSidebarCollapsed
             ? 'md:pl-16' // Reduced padding when collapsed
-            : 'md:pl-64' // More padding when expanded
+            : 'md:pl-[17rem]' // More padding when expanded
         }`}
       >
         <Navbar />
-        <div className='flex-grow p-4'>
+        <div className='flex-grow py-4 px-6'>
           {children}
         </div>
       </main>

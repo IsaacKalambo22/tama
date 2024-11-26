@@ -2,10 +2,12 @@
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { useSidebarStore } from '@/providers/sidebar-state';
 import { LucideIcon, X } from 'lucide-react';
-import { IconBase } from 'react-icons/lib';
+import Image from 'next/image';
+import Link from 'next/link';
 import { SidebarLink } from './sidebar-link';
 
 export interface SidebarProps {
@@ -24,7 +26,7 @@ const Sidebar = ({ links }: SidebarProps) => {
   return (
     <Card
       className={cn(
-        'fixed z-40 flex h-full w-72 flex-col overflow-hidden rounded-none bg-white shadow-md transition-all duration-300 md:w-64',
+        'fixed z-40 flex h-full w-72 flex-col overflow-hidden rounded-none bg-white shadow-md transition-all duration-300 md:w-[17rem]',
         { 'w-0 md:w-16': isSidebarCollapsed }
       )}
     >
@@ -32,28 +34,44 @@ const Sidebar = ({ links }: SidebarProps) => {
         {/* TOP LOGO */}
         <div
           className={cn(
-            'mt-4 flex items-center justify-between gap-4 pl-5 pr-4',
+            'py-2 flex items-center justify-between gap-4 pl-5 pr-4',
             { 'pl-4': isSidebarCollapsed }
           )}
         >
-          <div className='flex items-center gap-2'>
-            <Button
-              size='icon'
-              variant='ghost'
-              className='hover:bg-none'
+          <div
+            className={cn(
+              'flex items-center gap-2 ',
+              { 'pl-2': !isSidebarCollapsed }
+            )}
+          >
+            <Link
+              href='/admin'
+              className='flex items-center gap-2'
             >
-              <IconBase className='h-6 w-6 text-green-500' />
-            </Button>
-            <h3
+              <div
+                className={cn(
+                  'w-full h-full  justify-center items-center',
+                  { 'py-2': isSidebarCollapsed }
+                )}
+              >
+                <Image
+                  src='/assets/images/logo.png'
+                  width={40}
+                  height={40}
+                  alt='logo'
+                  layout='fixed'
+                  className='object-contain'
+                />
+              </div>
+            </Link>
+            <h2
               className={cn(
-                'text-lg font-bold text-green-500',
-                {
-                  hidden: isSidebarCollapsed,
-                }
+                'font-bold text-[1.1rem] leading-snug',
+                { hidden: isSidebarCollapsed }
               )}
             >
-              MIRE
-            </h3>
+              TAMA Farmers Trust
+            </h2>
           </div>
 
           <Button
@@ -65,7 +83,7 @@ const Sidebar = ({ links }: SidebarProps) => {
             <X className='h-4 w-4' />
           </Button>
         </div>
-
+        <Separator />
         {/* NAVBAR LINKS */}
         <nav className='z-10 w-full'>
           {links.map((item, index) => (
