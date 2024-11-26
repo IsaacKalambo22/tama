@@ -1,7 +1,7 @@
 import { Card } from '@/components/ui/card';
-import HeaderText from '@/modules/common/header-text';
 import { FrequentlyAskedQuestions } from '../faquestion';
 import HomeTextCard from '../home-text-card';
+import { ImageTextHome } from '../image-text-home';
 import { MainCarousel } from '../main-carousel';
 import StatisticBlock from '../statistic-block';
 
@@ -9,11 +9,7 @@ const CustomHome = () => {
   return (
     <div className='flex flex-col items-center gap-16 mb-16'>
       <MainCarousel />
-      <HeaderText
-        title='TAMA Farmers Trust'
-        subtitle='Leading farmers to prosperity'
-      />
-
+      <ImageTextHome />
       <div className='grid grid-cols-1 sm:grid-cols-2 w-full  gap-12 '>
         <HomeTextCard
           title='Working Together with Farmers'

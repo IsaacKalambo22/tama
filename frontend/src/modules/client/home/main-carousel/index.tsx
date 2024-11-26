@@ -38,18 +38,37 @@ export function MainCarousel() {
       <CarouselContent>
         {imagePaths.map((imagePath, index) => (
           <CarouselItem key={index}>
-            <div className='p-1'>
-              <Card className='w-full h-[25rem] sm:h-[40rem] shadow-none rounded-2xl'>
+            <div className='p-1 relative'>
+              <Card className='w-full h-[25rem] sm:h-[40rem] shadow-none rounded-2xl relative overflow-hidden'>
+                {/* Image with opacity */}
                 <Image
                   src={imagePath}
                   alt={`Carousel image ${
                     index + 1
                   }`}
-                  width={800} // Replace with actual width of the image
-                  height={1600} // Replace with actual height of the image
-                  className='w-full h-full object-cover rounded-2xl'
-                  priority={index === 0} // Set priority for the first image
+                  width={800}
+                  height={1600}
+                  className='w-full h-full object-cover rounded-2xl opacity-90' // Reduced opacity for dim effect
+                  priority={index === 0}
                 />
+                {/* Dark overlay */}
+                <div className='absolute inset-0 bg-black bg-opacity-50 rounded-2xl'></div>
+                {/* Centered Text */}
+                <div className='absolute inset-0 flex flex-col items-center justify-center'>
+                  {/* <HeaderText
+                    title='TAMA Farmers Trust'
+                    subtitle='Leading farmers to prosperity'
+                  /> */}
+                  <h1 className='text-center font-bold flex flex-col leading-snug text-white drop-shadow-md'>
+                    <span className='text-3xl sm:text-5xl'>
+                      TAMA Farmers Trust
+                    </span>
+                    <span className='text-2xl sm:text-4xl'>
+                      Leading farmers to
+                      prosperity
+                    </span>
+                  </h1>
+                </div>
               </Card>
             </div>
           </CarouselItem>
