@@ -1,31 +1,40 @@
 import { Card } from '@/components/ui/card';
 import { FrequentlyAskedQuestions } from '../faquestion';
-import HomeTextCard from '../home-text-card';
 import { ImageTextHome } from '../image-text-home';
 import { MainCarousel } from '../main-carousel';
 import StatisticBlock from '../statistic-block';
 
 const CustomHome = () => {
   return (
-    <div className='flex flex-col items-center gap-16 mb-16'>
+    <div className='flex flex-col items-center gap-8 mb-16'>
       <MainCarousel />
-      <ImageTextHome />
-      <div className='grid grid-cols-1 sm:grid-cols-2 w-full  gap-12 '>
-        <HomeTextCard
-          title='Working Together with Farmers'
-          description='TAMA Farmers Trust works together with smallholder farmers, medium to large farmers, and corporate farmers for the sustainability of the Malawi economy.'
-        />
-        <HomeTextCard
-          title='Who We Are'
+      <div className='w-full flex items-center justify-center '>
+        <span className='px-4 font-bold green_gradient text-4xl'>
+          Discover More
+        </span>
+      </div>
+      <div className='flex flex-col gap-20'>
+        <ImageTextHome
+          imagePath='/assets/images/carousel/12.jpg'
+          heading='Who We Are'
           description='We at The TAMA Farmers Trust believe that the success of the nation lies in the concerted efforts of all stakeholders in the economy.'
         />
-        <HomeTextCard
-          title='Our Mission'
+        <ImageTextHome
+          imagePath='/assets/images/carousel/11.jpg'
+          heading='Working Together with Farmers'
+          description='TAMA Farmers Trust works together with smallholder farmers, medium to large farmers, and corporate farmers for the sustainability of the Malawi economy.'
+          imagePosition='right'
+        />
+        <ImageTextHome
+          imagePath='/assets/images/carousel/12.jpg'
+          heading='Our Mission'
           description='To provide visible and compelling services to the grower members and perpetuate sustainable balance in the generation of wealth in a manner that ascertains wider income diversification and value.'
         />
-        <HomeTextCard
-          title='Our Vision'
+        <ImageTextHome
+          imagePath='/assets/images/carousel/11.jpg'
+          heading='Our Vision'
           description='To be the most effective and successful Association in the representation of grower member interests in promoting tobacco production and marketing.'
+          imagePosition='right'
         />
       </div>
       <Card className='mx-auto w-full h-auto p-4 shadow-none'>
@@ -48,7 +57,6 @@ const CustomHome = () => {
           />
         </div>
       </Card>
-
       <FrequentlyAskedQuestions />
     </div>
   );
