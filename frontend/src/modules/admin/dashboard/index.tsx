@@ -1,4 +1,12 @@
 import { Card } from '@/components/ui/card';
+import {
+  fetchBlogs,
+  fetchCouncilList,
+  fetchFormsAndDocuments,
+  fetchNews,
+  fetchReportsAndPublications,
+  fetchShops,
+} from '@/lib/api';
 import { formatCount } from '@/lib/utils';
 import AddNewHeader from '@/modules/common/add-new-header';
 import {
@@ -21,7 +29,7 @@ interface AdminStats {
 const stats: AdminStats[] = [
   {
     title: 'Shops',
-    count: 23, // Example number, replace with actual dynamic count
+    count: 23, // Mocked value will be replaced by fetched data
     icon: (
       <FaStore
         size={30}
@@ -31,7 +39,7 @@ const stats: AdminStats[] = [
   },
   {
     title: 'Forms',
-    count: 12, // Example number, replace with actual dynamic count
+    count: 12, // Mocked value will be replaced by fetched data
     icon: (
       <FaClipboard
         size={30}
@@ -41,7 +49,7 @@ const stats: AdminStats[] = [
   },
   {
     title: 'Blogs',
-    count: 7, // Example number, replace with actual dynamic count
+    count: 7, // Mocked value will be replaced by fetched data
     icon: (
       <FaRegCommentDots
         size={30}
@@ -51,7 +59,7 @@ const stats: AdminStats[] = [
   },
   {
     title: 'News',
-    count: 15, // Example number, replace with actual dynamic count
+    count: 15, // Mocked value will be replaced by fetched data
     icon: (
       <FaNewspaper
         size={30}
@@ -61,7 +69,7 @@ const stats: AdminStats[] = [
   },
   {
     title: 'Users',
-    count: 1024, // Example number, replace with actual dynamic count
+    count: 1024, // Mocked value will be replaced by fetched data
     icon: (
       <FaUsers
         size={30}
@@ -71,7 +79,7 @@ const stats: AdminStats[] = [
   },
   {
     title: 'Reports',
-    count: 30, // Example number, replace with actual dynamic count
+    count: 30, // Mocked value will be replaced by fetched data
     icon: (
       <FaFileAlt
         size={30}
@@ -81,7 +89,7 @@ const stats: AdminStats[] = [
   },
   {
     title: 'Publications',
-    count: 8, // Example number, replace with actual dynamic count
+    count: 8, // Mocked value will be replaced by fetched data
     icon: (
       <FaBook
         size={30}
@@ -91,7 +99,7 @@ const stats: AdminStats[] = [
   },
   {
     title: 'Council Lists',
-    count: 5, // Example number, replace with actual dynamic count
+    count: 5, // Mocked value will be replaced by fetched data
     icon: (
       <FaListAlt
         size={30}
@@ -101,15 +109,60 @@ const stats: AdminStats[] = [
   },
 ];
 
-export default function Dashboard() {
+export default async function Dashboard() {
+  // Fetch the data from the APIs
+  const blogs = await fetchBlogs();
+  const shops = await fetchShops();
+  const reports =
+    await fetchReportsAndPublications();
+  const forms = await fetchFormsAndDocuments();
+  const councilList = await fetchCouncilList();
+  const news = await fetchNews();
+
+  // Update the stats with fetched data or fallback to the mocked value
+  const updatedStats = stats.map((stat) => {
+    switch (stat.title) {
+      case 'Shops':
+        stat.count = shops?.length || stat.count;
+        break;
+      case 'Forms':
+        stat.count = forms?.length || stat.count;
+        break;
+      case 'Blogs':
+        stat.count = blogs?.length || stat.count;
+        break;
+      case 'News':
+        stat.count = news?.length || stat.count;
+        break;
+      case 'Users':
+        stat.count = 1024; // Replace with actual user data fetching logic if needed
+        break;
+      case 'Reports':
+        stat.count =
+          reports?.length || stat.count;
+        break;
+      case 'Publications':
+        stat.count =
+          reports?.length || stat.count;
+        break;
+      case 'Council Lists':
+        stat.count =
+          councilList?.length || stat.count;
+        break;
+      default:
+        break;
+    }
+    return stat;
+  });
+
   return (
-    <section className=' flex flex-col'>
+    <section className='flex flex-col'>
       <AddNewHeader name='Dashboard' />
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8'>
-        {stats.map((stat, index) => (
+        {updatedStats.map((stat, index) => (
           <Card
             key={index}
-            className='shadow-lg rounded-xl overflow-hidden hover:shadow-xl transition-shadow duration-300 p-6 flex items-center justify-between'
+            className='shadow-none rounded-xl overflow-hidden hover:shadow-xl transition-shadow duration-300 p-6 flex items-center justify-between'
           >
             <div className='flex items-center space-x-4'>
               <div className='p-4 bg-blue-50 rounded-lg'>
