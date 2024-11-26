@@ -73,6 +73,10 @@ body,
   @apply size-full object-cover object-center !important;
 }
 
+.heading {
+  @apply font-bold text-4xl md:text-5xl text-center;
+}
+
 /* Card */
 .file-card {
   @apply flex cursor-pointer flex-col gap-6 rounded-[18px] bg-white p-5 shadow-sm transition-all !important;

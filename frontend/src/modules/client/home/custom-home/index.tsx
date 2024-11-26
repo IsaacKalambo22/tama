@@ -1,4 +1,10 @@
 import { Card } from '@/components/ui/card';
+import {
+  FaStore,
+  FaUsers,
+  FaUsersCog,
+  FaWarehouse,
+} from 'react-icons/fa'; // Add more icons as needed
 import { FrequentlyAskedQuestions } from '../faquestion';
 import { ImageTextHome } from '../image-text-home';
 import { MainCarousel } from '../main-carousel';
@@ -15,7 +21,7 @@ const CustomHome = () => {
       </div>
       <div className='flex flex-col gap-20'>
         <ImageTextHome
-          imagePath='/assets/images/carousel/12.jpg'
+          imagePath='/assets/images/carousel/9.jpg'
           heading='Who We Are'
           description='We at The TAMA Farmers Trust believe that the success of the nation lies in the concerted efforts of all stakeholders in the economy.'
         />
@@ -26,34 +32,43 @@ const CustomHome = () => {
           imagePosition='right'
         />
         <ImageTextHome
-          imagePath='/assets/images/carousel/12.jpg'
+          imagePath='/assets/images/carousel/2.jpg'
           heading='Our Mission'
           description='To provide visible and compelling services to the grower members and perpetuate sustainable balance in the generation of wealth in a manner that ascertains wider income diversification and value.'
         />
         <ImageTextHome
-          imagePath='/assets/images/carousel/11.jpg'
+          imagePath='/assets/images/carousel/13.jpg'
           heading='Our Vision'
           description='To be the most effective and successful Association in the representation of grower member interests in promoting tobacco production and marketing.'
           imagePosition='right'
         />
       </div>
-      <Card className='mx-auto w-full h-auto p-4 shadow-none'>
-        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 py-4'>
+      <div className='w-full flex items-center justify-center '>
+        <span className='px-4 font-bold green_gradient text-4xl'>
+          Community Stats
+        </span>
+      </div>
+      <Card className='mx-auto w-full border-none h-auto shadow-none'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 '>
           <StatisticBlock
             count={51_000}
             label='Registered customers'
+            icon={<FaUsers />}
           />
           <StatisticBlock
             count={63}
             label='Councilors'
+            icon={<FaUsersCog />}
           />
           <StatisticBlock
             count={50}
             label='Cooperatives'
+            icon={<FaWarehouse />}
           />
           <StatisticBlock
             count={5}
             label='Shops'
+            icon={<FaStore />}
           />
         </div>
       </Card>
