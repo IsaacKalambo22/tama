@@ -5,7 +5,7 @@ import {
   FaUsersCog,
   FaWarehouse,
 } from 'react-icons/fa'; // Add more icons as needed
-import { FrequentlyAskedQuestions } from '../faquestion';
+import { CustomFaq } from '../custom-faq';
 import { ImageTextHome } from '../image-text-home';
 import { MainCarousel } from '../main-carousel';
 import OurTeam from '../our-team';
@@ -74,7 +74,18 @@ const CustomHome = () => {
         </div>
       </Card>
       <OurTeam />
-      <FrequentlyAskedQuestions />
+
+      <div className='flex flex-col gap-1'>
+        <h2 className='text-4xl font-bold text-center green_gradient'>
+          Frequently Asked Questions
+        </h2>
+        <p className='text-gray-600 text-lg text-center'>
+          Have questions? We&apos;ve got answers
+          to help you understand more about what
+          we do and how we can assist you.
+        </p>
+      </div>
+      <CustomFaq />
     </div>
   );
 };

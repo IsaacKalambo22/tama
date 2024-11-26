@@ -23,7 +23,7 @@ const Team = ({ teamMembers }: TeamProps) => {
         work tirelessly to achieve our mission and
         vision.
       </p>
-      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full mt-6'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full` mt-6'>
         {teamMembers.map((member, index) => (
           <Card
             key={index}
