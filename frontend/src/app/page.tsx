@@ -1,5 +1,5 @@
-import Home from '@/modules/client/home';
+import CustomHome from '@/modules/client/home/custom-home';
 
 export default function HomePage() {
-  return <Home />;
+  return <CustomHome />;
 }

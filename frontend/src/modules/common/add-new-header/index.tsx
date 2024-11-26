@@ -48,7 +48,7 @@ const AddNewHeader = ({
         {name}
       </h1>
       <Button onClick={handleButtonClick}>
-        <PlusSquare className='h-4 w-4 mr-2' />
+        <PlusSquare className='h-4 w-4' />
         {buttonName} {/* Display button name */}
       </Button>
 
