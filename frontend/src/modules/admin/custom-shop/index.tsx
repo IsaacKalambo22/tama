@@ -19,7 +19,7 @@ const CustomShop = async () => {
           buttonName='New Shop'
         />
         <p className='text-red-500'>
-          Failed to load shops and publications.
+          Failed to load shops.
         </p>
       </div>
     );
@@ -31,7 +31,7 @@ const CustomShop = async () => {
         name='Shop List'
         buttonName='New Shop'
       />
-      <div className='grid gap-8 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+      <div className='grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
         {shops.map((shop) => (
           <CustomShopCard
             key={shop.id}
