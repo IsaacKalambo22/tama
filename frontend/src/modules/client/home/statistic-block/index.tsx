@@ -1,3 +1,5 @@
+import { Card } from '@/components/ui/card';
+
 interface StatisticBlockProps {
   count: string | number;
   label: string;
@@ -21,17 +23,17 @@ const StatisticBlock = ({
   icon,
 }: StatisticBlockProps) => {
   return (
-    <div className='flex flex-col items-center p-6 rounded-xl bg-gradient-to-r from-green-400 to-amber-400 shadow-lg'>
-      <div className='text-white text-4xl mb-4'>
-        {icon} {/* Display icon */}
+    <Card className='flex flex-col items-center p-6 rounded-2xl shadow-none'>
+      <div className=' text-4xl mb-4 text-gray-700'>
+        {icon}
       </div>
-      <h1 className='text-[2.5rem] font-bold text-white'>
+      <h1 className='text-[2.5rem] font-bold text-gray-700 '>
         {formatCount(count)}
       </h1>
-      <p className='text-white mt-2 text-lg font-medium'>
+      <p className=' mt-2 text-lg font-medium text-gray-700'>
         {label}
       </p>
-    </div>
+    </Card>
   );
 };
 

@@ -8,6 +8,7 @@ import {
 import { FrequentlyAskedQuestions } from '../faquestion';
 import { ImageTextHome } from '../image-text-home';
 import { MainCarousel } from '../main-carousel';
+import OurTeam from '../our-team';
 import StatisticBlock from '../statistic-block';
 
 const CustomHome = () => {
@@ -72,6 +73,7 @@ const CustomHome = () => {
           />
         </div>
       </Card>
+      <OurTeam />
       <FrequentlyAskedQuestions />
     </div>
   );
