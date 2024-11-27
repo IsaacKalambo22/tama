@@ -24,7 +24,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 import { clientActionsDropdownItems } from '@/modules/admin/constants';
-import { FileDetails } from '../actions-modal-content';
+import { FileDetails } from '@/modules/admin/custom-file-card/custom-actions-modal-content';
 type Props = {
   file: FileProps;
 };
