@@ -5,7 +5,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const BASE_URL = `http://localhost:8000/api/v1`;
+export const BASE_URL =
+  process.env.NEXT_PUBLIC_BASE_URL;
 
 export function formatDate(date: string) {
   return new Date(date).toLocaleDateString(
