@@ -5,25 +5,25 @@ import {
   convertFileSize,
   getFileType,
 } from '@/lib/utils';
-import DownloadButton from '@/modules/common/download-button';
 import FormattedDateTime from '@/modules/common/formatted-date-time';
 import Thumbnail from '@/modules/common/thumbnail';
 import Link from 'next/link';
+import ActionDropdown from './action-drop-down';
 
-interface Props {
+type Props = {
   file: FileProps;
-}
-
+};
 const FileCard = ({ file }: Props) => {
   const fileProps = getFileType(file.fileUrl);
   console.log(fileProps);
+
   return (
     <Link
       href={constructFileUrl(file.fileUrl)}
       target='_blank'
       rel='noopener noreferrer'
     >
-      <Card className='file-card w-full'>
+      <Card className='file-card'>
         <div className='flex justify-between'>
           <Thumbnail
             type={fileProps.type}
@@ -34,17 +34,14 @@ const FileCard = ({ file }: Props) => {
           />
 
           <div className='flex flex-col items-end justify-between'>
-            <DownloadButton
-              fileName={file.filename}
-              fileExtension={fileProps.extension}
-            />
+            <ActionDropdown file={file} />
           </div>
         </div>
         <div className='file-card-details gap-2'>
           <p className='subtitle-2 line-clamp-1'>
             {file.filename}
           </p>
-          <div className='flex justify-between gap-10 w-full'>
+          <div className='flex justify-between w-full'>
             <FormattedDateTime
               date={file.createdAt}
               className='body-2 text-light-100'

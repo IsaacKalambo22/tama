@@ -1,10 +1,8 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
@@ -16,58 +14,47 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
 
 import { FileProps } from '@/lib/api';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useState } from 'react';
 import {
-  deleteFile,
-  renameFile,
-} from '../../actions';
-import { actionsDropdownItems } from '../../constants';
+  constructDownloadUrl,
+  getFileType,
+} from '@/lib/utils';
+import Image from 'next/image';
+import { useState } from 'react';
+
+import { clientActionsDropdownItems } from '@/modules/admin/constants';
 import { FileDetails } from '../actions-modal-content';
 type Props = {
   file: FileProps;
 };
 const ActionDropdown = ({ file }: Props) => {
+  const fileProps = getFileType(file.fileUrl);
   const [isModalOpen, setIsModalOpen] =
     useState(false);
   const [isDropdownOpen, setIsDropdownOpen] =
     useState(false);
   const [action, setAction] =
     useState<ActionType | null>(null);
-  const [name, setName] = useState(file.name);
-  const [isLoading, setIsLoading] =
-    useState(false);
 
-  const closeAllModals = () => {
-    setIsModalOpen(false);
-    setIsDropdownOpen(false);
-    setAction(null);
-    setName(file.filename);
-    //   setEmails([]);
-  };
+  const handleDownload = (
+    fileName: string,
+    fileExtension: string
+  ) => {
+    const fullFileName = `${fileName}.${fileExtension}`; // Combine filename and extension
 
-  const handleAction = async () => {
-    if (!action) return;
-    setIsLoading(true);
-    let success = false;
+    const downloadLink =
+      document.createElement('a');
+    downloadLink.href =
+      constructDownloadUrl(fullFileName); // Use the full file name with extension
+    downloadLink.download = fullFileName; // Set the combined file name for download
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
 
-    const actions = {
-      rename: () => renameFile(),
-
-      delete: () => deleteFile(),
-    };
-
-    success = await actions[
-      action.value as keyof typeof actions
-    ]();
-
-    if (success) closeAllModals();
-
-    setIsLoading(false);
+    console.log(
+      `Downloading file: ${fullFileName}`
+    ); // Log the full file name
   };
 
   const renderDialogContent = () => {
@@ -81,58 +68,11 @@ const ActionDropdown = ({ file }: Props) => {
           <DialogTitle className='text-center text-light-100'>
             {label}
           </DialogTitle>
-          {value === 'rename' && (
-            <Input
-              type='text'
-              value={name}
-              onChange={(e) =>
-                setName(e.target.value)
-              }
-            />
-          )}
+
           {value === 'details' && (
             <FileDetails file={file} />
           )}
-
-          {value === 'delete' && (
-            <p className='delete-confirmation'>
-              Are you sure you want to delete{` `}
-              <span className='delete-file-name'>
-                {file.filename}
-              </span>
-              ?
-            </p>
-          )}
         </DialogHeader>
-        {['rename', 'delete', 'share'].includes(
-          value
-        ) && (
-          <DialogFooter className='flex flex-col gap-3 md:flex-row'>
-            <Button
-              onClick={closeAllModals}
-              className='modal-cancel-button'
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleAction}
-              className='modal-submit-button'
-            >
-              <p className='capitalize'>
-                {value}
-              </p>
-              {isLoading && (
-                <Image
-                  src='/assets/icons/loader.svg'
-                  alt='loader'
-                  width={24}
-                  height={24}
-                  className='animate-spin'
-                />
-              )}
-            </Button>
-          </DialogFooter>
-        )}
       </DialogContent>
     );
   };
@@ -159,7 +99,7 @@ const ActionDropdown = ({ file }: Props) => {
             {file.filename}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {actionsDropdownItems.map(
+          {clientActionsDropdownItems.map(
             (actionItem) => (
               <DropdownMenuItem
                 key={actionItem.value}
@@ -181,12 +121,15 @@ const ActionDropdown = ({ file }: Props) => {
               >
                 {actionItem.value ===
                 'download' ? (
-                  <Link
-                    href='/'
-                    // {constructDownloadUrl(
-                    //   file.name
-                    // )}
-                    download={file.filename}
+                  <div
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleDownload(
+                        file.filename,
+                        fileProps.extension
+                      );
+                    }}
                     className='flex items-center gap-2'
                   >
                     <Image
@@ -196,7 +139,7 @@ const ActionDropdown = ({ file }: Props) => {
                       height={30}
                     />
                     {actionItem.label}
-                  </Link>
+                  </div>
                 ) : (
                   <div className='flex items-center gap-2'>
                     <Image

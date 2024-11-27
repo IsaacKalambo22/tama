@@ -79,6 +79,19 @@ export const actionsDropdownItems = [
     value: 'delete',
   },
 ];
+export const clientActionsDropdownItems = [
+  {
+    label: 'Details',
+    icon: '/assets/icons/info.svg',
+    value: 'details',
+  },
+
+  {
+    label: 'Download',
+    icon: '/assets/icons/download.svg',
+    value: 'download',
+  },
+];
 
 export const sortTypes = [
   {

@@ -8,7 +8,7 @@ import {
 import FormattedDateTime from '@/modules/common/formatted-date-time';
 import Thumbnail from '@/modules/common/thumbnail';
 import Link from 'next/link';
-import ActionDropdown from './action-drop-down';
+import CustomActionDropdown from './custom-action-drop-down';
 
 type Props = {
   file: FileProps;
@@ -34,7 +34,7 @@ const CustomFileCard = ({ file }: Props) => {
           />
 
           <div className='flex flex-col items-end justify-between'>
-            <ActionDropdown file={file} />
+            <CustomActionDropdown file={file} />
           </div>
         </div>
         <div className='file-card-details gap-2'>
