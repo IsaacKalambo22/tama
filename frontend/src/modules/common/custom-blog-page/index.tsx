@@ -2,7 +2,10 @@ import {
   BlogProps,
   fetchBlogById,
 } from '@/lib/api';
-import { BASE_URL } from '@/lib/utils';
+import {
+  BASE_URL,
+  formatDateTime,
+} from '@/lib/utils';
 import Image from 'next/image';
 
 export default async function CustomBlogPage({
@@ -37,9 +40,7 @@ export default async function CustomBlogPage({
         <div className='text-sm text-gray-500 mt-2'>
           <span>By {blog.author}</span>
           <span className='ml-4'>
-            {new Date(
-              blog.createdAt
-            ).toLocaleDateString()}
+            {formatDateTime(blog.createdAt)}
           </span>
         </div>
       </header>
@@ -64,9 +65,7 @@ export default async function CustomBlogPage({
       <footer className='mt-12 pt-6 border-t'>
         <p className='text-sm text-gray-500'>
           Last updated:{' '}
-          {new Date(
-            blog.updatedAt
-          ).toLocaleDateString()}
+          {formatDateTime(blog.updatedAt)}
         </p>
       </footer>
     </article>
