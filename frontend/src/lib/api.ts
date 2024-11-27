@@ -213,6 +213,44 @@ export const fetchBlogs = async (): Promise<
     throw error;
   }
 };
+export const fetchBlogById = async (
+  id: string
+): Promise<BlogProps> => {
+  const endpoint = `${BASE_URL}/blogs/${id}`;
+
+  try {
+    const response = await fetch(endpoint);
+
+    if (!response.ok) {
+      throw new Error(
+        `HTTP error! Status: ${response.status}`
+      );
+    }
+
+    const data: ApiResponse<BlogProps> =
+      await response.json();
+
+    if (data.success) {
+      console.log(
+        'Blog fetched successfully:',
+        data.data
+      );
+      return data.data;
+    } else {
+      console.error(
+        'Error fetching blog:',
+        data.message
+      );
+      throw new Error(data.message);
+    }
+  } catch (error) {
+    console.error(
+      'An error occurred while fetching blogs:',
+      error
+    );
+    throw error;
+  }
+};
 export const fetchNews = async (): Promise<
   NewsProps[]
 > => {
@@ -228,6 +266,45 @@ export const fetchNews = async (): Promise<
     }
 
     const data: ApiResponse<NewsProps[]> =
+      await response.json();
+
+    if (data.success) {
+      console.log(
+        'News fetched successfully:',
+        data.data
+      );
+      return data.data;
+    } else {
+      console.error(
+        'Error fetching news:',
+        data.message
+      );
+      throw new Error(data.message);
+    }
+  } catch (error) {
+    console.error(
+      'An error occurred while fetching news:',
+      error
+    );
+    throw error;
+  }
+};
+
+export const fetchNewsById = async (
+  id: string
+): Promise<NewsProps> => {
+  const endpoint = `${BASE_URL}/news/${id}`;
+
+  try {
+    const response = await fetch(endpoint);
+
+    if (!response.ok) {
+      throw new Error(
+        `HTTP error! Status: ${response.status}`
+      );
+    }
+
+    const data: ApiResponse<NewsProps> =
       await response.json();
 
     if (data.success) {

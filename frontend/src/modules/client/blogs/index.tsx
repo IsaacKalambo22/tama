@@ -36,7 +36,7 @@ const Blogs = async () => {
           <CustomBlogCard
             key={blog.id}
             blog={blog}
-            link={`/admin/blogs/${blog.id}`}
+            link={`/blogs/${blog.id}`}
           />
         ))}
       </div>

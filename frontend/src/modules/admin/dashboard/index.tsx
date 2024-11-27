@@ -12,7 +12,6 @@ import AddNewHeader from '@/modules/common/add-new-header';
 import {
   FaBook,
   FaClipboard,
-  FaFileAlt,
   FaListAlt,
   FaNewspaper,
   FaRegCommentDots,
@@ -77,18 +76,9 @@ const stats: AdminStats[] = [
       />
     ),
   },
+
   {
-    title: 'Reports',
-    count: 30, // Mocked value will be replaced by fetched data
-    icon: (
-      <FaFileAlt
-        size={30}
-        className='text-teal-500'
-      />
-    ),
-  },
-  {
-    title: 'Publications',
+    title: 'Reports & Publications',
     count: 8, // Mocked value will be replaced by fetched data
     icon: (
       <FaBook
@@ -137,11 +127,7 @@ export default async function Dashboard() {
       case 'Users':
         stat.count = 1024; // Replace with actual user data fetching logic if needed
         break;
-      case 'Reports':
-        stat.count =
-          reports?.length || stat.count;
-        break;
-      case 'Publications':
+      case 'Reports & Publications':
         stat.count =
           reports?.length || stat.count;
         break;
