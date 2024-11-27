@@ -52,7 +52,7 @@ export default async function CustomNewsPage({
           alt={news.title}
           layout='fill'
           objectFit='cover'
-          className='rounded-lg'
+          className='rounded-2xl'
         />
       </div>
 

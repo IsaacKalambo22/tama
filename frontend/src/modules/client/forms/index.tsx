@@ -15,7 +15,7 @@ const Forms = async () => {
       error
     );
     return (
-      <div className='flex flex-col w-full max-w-7xl mx-auto items-center gap-16 mb-16'>
+      <div className='flex flex-col w-full items-center gap-10 mb-16'>
         <HeaderText
           title='Forms and Documents'
           subtitle='Access and download important forms for your needs.'
@@ -29,7 +29,7 @@ const Forms = async () => {
   }
 
   return (
-    <div className='flex flex-col w-full max-w-7xl mx-auto gap-16 mb-16 px-4 sm:px-6 lg:px-8'>
+    <div className='flex flex-col w-full gap-10 mb-16'>
       <HeaderText
         title='Forms and Documents'
         subtitle='Access and download important forms for your needs.'

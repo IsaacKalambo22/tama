@@ -17,7 +17,7 @@ const ReportsAndPublicationsTemplate =
         error
       );
       return (
-        <div className='flex flex-col w-full max-w-7xl mx-auto items-center gap-16 mb-16'>
+        <div className='flex flex-col w-full items-center gap-10 mb-16'>
           <HeaderText
             title='Reports and Publications'
             subtitle='Explore our latest research and insights.'
@@ -30,7 +30,7 @@ const ReportsAndPublicationsTemplate =
       );
     }
     return (
-      <div className='flex flex-col items-center gap-16 mb-16'>
+      <div className='flex flex-col items-center gap-10 mb-16'>
         <HeaderText
           title='Reports and Publications'
           subtitle='Explore our latest research and insights.'
