@@ -5,7 +5,12 @@ import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { useSidebarStore } from '@/providers/sidebar-state';
-import { LucideIcon, X } from 'lucide-react';
+import {
+  LogOut,
+  LucideIcon,
+  X,
+} from 'lucide-react';
+import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { SidebarLink } from './sidebar-link';
@@ -97,6 +102,34 @@ const Sidebar = ({ links }: SidebarProps) => {
             />
           ))}
         </nav>
+      </div>
+      {/* FOOTER */}
+      <div className='w-full flex flex-col p-2 mb-10'>
+        {/* First button visible only when the sidebar is NOT collapsed */}
+        <Button
+          onClick={() =>
+            signOut({ callbackUrl: '/' })
+          }
+          className={cn('h-9', {
+            hidden: isSidebarCollapsed,
+          })}
+        >
+          Sign Out
+        </Button>
+
+        {/* Second button (icon) visible only when the sidebar is collapsed */}
+        <Button
+          onClick={() =>
+            signOut({ callbackUrl: '/' })
+          }
+          size='icon'
+          variant='outline'
+          className={cn({
+            hidden: !isSidebarCollapsed,
+          })}
+        >
+          <LogOut className='h-4 w-4' />
+        </Button>
       </div>
     </Card>
   );
