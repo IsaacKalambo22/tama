@@ -2,7 +2,7 @@
 
 # dependencies
 /server/node_modules
-/server/dist
+/server/dist/
 /frontend/node_modules
 /frontend/.pnp
 .pnp.*
