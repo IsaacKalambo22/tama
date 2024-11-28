@@ -1,7 +1,7 @@
 import { Card } from '@/components/ui/card';
 import Image from 'next/image';
 
-interface ShopItemCardProps {
+export interface ShopItemCardProps {
   imageUrl: string;
   name: string;
 }
@@ -16,7 +16,7 @@ const ShopItemCard = ({
       alt={name}
       width={200}
       height={150}
-      className='rounded-2xl mb-2 object-cover'
+      className='rounded-2xl w-full mb-2 h-[10rem]'
     />
     <h3 className='text-lg font-medium text-center'>
       {name}
