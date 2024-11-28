@@ -1,8 +1,8 @@
 import { fetchBlogs } from '@/lib/api';
-import CustomBlogCard from '@/modules/admin/blogs/blog/blog-card';
 import HeaderText from '@/modules/common/header-text';
+import BlogList from './blog-list';
 
-const Blogs = async () => {
+const Blog = async () => {
   let blogs = [];
   try {
     blogs = await fetchBlogs(); // Fetch the data directly
@@ -31,17 +31,9 @@ const Blogs = async () => {
         title='Our Blogs'
         subtitle='Stay Updated with the Latest News and Insights'
       />
-      <div className='grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>
-        {blogs.map((blog) => (
-          <CustomBlogCard
-            key={blog.id}
-            blog={blog}
-            link={`/blogs/${blog.id}`}
-          />
-        ))}
-      </div>
+      <BlogList blogs={blogs} />
     </div>
   );
 };
 
-export default Blogs;
+export default Blog;

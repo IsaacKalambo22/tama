@@ -1,7 +1,7 @@
-import Blogs from '@/modules/client/blogs';
+import Blog from '@/modules/client/blog';
 
 const BlogsPage = () => {
-  return <Blogs />;
+  return <Blog />;
 };
 
 export default BlogsPage;
