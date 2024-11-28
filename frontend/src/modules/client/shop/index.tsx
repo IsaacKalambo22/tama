@@ -1,8 +1,7 @@
 import { fetchShops } from '@/lib/api';
-import { BASE_URL } from '@/lib/utils';
-import CustomShopCard from '@/modules/admin/custom-shop/custom-shop-card';
 import HeaderText from '@/modules/common/header-text';
-import ShopItemCard from './shop-item-card';
+import ShopItemCard from '../shops/shop-item-card';
+import ShopList from './shop-list';
 
 const Shops = async () => {
   let shops = [];
@@ -28,7 +27,7 @@ const Shops = async () => {
   }
 
   return (
-    <div className='flex flex-col w-full max-w-7xl mx-auto gap-10 px-4 sm:px-6 lg:px-8'>
+    <div className='flex flex-col w-full max-w-7xl mx-auto gap-10'>
       <HeaderText
         title='Discover Our Locations'
         subtitle='Find Our Trusted Stores Near You'
@@ -37,16 +36,8 @@ const Shops = async () => {
       {/* Render the files */}
       <>
         {shops.length > 0 ? (
-          <div className='file-list w-full grid grid-cols-2 md:grid-cols-3  gap-4'>
-            {shops.map((shop) => (
-              <CustomShopCard
-                key={shop.id}
-                imageUrl={`${BASE_URL}/uploads/${shop.imageUrl}`}
-                name={shop.name}
-                address={shop.address}
-                openingHours={shop.openHours}
-              />
-            ))}
+          <div className='flex flex-col w-full max-w-7xl mx-auto gap-10'>
+            <ShopList shops={shops} />
           </div>
         ) : (
           <p className='empty-list'>
