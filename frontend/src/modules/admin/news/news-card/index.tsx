@@ -10,6 +10,7 @@ import {
   formatDateTime,
 } from '@/lib/utils';
 import Image from 'next/image';
+import NewsActionDropdown from '../news-action-dropdown';
 interface Props {
   newsItem: NewsProps;
 }
@@ -26,7 +27,10 @@ const NewsCard = ({ newsItem }: Props) => {
     .toUpperCase(); // Get the first letter of the author's name
 
   return (
-    <Card className='p-6 shadow-none cursor-pointer rounded-3xl space-y-4 transition-transform transform hover:scale-105'>
+    <Card className='p-6 shadow-none rounded-3xl hover:shadow-lg cursor-pointer transition-shadow relative'>
+      <div className='absolute top-5 right-5'>
+        <NewsActionDropdown news={newsItem} />
+      </div>
       <Image
         src={`${BASE_URL}/uploads/${imageUrl}`}
         alt={title}

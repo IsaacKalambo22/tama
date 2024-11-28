@@ -70,6 +70,11 @@ app.patch(
   shops
 );
 app.patch(
+  '/api/v1/news/:id',
+  upload.single('file'),
+  news
+);
+app.patch(
   '/api/v1/blogs/:id',
   upload.single('file'),
   blogs

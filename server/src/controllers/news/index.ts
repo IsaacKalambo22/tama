@@ -181,17 +181,29 @@ export const updateNews = async (
       });
       return;
     }
-
-    // Update the news details
+    // Prepare updated data, ignoring empty strings
+    const updatedData = {
+      title:
+        title?.trim() === ''
+          ? existingNews.title
+          : title,
+      imageUrl:
+        imageUrl?.trim() === ''
+          ? existingNews.imageUrl
+          : imageUrl,
+      content:
+        content?.trim() === ''
+          ? existingNews.content
+          : content,
+      author:
+        author?.trim() === ''
+          ? existingNews.author
+          : author,
+    };
+    // Update the blog details
     const updatedNews = await prisma.news.update({
       where: { id },
-      data: {
-        title: title ?? existingNews.title,
-        imageUrl:
-          imageUrl ?? existingNews.imageUrl,
-        content: content ?? existingNews.content,
-        author: author ?? existingNews.author,
-      },
+      data: updatedData,
     });
 
     // Respond with success
