@@ -3,20 +3,27 @@
 # Use a lightweight base image
 FROM node:23-alpine3.19
 
-# Set the working directory inside the container
+RUN apk add --no-cache libc6-compat git
+
+
+
 WORKDIR /app
 
-# Copy package.json and package-lock.json files
-COPY package*.json ./
+COPY package.json package-lock.* ./
+RUN npm install --frozen-lockfile --prefer-frozen-lockfile
 
-# Install dependencies
-RUN npm install
 
-# Copy the rest of the application code
+ENV NODE_ENV development
+
 COPY . .
 
-# Expose port 8000 to access the application
+
+# Expose the port for development
+# Exposed port (for orchestrators and dynamic reverse proxies)
 EXPOSE 8000
+ENV PORT 8000
+ENV HOSTNAME "0.0.0.0"
+
 
 # Start the application in development mode
 CMD ["npm", "run", "dev"]

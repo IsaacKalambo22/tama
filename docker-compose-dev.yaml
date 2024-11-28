@@ -1,5 +1,8 @@
 services:
-  tama-farmers-web:
+  tama-web:
+    container_name: tama-web
+    depends_on: 
+      - tama-api
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev # Or Dockerfile.prod, as needed
@@ -22,10 +25,13 @@ services:
 
     command: pnpm dev # Run development mode with hot-reloading
     networks:
-      - tama-farmers-network
+      - tama-network
     restart: unless-stopped
 
-  tama-farmers-server:
+  tama-api:
+    container_name: tama-api
+    depends_on: 
+      - tama_DB
     build:
       context: ./server
       dockerfile: Dockerfile.dev # Or Dockerfile.prod, as needed
@@ -38,34 +44,32 @@ services:
       NODE_ENV: development # Set environment variable to development
       PORT: 8000 # Application port
       HOSTNAME: '0.0.0.0' # Allow access from all IP addresses
-      AUTH_SECRET: wTFm+Txkfy/kbsrVQP8AsMIi3rD+d+LdQcFdXPTCYrRefHhBrsxEoJ7
-      NEXT_PUBLIC_SERVER_URL: http://localhost:3000
-      NEXT_PUBLIC_API_BASE_URL: http://192.168.1.130:8222/api/v1
-      AUTH_TRUST_HOST: true
+      
 
-    command: npm dev # Run development mode with hot-reloading
+    command: npm run dev # Run development mode with hot-reloading
     networks:
-      - tama-farmers-network
+      - tama-network
     restart: unless-stopped
 
-  postgreSQL_DB:
+  tama_DB:
     image: postgres:16-alpine3.19
-    container_name: postgreSQL_DB
+    container_name: tama_DB
     environment:
       POSTGRES_USER: programmer
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: tama
+      POSTGRES_DB: project_management
       PGDATA: /data/postgres
     volumes:
-      - postgreSQL_DB:/var/lib/postgresql/data
+      - tama_DB:/var/lib/postgresql/data
     ports:
-      - '5434:5432'
+      - '5433:5432'
     networks:
-      - tama-farmers-network
+      - tama-network
     restart: unless-stopped
 
 volumes:
-  postgreSQL_DB:
+  tama_DB:
 
 networks:
-  tama-farmers-network:
+  tama-network:
+    driver: bridge
