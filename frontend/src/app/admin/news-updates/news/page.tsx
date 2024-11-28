@@ -1,7 +1,7 @@
-import CustomNews from '@/modules/admin/custom-news';
+import News from '@/modules/admin/news';
 
 const NewsPage = () => {
-  return <CustomNews />;
+  return <News />;
 };
 
 export default NewsPage;
