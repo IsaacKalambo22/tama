@@ -15,7 +15,7 @@ import {
 import { ShopProps } from '@/lib/api';
 import Image from 'next/image';
 import { useState } from 'react';
-import { actionsDropdownItems } from '../../constants';
+import { adminActionsDropdownItems } from '../../constants';
 import ModalDeleteShop from '../modal-delete-shop';
 import ModalEditShop from '../modal-edit-shop';
 type Props = {
@@ -37,7 +37,7 @@ const ShopActionDropdown = ({
 
     const { value } = action;
 
-    if(value === 'rename') {
+    if(value === 'edit') {
       return <ModalEditShop
       isOpen={isModalOpen}
       onClose={() => setIsModalOpen(false)}
@@ -48,6 +48,7 @@ const ShopActionDropdown = ({
       return <ModalDeleteShop
       isOpen={isModalOpen}
       onClose={() => setIsModalOpen(false)}
+      shop={shop}
        />
     }
   
@@ -80,7 +81,7 @@ const ShopActionDropdown = ({
             {shop.name}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {actionsDropdownItems.map(
+          {adminActionsDropdownItems.map(
             (actionItem) => (
               <DropdownMenuItem
                 key={actionItem.value}
@@ -90,8 +91,7 @@ const ShopActionDropdown = ({
 
                   if (
                     [
-                      'rename',
-                      'share',
+                      'edit',
                       'delete',
                       'details',
                     ].includes(actionItem.value)

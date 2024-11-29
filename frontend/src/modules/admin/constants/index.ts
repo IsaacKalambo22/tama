@@ -79,6 +79,24 @@ export const actionsDropdownItems = [
     value: 'delete',
   },
 ];
+
+export const adminActionsDropdownItems = [
+  {
+    label: 'Edit',
+    icon: '/assets/icons/edit.svg',
+    value: 'edit',
+  },
+  {
+    label: 'Details',
+    icon: '/assets/icons/info.svg',
+    value: 'details',
+  },
+  {
+    label: 'Delete',
+    icon: '/assets/icons/delete.svg',
+    value: 'delete',
+  },
+];
 export const clientActionsDropdownItems = [
   {
     label: 'Details',
