@@ -7,15 +7,15 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 
-interface CustomBlogCardProps {
+interface BlogCardProps {
   blog: BlogProps;
   link: string;
 }
 
-const CustomBlogCard = ({
+const BlogCard = ({
   blog,
   link,
-}: CustomBlogCardProps) => {
+}: BlogCardProps) => {
   const {
     title,
     content,
@@ -55,4 +55,4 @@ const CustomBlogCard = ({
   );
 };
 
-export default CustomBlogCard;
+export default BlogCard;

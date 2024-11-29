@@ -1,8 +1,8 @@
 import { fetchBlogs } from '@/lib/api';
 import AddNewHeader from '@/modules/common/add-new-header';
-import CustomBlogCard from './custom-blog-card';
+import BlogCard from './blog-card';
 
-const CustomBlog = async () => {
+const Blog = async () => {
   let blogs = [];
   try {
     blogs = await fetchBlogs(); // Fetch the data directly
@@ -32,7 +32,7 @@ const CustomBlog = async () => {
       />
       <div className='grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
         {blogs.map((blog) => (
-          <CustomBlogCard
+          <BlogCard
             key={blog.id}
             blog={blog}
             link={`/blogs/${blog.id}`}
@@ -43,4 +43,4 @@ const CustomBlog = async () => {
   );
 };
 
-export default CustomBlog;
+export default Blog;

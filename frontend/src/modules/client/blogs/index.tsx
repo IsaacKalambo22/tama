@@ -1,5 +1,5 @@
 import { fetchBlogs } from '@/lib/api';
-import CustomBlogCard from '@/modules/admin/custom-blog/custom-blog-card';
+import CustomBlogCard from '@/modules/admin/blog/blog/blog-card';
 import HeaderText from '@/modules/common/header-text';
 
 const Blogs = async () => {

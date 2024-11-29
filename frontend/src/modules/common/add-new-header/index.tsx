@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import ModalNewBlog from '@/modules/admin/modal-new-blog';
+import ModalNewBlog from '@/modules/admin/blog/modal-new-blog';
 import ModalNewCouncilList from '@/modules/admin/modal-new-council-list';
 import ModalNewForm from '@/modules/admin/modal-new-form';
 import ModalNewNews from '@/modules/admin/modal-new-news';
