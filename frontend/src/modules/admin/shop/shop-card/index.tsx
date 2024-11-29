@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card';
 import { ShopProps } from '@/lib/api';
 import { BASE_URL } from '@/lib/utils';
 import Image from 'next/image';
-import ShopActionDropdown from '../shop/shop-action-dropdown';
+import ShopActionDropdown from '../shop-action-dropdown';
 
 interface Props {
  shop:ShopProps
@@ -13,7 +13,7 @@ interface Props {
 
 
 
-const NewShopCard = ({
+const ShopCard = ({
  shop
 }: Props) => {
 
@@ -42,4 +42,4 @@ const NewShopCard = ({
   </Card>
 }
 
-export default NewShopCard;
+export default ShopCard;

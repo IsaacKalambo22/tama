@@ -6,7 +6,7 @@ import ModalNewCouncilList from '@/modules/admin/modal-new-council-list';
 import ModalNewForm from '@/modules/admin/modal-new-form';
 import ModalNewNews from '@/modules/admin/modal-new-news';
 import ModalNewPublication from '@/modules/admin/modal-new-publication';
-import ModalNewShop from '@/modules/admin/modal-new-shop';
+import ModalNewShop from '@/modules/admin/shop/modal-new-shop';
 import { PlusSquare } from 'lucide-react';
 import { ReactElement, useState } from 'react';
 

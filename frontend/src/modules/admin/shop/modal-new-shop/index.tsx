@@ -1,12 +1,6 @@
 'use client';
 
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle
-} from '@/components/ui/dialog';
-import {
   Form,
   FormControl,
 } from '@/components/ui/form';
@@ -20,7 +14,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
-import { createShop } from '../actions';
+import { createShop } from '../../actions';
+import Modal from '../../modal';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
@@ -110,14 +105,10 @@ const ModalNewShop = ({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className='sm:max-w-[425px]'>
-        <DialogHeader>
-          <DialogTitle>Add New Shop</DialogTitle>
-        </DialogHeader>
+    <Modal isOpen={isOpen} onClose={onClose} name='Add New Shop'>
         <Form {...form}>
           <form
-            className='flex flex-col gap-5 w-full max-w-[400px]'
+            className='flex flex-col gap-5 w-full'
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <CustomFormField
@@ -139,14 +130,14 @@ const ModalNewShop = ({
               name='openHours'
               label='Open Hours'
               control={form.control}
-              placeholder='Enter file openHours'
+              placeholder='Enter openHours'
             />
 
             <CustomFormField
               fieldType={FormFieldType.SKELETON}
               control={form.control}
               name='files'
-              label='Image'
+              label='Shop image'
               renderSkeleton={(field) => (
                 <FormControl>
                   <FileUploader
@@ -170,8 +161,7 @@ const ModalNewShop = ({
             </SubmitButton>
           </form>
         </Form>
-      </DialogContent>
-    </Dialog>
+    </Modal>
   );
 };
 

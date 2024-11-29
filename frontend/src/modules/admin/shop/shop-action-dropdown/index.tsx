@@ -1,8 +1,6 @@
 'use client';
 
-import {
-  Dialog
-} from '@/components/ui/dialog';
+import { Dialog } from '@/components/ui/dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,45 +16,54 @@ import { useState } from 'react';
 import { adminActionsDropdownItems } from '../../constants';
 import ModalDeleteShop from '../modal-delete-shop';
 import ModalEditShop from '../modal-edit-shop';
+import ModalViewShop from '../modal-view-shop';
 type Props = {
-  shop:ShopProps
-
+  shop: ShopProps;
 };
-const ShopActionDropdown = ({
-  shop
-}: Props) => {
+const ShopActionDropdown = ({ shop }: Props) => {
   const [isModalOpen, setIsModalOpen] =
     useState(false);
   const [isDropdownOpen, setIsDropdownOpen] =
     useState(false);
   const [action, setAction] =
     useState<ActionType | null>(null);
- 
+
   const renderDialogContent = () => {
     if (!action) return null;
 
     const { value } = action;
 
-    if(value === 'edit') {
-      return <ModalEditShop
-      isOpen={isModalOpen}
-      onClose={() => setIsModalOpen(false)}
-      shop={shop}
-       />
+    if (value === 'edit') {
+      return (
+        <ModalEditShop
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          shop={shop}
+        />
+      );
     }
-    if(value === 'delete') {
-      return <ModalDeleteShop
-      isOpen={isModalOpen}
-      onClose={() => setIsModalOpen(false)}
-      shop={shop}
-       />
+    if (value === 'details') {
+      return (
+        <ModalViewShop
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          shop={shop}
+        />
+      );
     }
-  
+    if (value === 'delete') {
+      return (
+        <ModalDeleteShop
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          shop={shop}
+        />
+      );
+    }
   };
 
   return (
     <Dialog
-    
       open={isModalOpen}
       onOpenChange={setIsModalOpen}
     >
@@ -65,16 +72,14 @@ const ShopActionDropdown = ({
         onOpenChange={setIsDropdownOpen}
       >
         <DropdownMenuTrigger className='shad-no-focus'>
-  <div
-    className="rounded-full bg-white/80 hover:bg-white/90 backdrop-blur-md shadow-md p-2"
-  >
-    <Image
-      src="/assets/icons/dots.svg"
-      alt="dots"
-      width={18}
-      height={18}
-    />
-  </div>
+          <div className='rounded-full bg-white/80 hover:bg-white/90 backdrop-blur-md shadow-md p-2'>
+            <Image
+              src='/assets/icons/dots.svg'
+              alt='dots'
+              width={18}
+              height={18}
+            />
+          </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuLabel className='max-w-[200px] truncate'>
