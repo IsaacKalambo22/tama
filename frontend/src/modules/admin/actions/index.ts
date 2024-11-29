@@ -141,6 +141,10 @@ export const updateShop = async (
       }
     );
 
+    if (!response.ok) {
+      throw new Error('Failed to upload files');
+    }
+
     const result = await response.json();
     revalidatePath('/');
     return parseServerActionResponse({

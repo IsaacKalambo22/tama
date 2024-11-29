@@ -64,6 +64,11 @@ app.post(
   upload.single('file'),
   shops
 );
+app.patch(
+  '/api/v1/shops/:id',
+  upload.single('file'),
+  shops
+);
 app.post(
   '/api/v1/forms',
   upload.single('file'),

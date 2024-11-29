@@ -58,12 +58,13 @@ const ModalEditShop =({isOpen, onClose, shop}: Props) => {
       );
       formData.append('address', values.address ?? "");
 
-      // Directly append the file
-      const file = values.files[0];
-      formData.append('file', file);
-      formData.append('imageUrl', file.name);
-      console.log('File name:', file.name);
-
+      if (values.files.length > 0) {
+        const file = values.files[0];
+        formData.append("file", file);
+        formData.append("imageUrl", file.name);
+      } else {
+        formData.append("imageUrl", shop.imageUrl);
+      }
       for (const pair of formData.entries()) {
         console.log(pair);
       }

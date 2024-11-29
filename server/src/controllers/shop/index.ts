@@ -93,6 +93,7 @@ export const updateShop = async (
   const { id } = req.params;
   const { name, imageUrl, address, openHours } =
     req.body;
+  console.log(req.body);
 
   // Validate input
   if (!id) {
@@ -118,20 +119,31 @@ export const updateShop = async (
       });
       return;
     }
+    // Prepare updated data, ignoring empty strings
+    const updatedData = {
+      name:
+        name?.trim() === ''
+          ? existingShop.name
+          : name,
+      imageUrl:
+        imageUrl?.trim() === ''
+          ? existingShop.imageUrl
+          : imageUrl,
+      address:
+        address?.trim() === ''
+          ? existingShop.address
+          : address,
+      openHours:
+        openHours?.trim() === ''
+          ? existingShop.openHours
+          : openHours,
+    };
 
     // Update the shop details
     const updatedShop = await prisma.shop.update({
       where: { id },
-      data: {
-        name: name ?? existingShop.name,
-        imageUrl:
-          imageUrl ?? existingShop.imageUrl,
-        address: address ?? existingShop.address,
-        openHours:
-          openHours ?? existingShop.openHours,
-      },
+      data: updatedData,
     });
-
     // Respond with success
     res.status(200).json({
       success: true,
