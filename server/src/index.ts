@@ -69,6 +69,11 @@ app.patch(
   upload.single('file'),
   shops
 );
+app.patch(
+  '/api/v1/blogs/:id',
+  upload.single('file'),
+  blogs
+);
 app.post(
   '/api/v1/forms',
   upload.single('file'),

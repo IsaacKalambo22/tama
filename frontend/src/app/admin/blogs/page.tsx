@@ -1,7 +1,7 @@
-import CustomBlog from '@/modules/admin/blog/blog';
+import Blog from '@/modules/admin/blog';
 
 const AdminBlogsPage = () => {
-  return <CustomBlog />;
+  return <Blog />;
 };
 
 export default AdminBlogsPage;

@@ -1,6 +1,6 @@
 import { fetchBlogs } from '@/lib/api';
 import AddNewHeader from '@/modules/common/add-new-header';
-import BlogCard from './blog-card';
+import BlogList from './blog-list';
 
 const Blog = async () => {
   let blogs = [];
@@ -30,15 +30,7 @@ const Blog = async () => {
         name='Blogs'
         buttonName='New Blog'
       />
-      <div className='grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
-        {blogs.map((blog) => (
-          <BlogCard
-            key={blog.id}
-            blog={blog}
-            link={`/blogs/${blog.id}`}
-          />
-        ))}
-      </div>
+      <BlogList blogs={blogs} />
     </div>
   );
 };

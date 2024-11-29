@@ -168,16 +168,29 @@ export const updateBlog = async (
       return;
     }
 
+    // Prepare updated data, ignoring empty strings
+    const updatedData = {
+      title:
+        title?.trim() === ''
+          ? existingBlog.title
+          : title,
+      imageUrl:
+        imageUrl?.trim() === ''
+          ? existingBlog.imageUrl
+          : imageUrl,
+      content:
+        content?.trim() === ''
+          ? existingBlog.content
+          : content,
+      author:
+        author?.trim() === ''
+          ? existingBlog.author
+          : author,
+    };
     // Update the blog details
     const updatedBlog = await prisma.blog.update({
       where: { id },
-      data: {
-        title: title ?? existingBlog.title,
-        imageUrl:
-          imageUrl ?? existingBlog.imageUrl,
-        content: content ?? existingBlog.content,
-        author: author ?? existingBlog.author,
-      },
+      data: updatedData,
     });
 
     // Respond with success
