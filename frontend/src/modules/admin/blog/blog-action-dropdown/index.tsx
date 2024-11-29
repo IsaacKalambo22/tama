@@ -16,6 +16,7 @@ import { useState } from 'react';
 import { adminActionsDropdownItems } from '../../constants';
 import ModalDeleteBlog from '../modal-delete-blog';
 import ModalEditBlog from '../modal-edit-blog';
+import ModalViewBlog from '../modal-view-blog';
 type Props = {
   blog: BlogProps;
 };
@@ -41,15 +42,15 @@ const BlogActionDropdown = ({ blog }: Props) => {
         />
       );
     }
-    // if (value === 'details') {
-    //   return (
-    //     <ModalViewBlog
-    //       isOpen={isModalOpen}
-    //       onClose={() => setIsModalOpen(false)}
-    //       blog={blog}
-    //     />
-    //   );
-    // }
+    if (value === 'details') {
+      return (
+        <ModalViewBlog
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          blog={blog}
+        />
+      );
+    }
     if (value === 'delete') {
       return (
         <ModalDeleteBlog
