@@ -1,0 +1,97 @@
+'use client';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogClose,
+  DialogDescription,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import { toast } from '@/hooks/use-toast';
+import { BlogProps } from '@/lib/api';
+import CustomButton, {
+  BUTTON_VARIANT,
+} from '@/modules/common/custom-button';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
+import { deleteBlog } from '../../actions';
+import Modal from '../../modal';
+
+type Props = {
+  isOpen: boolean;
+  onClose: () => void;
+  blog: BlogProps;
+};
+
+const ModalDeleteBlog = ({
+  isOpen,
+  onClose,
+  blog,
+}: Props) => {
+  const [isLoading, setIsLoading] =
+    useState(false);
+  const path = usePathname();
+  const onSubmit = async () => {
+    setIsLoading(true);
+
+    try {
+      const result = await deleteBlog(
+        blog.id,
+        path
+      );
+
+      console.log('Upload result:', result);
+      onClose();
+      toast({
+        title: 'Success',
+        description: `${blog.title} has been deleted successfully`,
+      });
+      // Handle the result, such as showing success or error messages
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description:
+          'An unexpected error has occurred',
+        variant: 'destructive',
+      });
+      console.log('Upload error:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        name={`Delete ${blog.title}`}
+      >
+        <DialogDescription>
+          Are you sure you want to delete{' '}
+          {blog.title}?
+        </DialogDescription>
+        <DialogFooter className='flex flex-col gap-3 md:flex-row'>
+          <DialogClose asChild>
+            <Button
+              type='button'
+              className='h-9'
+              variant='secondary'
+            >
+              Close
+            </Button>
+          </DialogClose>
+          <CustomButton
+            isLoading={isLoading}
+            loadingText='Deleting...'
+            variant={BUTTON_VARIANT.DESTRUCTIVE}
+            className='h-9'
+            onClick={onSubmit}
+          >
+            Confirm
+          </CustomButton>
+        </DialogFooter>
+      </Modal>
+    </Dialog>
+  );
+};
+
+export default ModalDeleteBlog;
