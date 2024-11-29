@@ -1,52 +1,34 @@
-'use client';
-
+"use client"
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle
-} from '@/components/ui/dialog';
-import {
-  Form,
-  FormControl,
-} from '@/components/ui/form';
+  Dialog
+} from "@/components/ui/dialog";
+import { Form, FormControl } from '@/components/ui/form';
 import { toast } from '@/hooks/use-toast';
-import CustomFormField, {
-  FormFieldType,
-} from '@/modules/common/custom-form-field';
+import { ShopProps } from '@/lib/api';
+import CustomFormField, { FormFieldType } from '@/modules/common/custom-form-field';
 import { FileUploader } from '@/modules/common/file-uploader';
 import SubmitButton from '@/modules/common/submit-button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
-import { createShop } from '../actions';
+import { updateShop } from '../../actions';
+import Modal from "../../modal";
+
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  id?: string | null;
+  shop: ShopProps;
 };
 
-const ModalNewShop = ({
-  isOpen,
-  onClose,
-}: Props) => {
-  const [isLoading, setIsLoading] =
+const ModalEditShop =({isOpen, onClose, shop}: Props) => {
+   const [isLoading, setIsLoading] =
     useState(false);
 
   const formSchema = zod.object({
-    name: zod.string().min(2, {
-      message:
-        'Name must be at least 2 characters.',
-    }),
-    address: zod.string().min(2, {
-      message:
-        'Address must be at least 2 characters.',
-    }),
-    openHours: zod.string().min(2, {
-      message:
-        'OpenHours must be at least 2 characters.',
-    }),
+    name: zod.string().optional(),
+    address: zod.string().optional(),
+    openHours: zod.string().optional(),
     files: zod.custom<File[]>(),
   });
 
@@ -69,12 +51,12 @@ const ModalNewShop = ({
     try {
       // Create FormData instance
       const formData = new FormData();
-      formData.append('name', values.name);
+      formData.append('name', values.name ?? "");
       formData.append(
         'openHours',
-        values.openHours
+        values.openHours ?? ""
       );
-      formData.append('address', values.address);
+      formData.append('address', values.address ?? "");
 
       // Directly append the file
       const file = values.files[0];
@@ -86,14 +68,14 @@ const ModalNewShop = ({
         console.log(pair);
       }
 
-      const result = await createShop(formData);
+      const result = await updateShop(formData, shop.id);
 
       console.log('Upload result:', result);
       onClose();
       toast({
         title: 'Success',
         description:
-          'New form or document has been created successfully',
+          `${shop.name} has been updated successfully`,
       });
       // Handle the result, such as showing success or error messages
     } catch (error) {
@@ -108,16 +90,15 @@ const ModalNewShop = ({
       setIsLoading(false);
     }
   };
-
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className='sm:max-w-[425px]'>
-        <DialogHeader>
-          <DialogTitle>Add New Shop</DialogTitle>
-        </DialogHeader>
-        <Form {...form}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={onClose}
+    >
+    <Modal isOpen={isOpen} onClose={onClose} name={`Edit ${shop.name}`}>
+       <Form {...form}>
           <form
-            className='flex flex-col gap-5 w-full max-w-[400px]'
+            className='flex flex-col gap-5 w-full'
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <CustomFormField
@@ -164,15 +145,15 @@ const ModalNewShop = ({
               }
               isLoading={isLoading}
               className='w-full  h-9'
-              loadingText='Saving...'
+              loadingText='Updating...'
             >
-              Save
+              Update
             </SubmitButton>
           </form>
         </Form>
-      </DialogContent>
+     </Modal>
     </Dialog>
-  );
-};
+  )
+}
 
-export default ModalNewShop;
+export default ModalEditShop

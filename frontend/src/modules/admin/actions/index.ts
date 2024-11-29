@@ -2,9 +2,34 @@
 
 import { auth } from '@/auth';
 import { CouncilListProps } from '@/lib/api';
-import { parseServerActionResponse } from '@/lib/utils';
+import {
+  parseServerActionResponse,
+  parseStringify,
+} from '@/lib/utils';
 import { revalidatePath } from 'next/cache';
 
+const handleError = (
+  error: unknown,
+  message: string
+) => {
+  console.log(error, message);
+  throw error;
+};
+
+export const deleteFile = async (
+  id: string,
+  path: string
+) => {
+  try {
+    console.log('Deleted file');
+    console.log({ id });
+
+    revalidatePath(path);
+    return parseStringify({ status: 'success' });
+  } catch (error) {
+    handleError(error, 'Failed to rename file');
+  }
+};
 export const uploadFile = async () => {};
 export const createForm = async (
   formData: FormData
@@ -90,6 +115,46 @@ export const createShop = async (
       error
     );
     throw error;
+  }
+};
+export const updateShop = async (
+  formData: FormData,
+  id: string
+) => {
+  try {
+    const session = await auth();
+    if (!session)
+      return parseServerActionResponse({
+        error: 'Not signed in',
+        status: 'ERROR',
+      });
+
+    const token = session?.accessToken;
+    const response = await fetch(
+      `http://localhost:8000/api/v1/shops/${id}`,
+      {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      }
+    );
+
+    const result = await response.json();
+    revalidatePath('/');
+    return parseServerActionResponse({
+      ...result,
+      error: '',
+      status: 'SUCCESS',
+    });
+  } catch (error) {
+    console.log(error);
+
+    return parseServerActionResponse({
+      error: JSON.stringify(error),
+      status: 'ERROR',
+    });
   }
 };
 export const createBlog = async (
@@ -287,5 +352,3 @@ export const getFiles = async () => {};
 export const renameFile = async () => {};
 
 export const updateFileUsers = async () => {};
-
-export const deleteFile = async () => {};

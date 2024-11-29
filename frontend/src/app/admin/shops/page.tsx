@@ -1,7 +1,7 @@
-import CustomShop from '@/modules/admin/custom-shop';
+import Shop from '@/modules/admin/shop';
 
 const ShopsPage = () => {
-  return <CustomShop />;
+  return <Shop />;
 };
 
 export default ShopsPage;
