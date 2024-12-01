@@ -1,8 +1,8 @@
 import { fetchFormsAndDocuments } from '@/lib/api';
-import CustomForm from '@/modules/admin/custom-form';
 import AddNewHeader from '@/modules/common/add-new-header';
+import FormsAndDocumentsList from './forms-documents-list';
 
-const FormsPage = async () => {
+const FormsAndDocuments = async () => {
   let forms = [];
   try {
     forms = await fetchFormsAndDocuments(); // Fetch the data directly
@@ -30,9 +30,9 @@ const FormsPage = async () => {
         name='Forms and Documents'
         buttonName='New Form'
       />
-      <CustomForm files={forms} />
+      <FormsAndDocumentsList files={forms} />
     </div>
   );
 };
 
-export default FormsPage;
+export default FormsAndDocuments;

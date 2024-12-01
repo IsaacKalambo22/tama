@@ -52,6 +52,7 @@ app.post('/api/v1/reports-publications', upload.single('file'), reports_publicat
 app.post('/api/v1/shops', upload.single('file'), shop_1.default);
 app.patch('/api/v1/shops/:id', upload.single('file'), shop_1.default);
 app.patch('/api/v1/news/:id', upload.single('file'), news_1.default);
+app.patch('/api/v1/forms/:id', upload.single('file'), form_1.default);
 app.patch('/api/v1/blogs/:id', upload.single('file'), blog_1.default);
 app.post('/api/v1/forms', upload.single('file'), form_1.default);
 app.post('/api/v1/blogs', upload.single('file'), blog_1.default);

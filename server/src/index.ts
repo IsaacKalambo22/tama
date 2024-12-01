@@ -75,6 +75,11 @@ app.patch(
   news
 );
 app.patch(
+  '/api/v1/forms/:id',
+  upload.single('file'),
+  forms
+);
+app.patch(
   '/api/v1/blogs/:id',
   upload.single('file'),
   blogs

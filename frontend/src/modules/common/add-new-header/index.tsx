@@ -2,8 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import ModalNewBlog from '@/modules/admin/blog/modal-new-blog';
+import ModalNewForm from '@/modules/admin/forms-documents/modal-new-form';
 import ModalNewCouncilList from '@/modules/admin/modal-new-council-list';
-import ModalNewForm from '@/modules/admin/modal-new-form';
 import ModalNewPublication from '@/modules/admin/modal-new-publication';
 import ModalNewNews from '@/modules/admin/news/modal-new-news';
 import ModalNewShop from '@/modules/admin/shop/modal-new-shop';

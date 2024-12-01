@@ -110,16 +110,25 @@ export const updateForm = async (
       });
       return;
     }
-
-    // Update the form details
+    // Prepare updated data, ignoring empty strings
+    const updatedData = {
+      filename:
+        filename?.trim() === ''
+          ? existingForm.filename
+          : filename,
+      fileUrl:
+        fileUrl?.trim() === ''
+          ? existingForm.fileUrl
+          : fileUrl,
+      size:
+        size?.trim() === ''
+          ? existingForm.size
+          : Number(size),
+    };
+    // Update the blog details
     const updatedForm = await prisma.form.update({
       where: { id },
-      data: {
-        filename:
-          filename ?? existingForm.filename,
-        fileUrl: fileUrl ?? existingForm.fileUrl,
-        size: size ?? existingForm.size,
-      },
+      data: updatedData,
     });
 
     // Respond with success

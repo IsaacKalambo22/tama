@@ -21,8 +21,8 @@ export const ADMIN_LINKS = [
         href: '/admin/resources/reports-publications',
       },
       {
-        label: 'Forms',
-        href: '/admin/resources/forms',
+        label: 'Forms & Documents',
+        href: '/admin/resources/forms-documents',
       },
       {
         label: 'Council List',
@@ -58,9 +58,9 @@ export const ADMIN_LINKS = [
 
 export const actionsDropdownItems = [
   {
-    label: 'Rename',
+    label: 'Edit',
     icon: '/assets/icons/edit.svg',
-    value: 'rename',
+    value: 'edit',
   },
   {
     label: 'Details',
