@@ -18,6 +18,7 @@ import {
 import Image from 'next/image';
 import { useState } from 'react';
 import { actionsDropdownItems } from '../../constants';
+import ModalDeleteReports from '../modal-delete-reports';
 import ModalEditReports from '../modal-edit-reports';
 type Props = {
   file: FileProps;
@@ -75,15 +76,15 @@ const ReportsActionDropdown = ({
     //     />
     //   );
     // }
-    // if (value === 'delete') {
-    //   return (
-    //     <ModalDeleteReports
-    //       isOpen={isModalOpen}
-    //       onClose={() => setIsModalOpen(false)}
-    //       file={file}
-    //     />
-    //   );
-    // }
+    if (value === 'delete') {
+      return (
+        <ModalDeleteReports
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          file={file}
+        />
+      );
+    }
   };
 
   return (
