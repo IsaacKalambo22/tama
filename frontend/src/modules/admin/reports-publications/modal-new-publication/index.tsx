@@ -21,7 +21,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
-import { createReportAndPublication } from '../actions';
+import { createReportAndPublication } from '../../actions';
 type Props = {
   isOpen: boolean;
   onClose: () => void;

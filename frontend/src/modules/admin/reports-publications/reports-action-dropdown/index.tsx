@@ -20,6 +20,7 @@ import { useState } from 'react';
 import { actionsDropdownItems } from '../../constants';
 import ModalDeleteReports from '../modal-delete-reports';
 import ModalEditReports from '../modal-edit-reports';
+import ModalViewReports from '../modal-view-reports';
 type Props = {
   file: FileProps;
 };
@@ -67,15 +68,15 @@ const ReportsActionDropdown = ({
         />
       );
     }
-    // if (value === 'details') {
-    //   return (
-    //     <ModalViewReports
-    //       isOpen={isModalOpen}
-    //       onClose={() => setIsModalOpen(false)}
-    //       file={file}
-    //     />
-    //   );
-    // }
+    if (value === 'details') {
+      return (
+        <ModalViewReports
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          file={file}
+        />
+      );
+    }
     if (value === 'delete') {
       return (
         <ModalDeleteReports
