@@ -11,6 +11,7 @@ import {
 } from '@/lib/utils';
 import AddNewHeader from '@/modules/common/add-new-header';
 import Image from 'next/image';
+import NewsActionDropdown from './news-action-dropdown';
 import NewsList from './news-list';
 
 const News = async () => {
@@ -47,7 +48,12 @@ const News = async () => {
       <div className='space-y-10'>
         {/* Most Recent Story */}
         {mostRecent && (
-          <Card className='shadow-none rounded-lg border-none flex flex-col sm:flex-row items-center h-auto sm:h-[20rem] gap-10'>
+          <Card className='shadow-none rounded-lg border-none flex flex-col sm:flex-row items-center h-auto sm:h-[20rem] gap-10 relative'>
+            <div className='absolute top-5 right-5'>
+              <NewsActionDropdown
+                news={mostRecent}
+              />
+            </div>
             <Image
               src={`${BASE_URL}/uploads/${mostRecent.imageUrl}`}
               alt={mostRecent.title}
