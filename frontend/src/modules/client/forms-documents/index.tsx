@@ -1,9 +1,6 @@
-import {
-  fetchFormsAndDocuments,
-  FileProps,
-} from '@/lib/api';
+import { fetchFormsAndDocuments } from '@/lib/api';
 import HeaderText from '@/modules/common/header-text';
-import FileCard from '../file-card';
+import FormsAndDocumentsList from './forms-documents-list';
 
 const Forms = async () => {
   let forms = [];
@@ -37,11 +34,7 @@ const Forms = async () => {
 
       {/* Render the files */}
       {forms.length > 0 ? (
-        <div className='file-list w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-          {forms.map((file: FileProps) => (
-            <FileCard key={file.id} file={file} />
-          ))}
-        </div>
+        <FormsAndDocumentsList files={forms} />
       ) : (
         <p className='empty-list'>
           No Reports and Publications

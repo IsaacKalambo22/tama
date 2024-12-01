@@ -1,7 +1,7 @@
-import Forms from '@/modules/client/forms';
+import FormsAndDocuments from '@/modules/client/forms-documents';
 
 const FormsPage = () => {
-  return <Forms />;
+  return <FormsAndDocuments />;
 };
 
 export default FormsPage;
