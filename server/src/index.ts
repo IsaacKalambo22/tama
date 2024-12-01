@@ -80,6 +80,11 @@ app.patch(
   forms
 );
 app.patch(
+  '/api/v1/reports-publications/:id',
+  upload.single('file'),
+  reportsPublications
+);
+app.patch(
   '/api/v1/blogs/:id',
   upload.single('file'),
   blogs

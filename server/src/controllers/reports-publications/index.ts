@@ -90,7 +90,7 @@ export const updateReportAndPublication = async (
 ): Promise<void> => {
   const { id } = req.params;
   const { filename, fileUrl, size } = req.body;
-
+  console.log(req.body);
   // Validate input
   if (!id) {
     res.status(400).json({
@@ -120,21 +120,26 @@ export const updateReportAndPublication = async (
       return;
     }
 
-    // Update the reportAndPublication details
+    // Prepare updated data, ignoring empty strings
+    const updatedData = {
+      filename:
+        filename?.trim() === ''
+          ? existingReportAndPublication.filename
+          : filename,
+      fileUrl:
+        fileUrl?.trim() === ''
+          ? existingReportAndPublication.fileUrl
+          : fileUrl,
+      size:
+        size?.trim() === ''
+          ? existingReportAndPublication.size
+          : Number(size),
+    };
+    // Update the reports details
     const updatedReportAndPublication =
       await prisma.reportAndPublication.update({
         where: { id },
-        data: {
-          filename:
-            filename ??
-            existingReportAndPublication.filename,
-          fileUrl:
-            fileUrl ??
-            existingReportAndPublication.fileUrl,
-          size:
-            size ??
-            existingReportAndPublication.size,
-        },
+        data: updatedData,
       });
 
     // Respond with success
