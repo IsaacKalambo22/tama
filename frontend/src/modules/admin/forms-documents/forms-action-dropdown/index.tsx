@@ -20,6 +20,7 @@ import { useState } from 'react';
 import { actionsDropdownItems } from '../../constants';
 import ModalDeleteForms from '../modal-delete-forms';
 import ModalEditForms from '../modal-edit-forms';
+import ModalViewForms from '../modal-view-forms';
 type Props = {
   file: FileProps;
 };
@@ -65,15 +66,15 @@ const FormsActionDropdown = ({ file }: Props) => {
         />
       );
     }
-    // if (value === 'details') {
-    //   return (
-    //     <ModalViewFile
-    //       isOpen={isModalOpen}
-    //       onClose={() => setIsModalOpen(false)}
-    //       file={file}
-    //     />
-    //   );
-    // }
+    if (value === 'details') {
+      return (
+        <ModalViewForms
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          file={file}
+        />
+      );
+    }
     if (value === 'delete') {
       return (
         <ModalDeleteForms
