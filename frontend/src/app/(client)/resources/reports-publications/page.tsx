@@ -1,11 +1,11 @@
-import ReportsAndPublicationsTemplate from '@/modules/client/reports-publications';
+import ReportsAndPublications from '@/modules/client/reports-publications';
 
-const ReportsAndPublications = () => {
+const ReportsAndPublicationsPage = () => {
   return (
     <div>
-      <ReportsAndPublicationsTemplate />
+      <ReportsAndPublications />
     </div>
   );
 };
 
-export default ReportsAndPublications;
+export default ReportsAndPublicationsPage;

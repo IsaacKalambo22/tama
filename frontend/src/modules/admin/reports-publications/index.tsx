@@ -3,22 +3,22 @@ import AddNewHeader from '@/modules/common/add-new-header';
 import ReportsAndPublicationsList from './reports-publications-list';
 
 const ReportsAndPublications = async () => {
-  let forms = [];
+  let reports = [];
   try {
-    forms = await fetchReportsAndPublications(); // Fetch the data directly
+    reports = await fetchReportsAndPublications(); // Fetch the data directly
   } catch (error) {
     console.error(
-      'Failed to fetch forms:',
+      'Failed to fetch reports:',
       error
     );
     return (
       <div>
         <AddNewHeader
-          name='Forms and Documents'
-          buttonName='New Form'
+          name='Reports and Publications'
+          buttonName='New Report or Publication'
         />
         <p className='text-red-500'>
-          Failed to load forms and documents.
+          Failed to load reports and documents.
         </p>
       </div>
     );
@@ -30,7 +30,9 @@ const ReportsAndPublications = async () => {
         name='Reports and Publications'
         buttonName='New Report or Publication'
       />
-      <ReportsAndPublicationsList files={forms} />
+      <ReportsAndPublicationsList
+        files={reports}
+      />
     </div>
   );
 };
