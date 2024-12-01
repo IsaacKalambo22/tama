@@ -14,6 +14,7 @@ import { NewsProps } from '@/lib/api';
 import Image from 'next/image';
 import { useState } from 'react';
 import { adminActionsDropdownItems } from '../../constants';
+import ModalDeleteNews from '../modal-delete-news';
 import ModalEditNews from '../modal-edit-news';
 type Props = {
   news: NewsProps;
@@ -49,15 +50,15 @@ const NewsActionDropdown = ({ news }: Props) => {
     //     />
     //   );
     // }
-    // if (value === 'delete') {
-    //   return (
-    //     <ModalDeleteNews
-    //       isOpen={isModalOpen}
-    //       onClose={() => setIsModalOpen(false)}
-    //       news={news}
-    //     />
-    //   );
-    // }
+    if (value === 'delete') {
+      return (
+        <ModalDeleteNews
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          news={news}
+        />
+      );
+    }
   };
 
   return (
