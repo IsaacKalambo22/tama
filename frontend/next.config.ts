@@ -1,6 +1,8 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  cacheMaxMemorySize: 0, // disable default in-memory caching
+
   typescript: {
     ignoreBuildErrors: true,
   },

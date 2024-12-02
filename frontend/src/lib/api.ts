@@ -1,5 +1,6 @@
 import { BASE_URL } from './utils';
 
+// Shared interfaces
 export interface CouncilListProps {
   id: string;
   demarcation: string;
@@ -23,16 +24,15 @@ export interface NewsProps {
 }
 
 export interface BlogProps {
-  id: string; // Unique identifier for the blog
-  title: string; // Title of the blog
-  content: string; // Content or body of the blog
-  imageUrl: string; // URL for the blog's image
-  author: string; // Author's name
-  createdAt: string; // Timestamp of when the blog was created
-  updatedAt: string; // Timestamp of the last update to the blog
+  id: string;
+  title: string;
+  content: string;
+  imageUrl: string;
+  author: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
-// Define the type for a report/publication
 export interface FileProps {
   id: string;
   fileUrl: string;
@@ -58,311 +58,109 @@ export interface ApiResponse<T> {
   data: T;
 }
 
-// Function to fetch reports and publications
+// Utility function for API requests
+async function handleFetch<T>(
+  endpoint: string
+): Promise<T> {
+  try {
+    const response = await fetch(endpoint);
+
+    if (!response.ok) {
+      console.log(
+        `HTTP error! Status: ${response.status} | Endpoint: ${endpoint}`
+      );
+      throw new Error(
+        `HTTP error! Status: ${response.status}`
+      );
+    }
+
+    const data: ApiResponse<T> =
+      await response.json();
+
+    if (data.success) {
+      console.log(
+        `Data fetched successfully from ${endpoint}:`,
+        data.data
+      );
+      return data.data;
+    } else {
+      console.log(
+        `API Error at ${endpoint}: ${data.message}`
+      );
+      throw new Error(data.message);
+    }
+  } catch (error) {
+    console.log(
+      `Error fetching data from ${endpoint}:`,
+      error.message
+    );
+    // return Promise.reject(
+    //   new Error(
+    //     `Failed to fetch data: ${error.message}`
+    //   )
+    // );
+  }
+}
+
+// Fetch functions using the utility
 export const fetchReportsAndPublications =
   async (): Promise<FileProps[]> => {
-    const endpoint = `${BASE_URL}/reports-publications`;
-
-    try {
-      const response = await fetch(endpoint);
-
-      if (!response.ok) {
-        throw new Error(
-          `HTTP error! Status: ${response.status}`
-        );
-      }
-
-      const data: ApiResponse<FileProps[]> =
-        await response.json();
-
-      if (data.success) {
-        console.log(
-          'Reports and Publications fetched successfully:',
-          data.data
-        );
-        return data.data;
-      } else {
-        console.error(
-          'Error fetching reports and publications:',
-          data.message
-        );
-        throw new Error(data.message);
-      }
-    } catch (error) {
-      console.error(
-        'An error occurred while fetching reports and publications:',
-        error
-      );
-      throw error;
-    }
+    return handleFetch<FileProps[]>(
+      `${BASE_URL}/reports-publications`
+    );
   };
 
-// Function to fetch forms and documents
 export const fetchFormsAndDocuments =
   async (): Promise<FileProps[]> => {
-    const endpoint = `${BASE_URL}/forms`;
-
-    try {
-      const response = await fetch(endpoint);
-
-      if (!response.ok) {
-        throw new Error(
-          `HTTP error! Status: ${response.status}`
-        );
-      }
-
-      const data: ApiResponse<FileProps[]> =
-        await response.json();
-
-      if (data.success) {
-        console.log(
-          'Forms and documents fetched successfully:',
-          data.data
-        );
-        return data.data;
-      } else {
-        console.error(
-          'Error fetching forms and documents:',
-          data.message
-        );
-        throw new Error(data.message);
-      }
-    } catch (error) {
-      console.error(
-        'An error occurred while fetching forms and documents:',
-        error
-      );
-      throw error;
-    }
+    return handleFetch<FileProps[]>(
+      `${BASE_URL}/forms`
+    );
   };
 
-// Function to fetch shops
 export const fetchShops = async (): Promise<
   ShopProps[]
 > => {
-  const endpoint = `${BASE_URL}/shops`;
-
-  try {
-    const response = await fetch(endpoint);
-
-    if (!response.ok) {
-      throw new Error(
-        `HTTP error! Status: ${response.status}`
-      );
-    }
-
-    const data: ApiResponse<ShopProps[]> =
-      await response.json();
-
-    if (data.success) {
-      console.log(
-        'Shops fetched successfully:',
-        data.data
-      );
-      return data.data;
-    } else {
-      console.error(
-        'Error fetching shops:',
-        data.message
-      );
-      throw new Error(data.message);
-    }
-  } catch (error) {
-    console.error(
-      'An error occurred while fetching shops:',
-      error
-    );
-    throw error;
-  }
+  return handleFetch<ShopProps[]>(
+    `${BASE_URL}/shops`
+  );
 };
+
 export const fetchBlogs = async (): Promise<
   BlogProps[]
 > => {
-  const endpoint = `${BASE_URL}/blogs`;
-
-  try {
-    const response = await fetch(endpoint);
-
-    if (!response.ok) {
-      throw new Error(
-        `HTTP error! Status: ${response.status}`
-      );
-    }
-
-    const data: ApiResponse<BlogProps[]> =
-      await response.json();
-
-    if (data.success) {
-      console.log(
-        'Blogs fetched successfully:',
-        data.data
-      );
-      return data.data;
-    } else {
-      console.error(
-        'Error fetching blogs:',
-        data.message
-      );
-      throw new Error(data.message);
-    }
-  } catch (error) {
-    console.error(
-      'An error occurred while fetching blogs:',
-      error
-    );
-    throw error;
-  }
+  return handleFetch<BlogProps[]>(
+    `${BASE_URL}/blogs`
+  );
 };
+
 export const fetchBlogById = async (
   id: string
 ): Promise<BlogProps> => {
-  const endpoint = `${BASE_URL}/blogs/${id}`;
-
-  try {
-    const response = await fetch(endpoint);
-
-    if (!response.ok) {
-      throw new Error(
-        `HTTP error! Status: ${response.status}`
-      );
-    }
-
-    const data: ApiResponse<BlogProps> =
-      await response.json();
-
-    if (data.success) {
-      console.log(
-        'Blog fetched successfully:',
-        data.data
-      );
-      return data.data;
-    } else {
-      console.error(
-        'Error fetching blog:',
-        data.message
-      );
-      throw new Error(data.message);
-    }
-  } catch (error) {
-    console.error(
-      'An error occurred while fetching blogs:',
-      error
-    );
-    throw error;
-  }
+  return handleFetch<BlogProps>(
+    `${BASE_URL}/blogs/${id}`
+  );
 };
+
 export const fetchNews = async (): Promise<
   NewsProps[]
 > => {
-  const endpoint = `${BASE_URL}/news`;
-
-  try {
-    const response = await fetch(endpoint);
-
-    if (!response.ok) {
-      throw new Error(
-        `HTTP error! Status: ${response.status}`
-      );
-    }
-
-    const data: ApiResponse<NewsProps[]> =
-      await response.json();
-
-    if (data.success) {
-      console.log(
-        'News fetched successfully:',
-        data.data
-      );
-      return data.data;
-    } else {
-      console.error(
-        'Error fetching news:',
-        data.message
-      );
-      throw new Error(data.message);
-    }
-  } catch (error) {
-    console.error(
-      'An error occurred while fetching news:',
-      error
-    );
-    throw error;
-  }
+  return handleFetch<NewsProps[]>(
+    `${BASE_URL}/news`
+  );
 };
 
 export const fetchNewsById = async (
   id: string
 ): Promise<NewsProps> => {
-  const endpoint = `${BASE_URL}/news/${id}`;
-
-  try {
-    const response = await fetch(endpoint);
-
-    if (!response.ok) {
-      throw new Error(
-        `HTTP error! Status: ${response.status}`
-      );
-    }
-
-    const data: ApiResponse<NewsProps> =
-      await response.json();
-
-    if (data.success) {
-      console.log(
-        'News fetched successfully:',
-        data.data
-      );
-      return data.data;
-    } else {
-      console.error(
-        'Error fetching news:',
-        data.message
-      );
-      throw new Error(data.message);
-    }
-  } catch (error) {
-    console.error(
-      'An error occurred while fetching news:',
-      error
-    );
-    throw error;
-  }
+  return handleFetch<NewsProps>(
+    `${BASE_URL}/news/${id}`
+  );
 };
+
 export const fetchCouncilList = async (): Promise<
   CouncilListProps[]
 > => {
-  const endpoint = `${BASE_URL}/council-lists`;
-
-  try {
-    const response = await fetch(endpoint);
-
-    if (!response.ok) {
-      throw new Error(
-        `HTTP error! Status: ${response.status}`
-      );
-    }
-
-    const data: ApiResponse<CouncilListProps[]> =
-      await response.json();
-
-    if (data.success) {
-      console.log(
-        'News fetched successfully:',
-        data.data
-      );
-      return data.data;
-    } else {
-      console.error(
-        'Error fetching news:',
-        data.message
-      );
-      throw new Error(data.message);
-    }
-  } catch (error) {
-    console.error(
-      'An error occurred while fetching news:',
-      error
-    );
-    throw error;
-  }
+  return handleFetch<CouncilListProps[]>(
+    `${BASE_URL}/council-lists`
+  );
 };

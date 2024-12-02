@@ -642,8 +642,6 @@ export const createCouncilList = async (
   councilData: Partial<CouncilListProps>
 ) => {
   try {
-    console.log('Input data:', councilData);
-
     const session = await auth();
 
     if (!session) {
@@ -653,22 +651,19 @@ export const createCouncilList = async (
       });
     }
 
-    const token = session?.accessToken; // Extract the token from session
-
-    // Convert the council data to a JSON string
+    const token = session?.accessToken;
     const requestBody =
       JSON.stringify(councilData);
 
-    // Make a POST request to the API
     const response = await fetch(
       'http://localhost:8000/api/v1/council-lists',
       {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`, // Include Bearer token
-          'Content-Type': 'application/json', // Specify JSON content type
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
-        body: requestBody, // Send JSON body
+        body: requestBody,
       }
     );
 
@@ -703,26 +698,21 @@ export const createReportAndPublication = async (
 ) => {
   try {
     const session = await auth();
-    console.log('Action!!!!!!!!!!!!!');
     if (!session)
       return parseServerActionResponse({
         error: 'Not signed in',
         status: 'ERROR',
       });
-    // Make a POST request to the Next.js API route
-    // Extract the token from session (assuming your session object contains it)
-    const token = session?.accessToken; // Adjust if your token is stored differently
 
-    // Make a POST request to the API with the Bearer token in the Authorization header
+    const token = session?.accessToken;
     const response = await fetch(
       'http://localhost:8000/api/v1/reports-publications',
       {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`, // Include Bearer token
-          //   'Content-Type': 'multipart/form-data', // Content type for file uploads
+          Authorization: `Bearer ${token}`,
         },
-        body: formData, // Send FormData with files
+        body: formData,
       }
     );
 
@@ -731,8 +721,13 @@ export const createReportAndPublication = async (
     }
 
     const result = await response.json();
-    revalidatePath('/');
-    return result; // You can return the result or handle it based on your needs
+    revalidatePath(
+      '/resources/reports-publications'
+    );
+    revalidatePath(
+      '/admin/resources/reports-publications'
+    );
+    return result;
   } catch (error) {
     console.error(
       'Error during file upload:',
