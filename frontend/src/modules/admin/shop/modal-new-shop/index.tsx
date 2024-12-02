@@ -4,6 +4,7 @@ import {
   Form,
   FormControl,
 } from '@/components/ui/form';
+import useCustomPath from '@/hooks/use-custom-path';
 import { toast } from '@/hooks/use-toast';
 import CustomFormField, {
   FormFieldType,
@@ -11,6 +12,7 @@ import CustomFormField, {
 import { FileUploader } from '@/modules/common/file-uploader';
 import SubmitButton from '@/modules/common/submit-button';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
@@ -28,7 +30,9 @@ const ModalNewShop = ({
 }: Props) => {
   const [isLoading, setIsLoading] =
     useState(false);
-
+  const path = usePathname();
+  const { fullPath, pathWithoutAdmin } =
+    useCustomPath(path);
   const formSchema = zod.object({
     name: zod.string().min(2, {
       message:
@@ -81,7 +85,11 @@ const ModalNewShop = ({
         console.log(pair);
       }
 
-      const result = await createShop(formData);
+      const result = await createShop(
+        formData,
+        fullPath,
+        pathWithoutAdmin
+      );
 
       console.log('Upload result:', result);
       onClose();
@@ -105,62 +113,65 @@ const ModalNewShop = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} name='Add New Shop'>
-        <Form {...form}>
-          <form
-            className='flex flex-col gap-5 w-full'
-            onSubmit={form.handleSubmit(onSubmit)}
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      name='Add New Shop'
+    >
+      <Form {...form}>
+        <form
+          className='flex flex-col gap-5 w-full'
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
+          <CustomFormField
+            fieldType={FormFieldType.INPUT}
+            name='name'
+            label='Shop name'
+            control={form.control}
+            placeholder='Enter file name'
+          />
+          <CustomFormField
+            fieldType={FormFieldType.INPUT}
+            name='address'
+            label='Address'
+            control={form.control}
+            placeholder='Enter file address'
+          />
+          <CustomFormField
+            fieldType={FormFieldType.INPUT}
+            name='openHours'
+            label='Open Hours'
+            control={form.control}
+            placeholder='Enter openHours'
+          />
+
+          <CustomFormField
+            fieldType={FormFieldType.SKELETON}
+            control={form.control}
+            name='files'
+            label='Shop image'
+            renderSkeleton={(field) => (
+              <FormControl>
+                <FileUploader
+                  files={field.value}
+                  onChange={field.onChange}
+                />
+              </FormControl>
+            )}
+          />
+
+          <SubmitButton
+            disabled={
+              isLoading || !form.formState.isValid
+            }
+            isLoading={isLoading}
+            className='w-full  h-9'
+            loadingText='Saving...'
           >
-            <CustomFormField
-              fieldType={FormFieldType.INPUT}
-              name='name'
-              label='Shop name'
-              control={form.control}
-              placeholder='Enter file name'
-            />
-            <CustomFormField
-              fieldType={FormFieldType.INPUT}
-              name='address'
-              label='Address'
-              control={form.control}
-              placeholder='Enter file address'
-            />
-            <CustomFormField
-              fieldType={FormFieldType.INPUT}
-              name='openHours'
-              label='Open Hours'
-              control={form.control}
-              placeholder='Enter openHours'
-            />
-
-            <CustomFormField
-              fieldType={FormFieldType.SKELETON}
-              control={form.control}
-              name='files'
-              label='Shop image'
-              renderSkeleton={(field) => (
-                <FormControl>
-                  <FileUploader
-                    files={field.value}
-                    onChange={field.onChange}
-                  />
-                </FormControl>
-              )}
-            />
-
-            <SubmitButton
-              disabled={
-                isLoading ||
-                !form.formState.isValid
-              }
-              isLoading={isLoading}
-              className='w-full  h-9'
-              loadingText='Saving...'
-            >
-              Save
-            </SubmitButton>
-          </form>
-        </Form>
+            Save
+          </SubmitButton>
+        </form>
+      </Form>
     </Modal>
   );
 };

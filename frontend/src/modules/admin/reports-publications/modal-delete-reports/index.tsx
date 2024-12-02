@@ -5,6 +5,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from '@/components/ui/dialog';
+import useCustomPath from '@/hooks/use-custom-path';
 import { toast } from '@/hooks/use-toast';
 import { FileProps } from '@/lib/api';
 import CustomButton, {
@@ -29,13 +30,16 @@ const ModalDeleteReports = ({
   const [isLoading, setIsLoading] =
     useState(false);
   const path = usePathname();
+  const { fullPath, pathWithoutAdmin } =
+    useCustomPath(path);
   const onSubmit = async () => {
     setIsLoading(true);
 
     try {
       const result = await deleteReports(
         file.id,
-        path
+        fullPath,
+        pathWithoutAdmin
       );
 
       console.log('Upload result:', result);

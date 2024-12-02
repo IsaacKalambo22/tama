@@ -11,6 +11,7 @@ import {
   Form,
   FormControl,
 } from '@/components/ui/form';
+import useCustomPath from '@/hooks/use-custom-path';
 import { toast } from '@/hooks/use-toast';
 import CustomFormField, {
   FormFieldType,
@@ -18,6 +19,7 @@ import CustomFormField, {
 import { FileUploader } from '@/modules/common/file-uploader';
 import SubmitButton from '@/modules/common/submit-button';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
@@ -34,7 +36,9 @@ const ModalNewPublication = ({
 }: Props) => {
   const [isLoading, setIsLoading] =
     useState(false);
-
+  const path = usePathname();
+  const { fullPath, pathWithoutAdmin } =
+    useCustomPath(path);
   const formSchema = zod.object({
     filename: zod.string().min(2, {
       message:
@@ -82,7 +86,9 @@ const ModalNewPublication = ({
       // Call the createForm function to send data to the server
       const result =
         await createReportAndPublication(
-          formData
+          formData,
+          fullPath,
+          pathWithoutAdmin
         );
 
       console.log('Upload result:', result);
