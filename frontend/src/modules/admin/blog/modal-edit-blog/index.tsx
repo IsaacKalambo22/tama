@@ -3,6 +3,7 @@ import {
   Form,
   FormControl,
 } from '@/components/ui/form';
+import useCustomPath from '@/hooks/use-custom-path';
 import { toast } from '@/hooks/use-toast';
 import { BlogProps } from '@/lib/api';
 import CustomFormField, {
@@ -11,6 +12,7 @@ import CustomFormField, {
 import { FileUploader } from '@/modules/common/file-uploader';
 import SubmitButton from '@/modules/common/submit-button';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
@@ -38,6 +40,9 @@ const ModalEditBlog = ({
     files: zod.custom<File[]>(),
   });
 
+  const path = usePathname();
+  const { fullPath, pathWithoutAdmin } =
+    useCustomPath(path);
   const form = useForm<
     zod.infer<typeof formSchema>
   >({
@@ -86,7 +91,9 @@ const ModalEditBlog = ({
 
       const result = await updateBlog(
         formData,
-        blog.id
+        blog.id,
+        fullPath,
+        pathWithoutAdmin
       );
 
       console.log('Upload result:', result);

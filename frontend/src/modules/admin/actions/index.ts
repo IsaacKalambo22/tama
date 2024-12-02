@@ -32,30 +32,29 @@ export const deleteFile = async (
 };
 export const uploadFile = async () => {};
 export const createForm = async (
-  formData: FormData
+  formData: FormData,
+  fullPath: string,
+  pathWithoutAdmin: string
 ) => {
   try {
     const session = await auth();
-    console.log('Action!!!!!!!!!!!!!');
+
     if (!session)
       return parseServerActionResponse({
         error: 'Not signed in',
         status: 'ERROR',
       });
-    // Make a POST request to the Next.js API route
-    // Extract the token from session (assuming your session object contains it)
-    const token = session?.accessToken; // Adjust if your token is stored differently
 
-    // Make a POST request to the API with the Bearer token in the Authorization header
+    const token = session?.accessToken;
+
     const response = await fetch(
       'http://localhost:8000/api/v1/forms',
       {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`, // Include Bearer token
-          //   'Content-Type': 'multipart/form-data', // Content type for file uploads
+          Authorization: `Bearer ${token}`,
         },
-        body: formData, // Send FormData with files
+        body: formData,
       }
     );
 
@@ -64,8 +63,10 @@ export const createForm = async (
     }
 
     const result = await response.json();
-    revalidatePath('/');
-    return result; // You can return the result or handle it based on your needs
+
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
+    return result;
   } catch (error) {
     console.error(
       'Error during file upload:',
@@ -75,30 +76,29 @@ export const createForm = async (
   }
 };
 export const createShop = async (
-  formData: FormData
+  formData: FormData,
+  fullPath: string,
+  pathWithoutAdmin: string
 ) => {
   try {
     const session = await auth();
-    console.log('Action!!!!!!!!!!!!!');
+
     if (!session)
       return parseServerActionResponse({
         error: 'Not signed in',
         status: 'ERROR',
       });
-    // Make a POST request to the Next.js API route
-    // Extract the token from session (assuming your session object contains it)
-    const token = session?.accessToken; // Adjust if your token is stored differently
 
-    // Make a POST request to the API with the Bearer token in the Authorization header
+    const token = session?.accessToken;
+
     const response = await fetch(
       'http://localhost:8000/api/v1/shops',
       {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`, // Include Bearer token
-          //   'Content-Type': 'multipart/form-data', // Content type for file uploads
+          Authorization: `Bearer ${token}`,
         },
-        body: formData, // Send FormData with files
+        body: formData,
       }
     );
 
@@ -107,8 +107,9 @@ export const createShop = async (
     }
 
     const result = await response.json();
-    revalidatePath('/');
-    return result; // You can return the result or handle it based on your needs
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
+    return result;
   } catch (error) {
     console.error(
       'Error during file upload:',
@@ -119,7 +120,9 @@ export const createShop = async (
 };
 export const updateShop = async (
   formData: FormData,
-  id: string
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string
 ) => {
   try {
     const session = await auth();
@@ -146,7 +149,8 @@ export const updateShop = async (
     }
 
     const result = await response.json();
-    revalidatePath('/');
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
     return parseServerActionResponse({
       ...result,
       error: '',
@@ -163,7 +167,9 @@ export const updateShop = async (
 };
 export const updateBlog = async (
   formData: FormData,
-  id: string
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string
 ) => {
   try {
     const session = await auth();
@@ -190,7 +196,10 @@ export const updateBlog = async (
     }
 
     const result = await response.json();
-    revalidatePath('/');
+
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
+
     return parseServerActionResponse({
       ...result,
       error: '',
@@ -205,9 +214,12 @@ export const updateBlog = async (
     });
   }
 };
+
 export const updateNews = async (
   formData: FormData,
-  id: string
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string
 ) => {
   try {
     const session = await auth();
@@ -234,7 +246,8 @@ export const updateNews = async (
     }
 
     const result = await response.json();
-    revalidatePath('/');
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
     return parseServerActionResponse({
       ...result,
       error: '',
@@ -251,7 +264,9 @@ export const updateNews = async (
 };
 export const updateForms = async (
   formData: FormData,
-  id: string
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string
 ) => {
   try {
     const session = await auth();
@@ -278,7 +293,8 @@ export const updateForms = async (
     }
 
     const result = await response.json();
-    revalidatePath('/');
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
     return parseServerActionResponse({
       ...result,
       error: '',
@@ -295,7 +311,9 @@ export const updateForms = async (
 };
 export const updateReports = async (
   formData: FormData,
-  id: string
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string
 ) => {
   try {
     const session = await auth();
@@ -322,7 +340,8 @@ export const updateReports = async (
     }
 
     const result = await response.json();
-    revalidatePath('/');
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
     return parseServerActionResponse({
       ...result,
       error: '',
@@ -339,7 +358,8 @@ export const updateReports = async (
 };
 export const deleteShop = async (
   id: string,
-  path: string
+  fullPath: string,
+  pathWithoutAdmin: string
 ) => {
   try {
     const session = await auth();
@@ -365,7 +385,8 @@ export const deleteShop = async (
     }
 
     const result = await response.json();
-    revalidatePath(path);
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
     return parseServerActionResponse({
       ...result,
       error: '',
@@ -382,7 +403,8 @@ export const deleteShop = async (
 };
 export const deleteForms = async (
   id: string,
-  path: string
+  fullPath: string,
+  pathWithoutAdmin: string
 ) => {
   try {
     const session = await auth();
@@ -408,7 +430,8 @@ export const deleteForms = async (
     }
 
     const result = await response.json();
-    revalidatePath(path);
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
     return parseServerActionResponse({
       ...result,
       error: '',
@@ -425,7 +448,8 @@ export const deleteForms = async (
 };
 export const deleteReports = async (
   id: string,
-  path: string
+  fullPath: string,
+  pathWithoutAdmin: string
 ) => {
   try {
     const session = await auth();
@@ -451,7 +475,8 @@ export const deleteReports = async (
     }
 
     const result = await response.json();
-    revalidatePath(path);
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
     return parseServerActionResponse({
       ...result,
       error: '',
@@ -468,7 +493,8 @@ export const deleteReports = async (
 };
 export const deleteBlog = async (
   id: string,
-  path: string
+  fullPath: string,
+  pathWithoutAdmin: string
 ) => {
   try {
     const session = await auth();
@@ -494,7 +520,8 @@ export const deleteBlog = async (
     }
 
     const result = await response.json();
-    revalidatePath(path);
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
     return parseServerActionResponse({
       ...result,
       error: '',
@@ -511,7 +538,8 @@ export const deleteBlog = async (
 };
 export const deleteNews = async (
   id: string,
-  path: string
+  fullPath: string,
+  pathWithoutAdmin: string
 ) => {
   try {
     const session = await auth();
@@ -553,30 +581,29 @@ export const deleteNews = async (
   }
 };
 export const createBlog = async (
-  formData: FormData
+  formData: FormData,
+  fullPath: string,
+  pathWithoutAdmin: string
 ) => {
   try {
     const session = await auth();
-    console.log('Action!!!!!!!!!!!!!');
+
     if (!session)
       return parseServerActionResponse({
         error: 'Not signed in',
         status: 'ERROR',
       });
-    // Make a POST request to the Next.js API route
-    // Extract the token from session (assuming your session object contains it)
-    const token = session?.accessToken; // Adjust if your token is stored differently
 
-    // Make a POST request to the API with the Bearer token in the Authorization header
+    const token = session?.accessToken;
+
     const response = await fetch(
       'http://localhost:8000/api/v1/blogs',
       {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`, // Include Bearer token
-          //   'Content-Type': 'multipart/form-data', // Content type for file uploads
+          Authorization: `Bearer ${token}`,
         },
-        body: formData, // Send FormData with files
+        body: formData,
       }
     );
 
@@ -585,8 +612,9 @@ export const createBlog = async (
     }
 
     const result = await response.json();
-    revalidatePath('/');
-    return result; // You can return the result or handle it based on your needs
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
+    return result;
   } catch (error) {
     console.error(
       'Error during file upload:',
@@ -596,30 +624,30 @@ export const createBlog = async (
   }
 };
 export const createNews = async (
-  formData: FormData
+  formData: FormData,
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string
 ) => {
   try {
     const session = await auth();
-    console.log('Action!!!!!!!!!!!!!');
+
     if (!session)
       return parseServerActionResponse({
         error: 'Not signed in',
         status: 'ERROR',
       });
-    // Make a POST request to the Next.js API route
-    // Extract the token from session (assuming your session object contains it)
-    const token = session?.accessToken; // Adjust if your token is stored differently
 
-    // Make a POST request to the API with the Bearer token in the Authorization header
+    const token = session?.accessToken;
+
     const response = await fetch(
       'http://localhost:8000/api/v1/news',
       {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`, // Include Bearer token
-          //   'Content-Type': 'multipart/form-data', // Content type for file uploads
+          Authorization: `Bearer ${token}`,
         },
-        body: formData, // Send FormData with files
+        body: formData,
       }
     );
 
@@ -628,8 +656,9 @@ export const createNews = async (
     }
 
     const result = await response.json();
-    revalidatePath('/');
-    return result; // You can return the result or handle it based on your needs
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
+    return result;
   } catch (error) {
     console.error(
       'Error during file upload:',
@@ -639,7 +668,9 @@ export const createNews = async (
   }
 };
 export const createCouncilList = async (
-  councilData: Partial<CouncilListProps>
+  councilData: Partial<CouncilListProps>,
+  fullPath: string,
+  pathWithoutAdmin: string
 ) => {
   try {
     const session = await auth();
@@ -682,8 +713,9 @@ export const createCouncilList = async (
     }
 
     const result = await response.json();
-    revalidatePath('/'); // Revalidate the path
-    return result; // Return the response data
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
+    return result;
   } catch (error) {
     console.error(
       'Error during data upload:',
@@ -694,7 +726,9 @@ export const createCouncilList = async (
 };
 
 export const createReportAndPublication = async (
-  formData: FormData
+  formData: FormData,
+  fullPath: string,
+  pathWithoutAdmin: string
 ) => {
   try {
     const session = await auth();
@@ -721,12 +755,8 @@ export const createReportAndPublication = async (
     }
 
     const result = await response.json();
-    revalidatePath(
-      '/resources/reports-publications'
-    );
-    revalidatePath(
-      '/admin/resources/reports-publications'
-    );
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
     return result;
   } catch (error) {
     console.error(
