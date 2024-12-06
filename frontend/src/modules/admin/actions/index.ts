@@ -565,7 +565,8 @@ export const deleteNews = async (
     }
 
     const result = await response.json();
-    revalidatePath(path);
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
     return parseServerActionResponse({
       ...result,
       error: '',

@@ -107,7 +107,9 @@ app.post(
 
 /* ROUTES */
 app.get('/', (req, res) => {
-  res.send('This is home route');
+  res.send(
+    '<html><body><h1>Welcome to the Home Route</h1></body></html>'
+  );
 });
 app.get(
   '/api/v1/uploads/:filename',
