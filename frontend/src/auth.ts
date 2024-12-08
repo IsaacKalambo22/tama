@@ -84,29 +84,29 @@ export const { handlers, auth, signIn, signOut } =
     ],
     callbacks: {
       async jwt({ token, user }) {
-        console.log('JWT Callback called');
+        // console.log('JWT Callback called');
         if (user) {
-          console.log(
-            'Adding user data to token:',
-            user
-          );
+          // console.log(
+          //   'Adding user data to token:',
+          //   user
+          // );
           token.accessToken = user.accessToken;
           token.id = user.id;
           token.name = user.name;
           token.email = user.email;
           token.role = user.role;
         } else {
-          console.log(
-            'No user data passed to JWT callback. Using existing token.'
-          );
+          // console.log(
+          //   'No user data passed to JWT callback. Using existing token.'
+          // );
         }
-        console.log('Updated Token:', token);
+        // console.log('Updated Token:', token);
         return token;
       },
       async session({ session, token }) {
-        console.log('Session Callback called');
-        console.log('Existing Session:', session);
-        console.log('Token Data:', token);
+        // console.log('Session Callback called');
+        // console.log('Existing Session:', session);
+        // console.log('Token Data:', token);
         Object.assign(session, {
           id: token.id,
           accessToken: token.accessToken,
@@ -114,7 +114,7 @@ export const { handlers, auth, signIn, signOut } =
           email: token.email,
           role: token.role,
         });
-        console.log('Updated Session:', session);
+        // console.log('Updated Session:', session);
         return session;
       },
     },
@@ -125,19 +125,19 @@ export const { handlers, auth, signIn, signOut } =
     jwt: {
       maxAge: 30 * 60, // 30 minutes in seconds
     },
-    cookies: {
-      sessionToken: {
-        name:
-          process.env.NODE_ENV === 'production'
-            ? '__Secure-authjs.session-token'
-            : 'authjs.session-token',
-        options: {
-          httpOnly: true,
-          secure:
-            process.env.NODE_ENV === 'production', // Only use secure cookies in production
-          path: '/',
-          sameSite: 'lax', // Set sameSite to 'lax' or 'strict' based on your needs
-        },
-      },
-    },
+    // cookies: {
+    //   sessionToken: {
+    //     name:
+    //       process.env.NODE_ENV === 'production'
+    //         ? '__Secure-authjs.session-token'
+    //         : 'authjs.session-token',
+    //     options: {
+    //       httpOnly: true,
+    //       secure:
+    //         process.env.NODE_ENV === 'production', // Only use secure cookies in production
+    //       path: '/',
+    //       sameSite: 'lax', // Set sameSite to 'lax' or 'strict' based on your needs
+    //     },
+    //   },
+    // },
   });

@@ -1,4 +1,3 @@
-import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 
 import { auth } from './auth';
@@ -16,11 +15,23 @@ export const middleware = auth(async (req) => {
     throw new Error('AUTH_SECRET is not defined');
   }
 
-  const token = await getToken({
-    req,
-    secret: secretKey,
-  });
-
+  // const token = await getToken({
+  //   req,
+  //   secret: secretKey,
+  // });
+  const token = req.auth;
+  console.log(
+    'Auth Request !!!!!!!!!!!!!!',
+    req.auth
+  );
+  console.log(
+    'Auth Request User AccessToken!!!!!!!!!!!!!!',
+    token
+  );
+  const requestToken = await req.auth
+    ?.accessToken;
+  const requestTokenRole = await req.auth?.user
+    ?.role;
   const { nextUrl } = req;
   const isLoggedIn = !!token;
   console.log({ isLoggedIn });
@@ -69,8 +80,8 @@ export const middleware = auth(async (req) => {
   }
 
   // Role-based redirection if logged in and accessing the wrong route
-  if (isLoggedIn && token?.role) {
-    switch (token.role) {
+  if (isLoggedIn && token) {
+    switch (token?.role) {
       case 'USER':
         if (
           !nextUrl.pathname.startsWith('/user')
