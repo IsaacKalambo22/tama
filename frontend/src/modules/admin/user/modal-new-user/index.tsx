@@ -1,6 +1,14 @@
 'use client';
 
-import { Form } from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import { SelectItem } from '@/components/ui/select';
 import useCustomPath from '@/hooks/use-custom-path';
 import { toast } from '@/hooks/use-toast';
@@ -10,11 +18,13 @@ import CustomFormField, {
 } from '@/modules/common/custom-form-field';
 import SubmitButton from '@/modules/common/submit-button';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Eye, EyeOff } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
 import Modal from '../../modal';
+
 type Props = {
   isOpen: boolean;
   onClose: () => void;
@@ -31,6 +41,11 @@ const ModalNewUser = ({
   const { fullPath, pathWithoutAdmin } =
     useCustomPath(path);
   const roleOptions = Object.values(Role); // Get the values of the Role enum
+  const [showPassword, setShowPassword] =
+    useState(false);
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   const formSchema = zod.object({
     firstName: zod.string().min(2, {
@@ -124,8 +139,8 @@ const ModalNewUser = ({
           />
           <CustomFormField
             fieldType={FormFieldType.INPUT}
-            name='last name'
-            label='LastName'
+            name='lastName'
+            label='Last name'
             control={form.control}
             placeholder='Doe'
           />
@@ -135,6 +150,44 @@ const ModalNewUser = ({
             label='Email'
             control={form.control}
             placeholder='johndoe@gmail.com'
+          />
+          <FormField
+            control={form.control}
+            name='password'
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <div className='relative'>
+                    <Input
+                      placeholder='Chad784238@'
+                      type={
+                        showPassword
+                          ? 'text'
+                          : 'password'
+                      }
+                      {...field}
+                      className='form_input'
+                    />
+                    <Button
+                      size='icon'
+                      variant='ghost'
+                      onClick={(e) => {
+                        e.preventDefault();
+                        toggleShowPassword();
+                      }}
+                      className='absolute inset-y-0 right-0 px-3 py-2 text-sm font-medium text-gray-500'
+                    >
+                      {showPassword ? (
+                        <EyeOff />
+                      ) : (
+                        <Eye />
+                      )}
+                    </Button>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
           <CustomFormField
             fieldType={FormFieldType.SELECT}

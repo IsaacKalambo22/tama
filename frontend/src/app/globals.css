@@ -105,11 +105,8 @@ body,
 
 /* =====  REACT PHONE NUMBER INPUT OVERRIDES */
 .input-phone {
-  @apply mt-2 h-9 rounded-md px-3 text-sm border bg-white placeholder:text-gray-600 border-gray-500 !important;
+  @apply mt-2 h-9 rounded-md px-3 text-sm border bg-white placeholder:text-gray-600 border-gray-500 focus:border-green-500 active:border-green-500;
 }
-/* .input-phone {
-  @apply focus:border-blue-500 h-11 border py-8 my-5 !important;
-} */
 
 /* =====  REACT PHONE NUMBER INPUT OVERRIDES */
 .PhoneInputInput {
