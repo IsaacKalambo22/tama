@@ -16,6 +16,7 @@ import forms from './routes/form';
 import news from './routes/news';
 import reportsPublications from './routes/reports-publications';
 import shops from './routes/shop';
+import users from './routes/user';
 
 /* CONFIGURATIONS */
 dotenv.config();
@@ -133,7 +134,7 @@ app.use('/api/v1/auth', auth);
 app.use('/api/v1/shops', shops);
 app.use('/api/v1/forms', forms);
 app.use('/api/v1/blogs', blogs);
-app.use('/api/v1/news', news);
+app.use('/api/v1/users', users);
 app.use('/api/v1/council-lists', councilLists);
 app.use(
   '/api/v1/reports-publications',
