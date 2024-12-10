@@ -1,10 +1,9 @@
 'use server';
 
 import { auth } from '@/auth';
+import { CouncilListProps } from '@/lib/api';
 import {
-  CouncilListProps
-} from '@/lib/api';
-import {
+  BASE_URL,
   parseServerActionResponse,
   parseStringify,
 } from '@/lib/utils';
@@ -78,6 +77,59 @@ export const createForm = async (
   }
 };
 
+export const createUser = async (
+  name: string,
+  email: string,
+  password: string,
+  phoneNumber: string,
+  role: string,
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  try {
+    const session = await auth();
+
+    if (!session)
+      return parseServerActionResponse({
+        error: 'Not signed in',
+        status: 'ERROR',
+      });
+
+    const token = session?.accessToken;
+    const response = await fetch(
+      `${BASE_URL}/auth/register`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          phoneNumber,
+          role,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to create genre');
+    }
+
+    const result = await response.json();
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
+    return result;
+  } catch (error) {
+    console.error(
+      'Error during genre creation:',
+      error
+    );
+    throw error;
+  }
+};
 
 export const createShop = async (
   formData: FormData,

@@ -13,15 +13,25 @@ export const registerUser = async (
   req: Request,
   res: Response<APIResponse>
 ): Promise<void> => {
-  const { name, email, password, role } =
-    req.body;
+  const {
+    name,
+    email,
+    password,
+    role,
+    phoneNumber,
+  } = req.body;
 
   // Validate user input
-  if (!name || !email || !password) {
+  if (
+    !name ||
+    !email ||
+    !password ||
+    !phoneNumber
+  ) {
     res.status(400).json({
       success: false,
       message:
-        'Name, email, and password are required.',
+        'Name, email, phoneNumber and password are required.',
     });
     return; // Ensure early exit after sending response
   }
@@ -52,6 +62,7 @@ export const registerUser = async (
       data: {
         name,
         email,
+        phoneNumber,
         password: hashedPassword,
         role: role || Role.USER,
       },

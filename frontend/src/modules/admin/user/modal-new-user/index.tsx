@@ -23,6 +23,7 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
+import { createUser } from '../../actions';
 import Modal from '../../modal';
 
 type Props = {
@@ -47,6 +48,10 @@ const ModalNewUser = ({
     setShowPassword(!showPassword);
   };
 
+  const passwordRegex =
+    /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  const phoneNumberRegex = /^\+?[1-9]\d{1,14}$/;
+
   const formSchema = zod.object({
     firstName: zod.string().min(2, {
       message:
@@ -56,18 +61,19 @@ const ModalNewUser = ({
       message:
         'Last name must be at least 2 characters.',
     }),
-    email: zod.string().min(2, {
-      message:
-        'Email must be at least 2 characters.',
+    email: zod.string().email({
+      message: 'Invalid email address.',
     }),
-    password: zod.string().min(2, {
+    password: zod.string().regex(passwordRegex, {
       message:
-        'Password must be at least 2 characters.',
+        'Password must be at least 8 characters long, include one uppercase letter, one number, and one special character.',
     }),
-    phoneNumber: zod.string().min(2, {
-      message:
-        'PhoneNumber must be at least 2 characters.',
-    }),
+    phoneNumber: zod
+      .string()
+      .regex(phoneNumberRegex, {
+        message:
+          'Phone number must be a valid international format (e.g., +123456789).',
+      }),
     role: zod.string().min(2, {
       message:
         'Role must be at least 2 characters.',
@@ -92,11 +98,22 @@ const ModalNewUser = ({
     setIsLoading(true);
     console.log({ values });
     try {
-      // const result = await createUser(
-      //   formData,
-      //   fullPath,
-      //   pathWithoutAdmin
-      // );
+      // Combine first name and last name
+      const name =
+        `${values.firstName} ${values.lastName}`.trim();
+      const email = values.email;
+      const password = values.password;
+      const phoneNumber = values.phoneNumber;
+      const role = values.role;
+      await createUser(
+        name,
+        email,
+        password,
+        phoneNumber,
+        role,
+        fullPath,
+        pathWithoutAdmin
+      );
 
       // console.log('Upload result:', result);
       onClose();
@@ -159,7 +176,7 @@ const ModalNewUser = ({
                 <FormControl>
                   <div className='relative'>
                     <Input
-                      placeholder='Chad784238@'
+                      placeholder='Password'
                       type={
                         showPassword
                           ? 'text'

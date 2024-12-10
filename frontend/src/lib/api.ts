@@ -61,7 +61,7 @@ export enum Role {
 export interface UserProps {
   id: string;
   email: string;
-  password: string;
+  phoneNumber: string;
   name: string;
   role: Role;
   lastLogin: string | null; // ISO date string or null if never logged in

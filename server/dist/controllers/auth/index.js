@@ -18,12 +18,15 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const generate_tokens_1 = require("../../utils/generate-tokens");
 const prisma = new client_1.PrismaClient();
 const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, phoneNumber, } = req.body;
     // Validate user input
-    if (!name || !email || !password) {
+    if (!name ||
+        !email ||
+        !password ||
+        !phoneNumber) {
         res.status(400).json({
             success: false,
-            message: 'Name, email, and password are required.',
+            message: 'Name, email, phoneNumber and password are required.',
         });
         return; // Ensure early exit after sending response
     }
@@ -46,6 +49,7 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             data: {
                 name,
                 email,
+                phoneNumber,
                 password: hashedPassword,
                 role: role || client_1.Role.USER,
             },
