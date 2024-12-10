@@ -130,6 +130,68 @@ export const createUser = async (
     throw error;
   }
 };
+export const updateUser = async (
+  userId: string,
+  data: {
+    name?: string;
+    email?: string;
+    password?: string;
+    phoneNumber?: string;
+    role?: string;
+  },
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  try {
+    const session = await auth();
+
+    if (!session) {
+      return parseServerActionResponse({
+        error: 'Not signed in',
+        status: 'ERROR',
+      });
+    }
+
+    const token = session.accessToken;
+
+    const response = await fetch(
+      `${BASE_URL}/users/${userId}`,
+      {
+        method: 'PATCH', // PATCH is used for partial updates
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      }
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(
+        'Update user failed:',
+        errorText
+      );
+      throw new Error(
+        `Failed to update user. Server responded with status ${response.status}.`
+      );
+    }
+
+    const result = await response.json();
+
+    // Revalidate the relevant paths
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
+
+    return result;
+  } catch (error) {
+    console.error(
+      'Error during user update:',
+      error
+    );
+    throw error;
+  }
+};
 
 export const createShop = async (
   formData: FormData,

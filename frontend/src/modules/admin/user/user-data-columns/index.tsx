@@ -5,6 +5,8 @@ import { Card } from '@/components/ui/card';
 import { UserProps } from '@/lib/api';
 import { ColumnDef } from '@tanstack/react-table';
 import { Eye, Pencil, Trash } from 'lucide-react';
+import { useState } from 'react';
+import ModalEditUser from '../modal-edit-user';
 
 export const userColumns: ColumnDef<UserProps>[] =
   [
@@ -47,12 +49,18 @@ export const userColumns: ColumnDef<UserProps>[] =
         );
       },
     },
-
     {
       accessorKey: 'role',
       header: 'Role',
       cell: ({ row }) => (
         <div>{row.getValue('role')}</div>
+      ),
+    },
+    {
+      accessorKey: 'phoneNumber',
+      header: 'Phone number',
+      cell: ({ row }) => (
+        <div>{row.getValue('phoneNumber')}</div>
       ),
     },
     {
@@ -75,47 +83,19 @@ export const userColumns: ColumnDef<UserProps>[] =
     {
       accessorKey: 'action',
       header: 'Actions',
-      cell: ({}) => {
-        // const user = row.original;
-        // const [isDialogOpen, setIsDialogOpen] =
-        //   useState(false);
+      cell: ({ row }) => {
+        const user = row.original; // Get the user data for this row
+        const [isModalOpen, setModalOpen] =
+          useState(false);
 
-        // // Function to toggle the dialog open/close state
-        // const handleOpenDialog = () => {
-        //   setIsDialogOpen((prev) => !prev); // Toggle state
-        // };
+        const handleEditClick = () => {
+          setModalOpen(true);
+        };
 
-        // const [
-        //   deleteProduct,
-        //   { isLoading, isError, isSuccess },
-        // ] = useDeleteProductMutation();
+        const handleCloseModal = () => {
+          setModalOpen(false);
+        };
 
-        // const onConfirm = async () => {
-        //   console.log(
-        //     'Deleting product:',
-        //     product.id
-        //   );
-        //   try {
-        //     await deleteProduct(
-        //       product.id
-        //     ).unwrap();
-
-        //     toast({
-        //       variant: 'default',
-        //       title: 'Product deleted successfully',
-        //       className: 'bg-green-500 text-white',
-        //     });
-        //     handleOpenDialog();
-        //   } catch (error) {
-        //     console.log(error);
-        //     toast({
-        //       variant: 'destructive',
-        //       title: 'Failed to delete product',
-        //       description:
-        //         'There was a problem updating the product',
-        //     });
-        //   }
-        // };
         return (
           <div className='h-8 flex gap-1'>
             <Button
@@ -128,24 +108,26 @@ export const userColumns: ColumnDef<UserProps>[] =
             <Button
               variant='ghost'
               className='px-[0.4rem] h-8 text-gray-500'
+              onClick={handleEditClick}
             >
               <Pencil className='h-4 w-4' />
             </Button>
+
             <Button
-              // onClick={handleOpenDialog} // Toggle the dialog
               variant='ghost'
               className='px-[0.4rem] h-8'
             >
               <Trash className='h-4 w-4 text-red-600' />
             </Button>
-            {/* <CustomDialog
-            isOpen={isDialogOpen}
-            isLoading={isLoading}
-            onOpenChange={handleOpenDialog} // Close dialog on change
-            title='Confirm Deletion'
-            description={`${product.productName} product`}
-            onConfirm={onConfirm} // Confirm delete action
-          /> */}
+
+            {/* Update User Modal */}
+            {isModalOpen && (
+              <ModalEditUser
+                isOpen={isModalOpen}
+                user={user} // Pass the selected user data
+                onClose={handleCloseModal} // Callback to close the modal
+              />
+            )}
           </div>
         );
       },
