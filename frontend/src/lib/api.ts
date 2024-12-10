@@ -1,3 +1,4 @@
+import { auth } from '@/auth';
 import { BASE_URL } from './utils';
 
 // Shared interfaces
@@ -51,6 +52,26 @@ export interface ShopProps {
   createdAt: string;
   updatedAt: string;
 }
+export enum Role {
+  ADMIN,
+  MANAGER,
+  USER,
+}
+export interface UserProps {
+  id: string;
+  email: string;
+  password: string;
+  name: string;
+  role: Role;
+  lastLogin: string | null; // ISO date string or null if never logged in
+  isVerified: boolean;
+  resetPasswordToken: string | null;
+  resetPasswordExpiresAt: string | null;
+  verificationToken: string | null;
+  verificationTokenExpiresAt: string | null;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+}
 
 export interface ApiResponse<T> {
   success: boolean;
@@ -59,24 +80,47 @@ export interface ApiResponse<T> {
 }
 
 // Utility function for API requests
+// Utility function for API requests
 async function handleFetch<T>(
-  endpoint: string
+  endpoint: string,
+  token?: string
 ): Promise<T> {
   try {
-    const response = await fetch(endpoint);
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    };
 
+    // Only add Authorization header if token is available
+    if (token) {
+      headers[
+        'Authorization'
+      ] = `Bearer ${token}`;
+    }
+
+    const response = await fetch(endpoint, {
+      method: 'GET',
+      headers,
+    });
+
+    // Handle non-OK HTTP responses
     if (!response.ok) {
-      console.log(
-        `HTTP error! Status: ${response.status} | Endpoint: ${endpoint}`
+      const errorDetails = await response.text();
+      console.error(
+        `HTTP error! Status: ${response.status}, Details: ${errorDetails}`
       );
       throw new Error(
         `HTTP error! Status: ${response.status}`
       );
     }
 
-    const data: ApiResponse<T> =
-      await response.json();
+    // Parse the response JSON
+    const data: {
+      success: boolean;
+      data: T;
+      message?: string;
+    } = await response.json();
 
+    // Check for API-level success
     if (data.success) {
       console.log(
         `Data fetched successfully from ${endpoint}:`,
@@ -84,21 +128,21 @@ async function handleFetch<T>(
       );
       return data.data;
     } else {
-      console.log(
+      console.error(
         `API Error at ${endpoint}: ${data.message}`
       );
-      throw new Error(data.message);
+      throw new Error(
+        data.message || 'Unknown API error'
+      );
     }
-  } catch (error) {
-    console.log(
+  } catch (error: any) {
+    console.error(
       `Error fetching data from ${endpoint}:`,
-      error.message
+      error.message || error
     );
-    // return Promise.reject(
-    //   new Error(
-    //     `Failed to fetch data: ${error.message}`
-    //   )
-    // );
+    throw new Error(
+      `Failed to fetch data: ${error.message}`
+    );
   }
 }
 
@@ -109,6 +153,32 @@ export const fetchReportsAndPublications =
       `${BASE_URL}/reports-publications`
     );
   };
+// Fetch functions using the utility
+export const fetchUsers = async (): Promise<
+  UserProps[]
+> => {
+  try {
+    // Fetch user session for authentication
+    const session = await auth();
+    const token = session?.accessToken; // Token is optional, might be undefined if not signed in.
+
+    const API_URL = `${BASE_URL}/users`;
+
+    // Use the handleFetch utility for making the API call
+    return handleFetch<UserProps[]>(
+      API_URL,
+      token
+    );
+  } catch (error: any) {
+    console.error(
+      'Error during fetchUsers:',
+      error.message || error
+    );
+    throw new Error(
+      'Unable to fetch users. Please try again later.'
+    );
+  }
+};
 
 export const fetchFormsAndDocuments =
   async (): Promise<FileProps[]> => {

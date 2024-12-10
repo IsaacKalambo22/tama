@@ -4,7 +4,8 @@ import {
   BookOpen,
   NewspaperIcon,
   ShoppingBag,
-} from 'lucide-react';
+  UsersIcon,
+} from 'lucide-react'; // Adjust import path for icons if needed
 
 export const ADMIN_LINKS = [
   {
@@ -53,6 +54,11 @@ export const ADMIN_LINKS = [
     label: 'Blogs',
     href: '/admin/blogs',
     icon: Book,
+  },
+  {
+    label: 'Users',
+    href: '/admin/users',
+    icon: UsersIcon, // Replace with the appropriate icon if `UsersIcon` is unavailable
   },
 ];
 
