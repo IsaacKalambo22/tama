@@ -166,3 +166,58 @@ export const updateUser = async (
     });
   }
 };
+
+export const deleteUser = async (
+  req: Request,
+  res: Response<APIResponse>
+): Promise<void> => {
+  const { id } = req.params;
+
+  // Validate input
+  if (!id) {
+    res.status(400).json({
+      success: false,
+      message: 'User ID is required.',
+      error: 'Validation error',
+    });
+    return;
+  }
+
+  try {
+    // Check if the user exists
+    const existingUser =
+      await prisma.user.findUnique({
+        where: { id },
+      });
+
+    if (!existingUser) {
+      res.status(404).json({
+        success: false,
+        message: 'User not found.',
+      });
+      return;
+    }
+
+    // Delete the user
+    await prisma.user.delete({
+      where: { id },
+    });
+
+    // Respond with success
+    res.status(200).json({
+      success: true,
+      message: 'User deleted successfully',
+    });
+  } catch (error: any) {
+    console.error(
+      'Error deleting user:',
+      error.message
+    );
+    res.status(500).json({
+      success: false,
+      message:
+        'An error occurred while deleting the user. Please try again later.',
+      error: error.message,
+    });
+  }
+};

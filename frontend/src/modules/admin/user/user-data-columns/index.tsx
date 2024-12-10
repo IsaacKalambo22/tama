@@ -6,6 +6,7 @@ import { UserProps } from '@/lib/api';
 import { ColumnDef } from '@tanstack/react-table';
 import { Eye, Pencil, Trash } from 'lucide-react';
 import { useState } from 'react';
+import ModalDeleteUser from '../modal-delete-user';
 import ModalEditUser from '../modal-edit-user';
 
 export const userColumns: ColumnDef<UserProps>[] =
@@ -85,47 +86,70 @@ export const userColumns: ColumnDef<UserProps>[] =
       header: 'Actions',
       cell: ({ row }) => {
         const user = row.original; // Get the user data for this row
-        const [isModalOpen, setModalOpen] =
-          useState(false);
+        const [
+          isEditModalOpen,
+          setEditModalOpen,
+        ] = useState(false);
+        const [
+          isDeleteModalOpen,
+          setDeleteModalOpen,
+        ] = useState(false);
 
-        const handleEditClick = () => {
-          setModalOpen(true);
-        };
+        // Handlers to toggle modals
+        const handleEditClick = () =>
+          setEditModalOpen((prev) => !prev);
+        const handleDeleteClick = () =>
+          setDeleteModalOpen((prev) => !prev);
 
-        const handleCloseModal = () => {
-          setModalOpen(false);
-        };
+        const handleCloseEditModal = () =>
+          setEditModalOpen((prev) => !prev);
+        const handleCloseDeleteModal = () =>
+          setDeleteModalOpen((prev) => !prev);
 
         return (
           <div className='h-8 flex gap-1'>
+            {/* View Button */}
             <Button
+              onClick={handleEditClick}
               variant='ghost'
               className='px-[0.4rem] h-8 text-gray-500'
             >
               <Eye className='h-4 w-4' />
             </Button>
 
+            {/* Edit Button */}
             <Button
+              onClick={handleEditClick}
               variant='ghost'
               className='px-[0.4rem] h-8 text-gray-500'
-              onClick={handleEditClick}
             >
               <Pencil className='h-4 w-4' />
             </Button>
 
+            {/* Delete Button */}
             <Button
+              onClick={handleDeleteClick}
               variant='ghost'
               className='px-[0.4rem] h-8'
             >
               <Trash className='h-4 w-4 text-red-600' />
             </Button>
 
-            {/* Update User Modal */}
-            {isModalOpen && (
+            {/* Edit Modal */}
+            {isEditModalOpen && (
               <ModalEditUser
-                isOpen={isModalOpen}
+                isOpen={isEditModalOpen}
                 user={user} // Pass the selected user data
-                onClose={handleCloseModal} // Callback to close the modal
+                onClose={handleCloseEditModal} // Callback to close the modal
+              />
+            )}
+
+            {/* Delete Modal */}
+            {isDeleteModalOpen && (
+              <ModalDeleteUser
+                isOpen={isDeleteModalOpen}
+                user={user} // Pass the selected user data
+                onClose={handleCloseDeleteModal} // Callback to close the modal
               />
             )}
           </div>

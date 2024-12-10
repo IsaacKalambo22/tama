@@ -81,7 +81,6 @@ export interface ApiResponse<T> {
 }
 
 // Utility function for API requests
-// Utility function for API requests
 async function handleFetch<T>(
   endpoint: string,
   token?: string
