@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import { APIResponse } from '../../types';
 
@@ -75,6 +76,92 @@ export const getUserById = async (
       success: false,
       message:
         'An error occurred while fetching users. Please try again later.',
+      error: error.message,
+    });
+  }
+};
+
+export const updateUser = async (
+  req: Request,
+  res: Response<APIResponse>
+): Promise<void> => {
+  const { id } = req.params;
+  console.log(req.body);
+  const {
+    name,
+    email,
+    password,
+    role,
+    phoneNumber,
+  } = req.body;
+
+  // Validate input
+  if (!id) {
+    res.status(400).json({
+      success: false,
+      message: 'User ID is required.',
+      error: 'Validation error',
+    });
+    return;
+  }
+
+  try {
+    // Check if the user exists
+    const existingUser =
+      await prisma.user.findUnique({
+        where: { id },
+      });
+
+    if (!existingUser) {
+      res.status(404).json({
+        success: false,
+        message: 'User not found.',
+      });
+      return;
+    }
+
+    // Prepare updated data
+    const updatedData: Partial<
+      typeof existingUser
+    > = {
+      name: name?.trim() || existingUser.name,
+      email: email?.trim() || existingUser.email,
+      role: role?.trim() || existingUser.role,
+      phoneNumber:
+        phoneNumber?.trim() ||
+        existingUser.phoneNumber,
+    };
+
+    // Hash the password if it's being updated
+    if (password?.trim()) {
+      const saltRounds = 10;
+      updatedData.password = await bcrypt.hash(
+        password,
+        saltRounds
+      );
+    }
+
+    // Update the user details
+    const updatedUser = await prisma.user.update({
+      where: { id },
+      data: updatedData,
+    });
+
+    // Respond with success
+    res.status(200).json({
+      success: true,
+      message: 'User updated successfully.',
+      data: updatedUser,
+    });
+  } catch (error: any) {
+    console.error(
+      'Error updating user:',
+      error.message
+    );
+    res.status(500).json({
+      success: false,
+      message:
+        'An error occurred while updating the user. Please try again later.',
       error: error.message,
     });
   }
