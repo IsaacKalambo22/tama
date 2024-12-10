@@ -53,10 +53,11 @@ export interface ShopProps {
   updatedAt: string;
 }
 export enum Role {
-  ADMIN,
-  MANAGER,
-  USER,
+  ADMIN = 'ADMIN',
+  MANAGER = 'MANAGER',
+  USER = 'USER',
 }
+
 export interface UserProps {
   id: string;
   email: string;

@@ -1,6 +1,3 @@
-import Image from 'next/image';
-import { Control } from 'react-hook-form';
-
 import { Checkbox } from '@/components/ui/checkbox';
 import {
   FormControl,
@@ -17,6 +14,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import Image from 'next/image';
+import { Control } from 'react-hook-form';
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 
 export enum FormFieldType {
   INPUT = 'input',
@@ -128,6 +129,26 @@ const RenderInput = ({
           </div>
         </FormControl>
       );
+    case FormFieldType.PHONE_INPUT:
+      return (
+        <FormControl>
+          <PhoneInput
+            defaultCountry='MW'
+            placeholder={props.placeholder}
+            international
+            withCountryCallingCode
+            value={
+              field.value as
+                | E164Number
+                | undefined
+            }
+            onChange={field.onChange}
+            // className='input-phone'
+            className='input-phone'
+          />
+        </FormControl>
+      );
+
     case FormFieldType.SELECT:
       return (
         <FormControl>

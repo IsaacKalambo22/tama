@@ -81,7 +81,7 @@ export function CustomDataTable<T>({
 
   return (
     <div className='w-full min-w-full'>
-      <div className='flex justify-between items-center py-4'>
+      <div className='flex justify-between items-center py-3'>
         <Input
           placeholder={filterPlaceholder}
           value={

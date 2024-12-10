@@ -7,6 +7,7 @@ import ModalNewCouncilList from '@/modules/admin/modal-new-council-list';
 import ModalNewNews from '@/modules/admin/news/modal-new-news';
 import ModalNewPublication from '@/modules/admin/reports-publications/modal-new-publication';
 import ModalNewShop from '@/modules/admin/shop/modal-new-shop';
+import ModalNewUser from '@/modules/admin/user/modal-new-user';
 import { PlusSquare } from 'lucide-react';
 import { ReactElement, useState } from 'react';
 
@@ -16,6 +17,7 @@ export enum AddNewType {
   NEW_SHOP = 'New Shop',
   NEW_BLOG = 'New Blog',
   ADD_NEWS = 'Add News',
+  ADD_USER = 'Add User',
   NEW_COUNCIL_LIST = 'New Council List',
 }
 
@@ -97,6 +99,13 @@ const AddNewHeader = ({
         buttonName ===
           AddNewType.NEW_COUNCIL_LIST && (
           <ModalNewCouncilList
+            isOpen={isOpen}
+            onClose={handleClose}
+          />
+        )}
+      {isOpen &&
+        buttonName === AddNewType.ADD_USER && (
+          <ModalNewUser
             isOpen={isOpen}
             onClose={handleClose}
           />

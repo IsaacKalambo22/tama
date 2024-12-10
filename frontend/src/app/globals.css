@@ -103,6 +103,27 @@ body,
   @apply subtitle-2 mb-2 line-clamp-1 max-w-[300px] !important;
 }
 
+/* =====  REACT PHONE NUMBER INPUT OVERRIDES */
+.input-phone {
+  @apply mt-2 h-9 rounded-md px-3 text-sm border bg-white placeholder:text-gray-600 border-gray-500 !important;
+}
+/* .input-phone {
+  @apply focus:border-blue-500 h-11 border py-8 my-5 !important;
+} */
+
+/* =====  REACT PHONE NUMBER INPUT OVERRIDES */
+.PhoneInputInput {
+  outline: none;
+  margin-left: 4px;
+  background: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 4px 0;
+}
+
+.PhoneInputInput::placeholder {
+  color: #dbdee2;
+}
 @layer base {
   :root {
     --background: 0 0% 100%;

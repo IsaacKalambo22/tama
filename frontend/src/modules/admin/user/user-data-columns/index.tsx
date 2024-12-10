@@ -2,25 +2,9 @@
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Role } from '@/lib/api';
+import { UserProps } from '@/lib/api';
 import { ColumnDef } from '@tanstack/react-table';
 import { Eye, Pencil, Trash } from 'lucide-react';
-
-export interface UserProps {
-  id: string;
-  email: string;
-  password: string;
-  name: string;
-  role: Role;
-  lastLogin: string | null; // ISO date string or null if never logged in
-  isVerified: boolean;
-  resetPasswordToken: string | null;
-  resetPasswordExpiresAt: string | null;
-  verificationToken: string | null;
-  verificationTokenExpiresAt: string | null;
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
-}
 
 export const userColumns: ColumnDef<UserProps>[] =
   [
@@ -91,7 +75,7 @@ export const userColumns: ColumnDef<UserProps>[] =
     {
       accessorKey: 'action',
       header: 'Actions',
-      cell: ({ row }) => {
+      cell: ({}) => {
         // const user = row.original;
         // const [isDialogOpen, setIsDialogOpen] =
         //   useState(false);
