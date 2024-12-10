@@ -60,7 +60,7 @@ app.post('/api/v1/blogs', upload.single('file'), blog_1.default);
 app.post('/api/v1/news', upload.single('file'), news_1.default);
 /* ROUTES */
 app.get('/', (req, res) => {
-    res.send('This is home route');
+    res.send('<html><body><h1>Welcome to the Home Route</h1></body></html>');
 });
 app.get('/api/v1/uploads/:filename', (req, res) => {
     console.log(req.params.filename);

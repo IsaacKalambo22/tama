@@ -29,7 +29,7 @@ const MainLayout = ({
         )}
         <div
           className={cn(' ', {
-            'max-w-7xl mx-auto px-6 sm:px-16 w-full':
+            'max-w-7xl mx-auto px-4 sm:px-2 w-full':
               !isAdminPage,
           })}
         >

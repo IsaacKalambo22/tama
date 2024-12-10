@@ -22,7 +22,7 @@ const Desktop = () => {
   const user = false;
   return (
     <>
-      <div className='max-w-7xl mx-auto px-6 sm:px-16 flex justify-between items-center h-full'>
+      <div className='max-w-7xl mx-auto px-6 sm:px-2 flex justify-between items-center h-full'>
         {/* LEFT SIDE */}
         <div className='flex-1 items-center gap-2'>
           <Link
