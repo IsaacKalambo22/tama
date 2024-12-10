@@ -4,7 +4,7 @@ import {
   Request,
   Response,
 } from 'express';
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { TokenPayloadProps } from '../../types';
 
 // Extend Express Request interface to include user information
@@ -29,7 +29,6 @@ export const verifyToken = (
 
   const authHeader =
     authorizationHeader.toString();
-
   if (!authHeader.startsWith('Bearer ')) {
     res.status(401).json({
       message:
@@ -50,11 +49,8 @@ export const verifyToken = (
             'Forbidden: Invalid or expired token',
         });
       }
-
       const { id, email, role } =
-        decoded as JwtPayload & {
-          payload: TokenPayloadProps;
-        };
+        decoded as TokenPayloadProps;
 
       req.user = { id, email, role };
       next();
@@ -62,50 +58,35 @@ export const verifyToken = (
   );
 };
 
-// Middleware to check if the user is an Admin
 export const verifyAdmin = (
   req: Request,
   res: Response,
   next: NextFunction
 ): void => {
-  if (req.user?.role === Role.ADMIN) {
-    return next();
-  } else {
-    res.status(403).json({
-      message: 'Unauthorized',
-    });
-    return;
-  }
+  verifyToken(req, res, () => {
+    if (req.user?.role === Role.ADMIN) {
+      return next();
+    } else {
+      return res.status(403).json({
+        message:
+          'Forbidden: Admin access required',
+      });
+    }
+  });
 };
-
-// Middleware to check if the user is a Manager
 export const verifyManager = (
   req: Request,
   res: Response,
   next: NextFunction
 ): void => {
-  if (req.user?.role === Role.MANAGER) {
-    return next();
-  } else {
-    res.status(403).json({
-      message: 'Unauthorized',
-    });
-    return;
-  }
-};
-
-// Middleware to check if the user is authenticated but does not require a specific role
-export const verifyUser = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Response | void => {
-  if (req.user) {
-    return next();
-  } else {
-    return res.status(401).json({
-      message:
-        'You need to be logged in to access this resource',
-    });
-  }
+  verifyToken(req, res, () => {
+    if (req.user?.role === Role.MANAGER) {
+      return next();
+    } else {
+      return res.status(403).json({
+        message:
+          'Forbidden: Admin access required',
+      });
+    }
+  });
 };
