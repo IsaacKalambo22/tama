@@ -101,26 +101,18 @@ async function handleFetch<T>(
       method: 'GET',
       headers,
     });
-
-    // Handle non-OK HTTP responses
     if (!response.ok) {
-      const errorDetails = await response.text();
-      console.error(
-        `HTTP error! Status: ${response.status}, Details: ${errorDetails}`
+      console.log(
+        `HTTP error! Status: ${response.status} | Endpoint: ${endpoint}`
       );
       throw new Error(
         `HTTP error! Status: ${response.status}`
       );
     }
 
-    // Parse the response JSON
-    const data: {
-      success: boolean;
-      data: T;
-      message?: string;
-    } = await response.json();
+    const data: ApiResponse<T> =
+      await response.json();
 
-    // Check for API-level success
     if (data.success) {
       console.log(
         `Data fetched successfully from ${endpoint}:`,
@@ -128,21 +120,21 @@ async function handleFetch<T>(
       );
       return data.data;
     } else {
-      console.error(
+      console.log(
         `API Error at ${endpoint}: ${data.message}`
       );
-      throw new Error(
-        data.message || 'Unknown API error'
-      );
+      throw new Error(data.message);
     }
-  } catch (error: any) {
-    console.error(
+  } catch (error) {
+    console.log(
       `Error fetching data from ${endpoint}:`,
-      error.message || error
+      error.message
     );
-    throw new Error(
-      `Failed to fetch data: ${error.message}`
-    );
+    // return Promise.reject(
+    //   new Error(
+    //     `Failed to fetch data: ${error.message}`
+    //   )
+    // );
   }
 }
 
