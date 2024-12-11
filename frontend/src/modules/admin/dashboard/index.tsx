@@ -124,27 +124,25 @@ export default async function Dashboard() {
   const updatedStats = stats.map((stat) => {
     switch (stat.title) {
       case 'Shops':
-        stat.count = shops?.length || stat.count;
+        stat.count = shops?.length || 0;
         break;
       case 'Forms':
-        stat.count = forms?.length || stat.count;
+        stat.count = forms?.length || 0;
         break;
       case 'Blogs':
-        stat.count = blogs?.length || stat.count;
+        stat.count = blogs?.length || 0;
         break;
       case 'News':
-        stat.count = news?.length || stat.count;
+        stat.count = news?.length || 0;
         break;
       case 'Users':
-        stat.count = users?.length || stat.count;
+        stat.count = users?.length || 0;
         break;
       case 'Reports & Publications':
-        stat.count =
-          reports?.length || stat.count;
+        stat.count = reports?.length || 0;
         break;
       case 'Council Lists':
-        stat.count =
-          councilLists?.length || stat.count;
+        stat.count = councilLists?.length || 0;
         break;
       default:
         break;

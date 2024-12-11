@@ -49,7 +49,7 @@ export const createForm = async (
     const token = session?.accessToken;
 
     const response = await fetch(
-      'http://localhost:8000/api/v1/forms',
+      `${BASE_URL}/forms`,
       {
         method: 'POST',
         headers: {
@@ -210,7 +210,7 @@ export const createShop = async (
     const token = session?.accessToken;
 
     const response = await fetch(
-      'http://localhost:8000/api/v1/shops',
+      `${BASE_URL}/shops`,
       {
         method: 'POST',
         headers: {
@@ -252,7 +252,7 @@ export const updateShop = async (
 
     const token = session?.accessToken;
     const response = await fetch(
-      `http://localhost:8000/api/v1/shops/${id}`,
+      `${BASE_URL}/shops/${id}`,
       {
         method: 'PATCH',
         headers: {
@@ -299,7 +299,7 @@ export const updateBlog = async (
 
     const token = session?.accessToken;
     const response = await fetch(
-      `http://localhost:8000/api/v1/blogs/${id}`,
+      `${BASE_URL}/blogs/${id}`,
       {
         method: 'PATCH',
         headers: {
@@ -349,7 +349,7 @@ export const updateNews = async (
 
     const token = session?.accessToken;
     const response = await fetch(
-      `http://localhost:8000/api/v1/news/${id}`,
+      `${BASE_URL}/news/${id}`,
       {
         method: 'PATCH',
         headers: {
@@ -396,7 +396,7 @@ export const updateForms = async (
 
     const token = session?.accessToken;
     const response = await fetch(
-      `http://localhost:8000/api/v1/forms/${id}`,
+      `${BASE_URL}/forms/${id}`,
       {
         method: 'PATCH',
         headers: {
@@ -443,7 +443,7 @@ export const updateReports = async (
 
     const token = session?.accessToken;
     const response = await fetch(
-      `http://localhost:8000/api/v1/reports-publications/${id}`,
+      `${BASE_URL}/reports-publications/${id}`,
       {
         method: 'PATCH',
         headers: {
@@ -489,7 +489,7 @@ export const deleteShop = async (
 
     const token = session?.accessToken;
     const response = await fetch(
-      `http://localhost:8000/api/v1/shops/${id}`,
+      `${BASE_URL}/shops/${id}`,
       {
         method: 'DELETE',
         headers: {
@@ -579,7 +579,7 @@ export const deleteForms = async (
 
     const token = session?.accessToken;
     const response = await fetch(
-      `http://localhost:8000/api/v1/forms/${id}`,
+      `${BASE_URL}/forms/${id}`,
       {
         method: 'DELETE',
         headers: {
@@ -624,7 +624,7 @@ export const deleteReports = async (
 
     const token = session?.accessToken;
     const response = await fetch(
-      `http://localhost:8000/api/v1/reports-publications/${id}`,
+      `${BASE_URL}/reports-publications/${id}`,
       {
         method: 'DELETE',
         headers: {
@@ -669,7 +669,7 @@ export const deleteBlog = async (
 
     const token = session?.accessToken;
     const response = await fetch(
-      `http://localhost:8000/api/v1/blogs/${id}`,
+      `${BASE_URL}/blogs/${id}`,
       {
         method: 'DELETE',
         headers: {
@@ -714,7 +714,7 @@ export const deleteNews = async (
 
     const token = session?.accessToken;
     const response = await fetch(
-      `http://localhost:8000/api/v1/news/${id}`,
+      `${BASE_URL}/news/${id}`,
       {
         method: 'DELETE',
         headers: {
@@ -761,7 +761,7 @@ export const createBlog = async (
     const token = session?.accessToken;
 
     const response = await fetch(
-      'http://localhost:8000/api/v1/blogs',
+      `${BASE_URL}/blogs`,
       {
         method: 'POST',
         headers: {
@@ -805,7 +805,7 @@ export const createNews = async (
     const token = session?.accessToken;
 
     const response = await fetch(
-      'http://localhost:8000/api/v1/news',
+      `${BASE_URL}/news`,
       {
         method: 'POST',
         headers: {
@@ -851,7 +851,7 @@ export const createCouncilList = async (
       JSON.stringify(councilData);
 
     const response = await fetch(
-      'http://localhost:8000/api/v1/council-lists',
+      `${BASE_URL}/council-lists`,
       {
         method: 'POST',
         headers: {
@@ -904,7 +904,7 @@ export const createReportAndPublication = async (
 
     const token = session?.accessToken;
     const response = await fetch(
-      'http://localhost:8000/api/v1/reports-publications',
+      `${BASE_URL}/reports-publications`,
       {
         method: 'POST',
         headers: {
@@ -930,9 +930,3 @@ export const createReportAndPublication = async (
     throw error;
   }
 };
-
-export const getFiles = async () => {};
-
-export const renameFile = async () => {};
-
-export const updateFileUsers = async () => {};
