@@ -6,6 +6,7 @@ import {
   fetchNews,
   fetchReportsAndPublications,
   fetchShops,
+  fetchUsers,
 } from '@/lib/api';
 import { formatCount } from '@/lib/utils';
 import AddNewHeader from '@/modules/common/add-new-header';
@@ -100,14 +101,24 @@ const stats: AdminStats[] = [
 ];
 
 export default async function Dashboard() {
-  // Fetch the data from the APIs
-  const blogs = await fetchBlogs();
-  const shops = await fetchShops();
-  const reports =
-    await fetchReportsAndPublications();
-  const forms = await fetchFormsAndDocuments();
-  const councilList = await fetchCouncilList();
-  const news = await fetchNews();
+  // Fetch all required data
+  const [
+    blogs,
+    shops,
+    reports,
+    forms,
+    councilLists,
+    news,
+    users,
+  ] = await Promise.all([
+    fetchBlogs(),
+    fetchShops(),
+    fetchReportsAndPublications(),
+    fetchFormsAndDocuments(),
+    fetchCouncilList(),
+    fetchNews(),
+    fetchUsers(),
+  ]);
 
   // Update the stats with fetched data or fallback to the mocked value
   const updatedStats = stats.map((stat) => {
@@ -125,7 +136,7 @@ export default async function Dashboard() {
         stat.count = news?.length || stat.count;
         break;
       case 'Users':
-        stat.count = 1024; // Replace with actual user data fetching logic if needed
+        stat.count = users?.length || stat.count;
         break;
       case 'Reports & Publications':
         stat.count =
@@ -133,7 +144,7 @@ export default async function Dashboard() {
         break;
       case 'Council Lists':
         stat.count =
-          councilList?.length || stat.count;
+          councilLists?.length || stat.count;
         break;
       default:
         break;
