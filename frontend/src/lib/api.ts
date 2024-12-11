@@ -1,4 +1,3 @@
-import { auth } from '@/auth';
 import { BASE_URL } from './utils';
 
 // Shared interfaces
@@ -151,16 +150,13 @@ export const fetchUsers = async (): Promise<
 > => {
   try {
     // Fetch user session for authentication
-    const session = await auth();
-    const token = session?.accessToken; // Token is optional, might be undefined if not signed in.
+    // const session = await auth();
+    // const token = session?.accessToken; // Token is optional, might be undefined if not signed in.
 
     const API_URL = `${BASE_URL}/users`;
 
     // Use the handleFetch utility for making the API call
-    return handleFetch<UserProps[]>(
-      API_URL,
-      token
-    );
+    return handleFetch<UserProps[]>(API_URL);
   } catch (error: any) {
     console.error(
       'Error during fetchUsers:',

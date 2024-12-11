@@ -16,7 +16,10 @@ import Link from 'next/link';
 const News = async () => {
   let news = [];
   try {
-    news = await fetchNews(); // Fetch the data directly
+    const response = await fetchNews();
+    news = Array.isArray(response)
+      ? response
+      : []; // Ensure `news` is an array
   } catch (error) {
     console.error('Failed to fetch news:', error);
     return (
@@ -32,6 +35,21 @@ const News = async () => {
     );
   }
 
+  // If no news, show a "No News" message
+  if (news.length === 0) {
+    return (
+      <div className='w-full text-center py-10'>
+        <HeaderText
+          title='TAMA News'
+          subtitle='Stay Informed with the Latest Updates and Announcements'
+        />
+        <p className='text-gray-500 text-lg mt-5'>
+          No news or publications are currently
+          available.
+        </p>
+      </div>
+    );
+  }
   // Separate the most recent news item
   const [mostRecent, ...otherNews] = news;
   const authorInitial = mostRecent.author
