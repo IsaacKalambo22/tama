@@ -51,23 +51,23 @@ services:
   #   restart: unless-stopped
 
   tama_DB:
-    image: mysql:latest
+    image: postgres:16-alpine3.19
     container_name: tama_DB
-    ports:
-      - '3306:3306'
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: tama
-      MYSQL_USER: programmer
-      MYSQL_PASSWORD: password
+      POSTGRES_USER: programmer
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: litiko_services
+      PGDATA: /data/postgres
+    volumes:
+      - tama_DB:/var/lib/postgresql/data
+    ports:
+      - '5437:5432'
     networks:
       - tama-network
     restart: unless-stopped
-    volumes:
-      - tama_data:/var/lib/mysql
 
 volumes:
-  tama_data:
+  tama_DB:
 
 networks:
   tama-network:
