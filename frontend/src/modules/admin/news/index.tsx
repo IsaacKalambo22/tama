@@ -17,7 +17,10 @@ import NewsList from './news-list';
 const News = async () => {
   let news = [];
   try {
-    news = await fetchNews(); // Fetch the data directly
+    const response = await fetchNews();
+    news = Array.isArray(response)
+      ? response
+      : []; // Ensure `news` is an array
   } catch (error) {
     console.error('Failed to fetch news:', error);
     return (
@@ -33,10 +36,25 @@ const News = async () => {
     );
   }
 
+  if (news.length === 0) {
+    return (
+      <div>
+        <AddNewHeader
+          name='News'
+          buttonName='Add News'
+        />
+        <p className='text-gray-500 mt-4'>
+          No news or publications available. Add
+          new articles to get started!
+        </p>
+      </div>
+    );
+  }
+
   // Separate the most recent news item
   const [mostRecent, ...otherNews] = news;
-  const authorInitial = mostRecent.author
-    .charAt(0)
+  const authorInitial = mostRecent?.author
+    ?.charAt(0)
     .toUpperCase();
 
   return (

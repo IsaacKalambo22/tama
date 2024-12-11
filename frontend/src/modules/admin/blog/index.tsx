@@ -14,11 +14,11 @@ const Blog = async () => {
     return (
       <div>
         <AddNewHeader
-          name='Blogs'
+          name='Blog List'
           buttonName='New Blog'
         />
         <p className='text-red-500'>
-          Failed to load blogs and publications.
+          Failed to load blogs.
         </p>
       </div>
     );
@@ -27,10 +27,17 @@ const Blog = async () => {
   return (
     <div>
       <AddNewHeader
-        name='Blogs'
+        name='Blog List'
         buttonName='New Blog'
       />
-      <BlogList blogs={blogs} />
+      {blogs.length > 0 ? (
+        <BlogList blogs={blogs} />
+      ) : (
+        <p className='text-gray-500 mt-4'>
+          No blogs available. Create a new blog to
+          get started!
+        </p>
+      )}
     </div>
   );
 };

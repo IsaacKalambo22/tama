@@ -30,7 +30,14 @@ const Shop = async () => {
         name='Shop List'
         buttonName='New Shop'
       />
-     <ShopList shops={shops}/>
+      {shops.length > 0 ? (
+        <ShopList shops={shops} />
+      ) : (
+        <p className='text-gray-500 mt-4'>
+          No shops available. Create a new shop to
+          get started!
+        </p>
+      )}
     </div>
   );
 };
