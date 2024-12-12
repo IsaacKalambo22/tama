@@ -59,7 +59,7 @@ const Shops = async () => {
           title='Available Items'
           subtitle='Browse Items at Our Shops'
         />
-        <div className='grid gap-8 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4'>
+        <div className='grid gap-8 grid-cols-1 sm:grid-cols-3 lg:grid-cols-4'>
           {shopItems.map((item) => (
             <ShopItemCard
               key={item.id}

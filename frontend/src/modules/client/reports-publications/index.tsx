@@ -32,7 +32,7 @@ const ReportsAndPublications = async () => {
       />
 
       {/* Render the files */}
-      {reports.length > 0 ? (
+      {reports?.length > 0 ? (
         <ReportsAndPublicationsList
           files={reports}
         />

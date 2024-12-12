@@ -61,7 +61,7 @@ const News = async () => {
         title='TAMA News'
         subtitle='Stay Informed with the Latest Updates and Announcements'
       />
-      <div className='space-y-10'>
+      <div className='space-y-10 mt-10'>
         {/* Most Recent Story */}
         {mostRecent && (
           <Link
