@@ -5,7 +5,7 @@ import { BASE_URL } from './lib/utils';
 export const { handlers, auth, signIn, signOut } =
   NextAuth({
     secret: process.env.AUTH_SECRET,
-    trustHost: true,
+    trustHost: true, // Ensures NextAuth works with remote hosts
     providers: [
       Credentials({
         credentials: {
@@ -38,14 +38,12 @@ export const { handlers, auth, signIn, signOut } =
               }
             );
 
-            // Log the raw response for debugging
             console.log(
               'Server Response:',
               response
             );
 
             if (!response.ok) {
-              // Handle specific HTTP errors
               const errorDetails =
                 await response.json();
               console.error(
@@ -60,7 +58,6 @@ export const { handlers, auth, signIn, signOut } =
             }
 
             const data = await response.json();
-
             console.log('Parsed Data:', data);
 
             if (data?.user?.accessToken) {
@@ -74,7 +71,7 @@ export const { handlers, auth, signIn, signOut } =
               };
             }
 
-            return null; // Fallback for missing user data
+            return null;
           } catch (error) {
             console.error(
               'Error during authorization:',
@@ -99,15 +96,17 @@ export const { handlers, auth, signIn, signOut } =
           token.email = user.email;
           token.role = user.role;
         } else {
-          console.warn(
-            'No user data passed to JWT callback'
+          console.log(
+            'No user data passed to JWT callback. Using existing token.'
           );
         }
+        console.log('Updated Token:', token);
         return token;
       },
       async session({ session, token }) {
-        console.log('JWT Callback called');
-        console.log({ session, token });
+        console.log('Session Callback called');
+        console.log('Existing Session:', session);
+        console.log('Token Data:', token);
         Object.assign(session, {
           id: token.id,
           accessToken: token.accessToken,
@@ -115,14 +114,19 @@ export const { handlers, auth, signIn, signOut } =
           email: token.email,
           role: token.role,
         });
+        console.log('Updated Session:', session);
         return session;
       },
     },
     session: {
-      strategy: 'jwt',
-      maxAge: 1 * 24 * 60 * 60,
+      strategy: 'jwt', // Use JWT for session handling
+      maxAge: 30 * 60, // 30 minutes in seconds
     },
     jwt: {
-      maxAge: 1 * 24 * 60 * 60,
+      maxAge: 30 * 60, // 30 minutes in seconds
     },
+    // pages: {
+    //   signIn: '/auth/signin', // Custom sign-in page
+    //   error: '/auth/error', // Error page
+    // },
   });
