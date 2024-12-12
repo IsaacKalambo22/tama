@@ -24,24 +24,28 @@ const Desktop = () => {
     <>
       <div className='max-w-7xl mx-auto px-6 sm:px-2 flex justify-between items-center h-full'>
         {/* LEFT SIDE */}
-        <div className='flex-1 items-center gap-2'>
-          <Link
-            href='/'
-            className='flex items-center gap-2'
-          >
-            <div className='w-full h-full  justify-center items-center'>
-              <Image
-                src='/assets/images/logo.png'
-                width={40}
-                height={40}
-                alt='logo'
-                layout='fixed'
-                className='object-contain'
-              />
-            </div>
-          </Link>
+        <div className='flex-1 items-center h-full gap-2'>
+          <div className='flex items-center h-full gap-2'>
+            <Link
+              href='/'
+              // className='flex items-center gap-2'
+            >
+              <div className='w-full h-full justify-center items-center'>
+                <Image
+                  src='/assets/images/logo.png'
+                  width={43}
+                  height={43}
+                  alt='logo'
+                  layout='fixed'
+                  className='object-contain'
+                />
+              </div>
+            </Link>
+            <span className=' bg-gradient-to-r from-green-600 to-amber-500 bg-clip-text text-transparent text-[1rem] leading-snug capitalize'>
+              TAMA Farmers Trust
+            </span>
+          </div>
         </div>
-
         {/* MIDDLE */}
         <div className='items-center justify-center'>
           <NavigationMenu>
