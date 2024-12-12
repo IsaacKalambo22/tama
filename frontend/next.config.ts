@@ -1,33 +1,35 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  cacheMaxMemorySize: 0, // disable default in-memory caching
+  // Disable in-memory caching
+  // cacheMaxMemorySize: 0,
 
+  // TypeScript settings
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: true, // Skip type-checking during builds
   },
+
+  // ESLint settings
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: true, // Skip ESLint checks during builds
   },
+
+  // Experimental features
   experimental: {
     serverActions: {
-      bodySizeLimit: '100MB',
+      bodySizeLimit: '100MB', // Increase body size limit for server actions
     },
   },
+
+  // Image optimization settings
   images: {
     remotePatterns: [
-      // {
-      //   protocol: 'https',
-      //   hostname: 'example.com',
-      //   port: '',
-      //   pathname: '/**',
-      // },
-      // {
-      //   protocol: 'https',
-      //   hostname: 'localhost',
-      //   port: '',
-      //   pathname: '/**',
-      // },
+      {
+        protocol: 'http',
+        hostname: '13.48.70.174',
+        port: '',
+        pathname: '/**',
+      },
       {
         protocol: 'http',
         hostname: 'localhost',
@@ -36,6 +38,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+
+  // Other potential customizations (uncomment if needed)
+  // reactStrictMode: true,
+  // outputFileTracing: false,
 };
 
 export default nextConfig;
