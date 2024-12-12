@@ -29,7 +29,7 @@ const News = async () => {
           subtitle='Stay Informed with the Latest Updates and Announcements'
         />
         <p className='text-red-500'>
-          Failed to load news and publications.
+          Failed to load news.
         </p>
       </div>
     );
@@ -38,14 +38,13 @@ const News = async () => {
   // If no news, show a "No News" message
   if (news.length === 0) {
     return (
-      <div className='w-full text-center py-10'>
+      <div className='w-full text-center'>
         <HeaderText
           title='TAMA News'
           subtitle='Stay Informed with the Latest Updates and Announcements'
         />
         <p className='text-gray-500 text-lg mt-5'>
-          No news or publications are currently
-          available.
+          No news or news are currently available.
         </p>
       </div>
     );
@@ -57,7 +56,7 @@ const News = async () => {
     .toUpperCase(); // Get the first letter of the author's name
 
   return (
-    <div className='w-full space-y-6 mb-16'>
+    <div className='w-full mb-16'>
       <HeaderText
         title='TAMA News'
         subtitle='Stay Informed with the Latest Updates and Announcements'

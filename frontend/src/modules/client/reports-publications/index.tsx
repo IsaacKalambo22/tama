@@ -25,7 +25,7 @@ const ReportsAndPublications = async () => {
     );
   }
   return (
-    <div className='flex flex-col items-center gap-10 mb-16'>
+    <div className='flex flex-col w-full gap-10 mb-16'>
       <HeaderText
         title='Reports and Publications'
         subtitle='Explore our latest research and insights.'
