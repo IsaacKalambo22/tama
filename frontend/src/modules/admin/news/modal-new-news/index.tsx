@@ -11,6 +11,7 @@ import {
   Form,
   FormControl,
 } from '@/components/ui/form';
+import useCustomPath from '@/hooks/use-custom-path';
 import { toast } from '@/hooks/use-toast';
 import CustomFormField, {
   FormFieldType,
@@ -18,6 +19,7 @@ import CustomFormField, {
 import { FileUploader } from '@/modules/common/file-uploader';
 import SubmitButton from '@/modules/common/submit-button';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
@@ -34,7 +36,9 @@ const ModalNewNews = ({
 }: Props) => {
   const [isLoading, setIsLoading] =
     useState(false);
-
+  const path = usePathname();
+  const { fullPath, pathWithoutAdmin } =
+    useCustomPath(path);
   const formSchema = zod.object({
     title: zod.string().min(2, {
       message:
@@ -87,7 +91,11 @@ const ModalNewNews = ({
       }
 
       // Call the createForm function to send data to the server
-      const result = await createNews(formData);
+      const result = await createNews(
+        formData,
+        fullPath,
+        pathWithoutAdmin
+      );
 
       console.log('Upload result:', result);
       onClose();
@@ -114,7 +122,7 @@ const ModalNewNews = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
-          <DialogTitle>Add New Blog</DialogTitle>
+          <DialogTitle>Add New News</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form
