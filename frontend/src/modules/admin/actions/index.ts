@@ -789,7 +789,6 @@ export const createBlog = async (
 };
 export const createNews = async (
   formData: FormData,
-  id: string,
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
