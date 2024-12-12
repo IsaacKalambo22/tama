@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { FileProps } from './api';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -245,6 +246,21 @@ export const constructDownloadUrl = (
 ) => {
   // Reference the file directly in the local assets directory
   return `/assets/files/${fileName}`;
+};
+
+export const handleDownload = (
+  file: FileProps
+) => {
+  const downloadLink =
+    document.createElement('a');
+
+  downloadLink.href = constructFileUrl(
+    file.fileUrl
+  );
+  downloadLink.download = file.fileUrl; // Set the combined file name for download
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
 };
 
 export const getFileTypesParams = (

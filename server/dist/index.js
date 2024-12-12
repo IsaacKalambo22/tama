@@ -78,6 +78,7 @@ app.use('/api/v1/auth', auth_1.default);
 app.use('/api/v1/shops', shop_1.default);
 app.use('/api/v1/forms', form_1.default);
 app.use('/api/v1/blogs', blog_1.default);
+app.use('/api/v1/news', news_1.default);
 app.use('/api/v1/users', user_1.default);
 app.use('/api/v1/council-lists', council_list_1.default);
 app.use('/api/v1/reports-publications', reports_publications_1.default);

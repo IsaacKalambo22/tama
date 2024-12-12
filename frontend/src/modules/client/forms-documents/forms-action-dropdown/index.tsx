@@ -12,8 +12,8 @@ import {
 
 import { FileProps } from '@/lib/api';
 import {
-  constructFileUrl,
   getFileType,
+  handleDownload,
 } from '@/lib/utils';
 import { clientActionsDropdownItems } from '@/modules/admin/constants';
 import Image from 'next/image';
@@ -31,25 +31,6 @@ const FormsActionDropdown = ({ file }: Props) => {
     useState<ActionType | null>(null);
   const fileProps = getFileType(file.fileUrl);
 
-  const handleDownload = (file: FileProps) => {
-    // console.log({ fileName });
-    // const fullFileName = `${fileName}.${fileExtension}`; // Combine filename and extension
-
-    const downloadLink =
-      document.createElement('a');
-
-    downloadLink.href = constructFileUrl(
-      file.fileUrl
-    );
-    downloadLink.download = file.fileUrl; // Set the combined file name for download
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-
-    console.log(
-      `Downloading file: ${file.filename}`
-    ); // Log the full file name
-  };
   const renderDialogContent = () => {
     if (!action) return null;
 

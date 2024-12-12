@@ -789,6 +789,7 @@ export const createBlog = async (
     throw error;
   }
 };
+
 export const createNews = async (
   formData: FormData,
   fullPath: string,
@@ -832,6 +833,7 @@ export const createNews = async (
     throw error;
   }
 };
+
 export const createCouncilList = async (
   councilData: Partial<CouncilListProps>,
   fullPath: string,
