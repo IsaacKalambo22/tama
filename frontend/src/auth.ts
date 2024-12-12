@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
+import { BASE_URL } from './lib/utils';
 
 export const { handlers, auth, signIn, signOut } =
   NextAuth({
@@ -22,7 +23,7 @@ export const { handlers, auth, signIn, signOut } =
 
           try {
             const response = await fetch(
-              'http://localhost:8000/api/v1/auth/login',
+              `${BASE_URL}/auth/login`,
               {
                 method: 'POST',
                 headers: {
