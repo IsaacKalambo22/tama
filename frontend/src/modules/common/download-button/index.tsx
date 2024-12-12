@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { constructDownloadUrl } from '@/lib/utils';
+import { constructFileUrl } from '@/lib/utils';
 import Image from 'next/image';
 
 interface DownloadButtonProps {
@@ -23,7 +23,7 @@ const DownloadButton = ({
     const downloadLink =
       document.createElement('a');
     downloadLink.href =
-      constructDownloadUrl(fullFileName); // Use the full file name with extension
+      constructFileUrl(fullFileName); // Use the full file name with extension
     downloadLink.download = fullFileName; // Set the combined file name for download
     document.body.appendChild(downloadLink);
     downloadLink.click();

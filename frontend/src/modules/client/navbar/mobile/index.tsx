@@ -306,14 +306,13 @@ const Mobile: React.FC = () => {
           {isOpen && (
             <>
               {user ? (
-                <Button
-                  type='button'
-                  className='h-9 font-bold w-full'
-                >
-                  Sign Out
-                </Button>
+                <Link href='/'>
+                  <Button className='h-9 font-bold w-full'>
+                    out{' '}
+                  </Button>
+                </Link>
               ) : (
-                <Link href='/register'>
+                <Link href='/login'>
                   <Button className='h-9 font-bold w-full'>
                     Sign in
                   </Button>

@@ -12,7 +12,7 @@ import {
 
 import { FileProps } from '@/lib/api';
 import {
-  constructDownloadUrl,
+  constructFileUrl,
   getFileType,
 } from '@/lib/utils';
 import { clientActionsDropdownItems } from '@/modules/admin/constants';
@@ -31,23 +31,23 @@ const FormsActionDropdown = ({ file }: Props) => {
     useState<ActionType | null>(null);
   const fileProps = getFileType(file.fileUrl);
 
-  const handleDownload = (
-    fileName: string,
-    fileExtension: string
-  ) => {
-    const fullFileName = `${fileName}.${fileExtension}`; // Combine filename and extension
+  const handleDownload = (file: FileProps) => {
+    // console.log({ fileName });
+    // const fullFileName = `${fileName}.${fileExtension}`; // Combine filename and extension
 
     const downloadLink =
       document.createElement('a');
-    downloadLink.href =
-      constructDownloadUrl(fullFileName); // Use the full file name with extension
-    downloadLink.download = fullFileName; // Set the combined file name for download
+
+    downloadLink.href = constructFileUrl(
+      file.fileUrl
+    );
+    downloadLink.download = file.fileUrl; // Set the combined file name for download
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
 
     console.log(
-      `Downloading file: ${fullFileName}`
+      `Downloading file: ${file.filename}`
     ); // Log the full file name
   };
   const renderDialogContent = () => {
@@ -113,10 +113,7 @@ const FormsActionDropdown = ({ file }: Props) => {
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      handleDownload(
-                        file.filename,
-                        fileProps.extension
-                      );
+                      handleDownload(file);
                     }}
                     className='flex items-center gap-2'
                   >

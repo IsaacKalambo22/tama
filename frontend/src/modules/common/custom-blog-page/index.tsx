@@ -30,6 +30,30 @@ export default async function CustomBlogPage({
     );
   }
 
+  // Function to format the blog content
+  const formatContent = (
+    content: string
+  ): string[] => {
+    const sentences = content
+      .split(/(?<=\.)\s+/) // Split content into sentences after periods.
+      .map((sentence) => sentence.trim());
+    const chunks = [];
+    for (
+      let i = 0;
+      i < sentences.length;
+      i += 5
+    ) {
+      chunks.push(
+        sentences.slice(i, i + 5).join(' ')
+      ); // Group 5 sentences together.
+    }
+    return chunks;
+  };
+
+  const formattedContent = formatContent(
+    blog.content
+  );
+
   return (
     <article className='max-w-4xl mx-auto px-6 py-12'>
       {/* Blog Header */}
@@ -57,8 +81,12 @@ export default async function CustomBlogPage({
       </div>
 
       {/* Blog Content */}
-      <div className='prose prose-lg max-w-none text-gray-700'>
-        {blog.content}
+      <div className='prose prose-lg max-w-none text-gray-700 space-y-8'>
+        {formattedContent.map(
+          (paragraph, index) => (
+            <p key={index}>{paragraph}</p>
+          )
+        )}
       </div>
 
       {/* Blog Footer */}

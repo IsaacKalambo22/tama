@@ -16,7 +16,7 @@ import {
 export function MainCarousel() {
   const plugin = React.useRef(
     Autoplay({
-      delay: 2000,
+      delay: 5000,
       stopOnInteraction: true,
     })
   );
@@ -63,7 +63,7 @@ export function MainCarousel() {
                     <span className='text-3xl sm:text-5xl'>
                       TAMA Farmers Trust
                     </span>
-                    <span className='text-2xl sm:text-4xl'>
+                    <span className='text-2xl sm:text-3xl'>
                       Leading farmers to
                       prosperity
                     </span>
