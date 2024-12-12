@@ -5,6 +5,7 @@ import { BASE_URL } from './lib/utils';
 export const { handlers, auth, signIn, signOut } =
   NextAuth({
     secret: process.env.AUTH_SECRET,
+    trustHost: true,
     providers: [
       Credentials({
         credentials: {
@@ -87,14 +88,20 @@ export const { handlers, auth, signIn, signOut } =
     callbacks: {
       async jwt({ token, user }) {
         console.log('JWT Callback called');
-        console.log({ user, token });
-        // Store the accessToken in the token object
-        if (user?.accessToken) {
+        if (user) {
+          console.log(
+            'Adding user data to token:',
+            user
+          );
           token.accessToken = user.accessToken;
           token.id = user.id;
           token.name = user.name;
           token.email = user.email;
           token.role = user.role;
+        } else {
+          console.warn(
+            'No user data passed to JWT callback'
+          );
         }
         return token;
       },
@@ -110,5 +117,12 @@ export const { handlers, auth, signIn, signOut } =
         });
         return session;
       },
+    },
+    session: {
+      strategy: 'jwt',
+      maxAge: 1 * 24 * 60 * 60,
+    },
+    jwt: {
+      maxAge: 1 * 24 * 60 * 60,
     },
   });
