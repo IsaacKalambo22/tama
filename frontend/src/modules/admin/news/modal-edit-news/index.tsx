@@ -3,6 +3,7 @@ import {
   Form,
   FormControl,
 } from '@/components/ui/form';
+import useCustomPath from '@/hooks/use-custom-path';
 import { toast } from '@/hooks/use-toast';
 import { NewsProps } from '@/lib/api';
 import CustomFormField, {
@@ -11,6 +12,7 @@ import CustomFormField, {
 import { FileUploader } from '@/modules/common/file-uploader';
 import SubmitButton from '@/modules/common/submit-button';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
@@ -30,7 +32,9 @@ const ModalEditNews = ({
 }: Props) => {
   const [isLoading, setIsLoading] =
     useState(false);
-
+  const path = usePathname();
+  const { fullPath, pathWithoutAdmin } =
+    useCustomPath(path);
   const formSchema = zod.object({
     title: zod.string().optional(),
     content: zod.string().optional(),
@@ -80,13 +84,13 @@ const ModalEditNews = ({
           news.imageUrl
         );
       }
-      for (const pair of formData.entries()) {
-        console.log(pair);
-      }
+     
 
       const result = await updateNews(
         formData,
-        news.id
+        news.id,
+        fullPath,
+        `/news-updates${pathWithoutAdmin}`
       );
 
       console.log('Upload result:', result);
