@@ -37,7 +37,7 @@ const Team = ({ teamMembers }: TeamProps) => {
                 className='object-cover'
               />
             </div>
-            <h3 className='text-xl font-semibold text-gray-800'>
+            <h3 className='text-[1rem] font-semibold text-gray-800'>
               {member.name}
             </h3>
             <p className='text-green-600 text-sm font-medium mb-2'>
