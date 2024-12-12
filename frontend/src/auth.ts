@@ -125,8 +125,19 @@ export const { handlers, auth, signIn, signOut } =
     jwt: {
       maxAge: 30 * 60, // 30 minutes in seconds
     },
-    // pages: {
-    //   signIn: '/auth/signin', // Custom sign-in page
-    //   error: '/auth/error', // Error page
-    // },
+    cookies: {
+      sessionToken: {
+        name:
+          process.env.NODE_ENV === 'production'
+            ? '__Secure-authjs.session-token'
+            : 'authjs.session-token',
+        options: {
+          httpOnly: true,
+          secure:
+            process.env.NODE_ENV === 'production', // Only use secure cookies in production
+          path: '/',
+          sameSite: 'lax', // Set sameSite to 'lax' or 'strict' based on your needs
+        },
+      },
+    },
   });
