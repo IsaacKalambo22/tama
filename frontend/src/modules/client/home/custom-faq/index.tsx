@@ -15,11 +15,11 @@ export function CustomFaq() {
     >
       <Card className='p-8 rounded-2xl shadow-none'>
         <AccordionItem value='item-1'>
-          <AccordionTrigger className='text-xl font-semibold text-gray-700 hover:text-green-600 transition hover:no-underline'>
+          <AccordionTrigger className='text-[1rem] font-semibold text-gray-700 hover:text-green-600 transition hover:no-underline'>
             How Do I become a TAMA Farmers Trust
             member?
           </AccordionTrigger>
-          <AccordionContent className='text-gray-700 mt-4 text-[1rem] leading-relaxed'>
+          <AccordionContent className='text-gray-700 mt-4 text-sm leading-relaxed'>
             TAMA Farmers Trust membership is
             voluntary and renews annually for
             tobacco growers.
@@ -51,11 +51,11 @@ export function CustomFaq() {
         </AccordionItem>
 
         <AccordionItem value='item-2'>
-          <AccordionTrigger className='text-xl font-semibold text-gray-700 hover:text-green-600 transition hover:no-underline'>
+          <AccordionTrigger className='text-[1rem] font-semibold text-gray-700 hover:text-green-600 transition hover:no-underline'>
             What are the benefits of TAMA Farmers
             Trust membership?
           </AccordionTrigger>
-          <AccordionContent className='text-gray-700 mt-4 text-[1rem] leading-relaxed'>
+          <AccordionContent className='text-gray-700 mt-4 text-sm leading-relaxed'>
             Membership offers several benefits,
             including:
             <div className='mt-3 grid grid-cols-1 sm:grid-cols-2 gap-4'>
@@ -142,10 +142,10 @@ export function CustomFaq() {
         </AccordionItem>
 
         <AccordionItem value='item-3'>
-          <AccordionTrigger className='text-xl font-semibold text-gray-700 hover:text-green-600 transition hover:no-underline'>
+          <AccordionTrigger className='text-[1rem] font-semibold text-gray-700 hover:text-green-600 transition hover:no-underline'>
             How does TAMA protect farmers?
           </AccordionTrigger>
-          <AccordionContent className='text-gray-700 mt-4 text-[1rem] leading-relaxed'>
+          <AccordionContent className='text-gray-700 mt-4 text-sm leading-relaxed'>
             Tobacco production is not easy, and
             some unscrupulous individuals and
             groups aim to exploit farmers.
@@ -159,11 +159,11 @@ export function CustomFaq() {
         </AccordionItem>
 
         <AccordionItem value='item-4'>
-          <AccordionTrigger className='text-xl font-semibold text-gray-700 hover:text-green-600 transition hover:no-underline'>
+          <AccordionTrigger className='text-[1rem] font-semibold text-gray-700 hover:text-green-600 transition hover:no-underline'>
             Do I have to also register with
             Tobacco Commission?
           </AccordionTrigger>
-          <AccordionContent className='text-gray-700 mt-4 text-[1rem] leading-relaxed'>
+          <AccordionContent className='text-gray-700 mt-4 text-sm leading-relaxed'>
             Yes, all growers are encouraged to
             register with TCC and endorse TAMA as
             their Association.
