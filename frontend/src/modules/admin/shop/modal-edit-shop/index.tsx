@@ -90,7 +90,7 @@ const ModalEditShop = ({
         formData,
         shop.id,
         fullPath,
-        pathWithoutAdmin
+        `/tobacco-business${pathWithoutAdmin}`
       );
 
       console.log('Upload result:', result);

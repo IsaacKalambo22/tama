@@ -88,7 +88,7 @@ const ModalNewShop = ({
       const result = await createShop(
         formData,
         fullPath,
-        pathWithoutAdmin
+        `/tobacco-business${pathWithoutAdmin}`
       );
 
       console.log('Upload result:', result);

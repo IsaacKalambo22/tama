@@ -32,7 +32,7 @@ const Shops = async () => {
         />
 
         <p className='text-red-500'>
-          Failed to load shops and documents.
+          Failed to load shops.
         </p>
       </div>
     );
@@ -52,9 +52,7 @@ const Shops = async () => {
             <ShopList shops={shops} />
           </div>
         ) : (
-          <p className='empty-list'>
-            No Reports and Publications
-          </p>
+          <p className='empty-list'>No shops</p>
         )}
         {/* Items for Sale */}
         <HeaderText
