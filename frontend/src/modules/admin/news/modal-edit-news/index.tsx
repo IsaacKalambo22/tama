@@ -84,13 +84,12 @@ const ModalEditNews = ({
           news.imageUrl
         );
       }
-     
 
       const result = await updateNews(
         formData,
         news.id,
         fullPath,
-        `/news-updates${pathWithoutAdmin}`
+        pathWithoutAdmin
       );
 
       console.log('Upload result:', result);

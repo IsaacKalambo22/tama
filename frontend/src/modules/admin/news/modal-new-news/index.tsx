@@ -94,7 +94,7 @@ const ModalNewNews = ({
       const result = await createNews(
         formData,
         fullPath,
-        `/news-updates${pathWithoutAdmin}`
+        pathWithoutAdmin
       );
 
       console.log('Upload result:', result);
