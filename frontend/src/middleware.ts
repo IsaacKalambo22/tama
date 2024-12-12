@@ -28,10 +28,7 @@ export const middleware = auth(async (req) => {
     'Auth Request User AccessToken!!!!!!!!!!!!!!',
     token
   );
-  const requestToken = await req.auth
-    ?.accessToken;
-  const requestTokenRole = await req.auth?.user
-    ?.role;
+
   const { nextUrl } = req;
   const isLoggedIn = !!token;
   console.log({ isLoggedIn });
