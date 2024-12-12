@@ -4,6 +4,7 @@ import {
 } from '@/lib/api';
 import {
   BASE_URL,
+  formatContent,
   formatDateTime,
 } from '@/lib/utils';
 import Image from 'next/image';
@@ -31,24 +32,6 @@ export default async function CustomBlogPage({
   }
 
   // Function to format the blog content
-  const formatContent = (
-    content: string
-  ): string[] => {
-    const sentences = content
-      .split(/(?<=\.)\s+/) // Split content into sentences after periods.
-      .map((sentence) => sentence.trim());
-    const chunks = [];
-    for (
-      let i = 0;
-      i < sentences.length;
-      i += 5
-    ) {
-      chunks.push(
-        sentences.slice(i, i + 5).join(' ')
-      ); // Group 5 sentences together.
-    }
-    return chunks;
-  };
 
   const formattedContent = formatContent(
     blog.content

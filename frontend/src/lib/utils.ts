@@ -9,6 +9,20 @@ export function cn(...inputs: ClassValue[]) {
 export const BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL;
 
+export const formatContent = (
+  content: string
+): string[] => {
+  const sentences = content
+    .split(/(?<=\.)\s+/) // Split content into sentences after periods.
+    .map((sentence) => sentence.trim());
+  const chunks = [];
+  for (let i = 0; i < sentences.length; i += 5) {
+    chunks.push(
+      sentences.slice(i, i + 5).join(' ')
+    ); // Group 5 sentences together.
+  }
+  return chunks;
+};
 export function formatDate(date: string) {
   return new Date(date).toLocaleDateString(
     'en-US',

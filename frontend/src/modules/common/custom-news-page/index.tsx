@@ -4,6 +4,7 @@ import {
 } from '@/lib/api';
 import {
   BASE_URL,
+  formatContent,
   formatDateTime,
 } from '@/lib/utils';
 import Image from 'next/image';
@@ -29,6 +30,10 @@ export default async function CustomNewsPage({
       </div>
     );
   }
+
+  const formattedContent = formatContent(
+    news.content
+  );
 
   return (
     <article className='max-w-4xl mx-auto px-6 py-12'>
@@ -56,9 +61,13 @@ export default async function CustomNewsPage({
         />
       </div>
 
-      {/* News Content */}
-      <div className='prose prose-lg max-w-none text-gray-700'>
-        {news.content}
+      {/* Blog Content */}
+      <div className='prose prose-lg max-w-none text-gray-700 space-y-8'>
+        {formattedContent.map(
+          (paragraph, index) => (
+            <p key={index}>{paragraph}</p>
+          )
+        )}
       </div>
 
       {/* News Footer */}
