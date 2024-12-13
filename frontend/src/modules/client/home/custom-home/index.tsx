@@ -49,7 +49,7 @@ const CustomHome = () => {
           Community Stats
         </span>
       </div>
-      <Card className='mx-auto w-full border-none h-auto shadow-none'>
+      <Card className='mx-auto bg-inherit w-full border-none h-auto shadow-none'>
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 '>
           <StatisticBlock
             count={51_000}

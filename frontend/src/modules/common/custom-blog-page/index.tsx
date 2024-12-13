@@ -64,7 +64,7 @@ export default async function CustomBlogPage({
       </div>
 
       {/* Blog Content */}
-      <div className='prose prose-lg max-w-none text-gray-700 space-y-8'>
+      <div className='prose prose-lg text-[0.9rem] max-w-none text-gray-700 space-y-8'>
         {formattedContent.map(
           (paragraph, index) => (
             <p key={index}>{paragraph}</p>

@@ -67,13 +67,13 @@ const News = async () => {
           <Link
             href={`/news-updates/news/${mostRecent.id}`}
           >
-            <Card className='shadow-none rounded-lg border-none flex flex-col sm:flex-row items-center h-auto sm:h-[20rem] gap-10'>
+            <Card className='shadow-none rounded-lg border-none flex flex-col sm:flex-row items-center h-auto sm:h-[22rem] gap-10'>
               <Image
                 src={`${BASE_URL}/uploads/${mostRecent.imageUrl}`}
                 alt={mostRecent.title}
                 width={400}
                 height={350}
-                className='rounded-2xl object-cover h-full w-full sm:w-1/2'
+                className='rounded-l-2xl object-cover h-full w-full sm:w-1/2'
               />
               <div className='flex py-8 pr-10 flex-col justify-between w-full md:w-1/2 h-full space-y-4'>
                 <div className='flex gap-2 items-center'>

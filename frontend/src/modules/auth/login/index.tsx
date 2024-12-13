@@ -116,7 +116,7 @@ const Login = () => {
                     <FormItem>
                       <FormControl>
                         <Input
-                          className='form_input'
+                          className='form_input shad-input'
                           placeholder='Email'
                           {...field}
                         />
@@ -140,7 +140,7 @@ const Login = () => {
                                 : 'password'
                             }
                             {...field}
-                            className='form_input'
+                            className='form_input shad-input'
                           />
                           <Button
                             size='icon'
@@ -149,7 +149,7 @@ const Login = () => {
                               e.preventDefault();
                               toggleShowPassword();
                             }}
-                            className='absolute inset-y-0 right-0 px-3 py-2 text-sm font-medium text-gray-500'
+                            className='absolute inset-y-0 right-0 px-3 py-2 text-sm font-medium hover:bg-inherit text-gray-500'
                           >
                             {showPassword ? (
                               <EyeOff />

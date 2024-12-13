@@ -23,6 +23,9 @@ const MainLayout = ({
 
   return (
     <>
+      <div className='main'>
+        <div className='gradient' />
+      </div>
       <main className='app'>
         {!isAuthPage && !isAdminPage && (
           <Navbar />
