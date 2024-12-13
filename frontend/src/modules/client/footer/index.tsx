@@ -11,7 +11,7 @@ import Link from 'next/link';
 
 const Footer = () => {
   return (
-    <Card className='w-full min-w-full bg-[#FFFFFF66] max-w-screen-2xl p-20 shadow-none'>
+    <Card className='w-full min-w-full bg-[#FFFFFF66] max-w-screen-2xl p-8 sm:p-20 shadow-none'>
       <div className='grid grid-cols-1 md:grid-cols-4 gap-8'>
         {/* Column 1 */}
         <div>
@@ -86,30 +86,7 @@ const Footer = () => {
                 About Us
               </Link>
             </li>
-            <li>
-              <Link
-                href='/careers'
-                className='text-gray-600 text-[.9rem] font-sans font-normal hover:text-gray-900'
-              >
-                Careers
-              </Link>
-            </li>
-            <li>
-              <Link
-                href='/stores'
-                className='text-gray-600 text-[.9rem] font-sans font-normal hover:text-gray-900'
-              >
-                Our Stores
-              </Link>
-            </li>
-            <li>
-              <Link
-                href='/cares'
-                className='text-gray-600 text-[.9rem] font-sans font-normal hover:text-gray-900'
-              >
-                Our Cares
-              </Link>
-            </li>
+
             <li>
               <Link
                 href='/terms-conditions'
@@ -143,30 +120,6 @@ const Footer = () => {
                 Help Center
               </Link>
             </li>
-            <li>
-              <Link
-                href='/track-order'
-                className='text-gray-600 text-[.9rem] font-sans font-normal hover:text-gray-900'
-              >
-                Track Your Order
-              </Link>
-            </li>
-            <li>
-              <Link
-                href='/corporate'
-                className='text-gray-600 text-[.9rem] font-sans font-normal hover:text-gray-900'
-              >
-                Corporate & Bulk Purchasing
-              </Link>
-            </li>
-            <li>
-              <Link
-                href='/returns'
-                className='text-gray-600 text-[.9rem] font-sans font-normal hover:text-gray-900'
-              >
-                Returns & Refunds
-              </Link>
-            </li>
           </ul>
         </div>
 
@@ -176,14 +129,14 @@ const Footer = () => {
             Contact Us
           </h3>
           <div className='flex flex-col gap-3'>
-            <address className='text-gray-600 text-[.9rem] font-sans font-normal'>
+            <address className='text-gray-600 '>
               TAMA HOUSE, Independence Avenue,
               <br />
               P.O. Box 31360, Capital City,
               <br />
               Lilongwe 3, Malawi
             </address>
-            <p className='text-gray-600 text-[.9rem] font-sans font-normal'>
+            <p className='text-gray-600 '>
               Email:{' '}
               <a
                 href='mailto:tama@tamalawi.com'
@@ -192,7 +145,7 @@ const Footer = () => {
                 tama@tamalawi.com
               </a>
             </p>
-            <p className='text-gray-600 text-[.9rem] font-sans font-normal'>
+            <p className='text-gray-600 '>
               Phone: 01 773 099
             </p>
           </div>

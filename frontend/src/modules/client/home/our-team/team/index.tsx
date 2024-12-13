@@ -23,11 +23,11 @@ const Team = ({ teamMembers }: TeamProps) => {
         work tirelessly to achieve our mission and
         vision.
       </p>
-      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full` mt-6'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 w-full` mt-6'>
         {teamMembers.map((member, index) => (
           <Card
             key={index}
-            className='flex flex-col items-center bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition-shadow duration-300'
+            className='flex flex-col items-center bg-white rounded-3xl shadow-lg p-6 hover:shadow-2xl transition-shadow duration-300'
           >
             <div className='relative w-32 h-32 mb-4 rounded-full overflow-hidden'>
               <Image

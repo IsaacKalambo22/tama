@@ -1,0 +1,77 @@
+import { Card } from '@/components/ui/card';
+import { formatDate } from '@/lib/utils';
+import { Calendar, Clock } from 'lucide-react';
+
+type EventCardProps = {
+  title: string;
+  description: string;
+  date: string;
+  endDate?: string;
+  time?: string;
+};
+
+const generateRandomColor = () => {
+  const r = Math.floor(Math.random() * 256);
+  const g = Math.floor(Math.random() * 256);
+  const b = Math.floor(Math.random() * 256);
+  return `rgb(${r}, ${g}, ${b})`;
+};
+
+// Format the date range if `endDate` is provided
+const formatEventDate = (
+  startDate: string,
+  endDate?: string
+) => {
+  if (endDate) {
+    return `${formatDate(
+      startDate
+    )} - ${formatDate(endDate)}`;
+  }
+  return formatDate(startDate);
+};
+
+const EventCard: React.FC<EventCardProps> = ({
+  title,
+  description,
+  date,
+  endDate,
+  time,
+}) => {
+  return (
+    <Card className='relative flex items-start p-4 rounded-xl shadow-md bg-white'>
+      {/* Vertical Color Bar */}
+      <div
+        style={{
+          backgroundColor: generateRandomColor(),
+        }}
+        className='w-2 h-full absolute left-0 top-0 rounded-l-xl'
+      ></div>
+
+      {/* Event Details */}
+      <div className='pl-6'>
+        <h3 className='text-lg font-semibold'>
+          {title}
+        </h3>
+        <p className='text-gray-700 mt-2 line-clamp-3'>
+          {description}
+        </p>
+        <div className='flex flex-col sm:flex-row sm:items-center gap-4 mt-4 text-sm text-gray-600'>
+          <div className='flex items-center gap-1'>
+            <Calendar className='w-5 h-5 text-gray-500' />
+            <span>
+              {formatEventDate(date, endDate)}
+            </span>
+          </div>
+          {time && (
+            <div className='flex items-center gap-1'>
+              <Clock className='w-5 h-5 text-gray-500' />
+              <span>{time}</span>
+            </div>
+          )}
+        </div>
+      </div>
+    </Card>
+  );
+};
+
+export default EventCard;

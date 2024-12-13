@@ -1,5 +1,7 @@
+import EventCalendar from '@/modules/client/event-calendar';
+
 const EventCalendarPage = () => {
-  return <div>EventCalendarPage</div>;
+  return <EventCalendar />;
 };
 
 export default EventCalendarPage;

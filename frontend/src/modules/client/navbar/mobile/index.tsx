@@ -77,7 +77,7 @@ const Mobile: React.FC = () => {
       size='icon'
       variant='ghost'
       onClick={toggle}
-      className='pointer-events-auto absolute right-4 top-[14px] z-30'
+      className='pointer-events-auto absolute right-4 top-[11px] z-30'
     >
       <svg
         width='23'
@@ -321,25 +321,29 @@ const Mobile: React.FC = () => {
             </>
           )}
         </motion.ul>
-        <div className='flex mr-14 items-center justify-between pt-2 z-50'>
+        <div className='flex mr-14 items-center justify-between pt-1 z-50'>
           <div className='flex-1 text-right mt-3 pointer-events-auto'>
             <NavIconButtons />
           </div>
           <MenuToggle toggle={toggleOpen} />
         </div>
-        <div className='absolute top-5 left-4 flex items-center gap-2 pointer-events-auto'>
+
+        <div className='absolute top-2 left-4 flex items-center gap-2 pointer-events-auto'>
           <Link
             href='/'
             className='flex items-center gap-2'
           >
             <Image
               src='/assets/images/logo.png'
-              width={30}
-              height={30}
+              width={40}
+              height={40}
               alt='logo'
               className='ml-2'
             />
           </Link>
+          <span className=' bg-gradient-to-r from-green-600 to-amber-500 bg-clip-text text-transparent text-[1rem] leading-snug capitalize max-sm:text-[0.9rem]'>
+            TAMA Farmers Trust
+          </span>
         </div>
       </motion.nav>
     </div>
