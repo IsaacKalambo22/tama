@@ -38,7 +38,7 @@ const EventCard: React.FC<EventCardProps> = ({
   time,
 }) => {
   return (
-    <Card className='relative flex items-start p-4 rounded-xl shadow-md bg-white'>
+    <Card className='relative flex items-start p-4 rounded-xl shadow-none'>
       {/* Vertical Color Bar */}
       <div
         style={{
@@ -57,15 +57,15 @@ const EventCard: React.FC<EventCardProps> = ({
         </p>
         <div className='flex flex-col sm:flex-row sm:items-center gap-4 mt-4 text-sm text-gray-600'>
           <div className='flex items-center gap-1'>
-            <Calendar className='w-5 h-5 text-gray-500' />
-            <span>
+            <Calendar className='w-5 h-5 text-gray-700' />
+            <span className='mt-1'>
               {formatEventDate(date, endDate)}
             </span>
           </div>
           {time && (
             <div className='flex items-center gap-1'>
-              <Clock className='w-5 h-5 text-gray-500' />
-              <span>{time}</span>
+              <Clock className='w-5 h-5 text-gray-700' />
+              <span className='mt-1'>{time}</span>
             </div>
           )}
         </div>

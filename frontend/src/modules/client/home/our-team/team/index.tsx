@@ -1,7 +1,7 @@
 import { Card } from '@/components/ui/card';
-import Image from 'next/image';
+import { User } from 'lucide-react'; // Example icon
 
-interface TeamMember {
+export interface TeamMember {
   name: string;
   role: string;
   description: string;
@@ -23,21 +23,16 @@ const Team = ({ teamMembers }: TeamProps) => {
         work tirelessly to achieve our mission and
         vision.
       </p>
-      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 w-full` mt-6'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 w-full mt-8'>
         {teamMembers.map((member, index) => (
           <Card
             key={index}
-            className='flex flex-col items-center bg-white rounded-3xl shadow-lg p-6 hover:shadow-2xl transition-shadow duration-300'
+            className='flex flex-col items-center bg-white rounded-3xl shadow-lg p-6 hover:shadow-2xl transition-shadow duration-300 border-t-4 border-green-600'
           >
-            <div className='relative w-32 h-32 mb-4 rounded-full overflow-hidden'>
-              <Image
-                src={member.imageUrl}
-                alt={member.name}
-                fill
-                className='object-cover'
-              />
+            <div className='relative w-16 h-16 mb-4 rounded-full flex items-center justify-center bg-gray-200'>
+              <User className='text-4xl text-gray-600' />
             </div>
-            <h3 className='text-[1rem] font-semibold text-gray-800'>
+            <h3 className='text-lg font-semibold text-gray-800 mb-1'>
               {member.name}
             </h3>
             <p className='text-green-600 text-sm font-medium mb-2'>

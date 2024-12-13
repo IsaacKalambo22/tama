@@ -1,26 +1,40 @@
-import Team from './team';
+import Team, { TeamMember } from './team';
 
-const teamMembers = [
+const teamMembers: TeamMember[] = [
   {
-    name: 'John Doe',
-    role: 'CEO',
+    name: 'Councilor A.M. Kalima Banda',
+    role: 'President',
     description:
-      'Leading the team with a visionary approach to business development.',
-    imageUrl: '/assets/images/team/2.jpg',
+      'Leading the executive committee with dedication and visionary leadership.',
+    imageUrl: "", // No image, use icon instead
   },
   {
-    name: 'Jane Smith',
-    role: 'CTO',
+    name: 'Councilor R.D. Sulumba',
+    role: '1st Vice President',
     description:
-      'Crafting innovative solutions and overseeing technical excellence.',
-    imageUrl: '/assets/images/team/1.jpg',
+      'Assisting the president and ensuring the smooth operation of the committee.',
+    imageUrl: "", // No image, use icon instead
   },
   {
-    name: 'Jane Smith',
-    role: 'CTO',
+    name: 'Councilor A.V. Siame',
+    role: '2nd Vice President',
     description:
-      'Crafting innovative solutions and overseeing technical excellence.',
-    imageUrl: '/assets/images/team/3.jpg',
+      'Supporting leadership and enhancing strategic decisions within the committee.',
+    imageUrl: "", // No image, use icon instead
+  },
+  {
+    name: 'Councilor J.N. Sibande',
+    role: 'Agricultural Services Board Chair',
+    description:
+      'Overseeing agricultural programs and ensuring their alignment with community goals.',
+    imageUrl: "", // No image, use icon instead
+  },
+  {
+    name: 'Councilor A. Kachenje (Mrs.)',
+    role: 'Enterprise Services Board Chair',
+    description:
+      'Driving enterprise growth and managing board strategies to foster success.',
+    imageUrl: "", // No image, use icon instead
   },
 ];
 
