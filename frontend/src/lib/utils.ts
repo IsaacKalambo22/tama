@@ -41,7 +41,7 @@ export const formatCount = (
     typeof count === 'string'
       ? parseInt(count, 10)
       : count;
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('MW', {
     notation: 'compact',
     compactDisplay: 'short',
   }).format(number);

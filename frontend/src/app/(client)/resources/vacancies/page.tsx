@@ -1,5 +1,7 @@
+import Vacancies from '@/modules/client/vacancies';
+
 const VacanciesPage = () => {
-  return <div>VacanciesPage</div>;
+  return <Vacancies />;
 };
 
 export default VacanciesPage;
