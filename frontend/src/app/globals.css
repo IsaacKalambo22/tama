@@ -65,37 +65,37 @@ body,
   max-width: 1024px;
   background-image: radial-gradient(
       at 27% 37%,
-      rgb(35, 214, 50) 0px,
+      rgb(141, 182, 0) 0px,
       transparent 0%
     ),
     radial-gradient(
       at 97% 21%,
-      rgb(44, 221, 20) 0px,
+      rgb(141, 182, 0) 0px,
       transparent 50%
     ),
     radial-gradient(
       at 52% 99%,
-      rgb(90, 218, 31) 0px,
+      rgb(141, 182, 0) 0px,
       transparent 50%
     ),
     radial-gradient(
       at 10% 29%,
-      rgb(238, 221, 66) 0px,
+      rgb(245, 158, 11) 0px,
       transparent 50%
     ),
     radial-gradient(
       at 97% 96%,
-      rgb(238, 165, 38) 0px,
+      rgb(245, 158, 11) 0px,
       transparent 50%
     ),
     radial-gradient(
       at 33% 50%,
-      hsla(222, 67%, 73%, 1) 0px,
+      rgb(245, 158, 11) 0px,
       transparent 50%
     ),
     radial-gradient(
       at 79% 53%,
-      hsla(343, 68%, 79%, 1) 0px,
+      rgb(245, 158, 11) 0px,
       transparent 50%
     );
   position: absolute;
