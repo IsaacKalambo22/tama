@@ -21,6 +21,7 @@ export const { handlers, auth, signIn, signOut } =
         async authorize(credentials) {
           console.log('Authorizing User...');
           const { email, password } = credentials;
+          console.log({ email, password });
 
           try {
             const response = await fetch(

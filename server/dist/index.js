@@ -16,6 +16,7 @@ const path_1 = __importDefault(require("path"));
 const auth_1 = __importDefault(require("./routes/auth"));
 const blog_1 = __importDefault(require("./routes/blog"));
 const council_list_1 = __importDefault(require("./routes/council-list"));
+const events_1 = __importDefault(require("./routes/events"));
 const form_1 = __importDefault(require("./routes/form"));
 const news_1 = __importDefault(require("./routes/news"));
 const reports_publications_1 = __importDefault(require("./routes/reports-publications"));
@@ -80,6 +81,7 @@ app.use('/api/v1/forms', form_1.default);
 app.use('/api/v1/blogs', blog_1.default);
 app.use('/api/v1/news', news_1.default);
 app.use('/api/v1/users', user_1.default);
+app.use('/api/v1/events', events_1.default);
 app.use('/api/v1/council-lists', council_list_1.default);
 app.use('/api/v1/reports-publications', reports_publications_1.default);
 /* SERVER */

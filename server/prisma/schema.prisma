@@ -95,3 +95,15 @@ model CouncilList {
   createdAt                 DateTime @default(now())
   updatedAt                 DateTime @updatedAt
 }
+
+model Event {
+  id          String    @id @default(uuid())
+  title       String // Event title
+  description String // Event description
+  location    String? // Event title
+  date        DateTime // Start date of the event
+  endDate     DateTime? // Optional end date of the event
+  time        String? // Optional time of the event
+  createdAt   DateTime  @default(now()) // Automatically set creation timestamp
+  updatedAt   DateTime  @updatedAt // Automatically updated on modification
+}

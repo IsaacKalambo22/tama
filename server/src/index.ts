@@ -12,6 +12,7 @@ import path from 'path';
 import auth from './routes/auth';
 import blogs from './routes/blog';
 import councilLists from './routes/council-list';
+import events from './routes/events';
 import forms from './routes/form';
 import news from './routes/news';
 import reportsPublications from './routes/reports-publications';
@@ -136,6 +137,7 @@ app.use('/api/v1/forms', forms);
 app.use('/api/v1/blogs', blogs);
 app.use('/api/v1/news', news);
 app.use('/api/v1/users', users);
+app.use('/api/v1/events', events);
 app.use('/api/v1/council-lists', councilLists);
 app.use(
   '/api/v1/reports-publications',

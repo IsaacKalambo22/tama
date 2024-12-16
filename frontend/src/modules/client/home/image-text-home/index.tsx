@@ -17,10 +17,10 @@ export function ImageTextHome({
   imagePosition = 'left', // Default to 'left' if not provided
 }: ImageTextProps) {
   return (
-    <Card className='flex flex-col rounded-2xl border-none sm:flex-row items-center shadow-none overflow-hidden'>
+    <Card className='flex flex-col rounded-3xl sm:flex-row border-none items-center shadow-none overflow-hidden'>
       {/* Conditionally set flex row order */}
       <div
-        className={`relative w-full sm:w-1/2 h-64 sm:h-auto ${
+        className={`relative w-full sm:w-1/2 h-64 sm:h-[26rem] ${
           imagePosition === 'right'
             ? 'order-2'
             : ''

@@ -1,6 +1,3 @@
-import { Button } from '@/components/ui/button';
-import { Search } from 'lucide-react';
-
 import { useRouter } from 'next/navigation';
 
 const NavIconButtons = () => {
@@ -12,14 +9,14 @@ const NavIconButtons = () => {
 
   return (
     <div className='flex gap-1 justify-end items-center'>
-      <Button
+      {/* <Button
         className='w-8 h-7'
         variant='ghost'
         size='icon'
         onClick={handleSearchClick}
       >
         <Search className='h-4 w-4' />
-      </Button>
+      </Button> */}
     </div>
   );
 };
