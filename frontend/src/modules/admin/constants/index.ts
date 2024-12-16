@@ -2,6 +2,8 @@ import { DashboardIcon } from '@radix-ui/react-icons';
 import {
   Book,
   BookOpen,
+  Briefcase,
+  Calendar,
   NewspaperIcon,
   ShoppingBag,
   UsersIcon,
@@ -59,6 +61,16 @@ export const ADMIN_LINKS = [
     label: 'Users',
     href: '/admin/users',
     icon: UsersIcon, // Replace with the appropriate icon if `UsersIcon` is unavailable
+  },
+  {
+    label: 'Events',
+    href: '/admin/events',
+    icon: Calendar,
+  },
+  {
+    label: 'Vacancies',
+    href: '/admin/vacancies',
+    icon: Briefcase,
   },
 ];
 

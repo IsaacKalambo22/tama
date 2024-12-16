@@ -4,25 +4,25 @@ import { APIResponse } from '../../types';
 
 const prisma = new PrismaClient();
 
-// Create an Event
 export const createEvent = async (
   req: Request,
   res: Response<APIResponse>
 ): Promise<void> => {
-  const { title, description, date, imageUrl } =
-    req.body;
+  const {
+    title,
+    description,
+    date,
+    endDate,
+    time,
+    location,
+  } = req.body;
 
-  // Validate input
-  if (
-    !title ||
-    !description ||
-    !date ||
-    !imageUrl
-  ) {
+  // Validate required input fields
+  if (!title || !description || !date) {
     res.status(400).json({
       success: false,
       message:
-        'All fields are required: title, description, date, imageUrl, and location.',
+        'Required fields are missing: title, description, and date are mandatory.',
       error: 'Validation error',
     });
     return;
@@ -33,7 +33,12 @@ export const createEvent = async (
       data: {
         title,
         description,
-        date: new Date(date),
+        date: new Date(date), // Start date is required
+        endDate: endDate
+          ? new Date(endDate)
+          : undefined, // Optional end date
+        time: time || null, // Optional time
+        location: location || null, // Optional location
       },
     });
 
@@ -136,9 +141,16 @@ export const updateEvent = async (
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params;
-  const { title, description, date, location } =
-    req.body;
+  const {
+    title,
+    description,
+    date,
+    endDate,
+    time,
+    location,
+  } = req.body;
 
+  // Validate if the event ID is provided
   if (!id) {
     res.status(400).json({
       success: false,
@@ -149,6 +161,7 @@ export const updateEvent = async (
   }
 
   try {
+    // Find the existing event
     const existingEvent =
       await prisma.event.findUnique({
         where: { id },
@@ -162,6 +175,7 @@ export const updateEvent = async (
       return;
     }
 
+    // Update event with provided data or fallback to existing values
     const updatedEvent =
       await prisma.event.update({
         where: { id },
@@ -174,7 +188,11 @@ export const updateEvent = async (
           date: date
             ? new Date(date)
             : existingEvent.date,
-
+          endDate: endDate
+            ? new Date(endDate)
+            : existingEvent.endDate,
+          time:
+            time?.trim() || existingEvent.time,
           location:
             location?.trim() ||
             existingEvent.location,

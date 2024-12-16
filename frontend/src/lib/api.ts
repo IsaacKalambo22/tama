@@ -73,6 +73,18 @@ export interface UserProps {
   updatedAt: string; // ISO date string
 }
 
+export interface EventProps {
+  id: string; // Optional for new events, required for existing ones
+  title: string; // Event title
+  description: string; // Event description
+  location?: string; // Optional event location
+  date: string; // Start date of the event
+  endDate?: string; // Optional end date of the event
+  time?: string; // Optional event time
+  createdAt?: string; // Automatically set during creation
+  updatedAt?: string; // Automatically updated on modification
+}
+
 export interface ApiResponse<T> {
   success: boolean;
   message: string;
@@ -180,6 +192,14 @@ export const fetchShops = async (): Promise<
 > => {
   return handleFetch<ShopProps[]>(
     `${BASE_URL}/shops`
+  );
+};
+
+export const fetchEvents = async (): Promise<
+  EventProps[]
+> => {
+  return handleFetch<EventProps[]>(
+    `${BASE_URL}/events`
   );
 };
 
