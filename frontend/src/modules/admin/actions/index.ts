@@ -926,6 +926,54 @@ export const createEvent = async (
     throw error;
   }
 };
+export const createVacancy = async (
+  payload: object,
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  try {
+    const session = await auth();
+
+    if (!session) {
+      return parseServerActionResponse({
+        error: 'Not signed in',
+        status: 'ERROR',
+      });
+    }
+
+    const token = session?.accessToken;
+
+    const response = await fetch(
+      `${BASE_URL}/vacancies`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        'Failed to upload vacancy data'
+      );
+    }
+
+    const result = await response.json();
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
+    return result;
+  } catch (error) {
+    console.error(
+      'Error during vacancy creation:',
+      error
+    );
+    throw error;
+  }
+};
+
 export const updateEvent = async (
   payload: object,
   eventId: string, // The ID of the event to update
