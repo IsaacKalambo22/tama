@@ -10,18 +10,16 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import { EventProps } from '@/lib/api';
+import { VacancyProps } from '@/lib/api';
 import Image from 'next/image';
 import { useState } from 'react';
 import { adminActionsDropdownItems } from '../../constants';
-import ModalDeleteEvent from '../modal-delete-event';
-import ModalEditEvent from '../modal-edit-event';
-import ModalViewEvent from '../modal-view-event';
+import ModalEditVacancy from '../modal-edit-vacancy';
 type Props = {
-  event: EventProps;
+  vacancy: VacancyProps;
 };
-const EventActionDropdown = ({
-  event,
+const VacancyActionDropdown = ({
+  vacancy,
 }: Props) => {
   const [isModalOpen, setIsModalOpen] =
     useState(false);
@@ -37,32 +35,32 @@ const EventActionDropdown = ({
 
     if (value === 'edit') {
       return (
-        <ModalEditEvent
+        <ModalEditVacancy
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          event={event}
+          vacancy={vacancy}
         />
       );
     }
-    if (value === 'details') {
-      return (
-        <ModalViewEvent
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          event={event}
-        />
-      );
-    }
-    if (value === 'delete') {
-      console.log('Want to delete?');
-      return (
-        <ModalDeleteEvent
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          event={event}
-        />
-      );
-    }
+    // if (value === 'details') {
+    //   return (
+    //     <ModalViewVacancy
+    //       isOpen={isModalOpen}
+    //       onClose={() => setIsModalOpen(false)}
+    //       vacancy={vacancy}
+    //     />
+    //   );
+    // }
+    // if (value === 'delete') {
+    //   console.log('Want to delete?');
+    //   return (
+    //     <ModalDeleteVacancy
+    //       isOpen={isModalOpen}
+    //       onClose={() => setIsModalOpen(false)}
+    //       vacancy={vacancy}
+    //     />
+    //   );
+    // }
   };
 
   return (
@@ -86,7 +84,7 @@ const EventActionDropdown = ({
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuLabel className='max-w-[200px] truncate'>
-            {event.title}
+            {vacancy.title}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           {adminActionsDropdownItems.map(
@@ -129,4 +127,4 @@ const EventActionDropdown = ({
     </Dialog>
   );
 };
-export default EventActionDropdown;
+export default VacancyActionDropdown;

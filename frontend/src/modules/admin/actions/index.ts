@@ -974,6 +974,58 @@ export const createVacancy = async (
   }
 };
 
+export const updateVacancy = async (
+  payload: object,
+  vacancyId: string, // Add vacancy ID for identifying the resource to update
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  try {
+    const session = await auth();
+
+    if (!session) {
+      return parseServerActionResponse({
+        error: 'Not signed in',
+        status: 'ERROR',
+      });
+    }
+
+    const token = session?.accessToken;
+
+    const response = await fetch(
+      `${BASE_URL}/vacancies/${vacancyId}`, // URL updated to include the vacancy ID
+      {
+        method: 'PUT', // Use PUT method for updates
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload), // Pass the payload with the updated data
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        'Failed to update vacancy data'
+      );
+    }
+
+    const result = await response.json();
+
+    // Revalidate the paths after successful update
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
+
+    return result; // Return the result of the update
+  } catch (error) {
+    console.error(
+      'Error during vacancy update:',
+      error
+    );
+    throw error; // Re-throw the error after logging it
+  }
+};
+
 export const updateEvent = async (
   payload: object,
   eventId: string, // The ID of the event to update

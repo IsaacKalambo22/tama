@@ -8,6 +8,8 @@ import {
   VacancyProps,
   VacancyStatus,
 } from '@/lib/api';
+import { formatDate } from '@/lib/utils';
+import VacancyActionDropdown from '../vacancy-action-dropdown';
 
 interface Props {
   vacancy: VacancyProps;
@@ -46,6 +48,11 @@ const VacancyCard = ({ vacancy }: Props) => {
   return (
     <Card className='p-8 shadow-lg relative border rounded-3xl'>
       <div className='flex w-full justify-between items-center'>
+        <div className='absolute top-4 right-5'>
+          <VacancyActionDropdown
+            vacancy={vacancy}
+          />
+        </div>
         {/* Avatar with Job Title Initial */}
         <div className='flex gap-4 items-center'>
           <Avatar className='w-16 h-16'>
@@ -95,7 +102,9 @@ const VacancyCard = ({ vacancy }: Props) => {
           )}
           <span>
             <strong>Deadline: </strong>
-            {applicationDeadline}
+            {formatDate(
+              applicationDeadline.toString()
+            )}
           </span>
         </div>
       </div>

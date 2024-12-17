@@ -1,8 +1,13 @@
+'use client';
+
 import { Form } from '@/components/ui/form';
 import { SelectItem } from '@/components/ui/select';
 import useCustomPath from '@/hooks/use-custom-path';
 import { toast } from '@/hooks/use-toast';
-import { VacancyStatus } from '@/lib/api';
+import {
+  VacancyProps,
+  VacancyStatus,
+} from '@/lib/api'; // Update the import according to your API
 import CustomFormField, {
   FormFieldType,
 } from '@/modules/common/custom-form-field';
@@ -12,18 +17,19 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
-import { createVacancy } from '../../actions';
+import { updateVacancy } from '../../actions'; // Ensure this function is properly defined
 import Modal from '../../modal';
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  id?: string | null;
+  vacancy?: VacancyProps; // Preloaded vacancy data for editing
 };
 
-const ModalNewVacancy = ({
+const ModalEditVacancy = ({
   isOpen,
   onClose,
+  vacancy,
 }: Props) => {
   const [isLoading, setIsLoading] =
     useState(false);
@@ -33,33 +39,18 @@ const ModalNewVacancy = ({
 
   // Define the schema for vacancy data
   const formSchema = zod.object({
-    title: zod.string().min(2, {
-      message:
-        'Title must be at least 2 characters.',
-    }),
-    description: zod.string().min(10, {
-      message:
-        'Description must be at least 10 characters.',
-    }),
-    company: zod.string().min(10, {
-      message:
-        'Company must be at least 10 characters.',
-    }),
-    location: zod.string().min(2, {
-      message:
-        'Location must be at least 2 characters.',
-    }),
-    duties: zod.string().min(2, {
-      message:
-        'Duties must be at least 2 characters.',
-    }),
-    howToApply: zod.string().min(2, {
-      message:
-        'How to apply must be at least 2 characters.',
-    }),
+    title: zod.string().optional(),
+    description: zod.string().optional(),
+    company: zod.string().optional(),
+    location: zod.string().optional(),
+    duties: zod.string().optional(),
+    howToApply: zod.string().optional(),
     salary: zod.string().optional(),
-    applicationDeadline: zod.date(),
-    status: zod.enum(['Open', 'Closed']),
+    applicationDeadline: zod.date().optional(),
+    status: zod.enum([
+      VacancyStatus.OPEN,
+      VacancyStatus.CLOSED,
+    ]),
   });
 
   const form = useForm<
@@ -76,7 +67,8 @@ const ModalNewVacancy = ({
       duties: '',
       howToApply: '',
       applicationDeadline: undefined,
-      status: 'Open',
+      status:
+        vacancy?.status || VacancyStatus.OPEN,
     },
   });
 
@@ -84,6 +76,7 @@ const ModalNewVacancy = ({
     values: zod.infer<typeof formSchema>
   ) => {
     setIsLoading(true);
+
     try {
       const payload = {
         title: values.title,
@@ -98,25 +91,39 @@ const ModalNewVacancy = ({
         status: values.status,
       };
 
-      await createVacancy(
-        payload,
-        fullPath,
-        `/resources${pathWithoutAdmin}`
-      );
-      onClose();
-      toast({
-        title: 'Success',
-        description:
-          'Vacancy has been created successfully',
-      });
+      if (vacancy?.id) {
+        // Update vacancy
+        await updateVacancy(
+          payload,
+          vacancy.id,
+          fullPath,
+          `/vacancies${pathWithoutAdmin}`
+        );
+        onClose();
+        toast({
+          title: 'Success',
+          description:
+            'Vacancy has been updated successfully',
+        });
+      } else {
+        toast({
+          title: 'Error',
+          description:
+            'Vacancy ID is required for updating the vacancy.',
+          variant: 'destructive',
+        });
+      }
     } catch (error) {
       toast({
         title: 'Error',
         description:
-          'An unexpected error has occurred',
+          'An unexpected error occurred while updating the vacancy.',
         variant: 'destructive',
       });
-      console.error('Upload error:', error);
+      console.error(
+        'Error updating vacancy:',
+        error
+      );
     } finally {
       setIsLoading(false);
     }
@@ -126,7 +133,7 @@ const ModalNewVacancy = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      name='Add New Vacancy'
+      name={`Edit Vacancy ${vacancy?.title}`}
     >
       <div className='overflow-auto max-h-[80vh] p-4'>
         <Form {...form}>
@@ -165,23 +172,23 @@ const ModalNewVacancy = ({
             <CustomFormField
               fieldType={FormFieldType.INPUT}
               name='company'
-              label='Company (optional)'
+              label='Company'
               control={form.control}
-              placeholder='Enter company range'
+              placeholder='Enter company name'
             />
             <CustomFormField
               fieldType={FormFieldType.TEXTAREA}
               name='duties'
-              label='Duties (optional)'
+              label='Duties'
               control={form.control}
-              placeholder='Enter duties range'
+              placeholder='Enter duties'
             />
             <CustomFormField
               fieldType={FormFieldType.TEXTAREA}
               name='howToApply'
-              label='How to apply (optional)'
+              label='How to Apply'
               control={form.control}
-              placeholder='Enter how to apply range'
+              placeholder='Enter application instructions'
             />
             <CustomFormField
               fieldType={
@@ -217,9 +224,9 @@ const ModalNewVacancy = ({
               }
               isLoading={isLoading}
               className='w-full h-9'
-              loadingText='Saving...'
+              loadingText='Updating...'
             >
-              Save
+              Update
             </SubmitButton>
           </form>
         </Form>
@@ -228,4 +235,4 @@ const ModalNewVacancy = ({
   );
 };
 
-export default ModalNewVacancy;
+export default ModalEditVacancy;

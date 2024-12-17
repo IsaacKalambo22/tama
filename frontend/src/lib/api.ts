@@ -88,18 +88,17 @@ export interface EventProps {
 export enum VacancyStatus {
   OPEN = 'Open',
   CLOSED = 'Closed',
-  PENDING = 'Pending', // You can extend this enum as necessary
 }
 
 // VacancyProps interface for the vacancy model
 export interface VacancyProps {
-  id: number;
+  id: string;
   title: string;
   description: string;
   company: string;
   location: string;
   status: VacancyStatus; // Enum for status field
-  applicationDeadline: string; // Consider using Date type if required
+  applicationDeadline: Date; // Consider using Date type if required
   salary?: string; // Optional salary field
   duties?: string; // Optional field: List of job duties
   qualifications?: string; // Optional field: List of qualifications

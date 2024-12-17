@@ -8,6 +8,7 @@ import {
   VacancyProps,
   VacancyStatus,
 } from '@/lib/api';
+import { formatDate } from '@/lib/utils';
 
 interface Props {
   vacancy: VacancyProps;
@@ -95,7 +96,9 @@ const VacancyCard = ({ vacancy }: Props) => {
           )}
           <span>
             <strong>Deadline: </strong>
-            {applicationDeadline}
+            {formatDate(
+              applicationDeadline.toString()
+            )}
           </span>
         </div>
       </div>
