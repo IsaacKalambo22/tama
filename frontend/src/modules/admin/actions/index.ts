@@ -926,6 +926,54 @@ export const createEvent = async (
     throw error;
   }
 };
+export const updateEvent = async (
+  payload: object,
+  eventId: string, // The ID of the event to update
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  try {
+    const session = await auth();
+
+    if (!session) {
+      return parseServerActionResponse({
+        error: 'Not signed in',
+        status: 'ERROR',
+      });
+    }
+
+    const token = session?.accessToken;
+
+    const response = await fetch(
+      `${BASE_URL}/events/${eventId}`, // Use the eventId in the URL for updating
+      {
+        method: 'PUT', // Use PUT for update
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        'Failed to update event data'
+      );
+    }
+
+    const result = await response.json();
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
+    return result;
+  } catch (error) {
+    console.error(
+      'Error during event update:',
+      error
+    );
+    throw error;
+  }
+};
 
 export const createCouncilList = async (
   councilData: Partial<CouncilListProps>,

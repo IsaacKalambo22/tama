@@ -15,6 +15,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { adminActionsDropdownItems } from '../../constants';
 import ModalDeleteEvent from '../modal-delete-event';
+import ModalEditEvent from '../modal-edit-event';
 import ModalViewEvent from '../modal-view-event';
 type Props = {
   event: EventProps;
@@ -34,15 +35,15 @@ const EventActionDropdown = ({
 
     const { value } = action;
 
-    // if (value === 'edit') {
-    //   return (
-    //     <ModalEditEvent
-    //       isOpen={isModalOpen}
-    //       onClose={() => setIsModalOpen(false)}
-    //       event={event}
-    //     />
-    //   );
-    // }
+    if (value === 'edit') {
+      return (
+        <ModalEditEvent
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          event={event}
+        />
+      );
+    }
     if (value === 'details') {
       return (
         <ModalViewEvent

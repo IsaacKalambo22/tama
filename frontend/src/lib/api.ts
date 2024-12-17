@@ -78,8 +78,8 @@ export interface EventProps {
   title: string; // Event title
   description: string; // Event description
   location?: string; // Optional event location
-  date: string; // Start date of the event
-  endDate?: string; // Optional end date of the event
+  date: Date; // Start date of the event
+  endDate?: Date; // Optional end date of the event
   time?: string; // Optional event time
   createdAt?: string; // Automatically set during creation
   updatedAt?: string; // Automatically updated on modification

@@ -67,7 +67,10 @@ const EventCard = ({ event }: EventCardProps) => {
           <div className='flex items-center gap-1'>
             <Calendar className='w-5 h-5 text-gray-700' />
             <span className='mt-1'>
-              {formatEventDate(date, endDate)}
+              {formatEventDate(
+                date.toString(),
+                endDate?.toString()
+              )}
             </span>
           </div>
           {time && (
