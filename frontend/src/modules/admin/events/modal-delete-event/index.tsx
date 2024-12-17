@@ -7,25 +7,25 @@ import {
 } from '@/components/ui/dialog';
 import useCustomPath from '@/hooks/use-custom-path';
 import { toast } from '@/hooks/use-toast';
-import { ShopProps } from '@/lib/api';
+import { EventProps } from '@/lib/api';
 import CustomButton, {
   BUTTON_VARIANT,
 } from '@/modules/common/custom-button';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { deleteShop } from '../../actions';
+import { deleteEvent } from '../../actions';
 import Modal from '../../modal';
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  shop: ShopProps;
+  event: EventProps;
 };
 
-const ModalDeleteShop = ({
+const ModalDeleteEvent = ({
   isOpen,
   onClose,
-  shop,
+  event,
 }: Props) => {
   const [isLoading, setIsLoading] =
     useState(false);
@@ -37,8 +37,8 @@ const ModalDeleteShop = ({
     setIsLoading(true);
 
     try {
-      const result = await deleteShop(
-        shop.id,
+      const result = await deleteEvent(
+        event.id,
         fullPath,
         `/tobacco-business${pathWithoutAdmin}`
       );
@@ -47,7 +47,7 @@ const ModalDeleteShop = ({
       onClose();
       toast({
         title: 'Success',
-        description: `${shop.name} has been deleted successfully`,
+        description: `${event.title} has been deleted successfully`,
       });
       // Handle the result, such as showing success or error messages
     } catch (error) {
@@ -66,11 +66,11 @@ const ModalDeleteShop = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      name={`Delete ${shop.name}`}
+      name={`Delete ${event.title}`}
     >
       <DialogDescription>
         Are you sure you want to delete{' '}
-        {shop.name}?
+        {event.title}?
       </DialogDescription>
       <DialogFooter className='flex flex-col gap-3 md:flex-row'>
         <DialogClose asChild>
@@ -96,4 +96,4 @@ const ModalDeleteShop = ({
   );
 };
 
-export default ModalDeleteShop;
+export default ModalDeleteEvent;

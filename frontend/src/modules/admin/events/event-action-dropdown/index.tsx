@@ -14,6 +14,7 @@ import { EventProps } from '@/lib/api';
 import Image from 'next/image';
 import { useState } from 'react';
 import { adminActionsDropdownItems } from '../../constants';
+import ModalDeleteEvent from '../modal-delete-event';
 type Props = {
   event: EventProps;
 };
@@ -50,15 +51,16 @@ const EventActionDropdown = ({
     //     />
     //   );
     // }
-    // if (value === 'delete') {
-    //   return (
-    //     <ModalDeleteEvent
-    //       isOpen={isModalOpen}
-    //       onClose={() => setIsModalOpen(false)}
-    //       event={event}
-    //     />
-    //   );
-    // }
+    if (value === 'delete') {
+      console.log('Want to delete?');
+      return (
+        <ModalDeleteEvent
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          event={event}
+        />
+      );
+    }
   };
 
   return (

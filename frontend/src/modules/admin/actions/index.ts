@@ -701,6 +701,51 @@ export const deleteBlog = async (
     });
   }
 };
+export const deleteEvent = async (
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  try {
+    const session = await auth();
+    if (!session)
+      return parseServerActionResponse({
+        error: 'Not signed in',
+        status: 'ERROR',
+      });
+
+    const token = session?.accessToken;
+    const response = await fetch(
+      `${BASE_URL}/events/${id}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to upload files');
+    }
+
+    const result = await response.json();
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
+    return parseServerActionResponse({
+      ...result,
+      error: '',
+      status: 'SUCCESS',
+    });
+  } catch (error) {
+    console.log(error);
+
+    return parseServerActionResponse({
+      error: JSON.stringify(error),
+      status: 'ERROR',
+    });
+  }
+};
 export const deleteNews = async (
   id: string,
   fullPath: string,
