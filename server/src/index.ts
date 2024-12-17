@@ -18,6 +18,7 @@ import news from './routes/news';
 import reportsPublications from './routes/reports-publications';
 import shops from './routes/shop';
 import users from './routes/user';
+import vacancies from './routes/vacancy';
 
 /* CONFIGURATIONS */
 dotenv.config();
@@ -138,6 +139,7 @@ app.use('/api/v1/blogs', blogs);
 app.use('/api/v1/news', news);
 app.use('/api/v1/users', users);
 app.use('/api/v1/events', events);
+app.use('/api/v1/vacancies', vacancies);
 app.use('/api/v1/council-lists', councilLists);
 app.use(
   '/api/v1/reports-publications',

@@ -37,7 +37,7 @@ const ModalViewEvent = ({
             <span className='font-medium'>
               Date:
             </span>{' '}
-            {event.date}
+            {event.date.toString()}
             {event.endDate &&
               ` - ${event.endDate}`}
           </p>

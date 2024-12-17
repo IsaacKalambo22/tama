@@ -22,6 +22,7 @@ const news_1 = __importDefault(require("./routes/news"));
 const reports_publications_1 = __importDefault(require("./routes/reports-publications"));
 const shop_1 = __importDefault(require("./routes/shop"));
 const user_1 = __importDefault(require("./routes/user"));
+const vacancy_1 = __importDefault(require("./routes/vacancy"));
 /* CONFIGURATIONS */
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -82,6 +83,7 @@ app.use('/api/v1/blogs', blog_1.default);
 app.use('/api/v1/news', news_1.default);
 app.use('/api/v1/users', user_1.default);
 app.use('/api/v1/events', events_1.default);
+app.use('/api/v1/vacancies', vacancy_1.default);
 app.use('/api/v1/council-lists', council_list_1.default);
 app.use('/api/v1/reports-publications', reports_publications_1.default);
 /* SERVER */
