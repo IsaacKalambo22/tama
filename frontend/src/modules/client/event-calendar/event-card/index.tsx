@@ -1,14 +1,11 @@
 import { Card } from '@/components/ui/card';
 import { formatDate } from '@/lib/utils';
 import { Calendar, Clock } from 'lucide-react';
+import { EventProps } from '../../../../lib/api';
 
-type EventCardProps = {
-  title: string;
-  description: string;
-  date: string;
-  endDate?: string;
-  time?: string;
-};
+interface EventCardProps {
+  event: EventProps;
+}
 
 const generateRandomColor = () => {
   const r = Math.floor(Math.random() * 256);
@@ -30,13 +27,16 @@ const formatEventDate = (
   return formatDate(startDate);
 };
 
-const EventCard: React.FC<EventCardProps> = ({
-  title,
-  description,
-  date,
-  endDate,
-  time,
-}) => {
+const EventCard = ({ event }: EventCardProps) => {
+  const {
+    title,
+    description,
+    location,
+    date,
+    endDate,
+    time,
+  } = event;
+
   return (
     <Card className='relative flex items-start p-4 rounded-xl shadow-none'>
       {/* Vertical Color Bar */}
@@ -55,6 +55,11 @@ const EventCard: React.FC<EventCardProps> = ({
         <p className='text-gray-700 mt-2 line-clamp-3'>
           {description}
         </p>
+        {location && (
+          <p className='text-sm text-gray-600 mt-2'>
+            <strong>Location:</strong> {location}
+          </p>
+        )}
         <div className='flex flex-col sm:flex-row sm:items-center gap-4 mt-4 text-sm text-gray-600'>
           <div className='flex items-center gap-1'>
             <Calendar className='w-5 h-5 text-gray-700' />

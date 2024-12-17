@@ -43,11 +43,8 @@ const ModalNewEvent = ({
     }),
     date: zod.date(),
     time: zod.string().optional(),
-    endDate: zod.string().optional(),
-    location: zod.string().min(2, {
-      message:
-        'Location must be at least 2 characters.',
-    }),
+    endDate: zod.date().optional(),
+    location: zod.string().optional(),
   });
 
   const form = useForm<
@@ -157,7 +154,7 @@ const ModalNewEvent = ({
           <CustomFormField
             fieldType={FormFieldType.INPUT}
             name='location'
-            label='Location'
+            label='Location (optional)'
             control={form.control}
             placeholder='Enter location'
           />
