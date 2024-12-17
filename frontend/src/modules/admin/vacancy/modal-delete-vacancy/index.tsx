@@ -7,25 +7,25 @@ import {
 } from '@/components/ui/dialog';
 import useCustomPath from '@/hooks/use-custom-path';
 import { toast } from '@/hooks/use-toast';
-import { EventProps } from '@/lib/api';
+import { VacancyProps } from '@/lib/api';
 import CustomButton, {
   BUTTON_VARIANT,
 } from '@/modules/common/custom-button';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { deleteEvent } from '../../actions';
+import { deleteVacancy } from '../../actions';
 import Modal from '../../modal';
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  event: EventProps;
+  vacancy: VacancyProps;
 };
 
-const ModalDeleteEvent = ({
+const ModalDeleteVacancy = ({
   isOpen,
   onClose,
-  event,
+  vacancy,
 }: Props) => {
   const [isLoading, setIsLoading] =
     useState(false);
@@ -37,17 +37,17 @@ const ModalDeleteEvent = ({
     setIsLoading(true);
 
     try {
-      const result = await deleteEvent(
-        event.id,
+      const result = await deleteVacancy(
+        vacancy.id,
         fullPath,
-        `/tobacco-business${pathWithoutAdmin}`
+        `/vacancies${pathWithoutAdmin}`
       );
 
       console.log('Upload result:', result);
       onClose();
       toast({
         title: 'Success',
-        description: `${event.title} has been deleted successfully`,
+        description: `${vacancy.title} has been deleted successfully`,
       });
       // Handle the result, such as showing success or error messages
     } catch (error) {
@@ -66,11 +66,11 @@ const ModalDeleteEvent = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      name={`Delete ${event.title}`}
+      name={`Delete ${vacancy.title}`}
     >
       <DialogDescription>
         Are you sure you want to delete{' '}
-        {event.title}?
+        {vacancy.title}?
       </DialogDescription>
       <DialogFooter className='flex flex-col gap-3 md:flex-row'>
         <DialogClose asChild>
@@ -96,4 +96,4 @@ const ModalDeleteEvent = ({
   );
 };
 
-export default ModalDeleteEvent;
+export default ModalDeleteVacancy;
