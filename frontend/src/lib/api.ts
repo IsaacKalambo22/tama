@@ -84,6 +84,27 @@ export interface EventProps {
   createdAt?: string; // Automatically set during creation
   updatedAt?: string; // Automatically updated on modification
 }
+// Enum for Vacancy Status
+export enum VacancyStatus {
+  OPEN = 'Open',
+  CLOSED = 'Closed',
+  PENDING = 'Pending', // You can extend this enum as necessary
+}
+
+// VacancyProps interface for the vacancy model
+export interface VacancyProps {
+  id: number;
+  title: string;
+  description: string;
+  company: string;
+  location: string;
+  status: VacancyStatus; // Enum for status field
+  applicationDeadline: string; // Consider using Date type if required
+  salary?: string; // Optional salary field
+  duties?: string; // Optional field: List of job duties
+  qualifications?: string; // Optional field: List of qualifications
+  howToApply?: string; // Optional field: How to apply for the position
+}
 
 export interface ApiResponse<T> {
   success: boolean;
@@ -200,6 +221,13 @@ export const fetchEvents = async (): Promise<
 > => {
   return handleFetch<EventProps[]>(
     `${BASE_URL}/events`
+  );
+};
+export const fetchVacancies = async (): Promise<
+  VacancyProps[]
+> => {
+  return handleFetch<VacancyProps[]>(
+    `${BASE_URL}/vacancies`
   );
 };
 
