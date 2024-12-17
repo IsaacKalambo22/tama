@@ -16,6 +16,7 @@ import { useState } from 'react';
 import { adminActionsDropdownItems } from '../../constants';
 import ModalDeleteVacancy from '../modal-delete-vacancy';
 import ModalEditVacancy from '../modal-edit-vacancy';
+import ModalViewVacancy from '../modal-view-vacancy';
 type Props = {
   vacancy: VacancyProps;
 };
@@ -43,15 +44,15 @@ const VacancyActionDropdown = ({
         />
       );
     }
-    // if (value === 'details') {
-    //   return (
-    //     <ModalViewVacancy
-    //       isOpen={isModalOpen}
-    //       onClose={() => setIsModalOpen(false)}
-    //       vacancy={vacancy}
-    //     />
-    //   );
-    // }
+    if (value === 'details') {
+      return (
+        <ModalViewVacancy
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          vacancy={vacancy}
+        />
+      );
+    }
     if (value === 'delete') {
       console.log('Want to delete?');
       return (

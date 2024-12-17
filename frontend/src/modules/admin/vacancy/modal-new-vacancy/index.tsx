@@ -53,6 +53,10 @@ const ModalNewVacancy = ({
       message:
         'Duties must be at least 2 characters.',
     }),
+    qualifications: zod.string().min(2, {
+      message:
+        'Qualifications must be at least 2 characters.',
+    }),
     howToApply: zod.string().min(2, {
       message:
         'How to apply must be at least 2 characters.',
@@ -73,6 +77,7 @@ const ModalNewVacancy = ({
       location: '',
       salary: '',
       company: '',
+      qualifications: '',
       duties: '',
       howToApply: '',
       applicationDeadline: undefined,
@@ -91,6 +96,7 @@ const ModalNewVacancy = ({
         location: values.location,
         company: values.company,
         duties: values.duties,
+        qualifications: values.qualifications,
         howToApply: values.howToApply,
         salary: values.salary || null,
         applicationDeadline:
@@ -175,6 +181,13 @@ const ModalNewVacancy = ({
               label='Duties (optional)'
               control={form.control}
               placeholder='Enter duties range'
+            />
+            <CustomFormField
+              fieldType={FormFieldType.TEXTAREA}
+              name='qualifications'
+              label='Qualifications (optional)'
+              control={form.control}
+              placeholder='Enter qualifications range'
             />
             <CustomFormField
               fieldType={FormFieldType.TEXTAREA}

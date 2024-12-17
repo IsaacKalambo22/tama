@@ -38,7 +38,7 @@ const EventCard = ({ event }: EventCardProps) => {
   } = event;
 
   return (
-    <Card className='relative flex items-start p-4 rounded-xl shadow-none'>
+    <Card className='relative shadow-lg flex items-start p-4 rounded-xl'>
       {/* Vertical Color Bar */}
       <div
         style={{

@@ -44,6 +44,7 @@ const ModalEditVacancy = ({
     company: zod.string().optional(),
     location: zod.string().optional(),
     duties: zod.string().optional(),
+    qualifications: zod.string().optional(),
     howToApply: zod.string().optional(),
     salary: zod.string().optional(),
     applicationDeadline: zod.date().optional(),
@@ -65,6 +66,7 @@ const ModalEditVacancy = ({
       salary: '',
       company: '',
       duties: '',
+      qualifications: '',
       howToApply: '',
       applicationDeadline: undefined,
       status:
@@ -84,6 +86,7 @@ const ModalEditVacancy = ({
         location: values.location,
         company: values.company,
         duties: values.duties,
+        qualifications: values.qualifications,
         howToApply: values.howToApply,
         salary: values.salary || null,
         applicationDeadline:
@@ -182,6 +185,13 @@ const ModalEditVacancy = ({
               label='Duties'
               control={form.control}
               placeholder='Enter duties'
+            />
+            <CustomFormField
+              fieldType={FormFieldType.TEXTAREA}
+              name='qualifications'
+              label='Qualifications (optional)'
+              control={form.control}
+              placeholder='Enter qualifications range'
             />
             <CustomFormField
               fieldType={FormFieldType.TEXTAREA}

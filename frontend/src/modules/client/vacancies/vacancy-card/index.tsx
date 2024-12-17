@@ -81,7 +81,7 @@ const VacancyCard = ({ vacancy }: Props) => {
       {/* Job Details */}
       <div className='mt-4'>
         {description && (
-          <p className='text-gray-600'>
+          <p className='text-gray-600 line-clamp-4'>
             {description}
           </p>
         )}
