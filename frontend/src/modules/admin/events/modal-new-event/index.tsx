@@ -1,30 +1,27 @@
 'use client';
 
-import {
-  Form,
-  FormControl,
-} from '@/components/ui/form';
+import { Form } from '@/components/ui/form';
 import useCustomPath from '@/hooks/use-custom-path';
 import { toast } from '@/hooks/use-toast';
 import CustomFormField, {
   FormFieldType,
 } from '@/modules/common/custom-form-field';
-import { FileUploader } from '@/modules/common/file-uploader';
 import SubmitButton from '@/modules/common/submit-button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
-import { createShop } from '../../actions';
+import { createEvent } from '../../actions';
 import Modal from '../../modal';
+
 type Props = {
   isOpen: boolean;
   onClose: () => void;
   id?: string | null;
 };
 
-const ModalNewShop = ({
+const ModalNewEvent = ({
   isOpen,
   onClose,
 }: Props) => {
@@ -33,72 +30,71 @@ const ModalNewShop = ({
   const path = usePathname();
   const { fullPath, pathWithoutAdmin } =
     useCustomPath(path);
+
+  // Define the schema for event data
   const formSchema = zod.object({
-    name: zod.string().min(2, {
+    title: zod.string().min(2, {
       message:
-        'Name must be at least 2 characters.',
+        'Title must be at least 2 characters.',
     }),
-    address: zod.string().min(2, {
+    description: zod.string().min(10, {
       message:
-        'Address must be at least 2 characters.',
+        'Description must be at least 10 characters.',
     }),
-    openHours: zod.string().min(2, {
+    date: zod.date(),
+    time: zod.string().optional(),
+    endDate: zod.string().optional(),
+    location: zod.string().min(2, {
       message:
-        'OpenHours must be at least 2 characters.',
+        'Location must be at least 2 characters.',
     }),
-    files: zod.custom<File[]>(),
   });
 
   const form = useForm<
     zod.infer<typeof formSchema>
   >({
     resolver: zodResolver(formSchema),
+    mode: 'all',
     defaultValues: {
-      name: '',
-      address: '',
-      openHours: '',
-      files: [],
+      title: '',
+      description: '',
+      date: undefined,
+      time: '',
+      endDate: undefined,
+      location: '',
     },
   });
+
   const onSubmit = async (
     values: zod.infer<typeof formSchema>
   ) => {
     setIsLoading(true);
     console.log({ values });
     try {
-      // Create FormData instance
-      const formData = new FormData();
-      formData.append('name', values.name);
-      formData.append(
-        'openHours',
-        values.openHours
-      );
-      formData.append('address', values.address);
+      const payload = {
+        title: values.title,
+        description: values.description,
+        date: values.date,
+        time: values.time || null,
+        endDate: values.endDate || null,
+        location: values.location,
+      };
 
-      // Directly append the file
-      const file = values.files[0];
-      formData.append('file', file);
-      formData.append('imageUrl', file.name);
-      console.log('File name:', file.name);
+      console.log('JSON Payload:', payload);
 
-      for (const pair of formData.entries()) {
-        console.log(pair);
-      }
-
-      const result = await createShop(
-        formData,
+      const result = await createEvent(
+        payload,
         fullPath,
-        `/tobacco-business${pathWithoutAdmin}`
+        `/events${pathWithoutAdmin}`
       );
-
       console.log('Upload result:', result);
+
       onClose();
       toast({
         title: 'Success',
         description:
-          'New form or document has been created successfully',
+          'Event has been created successfully',
       });
-      // Handle the result, such as showing success or error messages
     } catch (error) {
       toast({
         title: 'Error',
@@ -106,7 +102,7 @@ const ModalNewShop = ({
           'An unexpected error has occurred',
         variant: 'destructive',
       });
-      console.log('Upload error:', error);
+      console.error('Upload error:', error);
     } finally {
       setIsLoading(false);
     }
@@ -116,7 +112,7 @@ const ModalNewShop = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      name='Add New Shop'
+      name='Add New Event'
     >
       <Form {...form}>
         <form
@@ -125,39 +121,45 @@ const ModalNewShop = ({
         >
           <CustomFormField
             fieldType={FormFieldType.INPUT}
-            name='name'
-            label='Shop name'
+            name='title'
+            label='Event Title'
             control={form.control}
-            placeholder='Enter file name'
+            placeholder='Enter event title'
+          />
+          <CustomFormField
+            fieldType={FormFieldType.TEXTAREA}
+            name='description'
+            label='Description'
+            control={form.control}
+            placeholder='Enter event description'
+          />
+          <CustomFormField
+            fieldType={FormFieldType.DATE_PICKER}
+            name='date'
+            label='Date'
+            control={form.control}
+            placeholder='YYYY-MM-DD'
           />
           <CustomFormField
             fieldType={FormFieldType.INPUT}
-            name='address'
-            label='Address'
+            name='time'
+            label='Time (optional)'
             control={form.control}
-            placeholder='Enter file address'
+            placeholder='HH:mm'
+          />
+          <CustomFormField
+            fieldType={FormFieldType.DATE_PICKER}
+            name='endDate'
+            label='End Date (optional)'
+            control={form.control}
+            placeholder='YYYY-MM-DD'
           />
           <CustomFormField
             fieldType={FormFieldType.INPUT}
-            name='openHours'
-            label='Open Hours'
+            name='location'
+            label='Location'
             control={form.control}
-            placeholder='Enter openHours'
-          />
-
-          <CustomFormField
-            fieldType={FormFieldType.SKELETON}
-            control={form.control}
-            name='files'
-            label='Shop image'
-            renderSkeleton={(field) => (
-              <FormControl>
-                <FileUploader
-                  files={field.value}
-                  onChange={field.onChange}
-                />
-              </FormControl>
-            )}
+            placeholder='Enter location'
           />
 
           <SubmitButton
@@ -165,7 +167,7 @@ const ModalNewShop = ({
               isLoading || !form.formState.isValid
             }
             isLoading={isLoading}
-            className='w-full  h-9'
+            className='w-full h-9'
             loadingText='Saving...'
           >
             Save
@@ -176,4 +178,4 @@ const ModalNewShop = ({
   );
 };
 
-export default ModalNewShop;
+export default ModalNewEvent;

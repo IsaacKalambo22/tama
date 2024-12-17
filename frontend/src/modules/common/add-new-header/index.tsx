@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import ModalNewBlog from '@/modules/admin/blog/modal-new-blog';
+import ModalNewEvent from '@/modules/admin/events/modal-new-event';
 import ModalNewForm from '@/modules/admin/forms-documents/modal-new-form';
 import ModalNewCouncilList from '@/modules/admin/modal-new-council-list';
 import ModalNewNews from '@/modules/admin/news/modal-new-news';
@@ -18,6 +19,7 @@ export enum AddNewType {
   NEW_BLOG = 'New Blog',
   ADD_NEWS = 'Add News',
   ADD_USER = 'Add User',
+  NEW_EVENT = 'New Event',
   NEW_COUNCIL_LIST = 'New Council List',
 }
 
@@ -84,6 +86,13 @@ const AddNewHeader = ({
       {isOpen &&
         buttonName === AddNewType.NEW_BLOG && (
           <ModalNewBlog
+            isOpen={isOpen}
+            onClose={handleClose}
+          />
+        )}
+      {isOpen &&
+        buttonName === AddNewType.NEW_EVENT && (
+          <ModalNewEvent
             isOpen={isOpen}
             onClose={handleClose}
           />

@@ -834,6 +834,54 @@ export const createNews = async (
   }
 };
 
+export const createEvent = async (
+  payload: object,
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  try {
+    const session = await auth();
+
+    if (!session) {
+      return parseServerActionResponse({
+        error: 'Not signed in',
+        status: 'ERROR',
+      });
+    }
+
+    const token = session?.accessToken;
+
+    const response = await fetch(
+      `${BASE_URL}/events`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        'Failed to upload event data'
+      );
+    }
+
+    const result = await response.json();
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
+    return result;
+  } catch (error) {
+    console.error(
+      'Error during event creation:',
+      error
+    );
+    throw error;
+  }
+};
+
 export const createCouncilList = async (
   councilData: Partial<CouncilListProps>,
   fullPath: string,
