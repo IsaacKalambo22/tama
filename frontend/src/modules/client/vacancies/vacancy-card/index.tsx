@@ -9,6 +9,7 @@ import {
   VacancyStatus,
 } from '@/lib/api';
 import { formatDate } from '@/lib/utils';
+import Link from 'next/link';
 
 interface Props {
   vacancy: VacancyProps;
@@ -45,64 +46,68 @@ const VacancyCard = ({ vacancy }: Props) => {
   } = vacancy;
 
   return (
-    <Card className='p-8 shadow-lg relative border rounded-3xl'>
-      <div className='flex w-full justify-between items-center'>
-        {/* Avatar with Job Title Initial */}
-        <div className='flex gap-4 items-center'>
-          <Avatar className='w-16 h-16'>
-            <AvatarImage src='/assets/images/logo.png' />
-            <AvatarFallback>
-              {title[0]}
-            </AvatarFallback>
-          </Avatar>
-          <div className='flex flex-col'>
-            <h3 className='text-[1.1rem] font-semibold'>
-              {title}
-            </h3>
-            <p className='text-gray-700 mt-1'>
-              {company}
-            </p>
-            <span>{location}</span>
-          </div>
-        </div>
-
-        {/* Status Chip */}
-        <span
-          className={`px-3 py-1 text-sm font-semibold rounded-full ${
-            status === VacancyStatus.OPEN
-              ? 'bg-green-200 text-green-700'
-              : 'bg-red-200 text-red-700'
-          }`}
-        >
-          {status}
-        </span>
-      </div>
-
-      {/* Job Details */}
-      <div className='mt-4'>
-        {description && (
-          <p className='text-gray-600 line-clamp-4'>
-            {description}
-          </p>
-        )}
-
-        {/* Deadline & Salary */}
-        <div className='text-sm flex justify-between items-center text-gray-600 mt-4'>
-          {salary && (
-            <div className='text-sm text-gray-700'>
-              <strong>Salary: </strong>
-              {formatSalaryToKwacha(salary)}
+    <Link
+      href={`/resources/vacancies/${vacancy.id}`}
+    >
+      <Card className='p-8 shadow-lg relative border rounded-3xl'>
+        <div className='flex w-full justify-between items-center'>
+          {/* Avatar with Job Title Initial */}
+          <div className='flex gap-4 items-center'>
+            <Avatar className='w-16 h-16'>
+              <AvatarImage src='/assets/images/logo.png' />
+              <AvatarFallback>
+                {title[0]}
+              </AvatarFallback>
+            </Avatar>
+            <div className='flex flex-col'>
+              <h3 className='text-[1.1rem] font-semibold'>
+                {title}
+              </h3>
+              <p className='text-gray-700 mt-1'>
+                {company}
+              </p>
+              <span>{location}</span>
             </div>
-          )}
-          <span>
-            <strong>Deadline: </strong>
-            {formatDate(
-              applicationDeadline.toString()
-            )}
+          </div>
+
+          {/* Status Chip */}
+          <span
+            className={`px-3 py-1 text-sm font-semibold rounded-full ${
+              status === VacancyStatus.OPEN
+                ? 'bg-green-200 text-green-700'
+                : 'bg-red-200 text-red-700'
+            }`}
+          >
+            {status}
           </span>
         </div>
-      </div>
-    </Card>
+
+        {/* Job Details */}
+        <div className='mt-4'>
+          {description && (
+            <p className='text-gray-600 line-clamp-4'>
+              {description}
+            </p>
+          )}
+
+          {/* Deadline & Salary */}
+          <div className='text-sm flex justify-between items-center text-gray-600 mt-4'>
+            {salary && (
+              <div className='text-sm text-gray-700'>
+                <strong>Salary: </strong>
+                {formatSalaryToKwacha(salary)}
+              </div>
+            )}
+            <span>
+              <strong>Deadline: </strong>
+              {formatDate(
+                applicationDeadline.toString()
+              )}
+            </span>
+          </div>
+        </div>
+      </Card>
+    </Link>
   );
 };
 

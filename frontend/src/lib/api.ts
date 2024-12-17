@@ -245,6 +245,13 @@ export const fetchBlogById = async (
     `${BASE_URL}/blogs/${id}`
   );
 };
+export const fetchVacancyById = async (
+  id: string
+): Promise<VacancyProps> => {
+  return handleFetch<VacancyProps>(
+    `${BASE_URL}/vacancies/${id}`
+  );
+};
 
 export const fetchNews = async (): Promise<
   NewsProps[]

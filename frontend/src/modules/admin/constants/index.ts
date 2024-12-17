@@ -4,6 +4,7 @@ import {
   BookOpen,
   Briefcase,
   Calendar,
+  MessageCircle,
   NewspaperIcon,
   ShoppingBag,
   UsersIcon,
@@ -36,16 +37,7 @@ export const ADMIN_LINKS = [
   {
     label: 'News & Updates',
     icon: NewspaperIcon,
-    submenu: [
-      {
-        label: 'News',
-        href: '/admin/news-updates/news',
-      },
-      {
-        label: 'Press Releases',
-        href: '/admin/news-updates/press-releases',
-      },
-    ],
+    href: '/admin/news-updates/news',
   },
   {
     label: 'Shops',
@@ -71,6 +63,11 @@ export const ADMIN_LINKS = [
     label: 'Vacancies',
     href: '/admin/vacancies',
     icon: Briefcase,
+  },
+  {
+    label: 'Messaging', // New "Messaging" section
+    href: '/admin/messages', // Path for the messaging section
+    icon: MessageCircle, // Icon for messaging
   },
 ];
 
