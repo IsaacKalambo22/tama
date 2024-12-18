@@ -65,6 +65,18 @@ app.post('/api/v1/news', upload.single('file'), news_1.default);
 app.get('/', (req, res) => {
     res.send('<html><body><h1>Welcome to the Home Route</h1></body></html>');
 });
+app.get('/api/v1/uploads/download/:filename', (req, res) => {
+    const filename = req.params.filename;
+    const filepath = path_1.default.join(uploadDir, filename);
+    if (fs_1.default.existsSync(filepath)) {
+        // Force download by setting Content-Disposition header
+        res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+        res.sendFile(filepath);
+    }
+    else {
+        res.status(404).send('File not found');
+    }
+});
 app.get('/api/v1/uploads/:filename', (req, res) => {
     console.log(req.params.filename);
     const filename = req.params.filename;

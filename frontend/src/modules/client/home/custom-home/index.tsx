@@ -16,7 +16,7 @@ const CustomHome = () => {
     <div className='flex flex-col items-center gap-8 mb-16'>
       <MainCarousel />
       <div className='w-full flex items-center justify-center '>
-        <span className='px-4 font-bold green_gradient text-4xl'>
+        <span className='home-text'>
           Discover More
         </span>
       </div>
@@ -45,7 +45,7 @@ const CustomHome = () => {
         />
       </div>
       <div className='w-full flex items-center justify-center '>
-        <span className='px-4 font-bold green_gradient text-4xl'>
+        <span className='home-text'>
           Community Stats
         </span>
       </div>
@@ -76,9 +76,9 @@ const CustomHome = () => {
       <OurTeam />
 
       <div className='flex flex-col gap-1'>
-        <h2 className='text-4xl font-bold text-center green_gradient'>
+        <span className='home-text'>
           Frequently Asked Questions
-        </h2>
+        </span>
         <p className='text-gray-600 text-lg text-center'>
           Have questions? We&apos;ve got answers
           to help you understand more about what

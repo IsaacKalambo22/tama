@@ -15,7 +15,7 @@ const Forms = async () => {
       <div className='flex flex-col w-full items-center gap-10 mb-16'>
         <HeaderText
           title='Forms and Documents'
-          subtitle='Access and download important forms for your needs.'
+          subtitle='Access and download important forms for your needs'
         />
 
         <p className='text-red-500'>
@@ -29,7 +29,7 @@ const Forms = async () => {
     <div className='flex flex-col w-full gap-10 mb-16'>
       <HeaderText
         title='Forms and Documents'
-        subtitle='Access and download important forms for your needs.'
+        subtitle='Access and download important forms for your needs'
       />
 
       {/* Render the files */}

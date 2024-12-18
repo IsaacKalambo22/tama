@@ -15,9 +15,9 @@ interface TeamProps {
 const Team = ({ teamMembers }: TeamProps) => {
   return (
     <div className='flex flex-col items-center gap-1'>
-      <h2 className='text-4xl font-bold text-center green_gradient'>
+      <span className='home-text'>
         Meet Our Team
-      </h2>
+      </span>
       <p className='text-gray-600 text-lg text-center'>
         Our passionate and skilled team members
         work tirelessly to achieve our mission and

@@ -14,7 +14,7 @@ const EventCalendar = async () => {
     return (
       <div className='flex flex-col w-full items-center gap-10 mb-16'>
         <HeaderText
-          title='Upcoming Farming Events'
+          title='Upcoming Events'
           subtitle='Join Workshops and Seminars to Enhance Your Farming Skills'
         />
         <p className='text-red-500'>
@@ -28,7 +28,7 @@ const EventCalendar = async () => {
   return (
     <div className='flex flex-col w-full gap-10 mb-16'>
       <HeaderText
-        title='Upcoming Farming Events'
+        title='Upcoming Events'
         subtitle='Stay informed about upcoming events and opportunities'
       />
       {events?.length > 0 ? (

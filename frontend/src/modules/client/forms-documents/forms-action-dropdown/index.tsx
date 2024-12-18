@@ -12,8 +12,8 @@ import {
 
 import { FileProps } from '@/lib/api';
 import {
-  getFileType,
-  handleDownload,
+  BASE_URL,
+  constructFileUrl,
 } from '@/lib/utils';
 import { clientActionsDropdownItems } from '@/modules/admin/constants';
 import Image from 'next/image';
@@ -29,8 +29,23 @@ const FormsActionDropdown = ({ file }: Props) => {
     useState(false);
   const [action, setAction] =
     useState<ActionType | null>(null);
-  const fileProps = getFileType(file.fileUrl);
+  const handleDownload = async (
+    fileName: string
+  ) => {
+    const fullFileName = `${fileName}`;
+    const downloadLink =
+      document.createElement('a');
+    downloadLink.href =
+      constructFileUrl(fullFileName);
+    downloadLink.download = fullFileName;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
 
+    console.log(
+      `Downloading file: ${fullFileName}`
+    );
+  };
   const renderDialogContent = () => {
     if (!action) return null;
 
@@ -90,12 +105,11 @@ const FormsActionDropdown = ({ file }: Props) => {
               >
                 {actionItem.value ===
                 'download' ? (
-                  <div
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      handleDownload(file);
-                    }}
+                  <a
+                    download={
+                      file.filename || 'download'
+                    } // Suggested filename
+                    href={`${BASE_URL}/uploads/download/${file.fileUrl}`} // Ensure this maps to your Express route
                     className='flex items-center gap-2'
                   >
                     <Image
@@ -105,7 +119,7 @@ const FormsActionDropdown = ({ file }: Props) => {
                       height={30}
                     />
                     {actionItem.label}
-                  </div>
+                  </a>
                 ) : (
                   <div className='flex items-center gap-2'>
                     <Image

@@ -1,20 +1,19 @@
 import { fetchShops } from '@/lib/api';
 import HeaderText from '@/modules/common/header-text';
-import ShopItemCard from './shop-item-card';
 import ShopList from './shop-list';
 
 const Shops = async () => {
-  // Fallback shop items
-  const shopItems = Array.from(
-    { length: 10 },
-    (_, index) => ({
-      id: index + 1,
-      imageUrl: `/assets/images/carousel/${
-        index + 1
-      }.jpg`,
-      name: `Perique ${index + 1}`,
-    })
-  );
+  // // Fallback shop items
+  // const shopItems = Array.from(
+  //   { length: 10 },
+  //   (_, index) => ({
+  //     id: index + 1,
+  //     imageUrl: `/assets/images/carousel/${
+  //       index + 1
+  //     }.jpg`,
+  //     name: `Perique ${index + 1}`,
+  //   })
+  // );
   let shops = [];
   try {
     shops = await fetchShops(); // Fetch the data directly
@@ -55,7 +54,7 @@ const Shops = async () => {
           <p className='empty-list'>No shops</p>
         )}
         {/* Items for Sale */}
-        <HeaderText
+        {/* <HeaderText
           title='Available Items'
           subtitle='Browse Items at Our Shops'
         />
@@ -67,7 +66,7 @@ const Shops = async () => {
               name={item.name}
             />
           ))}
-        </div>
+        </div> */}
       </>
     </div>
   );
