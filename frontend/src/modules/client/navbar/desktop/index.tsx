@@ -14,12 +14,15 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import * as React from 'react';
 import { navItems } from '../../constants/nav-items';
 import NavIconButtons from '../nav-con-buttons';
 
 const Desktop = () => {
   const user = false;
+  const pathname = usePathname();
+
   return (
     <>
       <div className='max-w-7xl mx-auto px-6 sm:px-2 flex justify-between items-center h-full'>
@@ -53,11 +56,24 @@ const Desktop = () => {
               {navItems.map((section) => (
                 <NavigationMenuItem
                   key={section.title}
+                  className={cn(
+                    '',
+                    pathname.startsWith(
+                      section.href
+                    ) && 'text-green-600'
+                  )}
                 >
                   {section.submenu &&
                   section.subMenuItems ? (
                     <>
-                      <NavigationMenuTrigger className='text-gray-600 hover:text-gray-800'>
+                      <NavigationMenuTrigger
+                        className={cn(
+                          'text-gray-600 hover:text-gray-800',
+                          pathname.startsWith(
+                            section.href
+                          ) && 'text-green-600'
+                        )}
+                      >
                         {section.title}
                       </NavigationMenuTrigger>
 
@@ -140,7 +156,14 @@ const Desktop = () => {
                       legacyBehavior
                       passHref
                     >
-                      <NavigationMenuLink className='text-gray-600 hover:text-gray-800'>
+                      <NavigationMenuLink
+                        className={cn(
+                          'text-gray-600 hover:text-gray-800 mr-5',
+                          pathname ===
+                            section.href &&
+                            'text-green-600'
+                        )}
+                      >
                         {section.title}
                       </NavigationMenuLink>
                     </Link>

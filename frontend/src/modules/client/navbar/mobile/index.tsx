@@ -154,7 +154,7 @@ const Mobile: React.FC = () => {
               <span
                 className={`${
                   pathname.includes(item.href)
-                    ? 'font-bold text-blue-500'
+                    ? 'font-bold text-green-500'
                     : 'text-gray-700'
                 }`}
               >
@@ -189,9 +189,9 @@ const Mobile: React.FC = () => {
                 <Link
                   href={subItem.href}
                   onClick={() => toggleOpen()}
-                  className={`block px-4 text-sm text-gray-700 hover:text-blue-600 ${
+                  className={`block px-4 text-sm text-gray-700 hover:text-green-600 ${
                     subItem.href === pathname
-                      ? 'font-bold text-blue-500'
+                      ? 'font-bold text-green-500'
                       : ''
                   }`}
                 >
@@ -288,7 +288,7 @@ const Mobile: React.FC = () => {
                       onClick={() => toggleOpen()}
                       className={`flex w-full text-sm font-medium text-gray-700 ${
                         item.href === pathname
-                          ? 'font-bold text-blue-500'
+                          ? 'font-bold text-green-500'
                           : ''
                       }`}
                     >

@@ -1,4 +1,5 @@
 import { Icon } from '@iconify/react';
+import { JSX } from 'react';
 
 // Define a type for a navigation item, including optional icon and submenu fields.
 export type NavItem = {
@@ -14,7 +15,7 @@ export type NavItem = {
 export const navItems: NavItem[] = [
   {
     title: 'Tobacco Business',
-    href: '#',
+    href: '/tobacco-business',
     submenu: true,
     subMenuItems: [
       {
@@ -59,41 +60,8 @@ export const navItems: NavItem[] = [
     ],
   },
   {
-    title: 'News & Updates',
-    href: '#',
-    submenu: true,
-    subMenuItems: [
-      {
-        title: 'News',
-        href: '/news-updates/news',
-        description:
-          'Latest news in the tobacco industry.',
-        icon: (
-          <Icon
-            icon='lucide:newspaper'
-            width='16'
-            height='16'
-          />
-        ),
-      },
-      {
-        title: 'Press Releases',
-        href: '/news-updates/press-release',
-        description:
-          'Official statements and press releases.',
-        icon: (
-          <Icon
-            icon='lucide:megaphone'
-            width='16'
-            height='16'
-          />
-        ),
-      },
-    ],
-  },
-  {
     title: 'Resources',
-    href: '#',
+    href: '/resources',
     submenu: true,
     subMenuItems: [
       {
@@ -150,6 +118,40 @@ export const navItems: NavItem[] = [
       },
     ],
   },
+  {
+    title: 'News & Updates',
+    href: '/news-updates/news',
+    submenu: true,
+    // subMenuItems: [
+    //   {
+    //     title: 'News',
+    //     href: '/news-updates/news',
+    //     description:
+    //       'Latest news in the tobacco industry.',
+    //     icon: (
+    //       <Icon
+    //         icon='lucide:newspaper'
+    //         width='16'
+    //         height='16'
+    //       />
+    //     ),
+    //   },
+    //   {
+    //     title: 'Press Releases',
+    //     href: '/news-updates/press-release',
+    //     description:
+    //       'Official statements and press releases.',
+    //     icon: (
+    //       <Icon
+    //         icon='lucide:megaphone'
+    //         width='16'
+    //         height='16'
+    //       />
+    //     ),
+    //   },
+    // ],
+  },
+
   {
     title: 'Blogs',
     href: '/blogs',
