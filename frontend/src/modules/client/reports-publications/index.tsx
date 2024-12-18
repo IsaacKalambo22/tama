@@ -25,7 +25,7 @@ const ReportsAndPublications = async () => {
     );
   }
   return (
-    <div className='flex flex-col w-full gap-10 mb-16'>
+    <div className='w-full text-center mb-16'>
       <HeaderText
         title='Reports and Publications'
         subtitle='Explore our latest research and insights.'
@@ -37,8 +37,9 @@ const ReportsAndPublications = async () => {
           files={reports}
         />
       ) : (
-        <p className='empty-list'>
-          No Reports and Publications
+        <p className='text-gray-500 text-lg mt-5'>
+          No reports & publications are currently
+          available.
         </p>
       )}
     </div>

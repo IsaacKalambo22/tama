@@ -26,7 +26,7 @@ const EventCalendar = async () => {
   }
 
   return (
-    <div className='flex flex-col w-full gap-10 mb-16'>
+    <div className='w-full text-center mb-16'>
       <HeaderText
         title='Upcoming Events'
         subtitle='Stay informed about upcoming events and opportunities'
@@ -41,7 +41,7 @@ const EventCalendar = async () => {
           ))}
         </div>
       ) : (
-        <p className='text-gray-500 mt-4'>
+        <p className='text-gray-500 text-lg mt-5'>
           No events available. Stay tuned for
           upcoming events!
         </p>

@@ -38,13 +38,13 @@ const News = async () => {
   // If no news, show a "No News" message
   if (news.length === 0) {
     return (
-      <div className='w-full text-center'>
+      <div className='w-full text-center mb-16'>
         <HeaderText
-          title='TAMA News'
+          title='Our News'
           subtitle='Stay Informed with the Latest Updates and Announcements'
         />
         <p className='text-gray-500 text-lg mt-5'>
-          No news or news are currently available.
+          No news are currently available.
         </p>
       </div>
     );

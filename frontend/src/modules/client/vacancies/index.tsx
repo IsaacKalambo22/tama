@@ -26,7 +26,7 @@ const Vacancy = async () => {
   }
 
   return (
-    <div className='flex flex-col w-full gap-10 mb-16'>
+    <div className='w-full text-center mb-16'>
       <HeaderText
         title='Your Next Big Opportunity Awaits'
         subtitle='Take the next step in building your career.'
@@ -41,7 +41,7 @@ const Vacancy = async () => {
           ))}
         </div>
       ) : (
-        <p className='text-gray-500 mt-4'>
+        <p className='text-gray-500 text-lg mt-5'>
           No vacancies available. Stay tuned for
           upcoming vacancies!
         </p>

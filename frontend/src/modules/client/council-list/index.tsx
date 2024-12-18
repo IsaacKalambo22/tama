@@ -3,10 +3,10 @@ import CouncilListDataTable from './council-list-data-table';
 
 const CouncilList = () => {
   return (
-    <div className='w-full flex flex-col items-center gap-5 mb-16'>
+    <div className='w-full text-center mb-16'>
       <HeaderText
         title='Council Members'
-        subtitle='View the list of Councilors, 1st and 2nd Alternate Councilors'
+        subtitle='View the list of councilors & alternate councilors'
       />
       <CouncilListDataTable />
     </div>

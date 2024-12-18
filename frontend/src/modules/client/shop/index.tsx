@@ -38,7 +38,7 @@ const Shops = async () => {
   }
 
   return (
-    <div className='flex flex-col w-full max-w-7xl mx-auto gap-10 mb-20'>
+    <div className='w-full text-center mb-16'>
       <HeaderText
         title='Discover Our Locations'
         subtitle='Find Our Trusted Stores Near You'
@@ -51,7 +51,9 @@ const Shops = async () => {
             <ShopList shops={shops} />
           </div>
         ) : (
-          <p className='empty-list'>No shops</p>
+          <p className='text-gray-500 text-lg mt-5'>
+            No shops are currently available.
+          </p>
         )}
         {/* Items for Sale */}
         {/* <HeaderText

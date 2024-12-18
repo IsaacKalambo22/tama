@@ -26,7 +26,7 @@ const Forms = async () => {
   }
 
   return (
-    <div className='flex flex-col w-full gap-10 mb-16'>
+    <div className='w-full text-center mb-16'>
       <HeaderText
         title='Forms and Documents'
         subtitle='Access and download important forms for your needs'
@@ -36,8 +36,9 @@ const Forms = async () => {
       {forms.length > 0 ? (
         <FormsAndDocumentsList files={forms} />
       ) : (
-        <p className='empty-list'>
-          No Reports and Publications
+        <p className='text-gray-500 text-lg mt-5'>
+          No forms & documents are currently
+          available.
         </p>
       )}
     </div>

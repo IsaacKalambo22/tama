@@ -17,7 +17,6 @@ const Blog = async () => {
           title='Our Blogs'
           subtitle='Stay Updated with the Latest News and Insights'
         />
-
         <p className='text-red-500'>
           Failed to load blogs and documents.
         </p>
@@ -26,12 +25,18 @@ const Blog = async () => {
   }
 
   return (
-    <div className='flex flex-col items-center gap-8 mb-16'>
+    <div className='w-full text-center mb-16'>
       <HeaderText
         title='Our Blogs'
         subtitle='Stay Updated with the Latest News and Insights'
       />
-      <BlogList blogs={blogs} />
+      {blogs.length === 0 ? (
+        <p className='text-gray-500 text-lg mt-5'>
+          No blogs are currently available.
+        </p>
+      ) : (
+        <BlogList blogs={blogs} />
+      )}
     </div>
   );
 };
