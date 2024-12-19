@@ -14,11 +14,14 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { E164Number } from 'libphonenumber-js/core';
 import { CalendarIcon } from 'lucide-react';
 import Image from 'next/image';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Control } from 'react-hook-form';
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 export enum FormFieldType {
   INPUT = 'input',
   NUMBER = 'number',
@@ -99,51 +102,6 @@ const RenderInput = ({
           </FormControl>
         </div>
       );
-    // case FormFieldType.DATE_PICKER:
-    //   return (
-    //     <FormControl>
-    //       <FormItem className='flex flex-col'>
-    //         <Popover>
-    //           <PopoverTrigger asChild>
-    //             <FormControl>
-    //               <Button
-    //                 variant={'outline'}
-    //                 className={cn(
-    //                   'w-full pl-3 text-left font-normal',
-    //                   !field.value &&
-    //                     'text-muted-foreground'
-    //                 )}
-    //               >
-    //                 {field.value ? (
-    //                   format(field.value, 'PPP')
-    //                 ) : (
-    //                   <span>Pick a date</span>
-    //                 )}
-    //                 <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
-    //               </Button>
-    //             </FormControl>
-    //           </PopoverTrigger>
-    //           <PopoverContent
-    //             className='w-auto p-0'
-    //             align='start'
-    //           >
-    //             <Calendar
-    //               mode='single'
-    //               selected={field.value}
-    //               onSelect={(date) => {
-    //                 console.log(
-    //                   'clicked!!!',
-    //                   date
-    //                 );
-    //                 field.onChange(date); // This line ensures the form state is updated
-    //               }}
-    //               initialFocus
-    //             />
-    //           </PopoverContent>
-    //         </Popover>
-    //       </FormItem>
-    //     </FormControl>
-    //   );
 
     case FormFieldType.DATE_PICKER:
       return (
@@ -204,6 +162,7 @@ const RenderInput = ({
           </div>
         </FormControl>
       );
+
     case FormFieldType.SELECT:
       return (
         <FormControl>
@@ -236,7 +195,24 @@ const RenderInput = ({
           </Select>
         </FormControl>
       );
-
+    case FormFieldType.PHONE_INPUT:
+      return (
+        <FormControl>
+          <PhoneInput
+            defaultCountry='MW'
+            placeholder={props.placeholder}
+            international
+            withCountryCallingCode
+            value={
+              field.value as
+                | E164Number
+                | undefined
+            }
+            onChange={field.onChange}
+            className='input-phone'
+          />
+        </FormControl>
+      );
     case FormFieldType.SKELETON:
       return props.renderSkeleton
         ? props.renderSkeleton(field)
