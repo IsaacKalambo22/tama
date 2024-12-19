@@ -10,7 +10,9 @@ import {
   Trash,
 } from 'lucide-react';
 import { useState } from 'react';
+import ModalDeleteCouncilList from '../modal-delete-council-list';
 import ModalEditCouncilList from '../modal-edit-council-list';
+import ModalViewCouncilList from '../modal-view-council-list';
 
 export const councilListDataColumns: ColumnDef<CouncilListProps>[] =
   [
@@ -242,22 +244,22 @@ export const councilListDataColumns: ColumnDef<CouncilListProps>[] =
             )}
 
             {/* View Modal */}
-            {/* {isViewModalOpen && (
-            <ModalViewCouncilList
-              isOpen={isViewModalOpen}
-              councilList={councilList}
-              onClose={handleCloseViewModal}
-            />
-          )} */}
+            {isViewModalOpen && (
+              <ModalViewCouncilList
+                isOpen={isViewModalOpen}
+                councilList={councilList}
+                onClose={handleCloseViewModal}
+              />
+            )}
 
             {/* Delete Modal */}
-            {/* {isDeleteModalOpen && (
-            <ModalDeleteCouncilList
-              isOpen={isDeleteModalOpen}
-              councilList={councilList}
-              onClose={handleCloseDeleteModal}
-            />
-          )} */}
+            {isDeleteModalOpen && (
+              <ModalDeleteCouncilList
+                isOpen={isDeleteModalOpen}
+                councilList={councilList}
+                onClose={handleCloseDeleteModal}
+              />
+            )}
           </div>
         );
       },
