@@ -1,5 +1,5 @@
-import CouncilListDataTable from '@/modules/client/council-list/council-list-data-table';
 import AddNewHeader from '@/modules/common/add-new-header';
+import CouncilListDataTable from '../council-list-data-table';
 
 const CustomCouncilList = () => {
   return (

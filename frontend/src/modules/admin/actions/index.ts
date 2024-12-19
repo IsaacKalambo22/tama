@@ -1092,7 +1092,7 @@ export const updateEvent = async (
     const response = await fetch(
       `${BASE_URL}/events/${eventId}`, // Use the eventId in the URL for updating
       {
-        method: 'PUT', // Use PUT for update
+        method: 'PATCH', // Use PUT for update
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -1114,6 +1114,55 @@ export const updateEvent = async (
   } catch (error) {
     console.error(
       'Error during event update:',
+      error
+    );
+    throw error;
+  }
+};
+
+export const updateCouncilList = async (
+  payload: object,
+  councilListId: string, // The ID of the council list to update
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  try {
+    const session = await auth();
+
+    if (!session) {
+      return parseServerActionResponse({
+        error: 'Not signed in',
+        status: 'ERROR',
+      });
+    }
+
+    const token = session?.accessToken;
+
+    const response = await fetch(
+      `${BASE_URL}/council-lists/${councilListId}`, // Use the councilListId in the URL for updating
+      {
+        method: 'PATCH', // Use PUT for update
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        'Failed to update council list data'
+      );
+    }
+
+    const result = await response.json();
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
+    return result;
+  } catch (error) {
+    console.error(
+      'Error during council list update:',
       error
     );
     throw error;
