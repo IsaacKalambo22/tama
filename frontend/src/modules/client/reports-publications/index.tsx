@@ -37,7 +37,7 @@ const ReportsAndPublications = async () => {
           files={reports}
         />
       ) : (
-        <p className='text-gray-500 text-lg mt-5'>
+        <p className='text-gray-500 text-center text-lg mt-5'>
           No reports & publications are currently
           available.
         </p>

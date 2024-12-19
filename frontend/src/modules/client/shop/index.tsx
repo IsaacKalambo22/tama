@@ -51,7 +51,7 @@ const Shops = async () => {
             <ShopList shops={shops} />
           </div>
         ) : (
-          <p className='text-gray-500 text-lg mt-5'>
+          <p className='text-gray-500 text-center text-lg mt-5'>
             No shops are currently available.
           </p>
         )}

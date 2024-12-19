@@ -36,7 +36,7 @@ const Forms = async () => {
       {forms.length > 0 ? (
         <FormsAndDocumentsList files={forms} />
       ) : (
-        <p className='text-gray-500 text-lg mt-5'>
+        <p className='text-gray-500 text-center text-lg mt-5'>
           No forms & documents are currently
           available.
         </p>

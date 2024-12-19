@@ -41,7 +41,7 @@ const EventCalendar = async () => {
           ))}
         </div>
       ) : (
-        <p className='text-gray-500 text-lg mt-5'>
+        <p className='text-gray-500 text-center text-lg mt-5'>
           No events available. Stay tuned for
           upcoming events!
         </p>

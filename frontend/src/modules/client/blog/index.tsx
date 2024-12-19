@@ -31,7 +31,7 @@ const Blog = async () => {
         subtitle='Stay Updated with the Latest News and Insights'
       />
       {blogs.length === 0 ? (
-        <p className='text-gray-500 text-lg mt-5'>
+        <p className='text-gray-500 text-center text-lg mt-5'>
           No blogs are currently available.
         </p>
       ) : (
