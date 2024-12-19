@@ -51,21 +51,21 @@ const storage = multer_1.default.diskStorage({
 });
 const upload = (0, multer_1.default)({ storage });
 /* ROUTES WITH FILES */
-app.post('/api/v1/reports-publications', upload.single('file'), reports_publications_1.default);
-app.post('/api/v1/shops', upload.single('file'), shop_1.default);
-app.patch('/api/v1/shops/:id', upload.single('file'), shop_1.default);
-app.patch('/api/v1/news/:id', upload.single('file'), news_1.default);
-app.patch('/api/v1/forms/:id', upload.single('file'), form_1.default);
-app.patch('/api/v1/reports-publications/:id', upload.single('file'), reports_publications_1.default);
-app.patch('/api/v1/blogs/:id', upload.single('file'), blog_1.default);
-app.post('/api/v1/forms', upload.single('file'), form_1.default);
-app.post('/api/v1/blogs', upload.single('file'), blog_1.default);
-app.post('/api/v1/news', upload.single('file'), news_1.default);
+app.post('/tama/reports-publications', upload.single('file'), reports_publications_1.default);
+app.post('/tama/shops', upload.single('file'), shop_1.default);
+app.patch('/tama/shops/:id', upload.single('file'), shop_1.default);
+app.patch('/tama/news/:id', upload.single('file'), news_1.default);
+app.patch('/tama/forms/:id', upload.single('file'), form_1.default);
+app.patch('/tama/reports-publications/:id', upload.single('file'), reports_publications_1.default);
+app.patch('/tama/blogs/:id', upload.single('file'), blog_1.default);
+app.post('/tama/forms', upload.single('file'), form_1.default);
+app.post('/tama/blogs', upload.single('file'), blog_1.default);
+app.post('/tama/news', upload.single('file'), news_1.default);
 /* ROUTES */
 app.get('/', (req, res) => {
     res.send('<html><body><h1>Welcome to the Home Route</h1></body></html>');
 });
-app.get('/api/v1/uploads/download/:filename', (req, res) => {
+app.get('/tama/uploads/download/:filename', (req, res) => {
     const filename = req.params.filename;
     const filepath = path_1.default.join(uploadDir, filename);
     if (fs_1.default.existsSync(filepath)) {
@@ -77,7 +77,7 @@ app.get('/api/v1/uploads/download/:filename', (req, res) => {
         res.status(404).send('File not found');
     }
 });
-app.get('/api/v1/uploads/:filename', (req, res) => {
+app.get('/tama/uploads/:filename', (req, res) => {
     console.log(req.params.filename);
     const filename = req.params.filename;
     const filepath = path_1.default.join(uploadDir, filename);
@@ -88,16 +88,16 @@ app.get('/api/v1/uploads/:filename', (req, res) => {
         res.status(404).send('File not found');
     }
 });
-app.use('/api/v1/auth', auth_1.default);
-app.use('/api/v1/shops', shop_1.default);
-app.use('/api/v1/forms', form_1.default);
-app.use('/api/v1/blogs', blog_1.default);
-app.use('/api/v1/news', news_1.default);
-app.use('/api/v1/users', user_1.default);
-app.use('/api/v1/events', events_1.default);
-app.use('/api/v1/vacancies', vacancy_1.default);
-app.use('/api/v1/council-lists', council_list_1.default);
-app.use('/api/v1/reports-publications', reports_publications_1.default);
+app.use('/tama/auth', auth_1.default);
+app.use('/tama/shops', shop_1.default);
+app.use('/tama/forms', form_1.default);
+app.use('/tama/blogs', blog_1.default);
+app.use('/tama/news', news_1.default);
+app.use('/tama/users', user_1.default);
+app.use('/tama/events', events_1.default);
+app.use('/tama/vacancies', vacancy_1.default);
+app.use('/tama/council-lists', council_list_1.default);
+app.use('/tama/reports-publications', reports_publications_1.default);
 /* SERVER */
 const PORT = Number(process.env.PORT) || 8000;
 app.listen(PORT, () => {

@@ -58,52 +58,52 @@ const upload = multer({ storage });
 
 /* ROUTES WITH FILES */
 app.post(
-  '/api/v1/reports-publications',
+  '/tama/reports-publications',
   upload.single('file'),
   reportsPublications
 );
 app.post(
-  '/api/v1/shops',
+  '/tama/shops',
   upload.single('file'),
   shops
 );
 app.patch(
-  '/api/v1/shops/:id',
+  '/tama/shops/:id',
   upload.single('file'),
   shops
 );
 app.patch(
-  '/api/v1/news/:id',
+  '/tama/news/:id',
   upload.single('file'),
   news
 );
 app.patch(
-  '/api/v1/forms/:id',
+  '/tama/forms/:id',
   upload.single('file'),
   forms
 );
 app.patch(
-  '/api/v1/reports-publications/:id',
+  '/tama/reports-publications/:id',
   upload.single('file'),
   reportsPublications
 );
 app.patch(
-  '/api/v1/blogs/:id',
+  '/tama/blogs/:id',
   upload.single('file'),
   blogs
 );
 app.post(
-  '/api/v1/forms',
+  '/tama/forms',
   upload.single('file'),
   forms
 );
 app.post(
-  '/api/v1/blogs',
+  '/tama/blogs',
   upload.single('file'),
   blogs
 );
 app.post(
-  '/api/v1/news',
+  '/tama/news',
   upload.single('file'),
   news
 );
@@ -115,7 +115,7 @@ app.get('/', (req, res) => {
   );
 });
 app.get(
-  '/api/v1/uploads/download/:filename',
+  '/tama/uploads/download/:filename',
   (req, res) => {
     const filename = req.params.filename;
     const filepath = path.join(
@@ -135,35 +135,29 @@ app.get(
     }
   }
 );
-app.get(
-  '/api/v1/uploads/:filename',
-  (req, res) => {
-    console.log(req.params.filename);
-    const filename = req.params.filename;
-    const filepath = path.join(
-      uploadDir,
-      filename
-    );
+app.get('/tama/uploads/:filename', (req, res) => {
+  console.log(req.params.filename);
+  const filename = req.params.filename;
+  const filepath = path.join(uploadDir, filename);
 
-    if (fs.existsSync(filepath)) {
-      res.sendFile(filepath);
-    } else {
-      res.status(404).send('File not found');
-    }
+  if (fs.existsSync(filepath)) {
+    res.sendFile(filepath);
+  } else {
+    res.status(404).send('File not found');
   }
-);
+});
 
-app.use('/api/v1/auth', auth);
-app.use('/api/v1/shops', shops);
-app.use('/api/v1/forms', forms);
-app.use('/api/v1/blogs', blogs);
-app.use('/api/v1/news', news);
-app.use('/api/v1/users', users);
-app.use('/api/v1/events', events);
-app.use('/api/v1/vacancies', vacancies);
-app.use('/api/v1/council-lists', councilLists);
+app.use('/tama/auth', auth);
+app.use('/tama/shops', shops);
+app.use('/tama/forms', forms);
+app.use('/tama/blogs', blogs);
+app.use('/tama/news', news);
+app.use('/tama/users', users);
+app.use('/tama/events', events);
+app.use('/tama/vacancies', vacancies);
+app.use('/tama/council-lists', councilLists);
 app.use(
-  '/api/v1/reports-publications',
+  '/tama/reports-publications',
   reportsPublications
 );
 
