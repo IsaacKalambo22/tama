@@ -8,6 +8,7 @@ import { Eye, Pencil, Trash } from 'lucide-react';
 import { useState } from 'react';
 import ModalDeleteUser from '../modal-delete-user';
 import ModalEditUser from '../modal-edit-user';
+import ModalViewUser from '../modal-view-user';
 
 export const userColumns: ColumnDef<UserProps>[] =
   [
@@ -94,23 +95,32 @@ export const userColumns: ColumnDef<UserProps>[] =
           isDeleteModalOpen,
           setDeleteModalOpen,
         ] = useState(false);
+        const [
+          isViewModalOpen,
+          setViewModalOpen,
+        ] = useState(false);
 
-        // Handlers to toggle modals
-        const handleEditClick = () =>
-          setEditModalOpen((prev) => !prev);
-        const handleDeleteClick = () =>
-          setDeleteModalOpen((prev) => !prev);
-
+        // Handlers for opening and closing modals
+        const handleOpenEditModal = () =>
+          setEditModalOpen(true);
         const handleCloseEditModal = () =>
-          setEditModalOpen((prev) => !prev);
+          setEditModalOpen(false);
+
+        const handleOpenDeleteModal = () =>
+          setDeleteModalOpen(true);
         const handleCloseDeleteModal = () =>
-          setDeleteModalOpen((prev) => !prev);
+          setDeleteModalOpen(false);
+
+        const handleOpenViewModal = () =>
+          setViewModalOpen(true);
+        const handleCloseViewModal = () =>
+          setViewModalOpen(false);
 
         return (
           <div className='h-8 flex gap-1'>
             {/* View Button */}
             <Button
-              onClick={handleEditClick}
+              onClick={handleOpenViewModal}
               variant='ghost'
               className='px-[0.4rem] h-8 text-gray-500'
             >
@@ -119,7 +129,7 @@ export const userColumns: ColumnDef<UserProps>[] =
 
             {/* Edit Button */}
             <Button
-              onClick={handleEditClick}
+              onClick={handleOpenEditModal}
               variant='ghost'
               className='px-[0.4rem] h-8 text-gray-500'
             >
@@ -128,7 +138,7 @@ export const userColumns: ColumnDef<UserProps>[] =
 
             {/* Delete Button */}
             <Button
-              onClick={handleDeleteClick}
+              onClick={handleOpenDeleteModal}
               variant='ghost'
               className='px-[0.4rem] h-8'
             >
@@ -141,6 +151,15 @@ export const userColumns: ColumnDef<UserProps>[] =
                 isOpen={isEditModalOpen}
                 user={user} // Pass the selected user data
                 onClose={handleCloseEditModal} // Callback to close the modal
+              />
+            )}
+
+            {/* View Modal */}
+            {isViewModalOpen && (
+              <ModalViewUser
+                isOpen={isViewModalOpen}
+                user={user}
+                onClose={handleCloseViewModal}
               />
             )}
 
