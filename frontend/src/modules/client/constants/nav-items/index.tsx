@@ -118,40 +118,19 @@ export const navItems: NavItem[] = [
       },
     ],
   },
+
   {
     title: 'News & Updates',
     href: '/news-updates/news',
-    submenu: true,
-    // subMenuItems: [
-    //   {
-    //     title: 'News',
-    //     href: '/news-updates/news',
-    //     description:
-    //       'Latest news in the tobacco industry.',
-    //     icon: (
-    //       <Icon
-    //         icon='lucide:newspaper'
-    //         width='16'
-    //         height='16'
-    //       />
-    //     ),
-    //   },
-    //   {
-    //     title: 'Press Releases',
-    //     href: '/news-updates/press-release',
-    //     description:
-    //       'Official statements and press releases.',
-    //     icon: (
-    //       <Icon
-    //         icon='lucide:megaphone'
-    //         width='16'
-    //         height='16'
-    //       />
-    //     ),
-    //   },
-    // ],
+    description: '',
+    icon: (
+      <Icon
+        icon='lucide:pen-tool'
+        width='16'
+        height='16'
+      />
+    ),
   },
-
   {
     title: 'Blogs',
     href: '/blogs',
