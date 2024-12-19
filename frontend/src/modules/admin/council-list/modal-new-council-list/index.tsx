@@ -8,16 +8,18 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
+import useCustomPath from '@/hooks/use-custom-path';
 import { toast } from '@/hooks/use-toast';
 import CustomFormField, {
   FormFieldType,
 } from '@/modules/common/custom-form-field';
 import SubmitButton from '@/modules/common/submit-button';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
-import { createCouncilList } from '../actions';
+import { createCouncilList } from '../../actions';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
@@ -58,6 +60,10 @@ const ModalNewCouncilList = ({
       }),
   });
 
+  const path = usePathname();
+  const { fullPath, pathWithoutAdmin } =
+    useCustomPath(path);
+
   const form = useForm<
     zod.infer<typeof formSchema>
   >({
@@ -85,15 +91,19 @@ const ModalNewCouncilList = ({
         firstAlternateCouncillor,
         secondAlternateCouncillor,
       } = values;
-
-      // Call the createCouncilList function with the required arguments
-      const result = await createCouncilList({
+      const payload = {
         demarcation,
         tobaccoType,
         councillor,
         firstAlternateCouncillor,
         secondAlternateCouncillor,
-      });
+      };
+      // Call the createCouncilList function with the required arguments
+      const result = await createCouncilList(
+        payload,
+        fullPath,
+        pathWithoutAdmin
+      );
 
       console.log('Upload result:', result);
       onClose();

@@ -2,9 +2,9 @@
 
 import { Button } from '@/components/ui/button';
 import ModalNewBlog from '@/modules/admin/blog/modal-new-blog';
+import ModalNewCouncilList from '@/modules/admin/council-list/modal-new-council-list';
 import ModalNewEvent from '@/modules/admin/events/modal-new-event';
 import ModalNewForm from '@/modules/admin/forms-documents/modal-new-form';
-import ModalNewCouncilList from '@/modules/admin/modal-new-council-list';
 import ModalNewNews from '@/modules/admin/news/modal-new-news';
 import ModalNewPublication from '@/modules/admin/reports-publications/modal-new-publication';
 import ModalNewShop from '@/modules/admin/shop/modal-new-shop';
