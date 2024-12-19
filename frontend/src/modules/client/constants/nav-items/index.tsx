@@ -15,7 +15,7 @@ export type NavItem = {
 export const navItems: NavItem[] = [
   {
     title: 'Tobacco Business',
-    href: 'tobacco-business',
+    href: '/tobacco-business',
     submenu: true,
     subMenuItems: [
       {

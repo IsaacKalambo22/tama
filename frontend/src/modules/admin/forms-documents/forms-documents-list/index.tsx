@@ -20,8 +20,9 @@ const FormsAndDocumentsList = ({
           ))}
         </div>
       ) : (
-        <p className='empty-list'>
-          No Reports and Publications
+        <p className='text-gray-500 text-lg mt-5'>
+          No forms & documents available. Create a
+          new document to get started!
         </p>
       )}
     </div>

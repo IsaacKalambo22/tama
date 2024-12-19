@@ -40,7 +40,7 @@ const ReportsAndPublicationsCard = ({
           </div>
         </div>
         <div className='file-card-details gap-2'>
-          <p className='subtitle-2 line-clamp-1'>
+          <p className='subtitle-2 text-left !important line-clamp-1'>
             {file.filename}
           </p>
           <div className='flex justify-between w-full'>

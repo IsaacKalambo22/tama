@@ -26,7 +26,7 @@ const Forms = async () => {
   }
 
   return (
-    <div className='w-full text-center mb-16'>
+    <div className='flex w-full flex-col gap-10 mb-16'>
       <HeaderText
         title='Forms and Documents'
         subtitle='Access and download important forms for your needs'

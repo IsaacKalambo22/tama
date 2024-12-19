@@ -44,9 +44,12 @@ const Desktop = () => {
                 />
               </div>
             </Link>
-            <span className=' bg-gradient-to-r from-green-600 to-amber-500 bg-clip-text text-transparent text-[1rem] leading-snug capitalize'>
+            <Link
+              href='/'
+              className=' bg-gradient-to-r from-green-600 to-amber-500 bg-clip-text text-transparent text-[1rem] leading-snug capitalize'
+            >
               TAMA Farmers Trust
-            </span>
+            </Link>
           </div>
         </div>
         {/* MIDDLE */}
@@ -68,7 +71,7 @@ const Desktop = () => {
                     <>
                       <NavigationMenuTrigger
                         className={cn(
-                          'text-gray-600 hover:text-gray-800',
+                          'text-gray-600 hover:text-green-600',
                           pathname.startsWith(
                             section.href
                           ) && 'text-green-600'
@@ -158,7 +161,7 @@ const Desktop = () => {
                     >
                       <NavigationMenuLink
                         className={cn(
-                          'text-gray-600 hover:text-gray-800 mr-5',
+                          'text-gray-600 hover:text-green-600 mr-5',
                           pathname ===
                             section.href &&
                             'text-green-600'

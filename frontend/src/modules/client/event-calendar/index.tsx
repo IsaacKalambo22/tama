@@ -26,7 +26,7 @@ const EventCalendar = async () => {
   }
 
   return (
-    <div className='w-full text-center mb-16'>
+    <div className='flex w-full flex-col gap-10 mb-16'>
       <HeaderText
         title='Upcoming Events'
         subtitle='Stay informed about upcoming events and opportunities'

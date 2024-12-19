@@ -25,7 +25,7 @@ const Blog = async () => {
   }
 
   return (
-    <div className='w-full text-center mb-16'>
+    <div className='flex w-full flex-col gap-10 mb-16'>
       <HeaderText
         title='Our Blogs'
         subtitle='Stay Updated with the Latest News and Insights'

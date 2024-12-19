@@ -21,15 +21,17 @@ const ShopCard = ({ shop }: Props) => {
         height={150}
         className='rounded-2xl w-full mb-4 h-[12rem]'
       />
-      <h2 className='text-[1rem] font-semibold mb-2'>
-        {shop.name}
-      </h2>
-      <p className='text-gray-700'>
-        {shop.address}
-      </p>
-      <p className='text-gray-500'>
-        {shop.openHours}
-      </p>
+      <div className='flex flex-col items-start'>
+        <h2 className='text-[1rem] font-semibold mb-2'>
+          {shop.name}
+        </h2>
+        <p className='text-gray-700'>
+          {shop.address}
+        </p>
+        <p className='text-gray-500'>
+          {shop.openHours}
+        </p>
+      </div>
     </Card>
   );
 };

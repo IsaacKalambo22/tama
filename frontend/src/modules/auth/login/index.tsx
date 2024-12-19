@@ -67,7 +67,8 @@ const Login = () => {
         return;
       }
 
-      router.push('/');
+      router.refresh();
+      // router.push('/');
     } catch (error) {
       console.error('Unexpected error:', error);
       toast({

@@ -33,7 +33,7 @@ const Shop = async () => {
       {shops.length > 0 ? (
         <ShopList shops={shops} />
       ) : (
-        <p className='text-gray-500 mt-4'>
+        <p className='text-gray-500 text-lg mt-5'>
           No shops available. Create a new shop to
           get started!
         </p>

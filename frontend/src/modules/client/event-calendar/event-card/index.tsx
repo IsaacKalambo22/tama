@@ -38,7 +38,7 @@ const EventCard = ({ event }: EventCardProps) => {
   } = event;
 
   return (
-    <Card className='relative shadow-lg flex items-start p-4 rounded-xl'>
+    <Card className='relative shadow-lg flex items-start p-6 rounded-xl'>
       {/* Vertical Color Bar */}
       <div
         style={{
@@ -48,15 +48,15 @@ const EventCard = ({ event }: EventCardProps) => {
       ></div>
 
       {/* Event Details */}
-      <div className='pl-6'>
-        <h3 className='text-lg font-semibold'>
+      <div className=''>
+        <h3 className='text-lg text-left font-semibold'>
           {title}
         </h3>
-        <p className='text-gray-700 mt-2 line-clamp-3'>
+        <p className='text-gray-700 text-left mt-2 line-clamp-3'>
           {description}
         </p>
         {location && (
-          <p className='text-sm text-gray-600 mt-2'>
+          <p className='text-sm text-left text-gray-600 mt-2'>
             <strong>Location:</strong> {location}
           </p>
         )}

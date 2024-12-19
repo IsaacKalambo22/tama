@@ -341,9 +341,12 @@ const Mobile: React.FC = () => {
               className='ml-2'
             />
           </Link>
-          <span className=' bg-gradient-to-r from-green-600 to-amber-500 bg-clip-text text-transparent text-[1rem] leading-snug capitalize max-sm:text-[0.9rem]'>
+          <Link
+            href='/'
+            className=' bg-gradient-to-r from-green-600 to-amber-500 bg-clip-text text-transparent text-[1rem] leading-snug capitalize max-sm:text-[0.9rem]'
+          >
             TAMA Farmers Trust
-          </span>
+          </Link>
         </div>
       </motion.nav>
     </div>
