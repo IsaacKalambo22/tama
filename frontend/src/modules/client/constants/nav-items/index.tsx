@@ -144,6 +144,19 @@ export const navItems: NavItem[] = [
       />
     ),
   },
+  {
+    title: 'Contact',
+    href: '/contact',
+    description:
+      'Industry insights and articles from experts.',
+    icon: (
+      <Icon
+        icon='lucide:pen-tool'
+        width='16'
+        height='16'
+      />
+    ),
+  },
   // {
   //   title: 'About Us',
   //   href: '/about-us',

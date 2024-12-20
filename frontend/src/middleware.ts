@@ -20,14 +20,14 @@ export const middleware = auth(async (req) => {
   //   secret: secretKey,
   // });
   const token = req.auth;
-  console.log(
-    'Auth Request !!!!!!!!!!!!!!',
-    req.auth
-  );
-  console.log(
-    'Auth Request User AccessToken!!!!!!!!!!!!!!',
-    token
-  );
+  // console.log(
+  //   'Auth Request !!!!!!!!!!!!!!',
+  //   req.auth
+  // );
+  // console.log(
+  //   'Auth Request User AccessToken!!!!!!!!!!!!!!',
+  //   token
+  // );
 
   const { nextUrl } = req;
   const isLoggedIn = !!token;
@@ -49,6 +49,8 @@ export const middleware = auth(async (req) => {
       '/news-updates'
     ) ||
     nextUrl.pathname.startsWith('/resources') ||
+    nextUrl.pathname.startsWith('/contact') ||
+    nextUrl.pathname.startsWith('/api') ||
     nextUrl.pathname.startsWith('/about');
 
   // Skip API auth routes
