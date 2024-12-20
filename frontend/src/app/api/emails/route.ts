@@ -72,8 +72,8 @@ export async function POST(req: NextRequest) {
       mailData
     );
 
-    await sendMail(mailData);
-
+    const res = await sendMail(mailData);
+    console.log({ res });
     console.log('Email sent successfully');
     return NextResponse.json(
       { message: 'Email sent successfully!' },
