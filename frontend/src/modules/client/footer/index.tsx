@@ -1,10 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import {
-  GitHubLogoIcon,
-  LinkedInLogoIcon,
-  TwitterLogoIcon,
-} from '@radix-ui/react-icons';
+import { TwitterLogoIcon } from '@radix-ui/react-icons';
 import { Facebook } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -34,7 +30,11 @@ const Footer = () => {
             © 2024 tama@tamalawi.com
           </p>
           <div className='flex space-x-4'>
-            <Link href='https://twitter.com/'>
+            <Link
+              href='https://x.com/TamaTrust'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
               <Button
                 className='rounded-full'
                 variant='outline'
@@ -43,25 +43,12 @@ const Footer = () => {
                 <TwitterLogoIcon />
               </Button>
             </Link>
-            <Link href='https://github.com/'>
-              <Button
-                className='rounded-full'
-                variant='outline'
-                size='icon'
-              >
-                <GitHubLogoIcon />
-              </Button>
-            </Link>
-            <Link href='https://linkedin.com/'>
-              <Button
-                className='rounded-full'
-                variant='outline'
-                size='icon'
-              >
-                <LinkedInLogoIcon />
-              </Button>
-            </Link>
-            <Link href='https://facebook.com/'>
+
+            <Link
+              href='https://web.facebook.com/TamaFarmersTrust'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
               <Button
                 className='rounded-full'
                 variant='outline'

@@ -50,7 +50,7 @@ export const councilListDataColumns: ColumnDef<CouncilListProps>[] =
       header: ({ column }) => {
         return (
           <Button
-            className='h-8'
+            className='h-8 max-sm:hidden'
             variant='ghost'
             onClick={() =>
               column.toggleSorting(
@@ -59,7 +59,7 @@ export const councilListDataColumns: ColumnDef<CouncilListProps>[] =
             }
           >
             Tobacco Type
-            <ArrowUpDown className='ml-2 h-4 w-4' />
+            <ArrowUpDown className='ml-2 h-4 w-4 ' />
           </Button>
         );
       },
@@ -107,7 +107,7 @@ export const councilListDataColumns: ColumnDef<CouncilListProps>[] =
       header: ({ column }) => {
         return (
           <Button
-            className='h-8'
+            className='h-8 max-sm:hidden'
             variant='ghost'
             onClick={() =>
               column.toggleSorting(
@@ -137,7 +137,7 @@ export const councilListDataColumns: ColumnDef<CouncilListProps>[] =
       header: ({ column }) => {
         return (
           <Button
-            className='h-8'
+            className='h-8 max-sm:hidden'
             variant='ghost'
             onClick={() =>
               column.toggleSorting(
