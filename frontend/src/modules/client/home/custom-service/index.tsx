@@ -14,43 +14,43 @@ const services: ServiceItem[] = [
     title: 'Satellite Depot Operations',
     description:
       'Receiving centers for tobacco haulage to floors markets. Act as information centers for farmers and outlets for service deliveries like Hessian distribution.',
-    imageUrl: '/assets/images/carousel/1.jpg',
+    imageUrl: '/assets/images/carousel/10.jpg',
   },
   {
     title: 'Hessian Services',
     description:
       'Offers subsidized Hessian schemes to members. Collects Hessians from buyers, replenishes ex-rated pieces, and purchases new pieces for growing members.',
-    imageUrl: '/assets/images/carousel/2.jpg',
+    imageUrl: '/assets/images/services/04.webp',
   },
   {
     title: 'Transportation Brokerage',
     description:
       'Contracts transporters to haul members’ tobacco to auction floors. Ensures safety by using licensed and insured transporters.',
-    imageUrl: '/assets/images/carousel/3.jpg',
+    imageUrl: '/assets/images/services/10.jpg',
   },
   {
     title: 'Customer Service',
     description:
       'Dedicated query handling for growers with prompt resolutions.',
-    imageUrl: '/assets/images/carousel/4.jpg',
+    imageUrl: '/assets/images/services/09.jpg',
   },
   {
     title: 'Policy Lobbying and Advocacy',
     description:
       'Represents growers in policy formulation and industry boards. Ensures participation in interactive area meetings.',
-    imageUrl: '/assets/images/carousel/5.jpg',
+    imageUrl: '/assets/images/services/05.jpg',
   },
   {
     title: 'Tobacco Marketing and Promotions',
     description:
       'Promotes Malawi Tobacco globally through ITGA. Collaborates with ARET for extension services and market tours.',
-    imageUrl: '/assets/images/carousel/6.jpg',
+    imageUrl: '/assets/images/services/11.jpg',
   },
   {
     title: 'Tobacco Sales Representation',
     description:
       'Represents growers on auction floors and negotiates for better pricing on contract sales.',
-    imageUrl: '/assets/images/carousel/7.jpg',
+    imageUrl: '/assets/images/services/06.jpg',
   },
   {
     title: 'Media and Mass Communications',
@@ -62,19 +62,19 @@ const services: ServiceItem[] = [
     title: 'Extension Services',
     description:
       'Collaborates with ARET for research and education. Provides extension services through business officers nationwide.',
-    imageUrl: '/assets/images/carousel/9.jpg',
+    imageUrl: '/assets/images/services/00.jpg',
   },
   {
     title: 'Innovative Services',
     description:
       'Supports contract marketing and rehandling through operational grading centers. Ensures fair contract discharge.',
-    imageUrl: '/assets/images/carousel/10.jpg',
+    imageUrl: '/assets/images/services/01.webp',
   },
   {
     title: 'Rural and Electronic Banking',
     description:
       'Partnership with FMB for the Makwacha Card, enabling rural farmers to access proceeds and sales.',
-    imageUrl: '/assets/images/carousel/11.jpg',
+    imageUrl: '/assets/images/services/08.jpg',
   },
   {
     title: 'Cooperatives',
