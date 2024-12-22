@@ -32,7 +32,9 @@ const Sidebar = ({ links }: SidebarProps) => {
     <Card
       className={cn(
         'fixed z-40 flex h-full w-72 flex-col overflow-hidden rounded-none bg-white shadow-md transition-all duration-300 md:w-[17rem]',
-        { 'w-0 md:w-16': isSidebarCollapsed }
+        {
+          'w-0 md:w-16': isSidebarCollapsed,
+        }
       )}
     >
       <div className='flex h-[100%] w-full flex-col justify-start'>
@@ -69,14 +71,16 @@ const Sidebar = ({ links }: SidebarProps) => {
                 />
               </div>
             </Link>
-            <h2
+
+            <Link
+              href='/'
               className={cn(
-                'font-bold text-[1.1rem] leading-snug',
+                'bg-gradient-to-r from-green-600 to-amber-500 bg-clip-text text-transparent text-[1rem] leading-snug capitalize max-sm:text-[0.9rem]',
                 { hidden: isSidebarCollapsed }
               )}
             >
               TAMA Farmers Trust
-            </h2>
+            </Link>
           </div>
 
           <Button

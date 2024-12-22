@@ -3,8 +3,14 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { UserProps } from '@/lib/api';
+import { formatDateTime } from '@/lib/utils';
 import { ColumnDef } from '@tanstack/react-table';
-import { Eye, Pencil, Trash } from 'lucide-react';
+import {
+  ArrowUpDown,
+  Eye,
+  Pencil,
+  Trash,
+} from 'lucide-react';
 import { useState } from 'react';
 import ModalDeleteUser from '../modal-delete-user';
 import ModalEditUser from '../modal-edit-user';
@@ -29,21 +35,16 @@ export const userColumns: ColumnDef<UserProps>[] =
         const userName = row.original.name;
         const firstLetter = userName
           .charAt(0)
-          .toUpperCase(); // Get the first letter of the name
+          .toUpperCase();
 
         return (
           <div className='flex items-center gap-4'>
-            {/* Avatar with First Letter */}
-            <Card
-              className='flex justify-center items-center rounded-full w-10 h-10 bg-gray-200 text-gray-800 font-bold text-lg'
-              title={userName} // Tooltip with the full name
-            >
+            <Card className='flex justify-center items-center rounded-full w-10 h-10 bg-gray-200 text-gray-800 font-bold text-lg'>
               {firstLetter}
             </Card>
-            {/* User Info */}
             <div>
               <p>{userName}</p>
-              <p className='text-muted-foreground text-sm'>
+              <p className='text-muted-foreground text-sm w-5'>
                 {row.original.email}
               </p>
             </div>
@@ -53,40 +54,83 @@ export const userColumns: ColumnDef<UserProps>[] =
     },
     {
       accessorKey: 'role',
-      header: 'Role',
+      header: ({ column }) => (
+        <Button
+          className='h-8 max-sm:hidden'
+          variant='ghost'
+          onClick={() =>
+            column.toggleSorting(
+              column.getIsSorted() === 'asc'
+            )
+          }
+        >
+          Role
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      ),
       cell: ({ row }) => (
-        <div>{row.getValue('role')}</div>
+        <div className='flex ml-4 gap-2 items-center max-sm:hidden'>
+          {row.getValue('role')}
+        </div>
       ),
     },
     {
-      accessorKey: 'phoneNumber',
-      header: 'Phone number',
-      cell: ({ row }) => (
-        <div>{row.getValue('phoneNumber')}</div>
+      accessorKey: 'lastLogin',
+      header: ({ column }) => (
+        <Button
+          className='h-8 max-sm:hidden'
+          variant='ghost'
+          onClick={() =>
+            column.toggleSorting(
+              column.getIsSorted() === 'asc'
+            )
+          }
+        >
+          Last Login
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
       ),
-    },
-    {
-      accessorKey: 'isVerified',
-      header: 'Verified',
       cell: ({ row }) => (
-        <div>
-          {row.getValue('isVerified') ? (
-            <span className='text-green-600'>
-              ✔ Verified
-            </span>
-          ) : (
-            <span className='text-red-600'>
-              ✘ Not Verified
-            </span>
+        <div className='flex ml-4 gap-2 items-center max-sm:hidden'>
+          {formatDateTime(
+            row.getValue('lastLogin')
           )}
         </div>
       ),
     },
     {
+      accessorKey: 'phoneNumber',
+      header: ({ column }) => {
+        return (
+          <Button
+            className='h-8 max-sm:hidden'
+            variant='ghost'
+            onClick={() =>
+              column.toggleSorting(
+                column.getIsSorted() === 'asc'
+              )
+            }
+          >
+            Phone Number
+            <ArrowUpDown className='ml-2 h-4 w-4' />
+          </Button>
+        );
+      },
+      cell: ({ row }) => {
+        return (
+          <div className='flex ml-4 gap-2 items-center'>
+            <div className='capitalize max-sm:hidden'>
+              {row.getValue('phoneNumber')}
+            </div>
+          </div>
+        );
+      },
+    },
+    {
       accessorKey: 'action',
       header: 'Actions',
       cell: ({ row }) => {
-        const user = row.original; // Get the user data for this row
+        const user = row.original;
         const [
           isEditModalOpen,
           setEditModalOpen,
@@ -100,7 +144,6 @@ export const userColumns: ColumnDef<UserProps>[] =
           setViewModalOpen,
         ] = useState(false);
 
-        // Handlers for opening and closing modals
         const handleOpenEditModal = () =>
           setEditModalOpen(true);
         const handleCloseEditModal = () =>
@@ -118,7 +161,6 @@ export const userColumns: ColumnDef<UserProps>[] =
 
         return (
           <div className='h-8 flex gap-1'>
-            {/* View Button */}
             <Button
               onClick={handleOpenViewModal}
               variant='ghost'
@@ -127,7 +169,6 @@ export const userColumns: ColumnDef<UserProps>[] =
               <Eye className='h-4 w-4' />
             </Button>
 
-            {/* Edit Button */}
             <Button
               onClick={handleOpenEditModal}
               variant='ghost'
@@ -136,7 +177,6 @@ export const userColumns: ColumnDef<UserProps>[] =
               <Pencil className='h-4 w-4' />
             </Button>
 
-            {/* Delete Button */}
             <Button
               onClick={handleOpenDeleteModal}
               variant='ghost'
@@ -145,16 +185,14 @@ export const userColumns: ColumnDef<UserProps>[] =
               <Trash className='h-4 w-4 text-red-600' />
             </Button>
 
-            {/* Edit Modal */}
             {isEditModalOpen && (
               <ModalEditUser
                 isOpen={isEditModalOpen}
-                user={user} // Pass the selected user data
-                onClose={handleCloseEditModal} // Callback to close the modal
+                user={user}
+                onClose={handleCloseEditModal}
               />
             )}
 
-            {/* View Modal */}
             {isViewModalOpen && (
               <ModalViewUser
                 isOpen={isViewModalOpen}
@@ -163,12 +201,11 @@ export const userColumns: ColumnDef<UserProps>[] =
               />
             )}
 
-            {/* Delete Modal */}
             {isDeleteModalOpen && (
               <ModalDeleteUser
                 isOpen={isDeleteModalOpen}
-                user={user} // Pass the selected user data
-                onClose={handleCloseDeleteModal} // Callback to close the modal
+                user={user}
+                onClose={handleCloseDeleteModal}
               />
             )}
           </div>

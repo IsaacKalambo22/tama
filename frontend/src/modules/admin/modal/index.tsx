@@ -2,8 +2,8 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle
-} from "@/components/ui/dialog";
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 type Props = {
   children: React.ReactNode;
@@ -12,21 +12,23 @@ type Props = {
   name: string;
 };
 
-const Modal = ({ children, isOpen, onClose, name }: Props) => {
+const Modal = ({
+  children,
+  isOpen,
+  onClose,
+  name,
+}: Props) => {
   if (!isOpen) return null;
- return (
-    <Dialog
-      open={isOpen}
-      onOpenChange={onClose}
-    >
-      <DialogContent className="sm:max-w-[425px]">
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
           <DialogTitle>{name} </DialogTitle>
         </DialogHeader>
-       {children}
+        {children}
       </DialogContent>
     </Dialog>
-  )
+  );
 };
 
 export default Modal;
