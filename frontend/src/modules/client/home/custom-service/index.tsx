@@ -90,7 +90,7 @@ export default function CustomService() {
       {services.map((service, index) => (
         <Card
           key={index}
-          className='shadow-lg rounded-3xl overflow-hidden hover:shadow-xl transition-shadow duration-300'
+          className='shadow-lg rounded-3xl overflow-hidden hover:shadow-xl transition-shadow duration-300 p-6'
         >
           <div className='relative w-full h-[12rem]'>
             <Image
@@ -98,11 +98,11 @@ export default function CustomService() {
               alt={service.title}
               layout='fill'
               objectFit='cover'
-              className='rounded-t-lg'
+              className='rounded-2xl'
               priority={index === 0} // Optimize the first image
             />
           </div>
-          <div className='px-6 pt-3 pb-8'>
+          <div className='pt-3'>
             <h3 className='text-xl font-semibold text-gray-800 mb-2'>
               {service.title}
             </h3>
