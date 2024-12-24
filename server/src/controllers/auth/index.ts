@@ -3,8 +3,9 @@ import {
   Role,
 } from '@prisma/client';
 import bcrypt from 'bcrypt';
+import crypto from 'crypto';
 import { Request, Response } from 'express';
-import { sendVerificationEmail } from '../../mailtrap/emails';
+import { setPasswordRequestEmail } from '../../mailtrap/emails';
 import { APIResponse } from '../../types';
 import { generateTokens } from '../../utils/generate-tokens';
 
@@ -57,9 +58,16 @@ export const registerUser = async (
       password,
       10
     );
-    const verificationToken = Math.floor(
-      100000 + Math.random() * 900000
-    ).toString();
+
+    const verificationToken = crypto
+      .randomBytes(32)
+      .toString('hex');
+
+    const hashedToken = crypto
+      .createHash('sha256')
+      .update(verificationToken)
+      .digest('hex');
+
     const verificationTokenExpiresAt = new Date(
       Date.now() + 24 * 60 * 60 * 1000
     ); // 24 hours from now
@@ -72,13 +80,21 @@ export const registerUser = async (
         phoneNumber,
         password: hashedPassword,
         role: role || Role.USER,
-        verificationToken,
+        verificationToken: hashedToken,
         verificationTokenExpiresAt, // 24 hours
       },
     });
-    await sendVerificationEmail(
+    // await sendVerificationEmail(
+    //   email,
+    //   verificationToken
+    // );
+    // await sendVerificationEmail(
+    //   email,
+    //   verificationToken
+    // );
+    await setPasswordRequestEmail(
       email,
-      verificationToken
+      `${process.env.CLIENT_BASE_URL}/set-password/${verificationToken}`
     );
 
     res.status(201).json({
@@ -151,6 +167,12 @@ export const login = async (
         user.email,
         user.role
       );
+
+    // Update the user's last login timestamp
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { lastLogin: new Date() },
+    });
     // Set the refresh token as an HTTP-only cookie for secure token refreshing
     res.cookie('jwt-refresh', refresh_token, {
       httpOnly: true,
@@ -175,6 +197,84 @@ export const login = async (
       success: false,
       message:
         'An error occurred while logging in. Please try again later.',
+    });
+  }
+};
+
+export const setPassword = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { verificationToken, password } =
+    req.body;
+
+  // Validate input
+  if (!verificationToken || !password) {
+    res.status(400).json({
+      success: false,
+      message:
+        'Token and new password are required.',
+    });
+    return;
+  }
+
+  try {
+    // Hash the token to match database storage
+    const hashedToken = crypto
+      .createHash('sha256')
+      .update(verificationToken)
+      .digest('hex');
+
+    // Find the user with the matching token and ensure it's not expired
+    const user = await prisma.user.findFirst({
+      where: {
+        verificationToken: hashedToken,
+        verificationTokenExpiresAt: {
+          gte: new Date(), // Ensure the token has not expired
+        },
+      },
+    });
+
+    if (!user) {
+      res.status(400).json({
+        success: false,
+        message: 'Invalid or expired token.',
+      });
+      return;
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(
+      password,
+      10
+    );
+
+    // Update the user's record
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        password: hashedPassword,
+        verificationToken: null, // Clear the token
+        verificationTokenExpiresAt: null,
+      },
+    });
+
+    // Return success response
+    res.status(200).json({
+      success: true,
+      message:
+        'Password updated successfully. You can now log in.',
+    });
+  } catch (error) {
+    console.error(
+      'Error updating password:',
+      error
+    );
+
+    res.status(500).json({
+      success: false,
+      message:
+        'An error occurred while updating the password. Please try again later.',
     });
   }
 };

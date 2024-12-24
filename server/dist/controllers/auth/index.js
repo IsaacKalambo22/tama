@@ -12,9 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = exports.registerUser = void 0;
+exports.setPassword = exports.login = exports.registerUser = void 0;
 const client_1 = require("@prisma/client");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const crypto_1 = __importDefault(require("crypto"));
 const emails_1 = require("../../mailtrap/emails");
 const generate_tokens_1 = require("../../utils/generate-tokens");
 const prisma = new client_1.PrismaClient();
@@ -45,7 +46,13 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
         // Hash the password
         const hashedPassword = yield bcrypt_1.default.hash(password, 10);
-        const verificationToken = Math.floor(100000 + Math.random() * 900000).toString();
+        const verificationToken = crypto_1.default
+            .randomBytes(32)
+            .toString('hex');
+        const hashedToken = crypto_1.default
+            .createHash('sha256')
+            .update(verificationToken)
+            .digest('hex');
         const verificationTokenExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours from now
         // Create the user
         const newUser = yield prisma.user.create({
@@ -55,11 +62,19 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 phoneNumber,
                 password: hashedPassword,
                 role: role || client_1.Role.USER,
-                verificationToken,
+                verificationToken: hashedToken,
                 verificationTokenExpiresAt, // 24 hours
             },
         });
-        yield (0, emails_1.sendVerificationEmail)(email, verificationToken);
+        // await sendVerificationEmail(
+        //   email,
+        //   verificationToken
+        // );
+        // await sendVerificationEmail(
+        //   email,
+        //   verificationToken
+        // );
+        yield (0, emails_1.setPasswordRequestEmail)(email, `${process.env.CLIENT_BASE_URL}/set-password/${verificationToken}`);
         res.status(201).json({
             success: true,
             message: 'User created successfully',
@@ -112,6 +127,11 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return;
         }
         const { access_token, refresh_token } = (0, generate_tokens_1.generateTokens)(user.id, user.email, user.role);
+        // Update the user's last login timestamp
+        yield prisma.user.update({
+            where: { id: user.id },
+            data: { lastLogin: new Date() },
+        });
         // Set the refresh token as an HTTP-only cookie for secure token refreshing
         res.cookie('jwt-refresh', refresh_token, {
             httpOnly: true,
@@ -139,3 +159,61 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.login = login;
+const setPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { verificationToken, password } = req.body;
+    // Validate input
+    if (!verificationToken || !password) {
+        res.status(400).json({
+            success: false,
+            message: 'Token and new password are required.',
+        });
+        return;
+    }
+    try {
+        // Hash the token to match database storage
+        const hashedToken = crypto_1.default
+            .createHash('sha256')
+            .update(verificationToken)
+            .digest('hex');
+        // Find the user with the matching token and ensure it's not expired
+        const user = yield prisma.user.findFirst({
+            where: {
+                verificationToken: hashedToken,
+                verificationTokenExpiresAt: {
+                    gte: new Date(), // Ensure the token has not expired
+                },
+            },
+        });
+        if (!user) {
+            res.status(400).json({
+                success: false,
+                message: 'Invalid or expired token.',
+            });
+            return;
+        }
+        // Hash the new password
+        const hashedPassword = yield bcrypt_1.default.hash(password, 10);
+        // Update the user's record
+        yield prisma.user.update({
+            where: { id: user.id },
+            data: {
+                password: hashedPassword,
+                verificationToken: null, // Clear the token
+                verificationTokenExpiresAt: null,
+            },
+        });
+        // Return success response
+        res.status(200).json({
+            success: true,
+            message: 'Password updated successfully. You can now log in.',
+        });
+    }
+    catch (error) {
+        console.error('Error updating password:', error);
+        res.status(500).json({
+            success: false,
+            message: 'An error occurred while updating the password. Please try again later.',
+        });
+    }
+});
+exports.setPassword = setPassword;

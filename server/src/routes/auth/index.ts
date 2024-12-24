@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
   login,
   registerUser,
+  setPassword,
 } from '../../controllers/auth';
 import { verifyAdmin } from '../../middlewares/verify-token';
 
@@ -13,5 +14,6 @@ router.post(
   registerUser
 );
 router.post('/login', login);
+router.post('/set-password', setPassword);
 
 export default router;

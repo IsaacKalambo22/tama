@@ -5,6 +5,7 @@ import {
 import {
   PASSWORD_RESET_REQUEST_TEMPLATE,
   PASSWORD_RESET_SUCCESS_TEMPLATE,
+  SET_PASSWORD_REQUEST_TEMPLATE,
   VERIFICATION_EMAIL_TEMPLATE,
 } from '../email-templates';
 
@@ -55,7 +56,7 @@ export const sendWelcomeEmail = async (
       template_uuid:
         'e65925d1-a9d1-4a40-ae7c-d92b37d593df',
       template_variables: {
-        company_info_name: 'Auth Company',
+        company_info_name: 'TAMA Farmers Trust',
         name: name,
       },
     });
@@ -102,6 +103,36 @@ export const sendPasswordResetEmail = async (
 
     throw new Error(
       `Error sending password reset email: ${error}`
+    );
+  }
+};
+
+export const setPasswordRequestEmail = async (
+  email: string,
+  setPasswordURL: string
+) => {
+  const recipient = [{ email }];
+
+  try {
+    const response = await mailtrapClient.send({
+      from: sender,
+      to: recipient,
+      subject: 'Set your password',
+      html: SET_PASSWORD_REQUEST_TEMPLATE.replace(
+        '{setPasswordURL}',
+        setPasswordURL
+      ),
+      category: 'Set Password',
+    });
+    console.log({ response });
+  } catch (error) {
+    console.error(
+      `Error sending set password email`,
+      error
+    );
+
+    throw new Error(
+      `Error sending set password email: ${error}`
     );
   }
 };
