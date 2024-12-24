@@ -17,6 +17,7 @@ const MainLayout = ({
   // Define page types
   const isAuthPage =
     pathname === '/login' ||
+    pathname.startsWith('/set-password') ||
     pathname === '/register';
   const isAdminPage =
     pathname.startsWith('/admin');
