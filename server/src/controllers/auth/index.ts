@@ -6,6 +6,8 @@ import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import { Request, Response } from 'express';
 import {
+  sendPasswordResetEmail,
+  sendResetSuccessEmail,
   sendSetPasswordSuccessEmail,
   setPasswordRequestEmail,
 } from '../../mailtrap/emails';
@@ -281,6 +283,165 @@ export const setPassword = async (
       success: false,
       message:
         'An error occurred while updating the password. Please try again later.',
+    });
+  }
+};
+export const resetPassword = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { verificationToken, password } =
+    req.body;
+
+  // Validate input
+  if (!verificationToken || !password) {
+    res.status(400).json({
+      success: false,
+      message:
+        'Token and new password are required.',
+    });
+    return;
+  }
+
+  try {
+    // Hash the token to match database storage
+    const hashedToken = crypto
+      .createHash('sha256')
+      .update(verificationToken)
+      .digest('hex');
+
+    // Find the user with the matching token and ensure it's not expired
+    const user = await prisma.user.findFirst({
+      where: {
+        resetPasswordToken: hashedToken,
+        resetPasswordExpiresAt: {
+          gte: new Date(), // Ensure the token has not expired
+        },
+      },
+    });
+
+    console.log({ user });
+    if (!user) {
+      res.status(400).json({
+        success: false,
+        message: 'Invalid or expired token.',
+      });
+      return;
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(
+      password,
+      10
+    );
+
+    // Update the user's record
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        password: hashedPassword,
+        resetPasswordToken: null, // Clear the token
+        resetPasswordExpiresAt: null,
+      },
+    });
+
+    await sendResetSuccessEmail(user.email);
+
+    // Return success response
+    res.status(200).json({
+      success: true,
+      message:
+        'Password reset successfully. You can now log in.',
+      email: user.email,
+    });
+  } catch (error) {
+    console.error(
+      'Error resetting password:',
+      error
+    );
+
+    res.status(500).json({
+      success: false,
+      message:
+        'An error occurred while updating the password. Please try again later.',
+    });
+  }
+};
+export const forgotPassword = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { email } = req.body;
+
+  // Validate input
+  if (!email) {
+    res.status(400).json({
+      success: false,
+      message: 'Email is required.',
+    });
+    return;
+  }
+
+  try {
+    const verificationToken = crypto
+      .randomBytes(32)
+      .toString('hex');
+
+    const hashedToken = crypto
+      .createHash('sha256')
+      .update(verificationToken)
+      .digest('hex');
+
+    const resetPasswordExpiresAt = new Date(
+      Date.now() + 24 * 60 * 60 * 1000
+    ); // 24 hours from now
+
+    // Find the user with the matching token and ensure it's not expired
+    const user = await prisma.user.findFirst({
+      where: {
+        email: email,
+      },
+    });
+
+    if (!user) {
+      res.status(400).json({
+        success: false,
+        message: 'User not found.',
+      });
+      return;
+    }
+
+    // Update the user's record
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        resetPasswordToken: hashedToken, // Clear the token
+        resetPasswordExpiresAt,
+      },
+    });
+
+    await sendPasswordResetEmail(
+      email,
+      `${process.env.CLIENT_BASE_URL}/reset-password/${verificationToken}`
+    );
+
+    // Return success response
+    res.status(200).json({
+      success: true,
+      message:
+        'Password reset link sent to your email',
+      email: user.email,
+    });
+  } catch (error) {
+    console.error(
+      'Error sending password reset link:',
+      error
+    );
+
+    res.status(500).json({
+      success: false,
+      message:
+        'An error occurred while sending password reset link. Please try again later.',
     });
   }
 };

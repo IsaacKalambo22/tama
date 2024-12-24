@@ -1,13 +1,19 @@
 'use client';
 
-import { Form } from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import { toast } from '@/hooks/use-toast';
-import CustomFormField, {
-  FormFieldType,
-} from '@/modules/common/custom-form-field';
 import RedirectionLoader from '@/modules/common/redirection-loader';
 import SubmitButton from '@/modules/common/submit-button';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Eye, EyeOff } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -15,33 +21,53 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
 import { resetPassword } from '../actions';
-import { ResetPasswordSchema } from '../login-schema';
+import { SetPasswordSchema } from '../login-schema';
 
-const ResetPassword = () => {
+const ResetPassword = ({
+  verificationToken,
+}: {
+  verificationToken: string;
+}) => {
+  const [showPassword, setShowPassword] =
+    useState(false);
+  const [
+    showConfirmPassword,
+    setShowConfirmPassword,
+  ] = useState(false);
   const [isLoading, setIsLoading] =
     useState(false);
   const [isRedirecting, setIsRedirecting] =
     useState(false);
   const router = useRouter();
 
+  const toggleShowPassword = () => {
+    setShowPassword((prev) => !prev);
+  };
+
+  const toggleShowConfirmPassword = () => {
+    setShowConfirmPassword((prev) => !prev);
+  };
+
   const form = useForm<
-    zod.infer<typeof ResetPasswordSchema>
+    zod.infer<typeof SetPasswordSchema>
   >({
-    resolver: zodResolver(ResetPasswordSchema),
+    resolver: zodResolver(SetPasswordSchema),
     mode: 'all',
     defaultValues: {
-      email: '',
+      password: '',
+      confirmPassword: '',
     },
   });
 
   const onSubmit = async (
-    values: zod.infer<typeof ResetPasswordSchema>
+    values: zod.infer<typeof SetPasswordSchema>
   ) => {
     setIsLoading(true);
 
     try {
       const result = await resetPassword(
-        values.email
+        verificationToken,
+        values.password
       );
 
       if (result.status === 'ERROR') {
@@ -97,10 +123,10 @@ const ResetPassword = () => {
               </div>
             </Link>
             <h2 className='font-bold text-2xl mt-3 text-gray-900 mb-2'>
-              Reset Your Password
+              Welcome to TAMA
             </h2>
             <p className='text-gray-600 text-muted-foreground text-sm'>
-              Reset your password to get started
+              Reset your password to get continue
             </p>
           </div>
           <div className='gap-2 pt-6 w-full flex flex-col justify-center items-center rounded-bl-lg rounded-br-lg'>
@@ -111,12 +137,81 @@ const ResetPassword = () => {
                   onSubmit
                 )}
               >
-                <CustomFormField
-                  fieldType={FormFieldType.INPUT}
-                  name='email'
-                  // label='Email'
+                <FormField
                   control={form.control}
-                  placeholder='Enter email'
+                  name='password'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className='relative'>
+                          <Input
+                            placeholder='Password'
+                            type={
+                              showPassword
+                                ? 'text'
+                                : 'password'
+                            }
+                            {...field}
+                            className='form_input shad-input'
+                          />
+                          <Button
+                            size='icon'
+                            variant='ghost'
+                            onClick={(e) => {
+                              e.preventDefault();
+                              toggleShowPassword();
+                            }}
+                            className='absolute inset-y-0 right-0 px-3 py-2 text-sm font-medium hover:bg-inherit text-gray-500'
+                          >
+                            {showPassword ? (
+                              <EyeOff />
+                            ) : (
+                              <Eye />
+                            )}
+                          </Button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='confirmPassword'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className='relative'>
+                          <Input
+                            placeholder='Confirm Password'
+                            type={
+                              showConfirmPassword
+                                ? 'text'
+                                : 'password'
+                            }
+                            {...field}
+                            className='form_input shad-input'
+                          />
+                          <Button
+                            size='icon'
+                            variant='ghost'
+                            onClick={(e) => {
+                              e.preventDefault();
+                              toggleShowConfirmPassword();
+                            }}
+                            className='absolute inset-y-0 right-0 px-3 py-2 text-sm font-medium hover:bg-inherit text-gray-500'
+                          >
+                            {showConfirmPassword ? (
+                              <EyeOff />
+                            ) : (
+                              <Eye />
+                            )}
+                          </Button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
                 <SubmitButton
                   disabled={
@@ -125,7 +220,7 @@ const ResetPassword = () => {
                   }
                   isLoading={isLoading}
                   className='w-full h-9'
-                  loadingText='Resetting password...'
+                  loadingText='Resetting Password...'
                 >
                   Reset Password
                 </SubmitButton>

@@ -220,7 +220,7 @@ const SetPassword = ({
                   }
                   isLoading={isLoading}
                   className='w-full h-9'
-                  loadingText='Setting password...'
+                  loadingText='Setting Password...'
                 >
                   Set Password
                 </SubmitButton>

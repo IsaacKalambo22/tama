@@ -177,7 +177,7 @@ const Login = () => {
                     </FormItem>
                   )}
                 />
-                <Link href='/reset-password'>
+                <Link href='/forgot-password'>
                   <p className='text-green-600 hover:text-green-800 text-sm font-semibold transition duration-200'>
                     Forgot password?
                   </p>

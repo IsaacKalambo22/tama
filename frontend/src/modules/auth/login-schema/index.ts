@@ -49,7 +49,7 @@ export const SetPasswordSchema = zod
       path: ['confirmPassword'], // This points the error to the confirmPassword field
     }
   );
-export const ResetPasswordSchema = zod.object({
+export const ForgotPasswordSchema = zod.object({
   email: zod
     .string()
     .email({ message: 'Email is required' }),

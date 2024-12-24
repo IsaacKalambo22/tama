@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setPassword = exports.login = exports.registerUser = void 0;
+exports.forgotPassword = exports.resetPassword = exports.setPassword = exports.login = exports.registerUser = void 0;
 const client_1 = require("@prisma/client");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const crypto_1 = __importDefault(require("crypto"));
@@ -219,3 +219,121 @@ const setPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.setPassword = setPassword;
+const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { verificationToken, password } = req.body;
+    // Validate input
+    if (!verificationToken || !password) {
+        res.status(400).json({
+            success: false,
+            message: 'Token and new password are required.',
+        });
+        return;
+    }
+    try {
+        // Hash the token to match database storage
+        const hashedToken = crypto_1.default
+            .createHash('sha256')
+            .update(verificationToken)
+            .digest('hex');
+        // Find the user with the matching token and ensure it's not expired
+        const user = yield prisma.user.findFirst({
+            where: {
+                resetPasswordToken: hashedToken,
+                resetPasswordExpiresAt: {
+                    gte: new Date(), // Ensure the token has not expired
+                },
+            },
+        });
+        console.log({ user });
+        if (!user) {
+            res.status(400).json({
+                success: false,
+                message: 'Invalid or expired token.',
+            });
+            return;
+        }
+        // Hash the new password
+        const hashedPassword = yield bcrypt_1.default.hash(password, 10);
+        // Update the user's record
+        yield prisma.user.update({
+            where: { id: user.id },
+            data: {
+                password: hashedPassword,
+                resetPasswordToken: null, // Clear the token
+                resetPasswordExpiresAt: null,
+            },
+        });
+        yield (0, emails_1.sendResetSuccessEmail)(user.email);
+        // Return success response
+        res.status(200).json({
+            success: true,
+            message: 'Password reset successfully. You can now log in.',
+            email: user.email,
+        });
+    }
+    catch (error) {
+        console.error('Error resetting password:', error);
+        res.status(500).json({
+            success: false,
+            message: 'An error occurred while updating the password. Please try again later.',
+        });
+    }
+});
+exports.resetPassword = resetPassword;
+const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email } = req.body;
+    // Validate input
+    if (!email) {
+        res.status(400).json({
+            success: false,
+            message: 'Email is required.',
+        });
+        return;
+    }
+    try {
+        const verificationToken = crypto_1.default
+            .randomBytes(32)
+            .toString('hex');
+        const hashedToken = crypto_1.default
+            .createHash('sha256')
+            .update(verificationToken)
+            .digest('hex');
+        const resetPasswordExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours from now
+        // Find the user with the matching token and ensure it's not expired
+        const user = yield prisma.user.findFirst({
+            where: {
+                email: email,
+            },
+        });
+        if (!user) {
+            res.status(400).json({
+                success: false,
+                message: 'User not found.',
+            });
+            return;
+        }
+        // Update the user's record
+        yield prisma.user.update({
+            where: { id: user.id },
+            data: {
+                resetPasswordToken: hashedToken, // Clear the token
+                resetPasswordExpiresAt,
+            },
+        });
+        yield (0, emails_1.sendPasswordResetEmail)(email, `${process.env.CLIENT_BASE_URL}/reset-password/${verificationToken}`);
+        // Return success response
+        res.status(200).json({
+            success: true,
+            message: 'Password reset link sent to your email',
+            email: user.email,
+        });
+    }
+    catch (error) {
+        console.error('Error sending password reset link:', error);
+        res.status(500).json({
+            success: false,
+            message: 'An error occurred while sending password reset link. Please try again later.',
+        });
+    }
+});
+exports.forgotPassword = forgotPassword;
