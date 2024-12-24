@@ -15,7 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation'; // Import useSearchParams for grabbing the ID from params
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
@@ -29,15 +29,23 @@ const SetPassword = ({
 }) => {
   const [showPassword, setShowPassword] =
     useState(false);
-  const router = useRouter();
-
-  console.log({ verificationToken });
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
+  const [
+    showConfirmPassword,
+    setShowConfirmPassword,
+  ] = useState(false);
   const [isLoading, setIsLoading] =
     useState(false);
+  const [isRedirecting, setIsRedirecting] =
+    useState(false);
+  const router = useRouter();
+
+  const toggleShowPassword = () => {
+    setShowPassword((prev) => !prev);
+  };
+
+  const toggleShowConfirmPassword = () => {
+    setShowConfirmPassword((prev) => !prev);
+  };
 
   const form = useForm<
     zod.infer<typeof SetPasswordSchema>
@@ -53,6 +61,8 @@ const SetPassword = ({
   const onSubmit = async (
     values: zod.infer<typeof SetPasswordSchema>
   ) => {
+    setIsLoading(true);
+
     try {
       const result = await resetPassword(
         verificationToken,
@@ -74,7 +84,10 @@ const SetPassword = ({
           'Password reset successfully.',
       });
 
-      router.push('/');
+      setIsRedirecting(true);
+      setTimeout(() => {
+        router.push('/admin');
+      }, 2000); // Adjust the delay as needed
     } catch (error) {
       console.error('Unexpected error:', error);
       toast({
@@ -83,8 +96,46 @@ const SetPassword = ({
           'An unexpected error occurred. Please try again later.',
         variant: 'destructive',
       });
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  if (isRedirecting) {
+    return (
+      <div className='flex flex-col justify-center items-center min-h-screen bg-gray-50'>
+        <div className='flex flex-col items-center space-y-4'>
+          <svg
+            className='animate-spin h-12 w-12 text-green-500'
+            xmlns='http://www.w3.org/2000/svg'
+            fill='none'
+            viewBox='0 0 24 24'
+          >
+            <circle
+              className='opacity-25'
+              cx='12'
+              cy='12'
+              r='10'
+              stroke='currentColor'
+              strokeWidth='4'
+            ></circle>
+            <path
+              className='opacity-75'
+              fill='currentColor'
+              d='M4 12a8 8 0 018-8v4a4 4 0 100 8v4a8 8 0 01-8-8z'
+            ></path>
+          </svg>
+          <h2 className='text-xl font-semibold text-gray-800'>
+            Redirecting, please wait...
+          </h2>
+          <p className='text-gray-600 text-sm text-center'>
+            This may take a few seconds. Thank you
+            for your patience.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='flex flex-col justify-center items-center'>
@@ -102,7 +153,7 @@ const SetPassword = ({
                 />
               </div>
             </Link>
-            <h2 className='font-bold text-2xl text-gray-900 mb-2'>
+            <h2 className='font-bold text-2xl mt-3 text-gray-900 mb-2'>
               Welcome to TAMA
             </h2>
             <p className='text-gray-600 text-muted-foreground text-sm'>
@@ -163,9 +214,9 @@ const SetPassword = ({
                       <FormControl>
                         <div className='relative'>
                           <Input
-                            placeholder='Confirm password'
+                            placeholder='Confirm Password'
                             type={
-                              showPassword
+                              showConfirmPassword
                                 ? 'text'
                                 : 'password'
                             }
@@ -177,11 +228,11 @@ const SetPassword = ({
                             variant='ghost'
                             onClick={(e) => {
                               e.preventDefault();
-                              toggleShowPassword();
+                              toggleShowConfirmPassword();
                             }}
                             className='absolute inset-y-0 right-0 px-3 py-2 text-sm font-medium hover:bg-inherit text-gray-500'
                           >
-                            {showPassword ? (
+                            {showConfirmPassword ? (
                               <EyeOff />
                             ) : (
                               <Eye />
@@ -193,7 +244,6 @@ const SetPassword = ({
                     </FormItem>
                   )}
                 />
-
                 <SubmitButton
                   disabled={
                     isLoading ||
@@ -201,7 +251,7 @@ const SetPassword = ({
                   }
                   isLoading={isLoading}
                   className='w-full h-9'
-                  loadingText='Setting in...'
+                  loadingText='Setting password...'
                 >
                   Set Password
                 </SubmitButton>

@@ -9,34 +9,32 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-
 import { toast } from '@/hooks/use-toast';
 import SubmitButton from '@/modules/common/submit-button';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
 import { login } from '../actions';
 import { LoginSchema } from '../login-schema';
 
-export type FormState = {
-  error: string;
-  status: 'INITIAL' | 'SUCCESS' | 'ERROR';
-};
-
 const Login = () => {
   const [showPassword, setShowPassword] =
     useState(false);
+  const [isLoading, setIsLoading] =
+    useState(false);
+  const [isRedirecting, setIsRedirecting] =
+    useState(false);
+
   const router = useRouter();
+
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
-  const [isLoading, setIsLoading] =
-    useState(false);
 
   const form = useForm<
     zod.infer<typeof LoginSchema>
@@ -45,14 +43,13 @@ const Login = () => {
     mode: 'onSubmit',
     defaultValues: { email: '', password: '' },
   });
+
   const onSubmit = async (
     values: zod.infer<typeof LoginSchema>
   ) => {
     setIsLoading(true);
 
     try {
-      console.log({ values });
-
       const result = await login(values);
 
       if (result.status === 'ERROR') {
@@ -63,12 +60,20 @@ const Login = () => {
             'Failed to log in. Please try again.',
           variant: 'destructive',
         });
-
         return;
       }
 
-      router.refresh();
-      // router.push('/');
+      toast({
+        title: 'Success',
+        description: 'Logged in successfully!',
+      });
+
+      setIsRedirecting(true);
+
+      // Simulate a delay or wait for the actual navigation to complete
+      setTimeout(() => {
+        router.push('/admin'); // Replace '/admin' with the appropriate admin page route
+      }, 5000);
     } catch (error) {
       console.error('Unexpected error:', error);
       toast({
@@ -81,6 +86,42 @@ const Login = () => {
       setIsLoading(false);
     }
   };
+
+  if (isRedirecting) {
+    return (
+      <div className='flex flex-col justify-center items-center min-h-screen bg-gray-50'>
+        <div className='flex flex-col items-center space-y-4'>
+          <svg
+            className='animate-spin h-12 w-12 text-green-500'
+            xmlns='http://www.w3.org/2000/svg'
+            fill='none'
+            viewBox='0 0 24 24'
+          >
+            <circle
+              className='opacity-25'
+              cx='12'
+              cy='12'
+              r='10'
+              stroke='currentColor'
+              strokeWidth='4'
+            ></circle>
+            <path
+              className='opacity-75'
+              fill='currentColor'
+              d='M4 12a8 8 0 018-8v4a4 4 0 100 8v4a8 8 0 01-8-8z'
+            ></path>
+          </svg>
+          <h2 className='text-xl font-semibold text-gray-800'>
+            Redirecting, please wait...
+          </h2>
+          <p className='text-gray-600 text-sm text-center'>
+            This may take a few seconds. Thank you
+            for your patience.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='flex flex-col justify-center items-center'>
@@ -102,7 +143,7 @@ const Login = () => {
               Sign in to TAMA
             </h2>
           </div>
-          <div className='gap-2 pt-6 w-full flex flex-col justify-center items-center  rounded-bl-lg rounded-br-lg'>
+          <div className='gap-2 pt-6 w-full flex flex-col justify-center items-center rounded-bl-lg rounded-br-lg'>
             <Form {...form}>
               <form
                 className='flex flex-col gap-5 w-full max-w-[400px]'
@@ -164,14 +205,13 @@ const Login = () => {
                     </FormItem>
                   )}
                 />
-
                 <SubmitButton
                   disabled={
                     isLoading ||
                     !form.formState.isValid
                   }
                   isLoading={isLoading}
-                  className='w-full  h-9'
+                  className='w-full h-9'
                   loadingText='Signing in...'
                 >
                   Sign in
