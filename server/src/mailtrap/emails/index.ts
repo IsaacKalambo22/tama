@@ -166,3 +166,32 @@ export const sendResetSuccessEmail = async (
     );
   }
 };
+export const sendSetPasswordSuccessEmail = async (
+  email: string
+) => {
+  const recipient = [{ email }];
+
+  try {
+    const response = await mailtrapClient.send({
+      from: sender,
+      to: recipient,
+      subject: 'Password Set Successful',
+      html: PASSWORD_RESET_SUCCESS_TEMPLATE,
+      category: 'Password Set',
+    });
+
+    console.log(
+      'Password set email sent successfully',
+      response
+    );
+  } catch (error) {
+    console.error(
+      `Error sending password set success email`,
+      error
+    );
+
+    throw new Error(
+      `Error sending password set success email: ${error}`
+    );
+  }
+};

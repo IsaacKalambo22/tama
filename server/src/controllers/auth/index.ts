@@ -5,7 +5,10 @@ import {
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import { Request, Response } from 'express';
-import { setPasswordRequestEmail } from '../../mailtrap/emails';
+import {
+  sendSetPasswordSuccessEmail,
+  setPasswordRequestEmail,
+} from '../../mailtrap/emails';
 import { APIResponse } from '../../types';
 import { generateTokens } from '../../utils/generate-tokens';
 
@@ -258,6 +261,8 @@ export const setPassword = async (
         verificationTokenExpiresAt: null,
       },
     });
+
+    await sendSetPasswordSuccessEmail(user.email);
 
     // Return success response
     res.status(200).json({

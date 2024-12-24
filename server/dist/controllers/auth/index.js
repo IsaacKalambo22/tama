@@ -202,6 +202,7 @@ const setPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 verificationTokenExpiresAt: null,
             },
         });
+        yield (0, emails_1.sendSetPasswordSuccessEmail)(user.email);
         // Return success response
         res.status(200).json({
             success: true,
