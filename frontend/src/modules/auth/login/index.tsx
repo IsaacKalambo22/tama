@@ -41,7 +41,7 @@ const Login = () => {
     zod.infer<typeof LoginSchema>
   >({
     resolver: zodResolver(LoginSchema),
-    mode: 'onSubmit',
+    mode: 'all',
     defaultValues: { email: '', password: '' },
   });
 
@@ -177,6 +177,11 @@ const Login = () => {
                     </FormItem>
                   )}
                 />
+                <Link href='/reset-password'>
+                  <p className='text-green-600 hover:text-green-800 text-sm font-semibold transition duration-200'>
+                    Forgot password?
+                  </p>
+                </Link>
                 <SubmitButton
                   disabled={
                     isLoading ||

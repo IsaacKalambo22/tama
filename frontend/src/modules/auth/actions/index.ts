@@ -29,7 +29,7 @@ export const login = async (
   }
 };
 
-export const resetPassword = async (
+export const setPassword = async (
   verificationToken: string,
   password: string
 ) => {
@@ -57,6 +57,60 @@ export const resetPassword = async (
 
     if (!response.ok) {
       throw new Error(
+        result.error || 'Failed to set password'
+      );
+    }
+
+    console.log(
+      'Password Set Successful:',
+      result
+    );
+
+    const email = result.email;
+    await login(email, password);
+    return {
+      status: 'SUCCESS',
+      message: 'Password set successfully.',
+    };
+  } catch (error) {
+    console.error(
+      'Error during password set:',
+      error
+    );
+
+    return {
+      status: 'ERROR',
+      error:
+        'Failed to set password. Please try again later.',
+    };
+  }
+};
+export const resetPassword = async (
+  email: string
+) => {
+  try {
+    // Prepare the payload
+    const payload = {
+      email,
+    };
+    console.log({ payload });
+
+    // Replace with your actual API endpoint
+    const response = await fetch(
+      `${BASE_URL}/auth/reset-password`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
         result.error || 'Failed to reset password'
       );
     }
@@ -66,8 +120,6 @@ export const resetPassword = async (
       result
     );
 
-    const email = result.email;
-    await login(email, password);
     return {
       status: 'SUCCESS',
       message: 'Password reset successfully.',

@@ -3,15 +3,21 @@ import * as zod from 'zod';
 export const LoginSchema = zod.object({
   email: zod
     .string()
-    .email({ message: 'Email is required' }),
-  password: zod
-    .string({
-      message: 'Email is required',
-    })
     .min(4, {
       message: 'Email is required',
+    })
+    .email({
+      message: 'Provide a valid email address',
+    }),
+  password: zod
+    .string({
+      message: 'Password is required',
+    })
+    .min(4, {
+      message: 'Password is required',
     }),
 });
+
 export const SetPasswordSchema = zod
   .object({
     password: zod
@@ -43,3 +49,8 @@ export const SetPasswordSchema = zod
       path: ['confirmPassword'], // This points the error to the confirmPassword field
     }
   );
+export const ResetPasswordSchema = zod.object({
+  email: zod
+    .string()
+    .email({ message: 'Email is required' }),
+});

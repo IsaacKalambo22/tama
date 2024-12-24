@@ -20,7 +20,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
-import { resetPassword } from '../actions';
+import { setPassword } from '../actions';
 import { SetPasswordSchema } from '../login-schema';
 
 const SetPassword = ({
@@ -65,7 +65,7 @@ const SetPassword = ({
     setIsLoading(true);
 
     try {
-      const result = await resetPassword(
+      const result = await setPassword(
         verificationToken,
         values.password
       );

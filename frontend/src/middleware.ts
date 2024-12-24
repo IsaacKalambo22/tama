@@ -53,6 +53,9 @@ export const middleware = auth(async (req) => {
     nextUrl.pathname.startsWith(
       '/set-password'
     ) ||
+    nextUrl.pathname.startsWith(
+      '/reset-password'
+    ) ||
     nextUrl.pathname.startsWith('/api') ||
     nextUrl.pathname.startsWith('/about');
 
