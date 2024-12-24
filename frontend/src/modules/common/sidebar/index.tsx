@@ -31,7 +31,7 @@ const Sidebar = ({ links }: SidebarProps) => {
   return (
     <Card
       className={cn(
-        'fixed z-40 flex h-full w-72 flex-col overflow-hidden rounded-none bg-white shadow-md transition-all duration-300 md:w-[17rem]',
+        'fixed z-40 flex h-full w-72 flex-col overflow-hidden rounded-none bg-white shadow-md transition-all duration-300',
         {
           'w-0 md:w-16': isSidebarCollapsed,
         }

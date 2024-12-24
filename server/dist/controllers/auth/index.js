@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.login = exports.registerUser = void 0;
 const client_1 = require("@prisma/client");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const emails_1 = require("../../mailtrap/emails");
 const generate_tokens_1 = require("../../utils/generate-tokens");
 const prisma = new client_1.PrismaClient();
 const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -44,6 +45,8 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
         // Hash the password
         const hashedPassword = yield bcrypt_1.default.hash(password, 10);
+        const verificationToken = Math.floor(100000 + Math.random() * 900000).toString();
+        const verificationTokenExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours from now
         // Create the user
         const newUser = yield prisma.user.create({
             data: {
@@ -52,8 +55,11 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 phoneNumber,
                 password: hashedPassword,
                 role: role || client_1.Role.USER,
+                verificationToken,
+                verificationTokenExpiresAt, // 24 hours
             },
         });
+        yield (0, emails_1.sendVerificationEmail)(email, verificationToken);
         res.status(201).json({
             success: true,
             message: 'User created successfully',

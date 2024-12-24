@@ -4,6 +4,7 @@ import {
 } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
+import { sendVerificationEmail } from '../../mailtrap/emails';
 import { APIResponse } from '../../types';
 import { generateTokens } from '../../utils/generate-tokens';
 
@@ -56,6 +57,12 @@ export const registerUser = async (
       password,
       10
     );
+    const verificationToken = Math.floor(
+      100000 + Math.random() * 900000
+    ).toString();
+    const verificationTokenExpiresAt = new Date(
+      Date.now() + 24 * 60 * 60 * 1000
+    ); // 24 hours from now
 
     // Create the user
     const newUser = await prisma.user.create({
@@ -65,8 +72,14 @@ export const registerUser = async (
         phoneNumber,
         password: hashedPassword,
         role: role || Role.USER,
+        verificationToken,
+        verificationTokenExpiresAt, // 24 hours
       },
     });
+    await sendVerificationEmail(
+      email,
+      verificationToken
+    );
 
     res.status(201).json({
       success: true,
