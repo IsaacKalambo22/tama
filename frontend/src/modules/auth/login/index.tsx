@@ -72,7 +72,7 @@ const Login = () => {
 
       // Simulate a delay or wait for the actual navigation to complete
       setTimeout(() => {
-        router.push('/admin'); // Replace '/admin' with the appropriate admin page route
+        router.refresh();
       }, 5000);
     } catch (error) {
       console.error('Unexpected error:', error);

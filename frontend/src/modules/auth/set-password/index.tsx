@@ -86,7 +86,7 @@ const SetPassword = ({
 
       setIsRedirecting(true);
       setTimeout(() => {
-        router.push('/admin');
+        router.refresh();
       }, 2000); // Adjust the delay as needed
     } catch (error) {
       console.error('Unexpected error:', error);
