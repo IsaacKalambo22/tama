@@ -86,9 +86,9 @@ const SetPassword = ({
       });
 
       setIsRedirecting(true);
-      setTimeout(() => {
-        router.refresh();
-      }, 2000); // Adjust the delay as needed
+      router.refresh();
+      // setTimeout(() => {
+      // }, 2000); // Adjust the delay as needed
     } catch (error) {
       console.error('Unexpected error:', error);
       toast({

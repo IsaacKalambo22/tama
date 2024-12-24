@@ -51,7 +51,10 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const result = await login(values);
+      const result = await login(
+        values.email,
+        values.password
+      );
 
       if (result.status === 'ERROR') {
         toast({
@@ -72,9 +75,9 @@ const Login = () => {
       setIsRedirecting(true);
 
       // Simulate a delay or wait for the actual navigation to complete
-      setTimeout(() => {
-        router.refresh();
-      }, 5000);
+      router.refresh();
+      // setTimeout(() => {
+      // }, 5000);
     } catch (error) {
       console.error('Unexpected error:', error);
       toast({

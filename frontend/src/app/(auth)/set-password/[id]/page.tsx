@@ -17,7 +17,6 @@ const SetPasswordPage = async ({
   params,
 }: SetPasswordProps) => {
   const id = (await params).id; // Extract the blog ID from the params
-  console.log({ id });
   return <SetPassword verificationToken={id} />;
 };
 

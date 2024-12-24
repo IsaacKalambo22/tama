@@ -2,14 +2,11 @@
 
 import { signIn } from '@/auth';
 import { BASE_URL } from '@/lib/utils';
-import * as zod from 'zod';
-import { LoginSchema } from '../login-schema';
 
 export const login = async (
-  values: zod.infer<typeof LoginSchema>
+  email: string,
+  password: string
 ) => {
-  const { email, password } = values;
-
   try {
     const result = await signIn('credentials', {
       email,
@@ -69,6 +66,8 @@ export const resetPassword = async (
       result
     );
 
+    const email = result.email;
+    await login(email, password);
     return {
       status: 'SUCCESS',
       message: 'Password reset successfully.',

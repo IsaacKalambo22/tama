@@ -269,6 +269,7 @@ export const setPassword = async (
       success: true,
       message:
         'Password updated successfully. You can now log in.',
+      email: user.email,
     });
   } catch (error) {
     console.error(
