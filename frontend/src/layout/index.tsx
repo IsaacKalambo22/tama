@@ -18,6 +18,8 @@ const MainLayout = ({
   const isAuthPage =
     pathname === '/login' ||
     pathname.startsWith('/set-password') ||
+    pathname.startsWith('/reset-password') ||
+    pathname.startsWith('/forgot-password') ||
     pathname === '/register';
   const isAdminPage =
     pathname.startsWith('/admin');
