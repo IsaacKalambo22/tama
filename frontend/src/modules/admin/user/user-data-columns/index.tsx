@@ -11,6 +11,7 @@ import {
   Pencil,
   Trash,
 } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import ModalDeleteUser from '../modal-delete-user';
 import ModalEditUser from '../modal-edit-user';
@@ -144,6 +145,11 @@ export const userColumns: ColumnDef<UserProps>[] =
           setViewModalOpen,
         ] = useState(false);
 
+        const { data: session } = useSession(); // Get the current session
+
+        // Extract the role from the session
+        const role = session?.user?.role; // Ensure role is stored in the session
+
         const handleOpenEditModal = () =>
           setEditModalOpen(true);
         const handleCloseEditModal = () =>
@@ -169,21 +175,27 @@ export const userColumns: ColumnDef<UserProps>[] =
               <Eye className='h-4 w-4' />
             </Button>
 
-            <Button
-              onClick={handleOpenEditModal}
-              variant='ghost'
-              className='px-[0.4rem] h-8 text-gray-500'
-            >
-              <Pencil className='h-4 w-4' />
-            </Button>
+            {/* Edit button - visible only to ADMIN */}
+            {role === 'ADMIN' && (
+              <Button
+                onClick={handleOpenEditModal}
+                variant='ghost'
+                className='px-[0.4rem] h-8 text-gray-500'
+              >
+                <Pencil className='h-4 w-4' />
+              </Button>
+            )}
 
-            <Button
-              onClick={handleOpenDeleteModal}
-              variant='ghost'
-              className='px-[0.4rem] h-8'
-            >
-              <Trash className='h-4 w-4 text-red-600' />
-            </Button>
+            {/* Delete button - visible only to ADMIN */}
+            {role === 'ADMIN' && (
+              <Button
+                onClick={handleOpenDeleteModal}
+                variant='ghost'
+                className='px-[0.4rem] h-8'
+              >
+                <Trash className='h-4 w-4 text-red-600' />
+              </Button>
+            )}
 
             {isEditModalOpen && (
               <ModalEditUser
