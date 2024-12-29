@@ -100,7 +100,9 @@ export const middleware = auth(async (req) => {
           );
         }
         break;
+
       case 'ADMIN':
+      case 'MANAGER':
         if (
           !nextUrl.pathname.startsWith('/admin')
         ) {

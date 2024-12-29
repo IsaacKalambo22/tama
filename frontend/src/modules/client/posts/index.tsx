@@ -37,8 +37,29 @@ const Posts = () => {
     }
   };
 
+  const fetchTweets = async () => {
+    try {
+      const response = await fetch(
+        'http://localhost:8000/tama/tweets'
+      ); // Proxy endpoint
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch tweets');
+      }
+
+      const data = await response.json();
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // Replace 'TwitterDev' with the target username
+
   useEffect(() => {
     fetchPosts();
+    fetchTweets();
   }, []);
 
   if (isLoading) {

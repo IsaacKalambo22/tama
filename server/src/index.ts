@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import multer from 'multer';
 import path from 'path';
+import('node-fetch');
 
 /* ROUTE IMPORTS */
 import auth from './routes/auth';
@@ -161,6 +162,124 @@ app.use(
   reportsPublications
 );
 
+// Define TypeScript types for the API response
+interface Tweet {
+  id: string;
+  text: string;
+  attachments?: {
+    media_keys: string[];
+  };
+  public_metrics: {
+    reply_count: number;
+    retweet_count: number;
+    like_count: number;
+  };
+}
+
+interface Media {
+  media_key: string;
+  type: string;
+  url: string;
+}
+
+interface TwitterApiResponse {
+  data: Tweet[];
+  includes?: {
+    media?: Media[];
+  };
+}
+
+interface SimplifiedTweet {
+  text: string;
+  images: string[];
+  metrics: {
+    comments: number;
+    retweets: number;
+    likes: number;
+  };
+}
+
+// Utility function to fetch tweets
+const fetchTweets = async (
+  userId: string,
+  bearerToken: string
+): Promise<TwitterApiResponse> => {
+  const url = `https://api.twitter.com/2/users/${userId}/tweets?tweet.fields=text,public_metrics,attachments&expansions=attachments.media_keys&media.fields=type,url&max_results=100`;
+
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `Twitter API error: ${response.statusText}`
+    );
+  }
+
+  return response.json();
+};
+
+app.get('/tama/tweets', async (req, res) => {
+  const BEARER_TOKEN =
+    process.env.TWITTER_BEARER_TOKEN;
+  const userId = '1799028002849984512'; // Replace with your Twitter user ID
+
+  if (!BEARER_TOKEN) {
+    res.status(500).json({
+      error:
+        'Missing Twitter Bearer Token in environment variables.',
+    });
+    return;
+  }
+
+  try {
+    const data = await fetchTweets(
+      userId,
+      BEARER_TOKEN
+    );
+
+    // Extract relevant details from the response
+    const tweets: SimplifiedTweet[] =
+      data.data.map((tweet) => {
+        const mediaKeys =
+          tweet.attachments?.media_keys || [];
+        const media = mediaKeys.map((key) =>
+          data.includes?.media?.find(
+            (m) => m.media_key === key
+          )
+        );
+
+        return {
+          text: tweet.text,
+          images:
+            media
+              ?.filter((m) => m?.type === 'photo')
+              .map((m) => m?.url || '') || [],
+          metrics: {
+            comments:
+              tweet.public_metrics.reply_count,
+            retweets:
+              tweet.public_metrics.retweet_count,
+            likes:
+              tweet.public_metrics.like_count,
+          },
+        };
+      });
+
+    res.json(tweets);
+  } catch (error: unknown) {
+    const errorMessage =
+      (error as Error).message ||
+      'Internal server error';
+    console.error(
+      'Error fetching tweets:',
+      errorMessage
+    );
+    res.status(502).json({ error: errorMessage });
+  }
+});
 /* SERVER */
 const PORT = Number(process.env.PORT) || 8000;
 app.listen(PORT, () => {

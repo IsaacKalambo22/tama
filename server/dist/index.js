@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -12,6 +21,7 @@ const helmet_1 = __importDefault(require("helmet"));
 const morgan_1 = __importDefault(require("morgan"));
 const multer_1 = __importDefault(require("multer"));
 const path_1 = __importDefault(require("path"));
+import('node-fetch');
 /* ROUTE IMPORTS */
 const auth_1 = __importDefault(require("./routes/auth"));
 const blog_1 = __importDefault(require("./routes/blog"));
@@ -98,6 +108,57 @@ app.use('/tama/events', events_1.default);
 app.use('/tama/vacancies', vacancy_1.default);
 app.use('/tama/council-lists', council_list_1.default);
 app.use('/tama/reports-publications', reports_publications_1.default);
+// Utility function to fetch tweets
+const fetchTweets = (userId, bearerToken) => __awaiter(void 0, void 0, void 0, function* () {
+    const url = `https://api.twitter.com/2/users/${userId}/tweets?tweet.fields=text,public_metrics,attachments&expansions=attachments.media_keys&media.fields=type,url&max_results=100`;
+    const response = yield fetch(url, {
+        headers: {
+            Authorization: `Bearer ${bearerToken}`,
+        },
+    });
+    if (!response.ok) {
+        throw new Error(`Twitter API error: ${response.statusText}`);
+    }
+    return response.json();
+});
+app.get('/tama/tweets', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const BEARER_TOKEN = process.env.TWITTER_BEARER_TOKEN;
+    const userId = '1799028002849984512'; // Replace with your Twitter user ID
+    if (!BEARER_TOKEN) {
+        res.status(500).json({
+            error: 'Missing Twitter Bearer Token in environment variables.',
+        });
+        return;
+    }
+    try {
+        const data = yield fetchTweets(userId, BEARER_TOKEN);
+        // Extract relevant details from the response
+        const tweets = data.data.map((tweet) => {
+            var _a;
+            const mediaKeys = ((_a = tweet.attachments) === null || _a === void 0 ? void 0 : _a.media_keys) || [];
+            const media = mediaKeys.map((key) => {
+                var _a, _b;
+                return (_b = (_a = data.includes) === null || _a === void 0 ? void 0 : _a.media) === null || _b === void 0 ? void 0 : _b.find((m) => m.media_key === key);
+            });
+            return {
+                text: tweet.text,
+                images: (media === null || media === void 0 ? void 0 : media.filter((m) => (m === null || m === void 0 ? void 0 : m.type) === 'photo').map((m) => (m === null || m === void 0 ? void 0 : m.url) || '')) || [],
+                metrics: {
+                    comments: tweet.public_metrics.reply_count,
+                    retweets: tweet.public_metrics.retweet_count,
+                    likes: tweet.public_metrics.like_count,
+                },
+            };
+        });
+        res.json(tweets);
+    }
+    catch (error) {
+        const errorMessage = error.message ||
+            'Internal server error';
+        console.error('Error fetching tweets:', errorMessage);
+        res.status(502).json({ error: errorMessage });
+    }
+}));
 /* SERVER */
 const PORT = Number(process.env.PORT) || 8000;
 app.listen(PORT, () => {
