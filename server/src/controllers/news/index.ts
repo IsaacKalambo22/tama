@@ -77,7 +77,9 @@ export const getAllNews = async (
 ): Promise<void> => {
   try {
     // Fetch all news from the database
-    const news = await prisma.news.findMany();
+    const news = await prisma.news.findMany({
+      orderBy: { createdAt: 'asc' }, // Sort by createdAt in ascending order
+    });
 
     // Respond with success
     res.status(200).json({

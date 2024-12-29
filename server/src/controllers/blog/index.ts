@@ -64,7 +64,9 @@ export const getAllBlogs = async (
 ): Promise<void> => {
   try {
     // Fetch all blogs from the database
-    const blogs = await prisma.blog.findMany();
+    const blogs = await prisma.blog.findMany({
+      orderBy: { createdAt: 'asc' }, // Sort by createdAt in ascending order
+    });
 
     // Respond with success
     res.status(200).json({

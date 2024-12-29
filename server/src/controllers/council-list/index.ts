@@ -73,7 +73,9 @@ export const getAllCouncilLists = async (
   try {
     // Fetch all councilLists from the database
     const councilLists =
-      await prisma.councilList.findMany();
+      await prisma.councilList.findMany({
+        orderBy: { createdAt: 'asc' }, // Sort by createdAt in ascending order
+      });
 
     // Respond with success
     res.status(200).json({

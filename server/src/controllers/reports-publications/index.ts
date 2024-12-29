@@ -61,7 +61,11 @@ export const getAllReportsAndPublications =
     try {
       // Fetch all reportAndPublication from the database
       const reportAndPublication =
-        await prisma.reportAndPublication.findMany();
+        await prisma.reportAndPublication.findMany(
+          {
+            orderBy: { createdAt: 'asc' }, // Sort by createdAt in ascending order
+          }
+        );
 
       // Respond with success
       res.status(200).json({

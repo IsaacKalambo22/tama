@@ -57,7 +57,9 @@ export const getAllForms = async (
 ): Promise<void> => {
   try {
     // Fetch all form from the database
-    const form = await prisma.form.findMany();
+    const form = await prisma.form.findMany({
+      orderBy: { createdAt: 'asc' }, // Sort by createdAt in ascending order
+    });
 
     // Respond with success
     res.status(200).json({

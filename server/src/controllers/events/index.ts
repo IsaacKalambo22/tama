@@ -67,7 +67,9 @@ export const getAllEvents = async (
   res: Response<APIResponse>
 ): Promise<void> => {
   try {
-    const events = await prisma.event.findMany();
+    const events = await prisma.event.findMany({
+      orderBy: { createdAt: 'asc' }, // Sort by createdAt in ascending order
+    });
     res.status(200).json({
       success: true,
       message: 'Events retrieved successfully',

@@ -10,7 +10,20 @@ export const getAllUsers = async (
   res: Response<APIResponse>
 ): Promise<void> => {
   try {
-    const users = await prisma.user.findMany();
+    const users = await prisma.user.findMany({
+      orderBy: { createdAt: 'desc' }, // Sort users by most recent creation date
+      select: {
+        id: true,
+        email: true,
+        phoneNumber: true,
+        name: true,
+        role: true,
+        lastLogin: true,
+        isVerified: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
 
     res.status(200).json({
       success: true,

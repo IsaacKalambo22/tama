@@ -88,7 +88,9 @@ export const getAllVacancies = async (
   try {
     // Fetch all vacancies from the database
     const vacancies =
-      await prisma.vacancy.findMany();
+      await prisma.vacancy.findMany({
+        orderBy: { createdAt: 'asc' }, // Sort by createdAt in ascending order
+      });
 
     // Respond with success
     res.status(200).json({

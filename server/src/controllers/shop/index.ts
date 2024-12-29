@@ -63,8 +63,10 @@ export const getAllShops = async (
   res: Response<APIResponse>
 ): Promise<void> => {
   try {
-    // Fetch all shops from the database
-    const shops = await prisma.shop.findMany();
+    // Fetch all shops from the database sorted by createdAt
+    const shops = await prisma.shop.findMany({
+      orderBy: { createdAt: 'asc' }, // Sort by createdAt in ascending order
+    });
 
     // Respond with success
     res.status(200).json({
