@@ -3,6 +3,7 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   // Disable in-memory caching
   // cacheMaxMemorySize: 0,
+  cacheMaxMemorySize: 0, // disable default in-memory caching
 
   // TypeScript settings
   typescript: {
