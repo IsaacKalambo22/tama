@@ -148,7 +148,7 @@ export const userColumns: ColumnDef<UserProps>[] =
         const { data: session } = useSession(); // Get the current session
 
         // Extract the role from the session
-        const role = session?.user?.role; // Ensure role is stored in the session
+        const role = session?.role; // Ensure role is stored in the session
 
         const handleOpenEditModal = () =>
           setEditModalOpen(true);
