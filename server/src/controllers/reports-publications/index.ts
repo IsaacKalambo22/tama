@@ -63,7 +63,7 @@ export const getAllReportsAndPublications =
       const reportAndPublication =
         await prisma.reportAndPublication.findMany(
           {
-            orderBy: { createdAt: 'asc' }, // Sort by createdAt in ascending order
+            orderBy: { createdAt: 'desc' }, // Sort by createdAt in descending order
           }
         );
 

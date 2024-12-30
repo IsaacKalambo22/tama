@@ -68,7 +68,7 @@ export const getAllEvents = async (
 ): Promise<void> => {
   try {
     const events = await prisma.event.findMany({
-      orderBy: { createdAt: 'asc' }, // Sort by createdAt in ascending order
+      orderBy: { createdAt: 'desc' }, // Sort by createdAt in descending order
     });
     res.status(200).json({
       success: true,

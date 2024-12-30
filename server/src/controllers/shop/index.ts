@@ -65,7 +65,7 @@ export const getAllShops = async (
   try {
     // Fetch all shops from the database sorted by createdAt
     const shops = await prisma.shop.findMany({
-      orderBy: { createdAt: 'asc' }, // Sort by createdAt in ascending order
+      orderBy: { createdAt: 'desc' }, // Sort by createdAt in descending order
     });
 
     // Respond with success

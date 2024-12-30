@@ -58,7 +58,7 @@ export const getAllForms = async (
   try {
     // Fetch all form from the database
     const form = await prisma.form.findMany({
-      orderBy: { createdAt: 'asc' }, // Sort by createdAt in ascending order
+      orderBy: { createdAt: 'desc' }, // Sort by createdAt in descending order
     });
 
     // Respond with success
