@@ -85,7 +85,26 @@ export const verifyManager = (
     } else {
       return res.status(403).json({
         message:
-          'Forbidden: Admin access required',
+          'Forbidden: Managers access required',
+      });
+    }
+  });
+};
+export const verifyAdminAndManager = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  verifyToken(req, res, () => {
+    if (
+      req.user?.role === Role.MANAGER ||
+      req.user?.role === Role.ADMIN
+    ) {
+      return next();
+    } else {
+      return res.status(403).json({
+        message:
+          'Forbidden: Admin or Manager access required',
       });
     }
   });

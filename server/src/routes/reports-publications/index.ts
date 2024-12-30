@@ -5,24 +5,24 @@ import {
   getAllReportsAndPublications,
   updateReportAndPublication,
 } from '../../controllers/reports-publications';
-import { verifyToken } from '../../middlewares/verify-token/index';
+import { verifyAdminAndManager } from '../../middlewares/verify-token/index';
 
 const router = Router();
 
 router.post(
   '/',
-  verifyToken,
+  verifyAdminAndManager,
   createReportAndPublication
 );
 router.get('/', getAllReportsAndPublications);
 router.patch(
   '/:id',
-  verifyToken,
+  verifyAdminAndManager,
   updateReportAndPublication
 );
 router.delete(
   '/:id',
-  verifyToken,
+  verifyAdminAndManager,
   deleteReportAndPublication
 );
 

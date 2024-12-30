@@ -5,13 +5,25 @@ import {
   getAllForms,
   updateForm,
 } from '../../controllers/form';
-import { verifyToken } from '../../middlewares/verify-token/index';
+import { verifyAdminAndManager } from '../../middlewares/verify-token';
 
 const router = Router();
 
-router.post('/', verifyToken, createForm);
+router.post(
+  '/',
+  verifyAdminAndManager,
+  createForm
+);
 router.get('/', getAllForms);
-router.patch('/:id', verifyToken, updateForm);
-router.delete('/:id', verifyToken, deleteForm);
+router.patch(
+  '/:id',
+  verifyAdminAndManager,
+  updateForm
+);
+router.delete(
+  '/:id',
+  verifyAdminAndManager,
+  deleteForm
+);
 
 export default router;

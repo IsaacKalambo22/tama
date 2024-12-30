@@ -5,13 +5,25 @@ import {
   getAllShops,
   updateShop,
 } from '../../controllers/shop';
-import { verifyToken } from '../../middlewares/verify-token/index';
+import { verifyAdminAndManager } from '../../middlewares/verify-token/index';
 
 const router = Router();
 
-router.post('/', verifyToken, createShop);
+router.post(
+  '/',
+  verifyAdminAndManager,
+  createShop
+);
 router.get('/', getAllShops);
-router.patch('/:id', verifyToken, updateShop);
-router.delete('/:id', verifyToken, deleteShop);
+router.patch(
+  '/:id',
+  verifyAdminAndManager,
+  updateShop
+);
+router.delete(
+  '/:id',
+  verifyAdminAndManager,
+  deleteShop
+);
 
 export default router;

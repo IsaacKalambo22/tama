@@ -5,20 +5,24 @@ import {
   getAllCouncilLists,
   updateCouncilList,
 } from '../../controllers/council-list';
-import { verifyToken } from '../../middlewares/verify-token/index';
+import { verifyAdminAndManager } from '../../middlewares/verify-token/index';
 
 const router = Router();
 
-router.post('/', verifyToken, createCouncilList);
+router.post(
+  '/',
+  verifyAdminAndManager,
+  createCouncilList
+);
 router.get('/', getAllCouncilLists);
 router.patch(
   '/:id',
-  verifyToken,
+  verifyAdminAndManager,
   updateCouncilList
 );
 router.delete(
   '/:id',
-  verifyToken,
+  verifyAdminAndManager,
   deleteCouncilList
 );
 

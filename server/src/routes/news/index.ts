@@ -6,14 +6,26 @@ import {
   getNewsById,
   updateNews,
 } from '../../controllers/news';
-import { verifyToken } from '../../middlewares/verify-token/index';
+import { verifyAdminAndManager } from '../../middlewares/verify-token/index';
 
 const router = Router();
 
-router.post('/', verifyToken, createNews);
+router.post(
+  '/',
+  verifyAdminAndManager,
+  createNews
+);
 router.get('/', getAllNews);
 router.get('/:id', getNewsById);
-router.patch('/:id', verifyToken, updateNews);
-router.delete('/:id', verifyToken, deleteNews);
+router.patch(
+  '/:id',
+  verifyAdminAndManager,
+  updateNews
+);
+router.delete(
+  '/:id',
+  verifyAdminAndManager,
+  deleteNews
+);
 
 export default router;
