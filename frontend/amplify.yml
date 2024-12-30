@@ -14,7 +14,6 @@ applications:
           - '**/*'
       cache:
         paths:
-          []
-          # - .next/cache/**/*
-          # - .npm/**/*
+          - .next/cache/**/*
+          - .npm/**/*
     appRoot: frontend
