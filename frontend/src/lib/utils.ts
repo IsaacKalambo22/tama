@@ -275,13 +275,6 @@ export const constructFileUrl = (
   return `${BASE_URL}/uploads/${filename}`;
 };
 
-export const constructDownloadUrl = (
-  fileName: string
-) => {
-  // Reference the file directly in the local assets directory
-  return `/assets/files/${fileName}`;
-};
-
 export const handleDownload = (
   file: FileProps
 ) => {

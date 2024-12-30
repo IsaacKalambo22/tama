@@ -1,8 +1,4 @@
-import {
-  BASE_URL,
-  cn,
-  getFileIcon,
-} from '@/lib/utils';
+import { cn, getFileIcon } from '@/lib/utils';
 import Image from 'next/image';
 
 interface Props {
@@ -16,7 +12,7 @@ interface Props {
 export const Thumbnail = ({
   type,
   extension,
-  url,
+  url = '',
   imageClassName,
   className,
 }: Props) => {
@@ -30,7 +26,7 @@ export const Thumbnail = ({
       <Image
         src={
           isImage
-            ? `${BASE_URL}/uploads/${url}`
+            ? url
             : getFileIcon(extension, type)
         }
         alt='thumbnail'

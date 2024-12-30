@@ -1,5 +1,5 @@
 import { FileProps } from '@/lib/api';
-import FormsAndDocumentsCard from '../reports-publications-card';
+import FormsAndDocumentsCard from '../../forms-documents/forms-documents-card';
 
 type Props = {
   files: FileProps[];

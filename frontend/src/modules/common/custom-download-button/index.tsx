@@ -1,21 +1,18 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { constructFileUrl } from '@/lib/utils';
 import Image from 'next/image';
 
-interface DownloadButtonProps {
-  fileName: string;
-  fileExtension: string;
+interface CustomDownloadButtonProps {
+  fileUrl: string;
 }
 
-const DownloadButton = ({
-  fileName,
-  fileExtension,
-}: DownloadButtonProps) => {
+const CustomDownloadButton = ({
+  fileUrl,
+}: CustomDownloadButtonProps) => {
   // lib/utils.ts
   const handleDownload = async () => {
-    const fullFileName = `${fileName}`;
+    const fullFileName = `${fileUrl}`;
     const downloadLink =
       document.createElement('a');
     downloadLink.href =
@@ -31,24 +28,23 @@ const DownloadButton = ({
   };
 
   return (
-    <Button
-      size='icon'
+    <div
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
         handleDownload();
-      }} // Handle download when clicked
-      variant='ghost'
-      className='rounded-full'
+      }}
+      className='flex items-center gap-2'
     >
       <Image
         src='/assets/icons/download.svg'
         alt='Download'
-        width={35}
-        height={35}
+        width={30}
+        height={30}
       />
-    </Button>
+      Download{' '}
+    </div>
   );
 };
 
-export default DownloadButton;
+export default CustomDownloadButton;

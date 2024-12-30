@@ -11,10 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 import { FileProps } from '@/lib/api';
-import {
-  constructDownloadUrl,
-  getFileType,
-} from '@/lib/utils';
+import CustomDownloadButton from '@/modules/common/custom-download-button';
 import Image from 'next/image';
 import { useState } from 'react';
 import { actionsDropdownItems } from '../../constants';
@@ -31,27 +28,7 @@ const FormsActionDropdown = ({ file }: Props) => {
     useState(false);
   const [action, setAction] =
     useState<ActionType | null>(null);
-  const fileProps = getFileType(file.fileUrl);
 
-  const handleDownload = (
-    fileName: string,
-    fileExtension: string
-  ) => {
-    const fullFileName = `${fileName}.${fileExtension}`; // Combine filename and extension
-
-    const downloadLink =
-      document.createElement('a');
-    downloadLink.href =
-      constructDownloadUrl(fullFileName); // Use the full file name with extension
-    downloadLink.download = fullFileName; // Set the combined file name for download
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-
-    console.log(
-      `Downloading file: ${fullFileName}`
-    ); // Log the full file name
-  };
   const renderDialogContent = () => {
     if (!action) return null;
 
@@ -131,25 +108,9 @@ const FormsActionDropdown = ({ file }: Props) => {
               >
                 {actionItem.value ===
                 'download' ? (
-                  <div
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      handleDownload(
-                        file.filename,
-                        fileProps.extension
-                      );
-                    }}
-                    className='flex items-center gap-2'
-                  >
-                    <Image
-                      src={actionItem.icon}
-                      alt={actionItem.label}
-                      width={30}
-                      height={30}
-                    />
-                    {actionItem.label}
-                  </div>
+                  <CustomDownloadButton
+                    fileUrl={file.fileUrl}
+                  />
                 ) : (
                   <div className='flex items-center gap-2'>
                     <Image
