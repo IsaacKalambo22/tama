@@ -127,9 +127,9 @@ const ModalNewForm = ({
             <CustomFormField
               fieldType={FormFieldType.INPUT}
               name='filename'
-              label='Filename'
+              label='Name'
               control={form.control}
-              placeholder='Enter file name'
+              placeholder='Enter form name'
             />
 
             <CustomFormField

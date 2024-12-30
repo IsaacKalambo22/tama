@@ -186,6 +186,27 @@ export const formatDateTime = (
   return `${time}, ${day} ${month}`;
 };
 
+export const formatTime = (
+  isoString: string | null | undefined
+): string => {
+  if (!isoString) return '—';
+
+  const date = new Date(isoString);
+
+  // Get hours and adjust for 12-hour format
+  let hours = date.getHours();
+  const minutes = date.getMinutes();
+  const period = hours >= 12 ? 'pm' : 'am';
+
+  // Convert hours to 12-hour format
+  hours = hours % 12 || 12;
+
+  // Format the time
+  return `${hours}:${minutes
+    .toString()
+    .padStart(2, '0')} ${period}`;
+};
+
 export const getFileIcon = (
   extension: string | undefined,
   type: File | string

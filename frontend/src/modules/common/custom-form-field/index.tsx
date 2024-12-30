@@ -32,6 +32,7 @@ export enum FormFieldType {
   SELECT = 'select',
   SKELETON = 'skeleton',
   DATE = 'DATE',
+  TIME_PICKER = 'timePicker',
 }
 
 interface CustomProps {
@@ -63,7 +64,7 @@ const RenderInput = ({
     case FormFieldType.INPUT:
     case FormFieldType.NUMBER:
       return (
-        <div className='flex rounded-md border border-gray-500 '>
+        <div className='flex rounded-md border border-green-500 '>
           {props.iconSrc && (
             <Image
               src={props.iconSrc}
@@ -102,18 +103,9 @@ const RenderInput = ({
           </FormControl>
         </div>
       );
-
     case FormFieldType.DATE_PICKER:
       return (
-        <div className='flex items-center  rounded-md border h-11 !important border-gray-500 pr-4'>
-          {/* <Image
-            src='/assets/icons/calendar.svg'
-            height={10}
-            width={10}
-            alt='user'
-            className='ml-2'
-          /> */}
-
+        <div className='flex relative items-center w-full h-10'>
           <FormControl>
             <DatePicker
               showTimeSelect={
@@ -127,12 +119,50 @@ const RenderInput = ({
               dateFormat={
                 props.dateFormat ?? 'MM/dd/yyyy'
               }
-              wrapperClassName='date-picker'
+              placeholderText={props.placeholder} // Use placeholderText here
+              wrapperClassName='margin-0 padding-0 w-full '
+              customInput={
+                <Input // Custom Input with placeholder
+                  placeholder={props.placeholder}
+                  className='shad-input border-[1px] w-full border-green-500 pl-10'
+                />
+              }
             />
           </FormControl>
-          <CalendarIcon className=' h-5 w-5 opacity-50' />
+          <CalendarIcon className='absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-600 hover:text-gray-900' />
         </div>
       );
+    case FormFieldType.TIME_PICKER:
+      return (
+        <div className='flex relative items-center w-full h-10'>
+          <FormControl>
+            <DatePicker
+              selected={field.value}
+              onChange={(time: Date) =>
+                field.onChange(time)
+              }
+              showTimeSelect
+              showTimeSelectOnly // Ensures only time selection
+              timeIntervals={15} // Interval in minutes
+              timeCaption='Time'
+              dateFormat='h:mm aa' // Customize time format
+              placeholderText={props.placeholder} // Placeholder text
+              wrapperClassName='margin-0 padding-0 w-full '
+              customInput={
+                <Input
+                  placeholder={
+                    props.placeholder ||
+                    'Select time'
+                  }
+                  className='shad-input border-[1px] w-full border-green-500 pl-10'
+                />
+              }
+            />
+          </FormControl>
+          <CalendarIcon className='absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-600 hover:text-gray-900' />
+        </div>
+      );
+
     case FormFieldType.TEXTAREA:
       return (
         <FormControl>

@@ -119,9 +119,9 @@ const ModalEditReports = ({
           <CustomFormField
             fieldType={FormFieldType.INPUT}
             name='filename'
-            label='File name'
+            label='Name'
             control={form.control}
-            placeholder='Enter file name'
+            placeholder='Enter report name'
           />
 
           <CustomFormField

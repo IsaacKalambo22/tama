@@ -41,8 +41,8 @@ const ModalNewEvent = ({
       message:
         'Description must be at least 10 characters.',
     }),
-    date: zod.date(),
-    time: zod.string().optional(),
+    startDate: zod.date(),
+    time: zod.date().optional(),
     endDate: zod.date().optional(),
     location: zod.string().optional(),
   });
@@ -55,8 +55,8 @@ const ModalNewEvent = ({
     defaultValues: {
       title: '',
       description: '',
-      date: undefined,
-      time: '',
+      startDate: undefined,
+      time: undefined,
       endDate: undefined,
       location: '',
     },
@@ -71,7 +71,7 @@ const ModalNewEvent = ({
       const payload = {
         title: values.title,
         description: values.description,
-        date: values.date,
+        date: values.startDate,
         time: values.time || null,
         endDate: values.endDate || null,
         location: values.location,
@@ -132,24 +132,31 @@ const ModalNewEvent = ({
           />
           <CustomFormField
             fieldType={FormFieldType.DATE_PICKER}
-            name='date'
-            label='Date'
+            name='startDate'
+            label='Start Date'
             control={form.control}
-            placeholder='YYYY-MM-DD'
+            placeholder='Select a start date'
+            dateFormat='dd/MM/yyyy'
+            showTimeSelect={false}
           />
+
           <CustomFormField
-            fieldType={FormFieldType.INPUT}
+            fieldType={FormFieldType.TIME_PICKER}
             name='time'
-            label='Time (optional)'
+            label='Time'
             control={form.control}
-            placeholder='HH:mm'
+            placeholder='Select event time'
+            dateFormat='h:mm aa'
+            showTimeSelect
           />
+
           <CustomFormField
             fieldType={FormFieldType.DATE_PICKER}
             name='endDate'
-            label='End Date (optional)'
+            placeholder='Select a end date'
             control={form.control}
-            placeholder='YYYY-MM-DD'
+            dateFormat='dd/MM/yyyy'
+            showTimeSelect={false}
           />
           <CustomFormField
             fieldType={FormFieldType.INPUT}

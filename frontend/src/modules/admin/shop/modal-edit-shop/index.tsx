@@ -126,23 +126,23 @@ const ModalEditShop = ({
           <CustomFormField
             fieldType={FormFieldType.INPUT}
             name='name'
-            label='Shop name'
+            label='Name'
             control={form.control}
-            placeholder='Enter file name'
+            placeholder='Enter shop name'
           />
           <CustomFormField
             fieldType={FormFieldType.INPUT}
             name='address'
             label='Address'
             control={form.control}
-            placeholder='Enter file address'
+            placeholder='Enter address'
           />
           <CustomFormField
             fieldType={FormFieldType.INPUT}
             name='openHours'
             label='Open Hours'
             control={form.control}
-            placeholder='Enter file openHours'
+            placeholder='Enter shop open hours'
           />
 
           <CustomFormField
