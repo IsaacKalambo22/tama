@@ -66,6 +66,8 @@ export const createForm = async (
     const result = await response.json();
 
     revalidatePath(fullPath);
+    revalidatePath('/resources/forms');
+    revalidatePath('/admin/resources/forms');
     revalidatePath(pathWithoutAdmin);
     return result;
   } catch (error) {
