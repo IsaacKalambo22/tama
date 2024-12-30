@@ -135,7 +135,7 @@ async function handleFetch<T>(
     const response = await fetch(endpoint, {
       method: 'GET',
       headers,
-      cache: 'no-store',
+      next: { revalidate: 1 },
     });
     if (!response.ok) {
       console.log(
