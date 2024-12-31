@@ -313,14 +313,87 @@ app.patch('/tama/forms/:id', upload.fields([{ name: 'file', maxCount: 1 }]), (re
         });
     }
 }, form_1.default);
-app.patch('/tama/shops/:id', upload.single('file'), shop_1.default);
-app.patch('/tama/news/:id', upload.single('file'), news_1.default);
-// app.patch(
-//   '/tama/forms/:id',
-//   upload.single('file'),
-//   forms
-// );
-app.patch('/tama/blogs/:id', upload.single('file'), blog_1.default);
+app.patch('/tama/shops/:id', upload.fields([{ name: 'file', maxCount: 1 }]), (req, res, next) => {
+    var _a, _b;
+    console.log(req.body);
+    console.log(req.files);
+    try {
+        const files = req.files;
+        const file = (_b = (_a = files === null || files === void 0 ? void 0 : files.file) === null || _a === void 0 ? void 0 : _a[0]) !== null && _b !== void 0 ? _b : null;
+        if (file) {
+            // Construct URL for the uploaded file
+            const constructFileUrl = (file) => file.filename;
+            const fileUrl = constructFileUrl(file);
+            // Attach the file URL to the request body
+            req.body.imageUrl = fileUrl;
+            console.log('File uploaded and URL constructed:', fileUrl);
+        }
+        else {
+            console.log('No file uploaded. Proceeding with the existing data.');
+        }
+        next();
+    }
+    catch (error) {
+        console.error('Error processing uploaded files:', error);
+        res.status(500).json({
+            message: 'Internal server error.',
+        });
+    }
+}, shop_1.default);
+app.patch('/tama/blogs/:id', upload.fields([{ name: 'file', maxCount: 1 }]), (req, res, next) => {
+    var _a, _b;
+    console.log(req.body);
+    console.log(req.files);
+    try {
+        const files = req.files;
+        const file = (_b = (_a = files === null || files === void 0 ? void 0 : files.file) === null || _a === void 0 ? void 0 : _a[0]) !== null && _b !== void 0 ? _b : null;
+        if (file) {
+            // Construct URL for the uploaded file
+            const constructFileUrl = (file) => file.filename;
+            const fileUrl = constructFileUrl(file);
+            // Attach the file URL to the request body
+            req.body.imageUrl = fileUrl;
+            console.log('File uploaded and URL constructed:', fileUrl);
+        }
+        else {
+            console.log('No file uploaded. Proceeding with the existing data.');
+        }
+        next();
+    }
+    catch (error) {
+        console.error('Error processing uploaded files:', error);
+        res.status(500).json({
+            message: 'Internal server error.',
+        });
+    }
+}, blog_1.default);
+app.patch('/tama/news/:id', upload.fields([{ name: 'file', maxCount: 1 }]), (req, res, next) => {
+    var _a, _b;
+    console.log(req.body);
+    console.log(req.files);
+    try {
+        const files = req.files;
+        const file = (_b = (_a = files === null || files === void 0 ? void 0 : files.file) === null || _a === void 0 ? void 0 : _a[0]) !== null && _b !== void 0 ? _b : null;
+        if (file) {
+            // Construct URL for the uploaded file
+            const constructFileUrl = (file) => file.filename;
+            const fileUrl = constructFileUrl(file);
+            // Attach the file URL to the request body
+            req.body.imageUrl = fileUrl;
+            console.log('File uploaded and URL constructed:', fileUrl);
+        }
+        else {
+            console.log('No file uploaded. Proceeding with the existing data.');
+        }
+        next();
+    }
+    catch (error) {
+        console.error('Error processing uploaded files:', error);
+        res.status(500).json({
+            message: 'Internal server error.',
+        });
+    }
+}, news_1.default);
 /* ROUTES */
 app.get('/', (req, res) => {
     res.send('<html><body><h1>Welcome to the Home Route</h1></body></html>');

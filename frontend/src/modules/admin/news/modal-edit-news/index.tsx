@@ -77,12 +77,6 @@ const ModalEditNews = ({
       if (values.files.length > 0) {
         const file = values.files[0];
         formData.append('file', file);
-        formData.append('imageUrl', file.name);
-      } else {
-        formData.append(
-          'imageUrl',
-          news.imageUrl
-        );
       }
 
       const result = await updateNews(
