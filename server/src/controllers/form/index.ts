@@ -87,7 +87,7 @@ export const updateForm = async (
 ): Promise<void> => {
   const { id } = req.params;
   const { filename, fileUrl, size } = req.body;
-
+  console.log('Forms controller', req.body);
   // Validate input
   if (!id) {
     res.status(400).json({
@@ -112,8 +112,9 @@ export const updateForm = async (
       });
       return;
     }
-    // Prepare updated data, ignoring empty strings
-    const updatedData = {
+
+    // Prepare updated data, including only fields provided and valid
+    const updatedData: any = {
       filename:
         filename?.trim() === ''
           ? existingForm.filename
@@ -122,12 +123,14 @@ export const updateForm = async (
         fileUrl?.trim() === ''
           ? existingForm.fileUrl
           : fileUrl,
-      size:
-        size?.trim() === ''
-          ? existingForm.size
-          : Number(size),
     };
-    // Update the blog details
+
+    // Add `size` only if it's provided and valid
+    if (size !== undefined && size !== '') {
+      updatedData.size = Number(size);
+    }
+
+    // Update the reports details
     const updatedForm = await prisma.form.update({
       where: { id },
       data: updatedData,

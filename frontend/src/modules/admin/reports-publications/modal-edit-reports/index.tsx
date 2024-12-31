@@ -65,15 +65,8 @@ const ModalEditReports = ({
       if (values.files.length > 0) {
         const newFile = values.files[0];
         formData.append('file', newFile);
-        formData.append('fileUrl', newFile.name);
         const size = Number(file.size);
         formData.append('size', size.toString()); // Ensure size is a number
-      } else {
-        formData.append('fileUrl', file.fileUrl);
-        formData.append(
-          'size',
-          file.size.toString()
-        );
       }
       for (const pair of formData.entries()) {
         console.log(pair);

@@ -379,6 +379,109 @@ app.post(
 );
 
 app.patch(
+  '/tama/reports-publications/:id',
+  upload.fields([{ name: 'file', maxCount: 1 }]),
+  (req, res, next) => {
+    console.log(req.body);
+    console.log(req.files);
+    try {
+      const files = req.files as
+        | {
+            [
+              fieldname: string
+            ]: Express.Multer.File[];
+          }
+        | undefined;
+
+      const file = files?.file?.[0] ?? null;
+
+      if (file) {
+        // Construct URL for the uploaded file
+        const constructFileUrl = (
+          file: Express.Multer.File
+        ) => file.filename;
+
+        const fileUrl = constructFileUrl(file);
+
+        // Attach the file URL to the request body
+        req.body.fileUrl = fileUrl;
+
+        console.log(
+          'File uploaded and URL constructed:',
+          fileUrl
+        );
+      } else {
+        console.log(
+          'No file uploaded. Proceeding with the existing data.'
+        );
+      }
+
+      next();
+    } catch (error) {
+      console.error(
+        'Error processing uploaded files:',
+        error
+      );
+      res.status(500).json({
+        message: 'Internal server error.',
+      });
+    }
+  },
+  reportsPublications
+);
+app.patch(
+  '/tama/forms/:id',
+  upload.fields([{ name: 'file', maxCount: 1 }]),
+  (req, res, next) => {
+    console.log(req.body);
+    console.log(req.files);
+    try {
+      const files = req.files as
+        | {
+            [
+              fieldname: string
+            ]: Express.Multer.File[];
+          }
+        | undefined;
+
+      const file = files?.file?.[0] ?? null;
+
+      if (file) {
+        // Construct URL for the uploaded file
+        const constructFileUrl = (
+          file: Express.Multer.File
+        ) => file.filename;
+
+        const fileUrl = constructFileUrl(file);
+
+        // Attach the file URL to the request body
+        req.body.fileUrl = fileUrl;
+
+        console.log(
+          'File uploaded and URL constructed:',
+          fileUrl
+        );
+      } else {
+        console.log(
+          'No file uploaded. Proceeding with the existing data.'
+        );
+      }
+
+      next();
+    } catch (error) {
+      console.error(
+        'Error processing uploaded files:',
+        error
+      );
+      res.status(500).json({
+        message: 'Internal server error.',
+      });
+    }
+  },
+  forms
+);
+
+app.patch(
   '/tama/shops/:id',
   upload.single('file'),
   shops
@@ -388,16 +491,12 @@ app.patch(
   upload.single('file'),
   news
 );
-app.patch(
-  '/tama/forms/:id',
-  upload.single('file'),
-  forms
-);
-app.patch(
-  '/tama/reports-publications/:id',
-  upload.single('file'),
-  reportsPublications
-);
+// app.patch(
+//   '/tama/forms/:id',
+//   upload.single('file'),
+//   forms
+// );
+
 app.patch(
   '/tama/blogs/:id',
   upload.single('file'),

@@ -384,7 +384,8 @@ export const updateNews = async (
     });
   }
 };
-export const updateForms = async (
+
+export const updateReports = async (
   formData: FormData,
   id: string,
   fullPath: string,
@@ -400,7 +401,7 @@ export const updateForms = async (
 
     const token = session?.accessToken;
     const response = await fetch(
-      `${BASE_URL}/forms/${id}`,
+      `${BASE_URL}/reports-publications/${id}`,
       {
         method: 'PATCH',
         headers: {
@@ -431,7 +432,7 @@ export const updateForms = async (
     });
   }
 };
-export const updateReports = async (
+export const updateForms = async (
   formData: FormData,
   id: string,
   fullPath: string,
@@ -447,7 +448,7 @@ export const updateReports = async (
 
     const token = session?.accessToken;
     const response = await fetch(
-      `${BASE_URL}/reports-publications/${id}`,
+      `${BASE_URL}/forms/${id}`,
       {
         method: 'PATCH',
         headers: {

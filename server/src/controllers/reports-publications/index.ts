@@ -123,8 +123,8 @@ export const updateReportAndPublication = async (
       return;
     }
 
-    // Prepare updated data, ignoring empty strings
-    const updatedData = {
+    // Prepare updated data, including only fields provided and valid
+    const updatedData: any = {
       filename:
         filename?.trim() === ''
           ? existingReportAndPublication.filename
@@ -133,11 +133,13 @@ export const updateReportAndPublication = async (
         fileUrl?.trim() === ''
           ? existingReportAndPublication.fileUrl
           : fileUrl,
-      size:
-        size?.trim() === ''
-          ? existingReportAndPublication.size
-          : Number(size),
     };
+
+    // Add `size` only if it's provided and valid
+    if (size !== undefined && size !== '') {
+      updatedData.size = Number(size);
+    }
+
     // Update the reports details
     const updatedReportAndPublication =
       await prisma.reportAndPublication.update({
