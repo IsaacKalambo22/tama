@@ -1,10 +1,6 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  // Disable in-memory caching
-  // cacheMaxMemorySize: 0,
-  cacheMaxMemorySize: 0, // disable default in-memory caching
-
   // TypeScript settings
   typescript: {
     ignoreBuildErrors: true, // Skip type-checking during builds
@@ -28,6 +24,13 @@ const nextConfig: NextConfig = {
       {
         protocol: 'http',
         hostname: '13.48.70.174',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname:
+          '"nknr42fug3.execute-api.eu-north-1.amazonaws.com',
         port: '',
         pathname: '/**',
       },
