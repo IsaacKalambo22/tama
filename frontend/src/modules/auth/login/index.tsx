@@ -72,10 +72,10 @@ const Login = () => {
         description: 'Logged in successfully!',
       });
 
+      router.refresh();
       setIsRedirecting(true);
 
       // Simulate a delay or wait for the actual navigation to complete
-      router.refresh();
       // setTimeout(() => {
       // }, 5000);
     } catch (error) {
