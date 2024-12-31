@@ -142,14 +142,128 @@ app.post('/tama/forms', upload.fields([{ name: 'file', maxCount: 1 }]), (req, re
         });
     }
 }, form_1.default);
-app.post('/tama/shops', upload.single('file'), shop_1.default);
+app.post('/tama/shops', upload.fields([{ name: 'file', maxCount: 1 }]), (req, res, next) => {
+    console.log(req.body);
+    console.log(req.files);
+    try {
+        // Safely check if req.files is an object or array, then cast accordingly
+        const files = req.files;
+        if (!files || Array.isArray(files)) {
+            res.status(400).json({
+                message: 'Invalid file upload structure.',
+            });
+            return;
+        }
+        const file = files.file
+            ? files.file[0]
+            : null;
+        if (!file) {
+            res.status(400).json({
+                message: 'File is required.',
+            });
+            return;
+        }
+        // Function to construct file URLs
+        const constructFileUrl = (file) => {
+            return file.filename;
+        };
+        // Construct URLs for the uploaded files
+        const fileUrl = constructFileUrl(file);
+        // Attach URLs to the request body
+        req.body.imageUrl = fileUrl;
+        // Pass control to the next middleware or route handler
+        next();
+    }
+    catch (error) {
+        console.error('Error processing uploaded files:', error);
+        res.status(500).json({
+            message: 'Internal server error.',
+        });
+    }
+}, shop_1.default);
+app.post('/tama/blogs', upload.fields([{ name: 'file', maxCount: 1 }]), (req, res, next) => {
+    console.log(req.body);
+    console.log(req.files);
+    try {
+        // Safely check if req.files is an object or array, then cast accordingly
+        const files = req.files;
+        if (!files || Array.isArray(files)) {
+            res.status(400).json({
+                message: 'Invalid file upload structure.',
+            });
+            return;
+        }
+        const file = files.file
+            ? files.file[0]
+            : null;
+        if (!file) {
+            res.status(400).json({
+                message: 'File is required.',
+            });
+            return;
+        }
+        // Function to construct file URLs
+        const constructFileUrl = (file) => {
+            return file.filename;
+        };
+        // Construct URLs for the uploaded files
+        const fileUrl = constructFileUrl(file);
+        // Attach URLs to the request body
+        req.body.imageUrl = fileUrl;
+        // Pass control to the next middleware or route handler
+        next();
+    }
+    catch (error) {
+        console.error('Error processing uploaded files:', error);
+        res.status(500).json({
+            message: 'Internal server error.',
+        });
+    }
+}, blog_1.default);
+app.post('/tama/news', upload.fields([{ name: 'file', maxCount: 1 }]), (req, res, next) => {
+    console.log(req.body);
+    console.log(req.files);
+    try {
+        // Safely check if req.files is an object or array, then cast accordingly
+        const files = req.files;
+        if (!files || Array.isArray(files)) {
+            res.status(400).json({
+                message: 'Invalid file upload structure.',
+            });
+            return;
+        }
+        const file = files.file
+            ? files.file[0]
+            : null;
+        if (!file) {
+            res.status(400).json({
+                message: 'File is required.',
+            });
+            return;
+        }
+        // Function to construct file URLs
+        const constructFileUrl = (file) => {
+            return file.filename;
+        };
+        // Construct URLs for the uploaded files
+        const fileUrl = constructFileUrl(file);
+        // Attach URLs to the request body
+        req.body.imageUrl = fileUrl;
+        // Pass control to the next middleware or route handler
+        next();
+    }
+    catch (error) {
+        console.error('Error processing uploaded files:', error);
+        res.status(500).json({
+            message: 'Internal server error.',
+        });
+    }
+}, news_1.default);
 app.patch('/tama/shops/:id', upload.single('file'), shop_1.default);
 app.patch('/tama/news/:id', upload.single('file'), news_1.default);
 app.patch('/tama/forms/:id', upload.single('file'), form_1.default);
 app.patch('/tama/reports-publications/:id', upload.single('file'), reports_publications_1.default);
 app.patch('/tama/blogs/:id', upload.single('file'), blog_1.default);
-app.post('/tama/blogs', upload.single('file'), blog_1.default);
-app.post('/tama/news', upload.single('file'), news_1.default);
 /* ROUTES */
 app.get('/', (req, res) => {
     res.send('<html><body><h1>Welcome to the Home Route</h1></body></html>');

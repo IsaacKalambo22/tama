@@ -82,9 +82,6 @@ const ModalNewBlog = ({
       const file = values.files[0];
       formData.append('file', file); // This will send the file as is, without converting it to Blob
 
-      // Optionally, you can still append other fields (e.g., fileUrl, size)
-      formData.append('imageUrl', file.name);
-
       // Log the FormData entries to verify
       for (const pair of formData.entries()) {
         console.log(pair); // Logs each key-value pair in the FormData object

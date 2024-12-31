@@ -78,7 +78,6 @@ const ModalNewShop = ({
       // Directly append the file
       const file = values.files[0];
       formData.append('file', file);
-      formData.append('imageUrl', file.name);
       console.log('File name:', file.name);
 
       for (const pair of formData.entries()) {
