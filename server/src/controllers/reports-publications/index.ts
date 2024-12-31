@@ -9,7 +9,6 @@ export const createReportAndPublication = async (
   res: Response<APIResponse>
 ): Promise<void> => {
   const { fileUrl, filename, size } = req.body;
-  console.log(req.body);
   // Validate input
   if (!fileUrl || !filename || !size) {
     res.status(400).json({

@@ -11,11 +11,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 import { FileProps } from '@/lib/api';
-import {
-  BASE_URL,
-  constructFileUrl,
-} from '@/lib/utils';
 import { clientActionsDropdownItems } from '@/modules/admin/constants';
+import CustomDownloadButton from '@/modules/common/custom-download-button';
 import Image from 'next/image';
 import { useState } from 'react';
 import ModalViewForms from '../modal-view-forms';
@@ -29,23 +26,7 @@ const FormsActionDropdown = ({ file }: Props) => {
     useState(false);
   const [action, setAction] =
     useState<ActionType | null>(null);
-  const handleDownload = async (
-    fileName: string
-  ) => {
-    const fullFileName = `${fileName}`;
-    const downloadLink =
-      document.createElement('a');
-    downloadLink.href =
-      constructFileUrl(fullFileName);
-    downloadLink.download = fullFileName;
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
 
-    console.log(
-      `Downloading file: ${fullFileName}`
-    );
-  };
   const renderDialogContent = () => {
     if (!action) return null;
 
@@ -105,21 +86,10 @@ const FormsActionDropdown = ({ file }: Props) => {
               >
                 {actionItem.value ===
                 'download' ? (
-                  <a
-                    download={
-                      file.filename || 'download'
-                    } // Suggested filename
-                    href={`${BASE_URL}/uploads/download/${file.fileUrl}`} // Ensure this maps to your Express route
-                    className='flex items-center gap-2'
-                  >
-                    <Image
-                      src={actionItem.icon}
-                      alt={actionItem.label}
-                      width={30}
-                      height={30}
-                    />
-                    {actionItem.label}
-                  </a>
+                  <CustomDownloadButton
+                    fileName={file.filename}
+                    fileUrl={file.fileUrl}
+                  />
                 ) : (
                   <div className='flex items-center gap-2'>
                     <Image

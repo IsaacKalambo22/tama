@@ -56,19 +56,98 @@ const storage = multer_1.default.diskStorage({
         cb(null, uploadDir); // Relative path for saving files
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname); // Save the file with its original name
+        const uniqueName = `${Date.now()}-${file.originalname
+            .toLowerCase()
+            .replace(/[\s-]+/g, '-')}`;
+        cb(null, uniqueName); // Save the file with its uniqueName name
     },
 });
 const upload = (0, multer_1.default)({ storage });
 /* ROUTES WITH FILES */
-app.post('/tama/reports-publications', upload.single('file'), reports_publications_1.default);
+app.post('/tama/reports-publications', upload.fields([{ name: 'file', maxCount: 1 }]), (req, res, next) => {
+    console.log(req.body);
+    console.log(req.files);
+    try {
+        // Safely check if req.files is an object or array, then cast accordingly
+        const files = req.files;
+        if (!files || Array.isArray(files)) {
+            res.status(400).json({
+                message: 'Invalid file upload structure.',
+            });
+            return;
+        }
+        const file = files.file
+            ? files.file[0]
+            : null;
+        if (!file) {
+            res.status(400).json({
+                message: 'File is required.',
+            });
+            return;
+        }
+        // Function to construct file URLs
+        const constructFileUrl = (file) => {
+            return file.filename;
+        };
+        // Construct URLs for the uploaded files
+        const fileUrl = constructFileUrl(file);
+        // Attach URLs to the request body
+        req.body.fileUrl = fileUrl;
+        // Pass control to the next middleware or route handler
+        next();
+    }
+    catch (error) {
+        console.error('Error processing uploaded files:', error);
+        res.status(500).json({
+            message: 'Internal server error.',
+        });
+    }
+}, reports_publications_1.default);
+app.post('/tama/forms', upload.fields([{ name: 'file', maxCount: 1 }]), (req, res, next) => {
+    console.log(req.body);
+    console.log(req.files);
+    try {
+        // Safely check if req.files is an object or array, then cast accordingly
+        const files = req.files;
+        if (!files || Array.isArray(files)) {
+            res.status(400).json({
+                message: 'Invalid file upload structure.',
+            });
+            return;
+        }
+        const file = files.file
+            ? files.file[0]
+            : null;
+        if (!file) {
+            res.status(400).json({
+                message: 'File is required.',
+            });
+            return;
+        }
+        // Function to construct file URLs
+        const constructFileUrl = (file) => {
+            return file.filename;
+        };
+        // Construct URLs for the uploaded files
+        const fileUrl = constructFileUrl(file);
+        // Attach URLs to the request body
+        req.body.fileUrl = fileUrl;
+        // Pass control to the next middleware or route handler
+        next();
+    }
+    catch (error) {
+        console.error('Error processing uploaded files:', error);
+        res.status(500).json({
+            message: 'Internal server error.',
+        });
+    }
+}, form_1.default);
 app.post('/tama/shops', upload.single('file'), shop_1.default);
 app.patch('/tama/shops/:id', upload.single('file'), shop_1.default);
 app.patch('/tama/news/:id', upload.single('file'), news_1.default);
 app.patch('/tama/forms/:id', upload.single('file'), form_1.default);
 app.patch('/tama/reports-publications/:id', upload.single('file'), reports_publications_1.default);
 app.patch('/tama/blogs/:id', upload.single('file'), blog_1.default);
-app.post('/tama/forms', upload.single('file'), form_1.default);
 app.post('/tama/blogs', upload.single('file'), blog_1.default);
 app.post('/tama/news', upload.single('file'), news_1.default);
 /* ROUTES */

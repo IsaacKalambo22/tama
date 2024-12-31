@@ -74,7 +74,7 @@ const ModalNewPublication = ({
       formData.append('file', file); // This will send the file as is, without converting it to Blob
 
       // Optionally, you can still append other fields (e.g., fileUrl, size)
-      formData.append('fileUrl', file.name);
+      // formData.append('fileUrl', file.name);
       const size = Number(file.size);
       formData.append('size', size.toString()); // Ensure size is a number
 
