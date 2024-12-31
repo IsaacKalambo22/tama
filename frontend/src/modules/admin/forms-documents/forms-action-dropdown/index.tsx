@@ -109,6 +109,7 @@ const FormsActionDropdown = ({ file }: Props) => {
                 {actionItem.value ===
                 'download' ? (
                   <CustomDownloadButton
+                    fileName={file.filename}
                     fileUrl={file.fileUrl}
                   />
                 ) : (

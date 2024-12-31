@@ -5,26 +5,49 @@ import Image from 'next/image';
 
 interface CustomDownloadButtonProps {
   fileUrl: string;
+  fileName: string;
 }
 
 const CustomDownloadButton = ({
   fileUrl,
+  fileName,
 }: CustomDownloadButtonProps) => {
-  // lib/utils.ts
   const handleDownload = async () => {
-    const fullFileName = `${fileUrl}`;
-    const downloadLink =
-      document.createElement('a');
-    downloadLink.href =
-      constructFileUrl(fullFileName);
-    downloadLink.download = fullFileName;
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
+    try {
+      const fullFileUrl =
+        constructFileUrl(fileUrl);
 
-    console.log(
-      `Downloading file: ${fullFileName}`
-    ); // Log the full file name
+      // Fetch the file blob to handle download properly
+      const response = await fetch(fullFileUrl);
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch file: ${response.statusText}`
+        );
+      }
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+
+      const downloadLink =
+        document.createElement('a');
+      downloadLink.href = url;
+      downloadLink.download = fileName; // Explicitly set the file name
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+
+      // Revoke the object URL to free up memory
+      URL.revokeObjectURL(url);
+
+      console.log(
+        `Downloading file: ${fileName}`
+      );
+    } catch (error) {
+      console.error(
+        'Error downloading file:',
+        error
+      );
+    }
   };
 
   return (
@@ -34,7 +57,7 @@ const CustomDownloadButton = ({
         e.stopPropagation();
         handleDownload();
       }}
-      className='flex items-center gap-2'
+      className='flex items-center gap-2 cursor-pointer'
     >
       <Image
         src='/assets/icons/download.svg'
@@ -42,7 +65,7 @@ const CustomDownloadButton = ({
         width={30}
         height={30}
       />
-      Download{' '}
+      Download
     </div>
   );
 };
