@@ -5,10 +5,7 @@ import {
 } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import { fetchNews } from '@/lib/api';
-import {
-  BASE_URL,
-  formatDateTime,
-} from '@/lib/utils';
+import { formatDateTime } from '@/lib/utils';
 import AddNewHeader from '@/modules/common/add-new-header';
 import Image from 'next/image';
 import NewsActionDropdown from './news-action-dropdown';
@@ -73,7 +70,8 @@ const News = async () => {
               />
             </div>
             <Image
-              src={`${BASE_URL}/uploads/${mostRecent.imageUrl}`}
+              src={mostRecent.imageUrl}
+              unoptimized
               alt={mostRecent.title}
               width={400}
               height={350}

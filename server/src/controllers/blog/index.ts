@@ -8,20 +8,26 @@ export const createBlog = async (
   req: Request,
   res: Response<APIResponse>
 ): Promise<void> => {
-  const { title, content, imageUrl, author } =
-    req.body;
+  const {
+    title,
+    content,
+    imageUrl,
+    author,
+    size,
+  } = req.body;
   console.log(req.body);
   // Validate input
   if (
     !title ||
     !imageUrl ||
     !content ||
+    !size ||
     !author
   ) {
     res.status(400).json({
       success: false,
       message:
-        'Title, content, imageUrl, and author are required.',
+        'Title, content, imageUrl, size and author are required.',
       error: 'Validation error',
     });
     return;
@@ -33,6 +39,7 @@ export const createBlog = async (
       data: {
         title,
         content,
+        size: Number(size),
         imageUrl,
         author,
       },
@@ -142,8 +149,13 @@ export const updateBlog = async (
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params;
-  const { title, content, imageUrl, author } =
-    req.body;
+  const {
+    title,
+    content,
+    imageUrl,
+    author,
+    size,
+  } = req.body;
 
   // Validate input
   if (!id) {
@@ -171,7 +183,7 @@ export const updateBlog = async (
     }
 
     // Prepare updated data, ignoring empty strings
-    const updatedData = {
+    const updatedData: any = {
       title:
         title?.trim() === ''
           ? existingBlog.title
@@ -189,6 +201,12 @@ export const updateBlog = async (
           ? existingBlog.author
           : author,
     };
+
+    // Add `size` only if it's provided and valid
+    if (size !== undefined && size !== '') {
+      updatedData.size = Number(size);
+    }
+
     // Update the blog details
     const updatedBlog = await prisma.blog.update({
       where: { id },

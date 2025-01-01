@@ -8,13 +8,25 @@ export const createReportAndPublication = async (
   req: Request,
   res: Response<APIResponse>
 ): Promise<void> => {
-  const { fileUrl, filename, size } = req.body;
+  const {
+    fileUrl,
+    filename,
+    size,
+    type,
+    extension,
+  } = req.body;
   // Validate input
-  if (!fileUrl || !filename || !size) {
+  if (
+    !fileUrl ||
+    !filename ||
+    !size ||
+    !type ||
+    !extension
+  ) {
     res.status(400).json({
       success: false,
       message:
-        'fileUrl, filename, and size are required.',
+        'fileUrl, filename, type, extension and size are required.',
       error: 'Validation error',
     });
     return;
@@ -27,6 +39,8 @@ export const createReportAndPublication = async (
         data: {
           fileUrl,
           filename,
+          type,
+          extension,
           size: Number(size),
         },
       });
@@ -92,7 +106,13 @@ export const updateReportAndPublication = async (
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params;
-  const { filename, fileUrl, size } = req.body;
+  const {
+    filename,
+    fileUrl,
+    size,
+    type,
+    extension,
+  } = req.body;
   console.log(req.body);
   // Validate input
   if (!id) {
@@ -133,6 +153,14 @@ export const updateReportAndPublication = async (
         fileUrl?.trim() === ''
           ? existingReportAndPublication.fileUrl
           : fileUrl,
+      type:
+        type?.trim() === ''
+          ? existingReportAndPublication.type
+          : type,
+      extension:
+        extension?.trim() === ''
+          ? existingReportAndPublication.extension
+          : extension,
     };
 
     // Add `size` only if it's provided and valid

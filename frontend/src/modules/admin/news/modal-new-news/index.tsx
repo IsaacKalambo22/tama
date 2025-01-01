@@ -13,6 +13,10 @@ import {
 } from '@/components/ui/form';
 import useCustomPath from '@/hooks/use-custom-path';
 import { toast } from '@/hooks/use-toast';
+import {
+  getFileType,
+  handleFileUpload,
+} from '@/lib/utils';
 import CustomFormField, {
   FormFieldType,
 } from '@/modules/common/custom-form-field';
@@ -72,24 +76,23 @@ const ModalNewNews = ({
     setIsLoading(true);
     console.log({ values });
     try {
-      // Create FormData instance
-      const formData = new FormData();
-      formData.append('title', values.title);
-      formData.append('content', values.content);
-      formData.append('author', values.author);
-
-      // Directly append the file
       const file = values.files[0];
-      formData.append('file', file); // This will send the file as is, without converting it to Blob
-
-      // Log the FormData entries to verify
-      for (const pair of formData.entries()) {
-        console.log(pair); // Logs each key-value pair in the FormData object
-      }
-
+      const fileUrl = await handleFileUpload(
+        file
+      );
+      const fileProps = getFileType(file.name);
+      console.log({ fileProps });
+      // Create a JSON object to send
+      const payload = {
+        title: values.title,
+        content: values.content,
+        author: values.author,
+        size: file.size,
+        imageUrl: fileUrl, // Add the uploaded file URL
+      };
       // Call the createForm function to send data to the server
       const result = await createNews(
-        formData,
+        payload,
         fullPath,
         pathWithoutAdmin
       );

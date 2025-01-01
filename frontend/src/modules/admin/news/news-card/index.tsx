@@ -5,10 +5,7 @@ import {
 } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import { NewsProps } from '@/lib/api';
-import {
-  BASE_URL,
-  formatDateTime,
-} from '@/lib/utils';
+import { formatDateTime } from '@/lib/utils';
 import Image from 'next/image';
 import NewsActionDropdown from '../news-action-dropdown';
 interface Props {
@@ -32,7 +29,8 @@ const NewsCard = ({ newsItem }: Props) => {
         <NewsActionDropdown news={newsItem} />
       </div>
       <Image
-        src={`${BASE_URL}/uploads/${imageUrl}`}
+        src={imageUrl}
+        unoptimized
         alt={title}
         width={200}
         height={150}

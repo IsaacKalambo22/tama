@@ -8,8 +8,13 @@ export const createNews = async (
   req: Request,
   res: Response<APIResponse>
 ): Promise<void> => {
-  const { title, content, imageUrl, author } =
-    req.body;
+  const {
+    title,
+    content,
+    imageUrl,
+    author,
+    size,
+  } = req.body;
   console.log(req.body);
 
   // Validate input
@@ -17,12 +22,13 @@ export const createNews = async (
     !title ||
     !imageUrl ||
     !content ||
+    !size ||
     !author
   ) {
     res.status(400).json({
       success: false,
       message:
-        'Title, content, imageUrl, and author are required.',
+        'Title, content, imageUrl, size and author are required.',
       error: 'Validation error',
     });
     return;
@@ -46,6 +52,7 @@ export const createNews = async (
       data: {
         title,
         content,
+        size: Number(size),
         imageUrl,
         author,
         readingTime,
@@ -156,8 +163,13 @@ export const updateNews = async (
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params;
-  const { title, content, imageUrl, author } =
-    req.body;
+  const {
+    title,
+    content,
+    imageUrl,
+    author,
+    size,
+  } = req.body;
 
   // Validate input
   if (!id) {
@@ -184,7 +196,7 @@ export const updateNews = async (
       return;
     }
     // Prepare updated data, ignoring empty strings
-    const updatedData = {
+    const updatedData: any = {
       title:
         title?.trim() === ''
           ? existingNews.title
@@ -202,6 +214,12 @@ export const updateNews = async (
           ? existingNews.author
           : author,
     };
+
+    // Add `size` only if it's provided and valid
+    if (size !== undefined && size !== '') {
+      updatedData.size = Number(size);
+    }
+
     // Update the blog details
     const updatedNews = await prisma.news.update({
       where: { id },

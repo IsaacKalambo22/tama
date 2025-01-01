@@ -16,9 +16,6 @@ type Props = {
 const ReportsPublicationsCard = ({
   file,
 }: Props) => {
-  const fileProps = getFileType(file.fileUrl);
-  console.log(fileProps);
-
   return (
     <Link
       href={constructFileUrl(file.fileUrl)}
@@ -28,8 +25,8 @@ const ReportsPublicationsCard = ({
       <Card className='file-card'>
         <div className='flex justify-between'>
           <Thumbnail
-            type={fileProps.type}
-            extension={fileProps.extension}
+            type={file.type}
+            extension={file.extension}
             url={file.fileUrl}
             className='!size-20'
             imageClassName='!size-11'

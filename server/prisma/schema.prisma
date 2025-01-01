@@ -42,6 +42,7 @@ model Shop {
   imageUrl  String
   address   String
   openHours String
+  size      Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -50,6 +51,8 @@ model ReportAndPublication {
   id        String   @id @default(uuid())
   fileUrl   String
   filename  String
+  type      String
+  extension String
   size      Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -59,6 +62,8 @@ model Form {
   id        String   @id @default(uuid())
   fileUrl   String
   filename  String
+  type      String
+  extension String
   size      Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -69,6 +74,7 @@ model Blog {
   title     String
   content   String
   imageUrl  String
+  size      Int
   author    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -81,6 +87,7 @@ model News {
   imageUrl    String
   author      String
   readingTime Int
+  size        Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

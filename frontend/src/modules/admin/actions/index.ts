@@ -38,7 +38,7 @@ export const deleteFile = async (
 };
 export const uploadFile = async () => {};
 export const createForm = async (
-  formData: FormData,
+  payload: Record<string, any>, // Use a JSON object as the payload
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
@@ -59,8 +59,9 @@ export const createForm = async (
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
-        body: formData,
+        body: JSON.stringify(payload), // Serialize the JSON object
       }
     );
 
@@ -895,13 +896,13 @@ export const deleteNews = async (
   }
 };
 export const createBlog = async (
-  formData: FormData,
+  payload: Record<string, any>, // Use a JSON object as the payload
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
   try {
     const session = await auth();
-
+    console.log({ payload });
     if (!session)
       return parseServerActionResponse({
         error: 'Not signed in',
@@ -916,8 +917,9 @@ export const createBlog = async (
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
-        body: formData,
+        body: JSON.stringify(payload), // Serialize the JSON object
       }
     );
 
@@ -937,15 +939,14 @@ export const createBlog = async (
     throw error;
   }
 };
-
 export const createNews = async (
-  formData: FormData,
+  payload: Record<string, any>, // Use a JSON object as the payload
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
   try {
     const session = await auth();
-
+    console.log({ payload });
     if (!session)
       return parseServerActionResponse({
         error: 'Not signed in',
@@ -960,8 +961,9 @@ export const createNews = async (
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
-        body: formData,
+        body: JSON.stringify(payload), // Serialize the JSON object
       }
     );
 
@@ -1286,7 +1288,7 @@ export const createCouncilList = async (
 };
 
 export const createReportAndPublication = async (
-  formData: FormData,
+  payload: Record<string, any>, // Use a JSON object as the payload
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
@@ -1305,8 +1307,9 @@ export const createReportAndPublication = async (
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
-        body: formData,
+        body: JSON.stringify(payload), // Serialize the JSON object
       }
     );
 
@@ -1326,13 +1329,48 @@ export const createReportAndPublication = async (
     throw error;
   }
 };
-
 const allowedFileTypes = [
   'image/jpeg',
   'image/png',
   'image/jpg',
   'video/mp4',
   'video/quicktime',
+  'application/pdf', // PDF
+  'application/msword', // DOC
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // DOCX
+  'text/plain', // TXT
+  'application/vnd.ms-excel', // XLS
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // XLSX
+  'text/csv', // CSV
+  'application/rtf', // RTF
+  'application/vnd.oasis.opendocument.spreadsheet', // ODS
+  'application/vnd.ms-powerpoint', // PPT
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation', // PPTX
+  'text/markdown', // MD
+  'text/html', // HTML
+  'text/html', // HTM
+  'application/epub+zip', // EPUB
+  'application/vnd.apple.pages', // Pages
+  'application/fig', // FIG (Figma)
+  'application/postscript', // PS
+  'application/illustrator', // AI
+  'application/vnd.adobe.indesign', // INDD
+  'application/vnd.adobe.xd', // XD
+  'application/x-sketch', // Sketch
+  'application/x-photoshop', // PSD
+  'application/x-afdesign', // AFDesign
+  'application/x-afphoto', // AFPhoto
+  'image/gif', // GIF
+  'image/bmp', // BMP
+  'image/svg+xml', // SVG
+  'image/webp', // WEBP
+  'video/avi', // AVI
+  'video/mkv', // MKV
+  'video/webm', // WEBM
+  'audio/mp3', // MP3
+  'audio/wav', // WAV
+  'audio/ogg', // OGG
+  'audio/flac', // FLAC
 ];
 
 const maxFileSize = 1048576 * 1000; // 1 MB

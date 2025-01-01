@@ -66,14 +66,6 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 verificationTokenExpiresAt, // 24 hours
             },
         });
-        // await sendVerificationEmail(
-        //   email,
-        //   verificationToken
-        // );
-        // await sendVerificationEmail(
-        //   email,
-        //   verificationToken
-        // );
         yield (0, emails_1.setPasswordRequestEmail)(email, `${process.env.CLIENT_BASE_URL}/set-password/${verificationToken}`);
         res.status(201).json({
             success: true,

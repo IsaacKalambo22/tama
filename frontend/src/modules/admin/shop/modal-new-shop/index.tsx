@@ -82,6 +82,7 @@ const ModalNewShop = ({
         openHours: values.openHours,
         address: values.address,
         imageUrl: fileUrl, // Add the uploaded file URL
+        size: file.size, // Add the uploaded file URL
       };
 
       const result = await createShop(

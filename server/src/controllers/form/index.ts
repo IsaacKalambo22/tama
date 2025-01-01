@@ -8,14 +8,26 @@ export const createForm = async (
   req: Request,
   res: Response<APIResponse>
 ): Promise<void> => {
-  const { fileUrl, filename, size } = req.body;
+  const {
+    fileUrl,
+    filename,
+    size,
+    type,
+    extension,
+  } = req.body;
   console.log(req.body);
   // Validate input
-  if (!fileUrl || !filename || !size) {
+  if (
+    !fileUrl ||
+    !filename ||
+    !size ||
+    !type ||
+    !extension
+  ) {
     res.status(400).json({
       success: false,
       message:
-        'fileUrl, filename, and size are required.',
+        'fileUrl, filename, type, extension and size are required.',
       error: 'Validation error',
     });
     return;
@@ -27,6 +39,8 @@ export const createForm = async (
       data: {
         fileUrl,
         filename,
+        type,
+        extension,
         size: Number(size),
       },
     });
@@ -86,7 +100,13 @@ export const updateForm = async (
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params;
-  const { filename, fileUrl, size } = req.body;
+  const {
+    filename,
+    fileUrl,
+    size,
+    type,
+    extension,
+  } = req.body;
   console.log('Forms controller', req.body);
   // Validate input
   if (!id) {
@@ -123,6 +143,14 @@ export const updateForm = async (
         fileUrl?.trim() === ''
           ? existingForm.fileUrl
           : fileUrl,
+      type:
+        type?.trim() === ''
+          ? existingForm.type
+          : type,
+      extension:
+        extension?.trim() === ''
+          ? existingForm.extension
+          : extension,
     };
 
     // Add `size` only if it's provided and valid

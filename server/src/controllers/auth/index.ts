@@ -89,14 +89,7 @@ export const registerUser = async (
         verificationTokenExpiresAt, // 24 hours
       },
     });
-    // await sendVerificationEmail(
-    //   email,
-    //   verificationToken
-    // );
-    // await sendVerificationEmail(
-    //   email,
-    //   verificationToken
-    // );
+
     await setPasswordRequestEmail(
       email,
       `${process.env.CLIENT_BASE_URL}/set-password/${verificationToken}`

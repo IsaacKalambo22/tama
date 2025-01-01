@@ -8,14 +8,20 @@ export const createShop = async (
   req: Request,
   res: Response<APIResponse>
 ): Promise<void> => {
-  const { name, imageUrl, address, openHours } =
-    req.body;
+  const {
+    name,
+    imageUrl,
+    address,
+    openHours,
+    size,
+  } = req.body;
 
   // Validate input
   if (
     !name ||
     !imageUrl ||
     !address ||
+    !size ||
     !openHours
   ) {
     res.status(400).json({
@@ -33,6 +39,7 @@ export const createShop = async (
       data: {
         name,
         imageUrl,
+        size: Number(size),
         address,
         openHours,
       },
@@ -93,8 +100,13 @@ export const updateShop = async (
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params;
-  const { name, imageUrl, address, openHours } =
-    req.body;
+  const {
+    name,
+    imageUrl,
+    address,
+    openHours,
+    size,
+  } = req.body;
   console.log(req.body);
 
   // Validate input
@@ -122,7 +134,7 @@ export const updateShop = async (
       return;
     }
     // Prepare updated data, ignoring empty strings
-    const updatedData = {
+    const updatedData: any = {
       name:
         name?.trim() === ''
           ? existingShop.name
@@ -140,6 +152,11 @@ export const updateShop = async (
           ? existingShop.openHours
           : openHours,
     };
+
+    // Add `size` only if it's provided and valid
+    if (size !== undefined && size !== '') {
+      updatedData.size = Number(size);
+    }
 
     // Update the shop details
     const updatedShop = await prisma.shop.update({

@@ -1,9 +1,6 @@
 import { Card } from '@/components/ui/card';
 import { BlogProps } from '@/lib/api';
-import {
-  BASE_URL,
-  formatDateTime,
-} from '@/lib/utils';
+import { formatDateTime } from '@/lib/utils';
 import Image from 'next/image';
 import BlogActionDropdown from '../blog-action-dropdown';
 
@@ -26,9 +23,10 @@ const BlogCard = ({ blog }: BlogCardProps) => {
         <BlogActionDropdown blog={blog} />
       </div>
       <Image
-        src={`${BASE_URL}/uploads/${imageUrl}`}
+        src={imageUrl}
         alt={title}
         width={400}
+        unoptimized
         height={250}
         className='rounded-2xl w-full mb-4 h-[12rem]'
       />

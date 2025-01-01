@@ -1,9 +1,6 @@
 import { Card } from '@/components/ui/card';
 import { BlogProps } from '@/lib/api';
-import {
-  BASE_URL,
-  formatDateTime,
-} from '@/lib/utils';
+import { formatDateTime } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -24,10 +21,11 @@ const BlogCard = ({ blog }: BlogCardProps) => {
     <Link href={`/blogs/${blog.id}`}>
       <Card className='p-6 shadow-none rounded-3xl hover:shadow-lg transition-shadow'>
         <Image
-          src={`${BASE_URL}/uploads/${imageUrl}`}
+          src={imageUrl}
           alt={title}
           width={400}
           height={250}
+          unoptimized
           className='rounded-2xl w-full mb-4 h-[12rem]'
         />
         <h2 className='text-xl font-semibold mb-2 line-clamp-1'>

@@ -271,9 +271,9 @@ export const getFileIcon = (
 };
 
 export const constructFileUrl = (
-  filename: string
+  fileUrl: string
 ) => {
-  return `${BASE_URL}/uploads/${filename}`;
+  return fileUrl;
 };
 
 export const handleDownload = (

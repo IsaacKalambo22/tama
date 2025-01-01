@@ -5,10 +5,7 @@ import {
 } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import { fetchNews, NewsProps } from '@/lib/api';
-import {
-  BASE_URL,
-  formatDateTime,
-} from '@/lib/utils';
+import { formatDateTime } from '@/lib/utils';
 import HeaderText from '@/modules/common/header-text';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -69,7 +66,8 @@ const News = async () => {
           >
             <Card className='shadow-none rounded-lg border-none flex flex-col sm:flex-row items-center h-auto sm:h-[22rem] gap-10'>
               <Image
-                src={`${BASE_URL}/uploads/${mostRecent.imageUrl}`}
+                src={mostRecent.imageUrl}
+                unoptimized
                 alt={mostRecent.title}
                 width={400}
                 height={350}
@@ -142,7 +140,8 @@ const SmallNewsCard = ({
     >
       <Card className='p-6 shadow-none cursor-pointer rounded-3xl space-y-4 transition-transform transform hover:scale-105'>
         <Image
-          src={`${BASE_URL}/uploads/${imageUrl}`}
+          src={imageUrl}
+          unoptimized
           alt={title}
           width={200}
           height={150}

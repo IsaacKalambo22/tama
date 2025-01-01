@@ -18,6 +18,7 @@ export interface NewsProps {
   content: string;
   imageUrl: string;
   author: string;
+  size: number;
   readingTime: number; // in minutes
   createdAt: string; // ISO date string
   updatedAt: string; // optional ISO date string
@@ -29,6 +30,7 @@ export interface BlogProps {
   content: string;
   imageUrl: string;
   author: string;
+  size: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -38,6 +40,8 @@ export interface FileProps {
   fileUrl: string;
   filename: string;
   size: number;
+  type: string;
+  extension: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -47,6 +51,7 @@ export interface ShopProps {
   name: string;
   imageUrl: string;
   address: string;
+  size: number;
   openHours: string;
   createdAt: string;
   updatedAt: string;

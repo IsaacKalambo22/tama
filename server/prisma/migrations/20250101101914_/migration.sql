@@ -28,6 +28,7 @@ CREATE TABLE "Shop" (
     "imageUrl" TEXT NOT NULL,
     "address" TEXT NOT NULL,
     "openHours" TEXT NOT NULL,
+    "size" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -39,6 +40,8 @@ CREATE TABLE "ReportAndPublication" (
     "id" TEXT NOT NULL,
     "fileUrl" TEXT NOT NULL,
     "filename" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
+    "extension" TEXT NOT NULL,
     "size" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -51,6 +54,8 @@ CREATE TABLE "Form" (
     "id" TEXT NOT NULL,
     "fileUrl" TEXT NOT NULL,
     "filename" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
+    "extension" TEXT NOT NULL,
     "size" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -64,6 +69,7 @@ CREATE TABLE "Blog" (
     "title" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "imageUrl" TEXT NOT NULL,
+    "size" INTEGER NOT NULL,
     "author" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -79,6 +85,7 @@ CREATE TABLE "News" (
     "imageUrl" TEXT NOT NULL,
     "author" TEXT NOT NULL,
     "readingTime" INTEGER NOT NULL,
+    "size" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -97,6 +104,40 @@ CREATE TABLE "CouncilList" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "CouncilList_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Event" (
+    "id" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "location" TEXT,
+    "date" TIMESTAMP(3) NOT NULL,
+    "endDate" TIMESTAMP(3),
+    "time" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Event_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Vacancy" (
+    "id" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "company" TEXT NOT NULL,
+    "location" TEXT NOT NULL,
+    "status" TEXT NOT NULL,
+    "applicationDeadline" TIMESTAMP(3) NOT NULL,
+    "salary" TEXT,
+    "duties" TEXT,
+    "qualifications" TEXT,
+    "howToApply" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Vacancy_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex

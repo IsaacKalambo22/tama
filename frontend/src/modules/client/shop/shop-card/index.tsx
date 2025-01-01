@@ -1,6 +1,5 @@
 import { Card } from '@/components/ui/card';
 import { ShopProps } from '@/lib/api';
-import { BASE_URL } from '@/lib/utils';
 import Image from 'next/image';
 import ShopActionDropdown from '../shop-action-dropdown';
 
@@ -15,10 +14,11 @@ const ShopCard = ({ shop }: Props) => {
         <ShopActionDropdown shop={shop} />
       </div>
       <Image
-        src={`${BASE_URL}/uploads/${shop.imageUrl}`}
+        src={shop.imageUrl}
         alt={shop.name}
         width={200}
         height={150}
+        unoptimized
         className='rounded-2xl w-full mb-4 h-[12rem]'
       />
       <div className='flex flex-col items-start'>

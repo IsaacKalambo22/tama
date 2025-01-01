@@ -62,132 +62,132 @@ const upload = multer({ storage });
 
 /* ROUTES WITH FILES */
 
-app.post(
-  '/tama/reports-publications',
-  upload.fields([{ name: 'file', maxCount: 1 }]),
-  (req, res, next) => {
-    console.log(req.body);
-    console.log(req.files);
-    try {
-      // Safely check if req.files is an object or array, then cast accordingly
-      const files = req.files as
-        | {
-            [
-              fieldname: string
-            ]: Express.Multer.File[];
-          }
-        | Express.Multer.File[]
-        | undefined;
+// app.post(
+//   '/tama/reports-publications',
+//   upload.fields([{ name: 'file', maxCount: 1 }]),
+//   (req, res, next) => {
+//     console.log(req.body);
+//     console.log(req.files);
+//     try {
+//       // Safely check if req.files is an object or array, then cast accordingly
+//       const files = req.files as
+//         | {
+//             [
+//               fieldname: string
+//             ]: Express.Multer.File[];
+//           }
+//         | Express.Multer.File[]
+//         | undefined;
 
-      if (!files || Array.isArray(files)) {
-        res.status(400).json({
-          message:
-            'Invalid file upload structure.',
-        });
-        return;
-      }
+//       if (!files || Array.isArray(files)) {
+//         res.status(400).json({
+//           message:
+//             'Invalid file upload structure.',
+//         });
+//         return;
+//       }
 
-      const file = files.file
-        ? files.file[0]
-        : null;
+//       const file = files.file
+//         ? files.file[0]
+//         : null;
 
-      if (!file) {
-        res.status(400).json({
-          message: 'File is required.',
-        });
-        return;
-      }
+//       if (!file) {
+//         res.status(400).json({
+//           message: 'File is required.',
+//         });
+//         return;
+//       }
 
-      // Function to construct file URLs
-      const constructFileUrl = (
-        file: Express.Multer.File
-      ) => {
-        return file.filename;
-      };
+//       // Function to construct file URLs
+//       const constructFileUrl = (
+//         file: Express.Multer.File
+//       ) => {
+//         return file.filename;
+//       };
 
-      // Construct URLs for the uploaded files
-      const fileUrl = constructFileUrl(file);
+//       // Construct URLs for the uploaded files
+//       const fileUrl = constructFileUrl(file);
 
-      // Attach URLs to the request body
-      req.body.fileUrl = fileUrl;
+//       // Attach URLs to the request body
+//       req.body.fileUrl = fileUrl;
 
-      // Pass control to the next middleware or route handler
-      next();
-    } catch (error) {
-      console.error(
-        'Error processing uploaded files:',
-        error
-      );
-      res.status(500).json({
-        message: 'Internal server error.',
-      });
-    }
-  },
-  reportsPublications
-);
-app.post(
-  '/tama/forms',
-  upload.fields([{ name: 'file', maxCount: 1 }]),
-  (req, res, next) => {
-    console.log(req.body);
-    console.log(req.files);
-    try {
-      // Safely check if req.files is an object or array, then cast accordingly
-      const files = req.files as
-        | {
-            [
-              fieldname: string
-            ]: Express.Multer.File[];
-          }
-        | Express.Multer.File[]
-        | undefined;
+//       // Pass control to the next middleware or route handler
+//       next();
+//     } catch (error) {
+//       console.error(
+//         'Error processing uploaded files:',
+//         error
+//       );
+//       res.status(500).json({
+//         message: 'Internal server error.',
+//       });
+//     }
+//   },
+//   reportsPublications
+// );
+// app.post(
+//   '/tama/forms',
+//   upload.fields([{ name: 'file', maxCount: 1 }]),
+//   (req, res, next) => {
+//     console.log(req.body);
+//     console.log(req.files);
+//     try {
+//       // Safely check if req.files is an object or array, then cast accordingly
+//       const files = req.files as
+//         | {
+//             [
+//               fieldname: string
+//             ]: Express.Multer.File[];
+//           }
+//         | Express.Multer.File[]
+//         | undefined;
 
-      if (!files || Array.isArray(files)) {
-        res.status(400).json({
-          message:
-            'Invalid file upload structure.',
-        });
-        return;
-      }
+//       if (!files || Array.isArray(files)) {
+//         res.status(400).json({
+//           message:
+//             'Invalid file upload structure.',
+//         });
+//         return;
+//       }
 
-      const file = files.file
-        ? files.file[0]
-        : null;
+//       const file = files.file
+//         ? files.file[0]
+//         : null;
 
-      if (!file) {
-        res.status(400).json({
-          message: 'File is required.',
-        });
-        return;
-      }
+//       if (!file) {
+//         res.status(400).json({
+//           message: 'File is required.',
+//         });
+//         return;
+//       }
 
-      // Function to construct file URLs
-      const constructFileUrl = (
-        file: Express.Multer.File
-      ) => {
-        return file.filename;
-      };
+//       // Function to construct file URLs
+//       const constructFileUrl = (
+//         file: Express.Multer.File
+//       ) => {
+//         return file.filename;
+//       };
 
-      // Construct URLs for the uploaded files
-      const fileUrl = constructFileUrl(file);
+//       // Construct URLs for the uploaded files
+//       const fileUrl = constructFileUrl(file);
 
-      // Attach URLs to the request body
-      req.body.fileUrl = fileUrl;
+//       // Attach URLs to the request body
+//       req.body.fileUrl = fileUrl;
 
-      // Pass control to the next middleware or route handler
-      next();
-    } catch (error) {
-      console.error(
-        'Error processing uploaded files:',
-        error
-      );
-      res.status(500).json({
-        message: 'Internal server error.',
-      });
-    }
-  },
-  forms
-);
+//       // Pass control to the next middleware or route handler
+//       next();
+//     } catch (error) {
+//       console.error(
+//         'Error processing uploaded files:',
+//         error
+//       );
+//       res.status(500).json({
+//         message: 'Internal server error.',
+//       });
+//     }
+//   },
+//   forms
+// );
 // app.post(
 //   '/tama/shops',
 //   upload.fields([{ name: 'file', maxCount: 1 }]),
@@ -251,132 +251,132 @@ app.post(
 //   },
 //   shops
 // );
-app.post(
-  '/tama/blogs',
-  upload.fields([{ name: 'file', maxCount: 1 }]),
-  (req, res, next) => {
-    console.log(req.body);
-    console.log(req.files);
-    try {
-      // Safely check if req.files is an object or array, then cast accordingly
-      const files = req.files as
-        | {
-            [
-              fieldname: string
-            ]: Express.Multer.File[];
-          }
-        | Express.Multer.File[]
-        | undefined;
+// app.post(
+//   '/tama/blogs',
+//   upload.fields([{ name: 'file', maxCount: 1 }]),
+//   (req, res, next) => {
+//     console.log(req.body);
+//     console.log(req.files);
+//     try {
+//       // Safely check if req.files is an object or array, then cast accordingly
+//       const files = req.files as
+//         | {
+//             [
+//               fieldname: string
+//             ]: Express.Multer.File[];
+//           }
+//         | Express.Multer.File[]
+//         | undefined;
 
-      if (!files || Array.isArray(files)) {
-        res.status(400).json({
-          message:
-            'Invalid file upload structure.',
-        });
-        return;
-      }
+//       if (!files || Array.isArray(files)) {
+//         res.status(400).json({
+//           message:
+//             'Invalid file upload structure.',
+//         });
+//         return;
+//       }
 
-      const file = files.file
-        ? files.file[0]
-        : null;
+//       const file = files.file
+//         ? files.file[0]
+//         : null;
 
-      if (!file) {
-        res.status(400).json({
-          message: 'File is required.',
-        });
-        return;
-      }
+//       if (!file) {
+//         res.status(400).json({
+//           message: 'File is required.',
+//         });
+//         return;
+//       }
 
-      // Function to construct file URLs
-      const constructFileUrl = (
-        file: Express.Multer.File
-      ) => {
-        return file.filename;
-      };
+//       // Function to construct file URLs
+//       const constructFileUrl = (
+//         file: Express.Multer.File
+//       ) => {
+//         return file.filename;
+//       };
 
-      // Construct URLs for the uploaded files
-      const fileUrl = constructFileUrl(file);
+//       // Construct URLs for the uploaded files
+//       const fileUrl = constructFileUrl(file);
 
-      // Attach URLs to the request body
-      req.body.imageUrl = fileUrl;
+//       // Attach URLs to the request body
+//       req.body.imageUrl = fileUrl;
 
-      // Pass control to the next middleware or route handler
-      next();
-    } catch (error) {
-      console.error(
-        'Error processing uploaded files:',
-        error
-      );
-      res.status(500).json({
-        message: 'Internal server error.',
-      });
-    }
-  },
-  blogs
-);
-app.post(
-  '/tama/news',
-  upload.fields([{ name: 'file', maxCount: 1 }]),
-  (req, res, next) => {
-    console.log(req.body);
-    console.log(req.files);
-    try {
-      // Safely check if req.files is an object or array, then cast accordingly
-      const files = req.files as
-        | {
-            [
-              fieldname: string
-            ]: Express.Multer.File[];
-          }
-        | Express.Multer.File[]
-        | undefined;
+//       // Pass control to the next middleware or route handler
+//       next();
+//     } catch (error) {
+//       console.error(
+//         'Error processing uploaded files:',
+//         error
+//       );
+//       res.status(500).json({
+//         message: 'Internal server error.',
+//       });
+//     }
+//   },
+//   blogs
+// );
+// app.post(
+//   '/tama/news',
+//   upload.fields([{ name: 'file', maxCount: 1 }]),
+//   (req, res, next) => {
+//     console.log(req.body);
+//     console.log(req.files);
+//     try {
+//       // Safely check if req.files is an object or array, then cast accordingly
+//       const files = req.files as
+//         | {
+//             [
+//               fieldname: string
+//             ]: Express.Multer.File[];
+//           }
+//         | Express.Multer.File[]
+//         | undefined;
 
-      if (!files || Array.isArray(files)) {
-        res.status(400).json({
-          message:
-            'Invalid file upload structure.',
-        });
-        return;
-      }
+//       if (!files || Array.isArray(files)) {
+//         res.status(400).json({
+//           message:
+//             'Invalid file upload structure.',
+//         });
+//         return;
+//       }
 
-      const file = files.file
-        ? files.file[0]
-        : null;
+//       const file = files.file
+//         ? files.file[0]
+//         : null;
 
-      if (!file) {
-        res.status(400).json({
-          message: 'File is required.',
-        });
-        return;
-      }
+//       if (!file) {
+//         res.status(400).json({
+//           message: 'File is required.',
+//         });
+//         return;
+//       }
 
-      // Function to construct file URLs
-      const constructFileUrl = (
-        file: Express.Multer.File
-      ) => {
-        return file.filename;
-      };
+//       // Function to construct file URLs
+//       const constructFileUrl = (
+//         file: Express.Multer.File
+//       ) => {
+//         return file.filename;
+//       };
 
-      // Construct URLs for the uploaded files
-      const fileUrl = constructFileUrl(file);
+//       // Construct URLs for the uploaded files
+//       const fileUrl = constructFileUrl(file);
 
-      // Attach URLs to the request body
-      req.body.imageUrl = fileUrl;
+//       // Attach URLs to the request body
+//       req.body.imageUrl = fileUrl;
 
-      // Pass control to the next middleware or route handler
-      next();
-    } catch (error) {
-      console.error(
-        'Error processing uploaded files:',
-        error
-      );
-      res.status(500).json({
-        message: 'Internal server error.',
-      });
-    }
-  },
-  news
-);
+//       // Pass control to the next middleware or route handler
+//       next();
+//     } catch (error) {
+//       console.error(
+//         'Error processing uploaded files:',
+//         error
+//       );
+//       res.status(500).json({
+//         message: 'Internal server error.',
+//       });
+//     }
+//   },
+//   news
+// );
 
 app.patch(
   '/tama/reports-publications/:id',

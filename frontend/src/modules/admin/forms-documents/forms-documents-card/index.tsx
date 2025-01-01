@@ -3,7 +3,6 @@ import { FileProps } from '@/lib/api';
 import {
   constructFileUrl,
   convertFileSize,
-  getFileType,
 } from '@/lib/utils';
 import FormattedDateTime from '@/modules/common/formatted-date-time';
 import Thumbnail from '@/modules/common/thumbnail';
@@ -16,9 +15,6 @@ type Props = {
 const FormsAndDocumentsCard = ({
   file,
 }: Props) => {
-  const fileProps = getFileType(file.fileUrl);
-  console.log(fileProps);
-
   return (
     <Link
       href={constructFileUrl(file.fileUrl)}
@@ -28,8 +24,8 @@ const FormsAndDocumentsCard = ({
       <Card className='file-card'>
         <div className='flex justify-between'>
           <Thumbnail
-            type={fileProps.type}
-            extension={fileProps.extension}
+            type={file.type}
+            extension={file.extension}
             url={file.fileUrl}
             className='!size-20'
             imageClassName='!size-11'
