@@ -378,261 +378,261 @@ const upload = multer({ storage });
 //   news
 // );
 
-app.patch(
-  '/tama/reports-publications/:id',
-  upload.fields([{ name: 'file', maxCount: 1 }]),
-  (req, res, next) => {
-    console.log(req.body);
-    console.log(req.files);
-    try {
-      const files = req.files as
-        | {
-            [
-              fieldname: string
-            ]: Express.Multer.File[];
-          }
-        | undefined;
+// app.patch(
+//   '/tama/reports-publications/:id',
+//   upload.fields([{ name: 'file', maxCount: 1 }]),
+//   (req, res, next) => {
+//     console.log(req.body);
+//     console.log(req.files);
+//     try {
+//       const files = req.files as
+//         | {
+//             [
+//               fieldname: string
+//             ]: Express.Multer.File[];
+//           }
+//         | undefined;
 
-      const file = files?.file?.[0] ?? null;
+//       const file = files?.file?.[0] ?? null;
 
-      if (file) {
-        // Construct URL for the uploaded file
-        const constructFileUrl = (
-          file: Express.Multer.File
-        ) => file.filename;
+//       if (file) {
+//         // Construct URL for the uploaded file
+//         const constructFileUrl = (
+//           file: Express.Multer.File
+//         ) => file.filename;
 
-        const fileUrl = constructFileUrl(file);
+//         const fileUrl = constructFileUrl(file);
 
-        // Attach the file URL to the request body
-        req.body.fileUrl = fileUrl;
+//         // Attach the file URL to the request body
+//         req.body.fileUrl = fileUrl;
 
-        console.log(
-          'File uploaded and URL constructed:',
-          fileUrl
-        );
-      } else {
-        console.log(
-          'No file uploaded. Proceeding with the existing data.'
-        );
-      }
+//         console.log(
+//           'File uploaded and URL constructed:',
+//           fileUrl
+//         );
+//       } else {
+//         console.log(
+//           'No file uploaded. Proceeding with the existing data.'
+//         );
+//       }
 
-      next();
-    } catch (error) {
-      console.error(
-        'Error processing uploaded files:',
-        error
-      );
-      res.status(500).json({
-        message: 'Internal server error.',
-      });
-    }
-  },
-  reportsPublications
-);
-app.patch(
-  '/tama/forms/:id',
-  upload.fields([{ name: 'file', maxCount: 1 }]),
-  (req, res, next) => {
-    console.log(req.body);
-    console.log(req.files);
-    try {
-      const files = req.files as
-        | {
-            [
-              fieldname: string
-            ]: Express.Multer.File[];
-          }
-        | undefined;
+//       next();
+//     } catch (error) {
+//       console.error(
+//         'Error processing uploaded files:',
+//         error
+//       );
+//       res.status(500).json({
+//         message: 'Internal server error.',
+//       });
+//     }
+//   },
+//   reportsPublications
+// );
+// app.patch(
+//   '/tama/forms/:id',
+//   upload.fields([{ name: 'file', maxCount: 1 }]),
+//   (req, res, next) => {
+//     console.log(req.body);
+//     console.log(req.files);
+//     try {
+//       const files = req.files as
+//         | {
+//             [
+//               fieldname: string
+//             ]: Express.Multer.File[];
+//           }
+//         | undefined;
 
-      const file = files?.file?.[0] ?? null;
+//       const file = files?.file?.[0] ?? null;
 
-      if (file) {
-        // Construct URL for the uploaded file
-        const constructFileUrl = (
-          file: Express.Multer.File
-        ) => file.filename;
+//       if (file) {
+//         // Construct URL for the uploaded file
+//         const constructFileUrl = (
+//           file: Express.Multer.File
+//         ) => file.filename;
 
-        const fileUrl = constructFileUrl(file);
+//         const fileUrl = constructFileUrl(file);
 
-        // Attach the file URL to the request body
-        req.body.fileUrl = fileUrl;
+//         // Attach the file URL to the request body
+//         req.body.fileUrl = fileUrl;
 
-        console.log(
-          'File uploaded and URL constructed:',
-          fileUrl
-        );
-      } else {
-        console.log(
-          'No file uploaded. Proceeding with the existing data.'
-        );
-      }
+//         console.log(
+//           'File uploaded and URL constructed:',
+//           fileUrl
+//         );
+//       } else {
+//         console.log(
+//           'No file uploaded. Proceeding with the existing data.'
+//         );
+//       }
 
-      next();
-    } catch (error) {
-      console.error(
-        'Error processing uploaded files:',
-        error
-      );
-      res.status(500).json({
-        message: 'Internal server error.',
-      });
-    }
-  },
-  forms
-);
-app.patch(
-  '/tama/shops/:id',
-  upload.fields([{ name: 'file', maxCount: 1 }]),
-  (req, res, next) => {
-    console.log(req.body);
-    console.log(req.files);
-    try {
-      const files = req.files as
-        | {
-            [
-              fieldname: string
-            ]: Express.Multer.File[];
-          }
-        | undefined;
+//       next();
+//     } catch (error) {
+//       console.error(
+//         'Error processing uploaded files:',
+//         error
+//       );
+//       res.status(500).json({
+//         message: 'Internal server error.',
+//       });
+//     }
+//   },
+//   forms
+// );
+// app.patch(
+//   '/tama/shops/:id',
+//   upload.fields([{ name: 'file', maxCount: 1 }]),
+//   (req, res, next) => {
+//     console.log(req.body);
+//     console.log(req.files);
+//     try {
+//       const files = req.files as
+//         | {
+//             [
+//               fieldname: string
+//             ]: Express.Multer.File[];
+//           }
+//         | undefined;
 
-      const file = files?.file?.[0] ?? null;
+//       const file = files?.file?.[0] ?? null;
 
-      if (file) {
-        // Construct URL for the uploaded file
-        const constructFileUrl = (
-          file: Express.Multer.File
-        ) => file.filename;
+//       if (file) {
+//         // Construct URL for the uploaded file
+//         const constructFileUrl = (
+//           file: Express.Multer.File
+//         ) => file.filename;
 
-        const fileUrl = constructFileUrl(file);
+//         const fileUrl = constructFileUrl(file);
 
-        // Attach the file URL to the request body
-        req.body.imageUrl = fileUrl;
+//         // Attach the file URL to the request body
+//         req.body.imageUrl = fileUrl;
 
-        console.log(
-          'File uploaded and URL constructed:',
-          fileUrl
-        );
-      } else {
-        console.log(
-          'No file uploaded. Proceeding with the existing data.'
-        );
-      }
+//         console.log(
+//           'File uploaded and URL constructed:',
+//           fileUrl
+//         );
+//       } else {
+//         console.log(
+//           'No file uploaded. Proceeding with the existing data.'
+//         );
+//       }
 
-      next();
-    } catch (error) {
-      console.error(
-        'Error processing uploaded files:',
-        error
-      );
-      res.status(500).json({
-        message: 'Internal server error.',
-      });
-    }
-  },
-  shops
-);
-app.patch(
-  '/tama/blogs/:id',
-  upload.fields([{ name: 'file', maxCount: 1 }]),
-  (req, res, next) => {
-    console.log(req.body);
-    console.log(req.files);
-    try {
-      const files = req.files as
-        | {
-            [
-              fieldname: string
-            ]: Express.Multer.File[];
-          }
-        | undefined;
+//       next();
+//     } catch (error) {
+//       console.error(
+//         'Error processing uploaded files:',
+//         error
+//       );
+//       res.status(500).json({
+//         message: 'Internal server error.',
+//       });
+//     }
+//   },
+//   shops
+// );
+// app.patch(
+//   '/tama/blogs/:id',
+//   upload.fields([{ name: 'file', maxCount: 1 }]),
+//   (req, res, next) => {
+//     console.log(req.body);
+//     console.log(req.files);
+//     try {
+//       const files = req.files as
+//         | {
+//             [
+//               fieldname: string
+//             ]: Express.Multer.File[];
+//           }
+//         | undefined;
 
-      const file = files?.file?.[0] ?? null;
+//       const file = files?.file?.[0] ?? null;
 
-      if (file) {
-        // Construct URL for the uploaded file
-        const constructFileUrl = (
-          file: Express.Multer.File
-        ) => file.filename;
+//       if (file) {
+//         // Construct URL for the uploaded file
+//         const constructFileUrl = (
+//           file: Express.Multer.File
+//         ) => file.filename;
 
-        const fileUrl = constructFileUrl(file);
+//         const fileUrl = constructFileUrl(file);
 
-        // Attach the file URL to the request body
-        req.body.imageUrl = fileUrl;
+//         // Attach the file URL to the request body
+//         req.body.imageUrl = fileUrl;
 
-        console.log(
-          'File uploaded and URL constructed:',
-          fileUrl
-        );
-      } else {
-        console.log(
-          'No file uploaded. Proceeding with the existing data.'
-        );
-      }
+//         console.log(
+//           'File uploaded and URL constructed:',
+//           fileUrl
+//         );
+//       } else {
+//         console.log(
+//           'No file uploaded. Proceeding with the existing data.'
+//         );
+//       }
 
-      next();
-    } catch (error) {
-      console.error(
-        'Error processing uploaded files:',
-        error
-      );
-      res.status(500).json({
-        message: 'Internal server error.',
-      });
-    }
-  },
-  blogs
-);
-app.patch(
-  '/tama/news/:id',
-  upload.fields([{ name: 'file', maxCount: 1 }]),
-  (req, res, next) => {
-    console.log(req.body);
-    console.log(req.files);
-    try {
-      const files = req.files as
-        | {
-            [
-              fieldname: string
-            ]: Express.Multer.File[];
-          }
-        | undefined;
+//       next();
+//     } catch (error) {
+//       console.error(
+//         'Error processing uploaded files:',
+//         error
+//       );
+//       res.status(500).json({
+//         message: 'Internal server error.',
+//       });
+//     }
+//   },
+//   blogs
+// );
+// app.patch(
+//   '/tama/news/:id',
+//   upload.fields([{ name: 'file', maxCount: 1 }]),
+//   (req, res, next) => {
+//     console.log(req.body);
+//     console.log(req.files);
+//     try {
+//       const files = req.files as
+//         | {
+//             [
+//               fieldname: string
+//             ]: Express.Multer.File[];
+//           }
+//         | undefined;
 
-      const file = files?.file?.[0] ?? null;
+//       const file = files?.file?.[0] ?? null;
 
-      if (file) {
-        // Construct URL for the uploaded file
-        const constructFileUrl = (
-          file: Express.Multer.File
-        ) => file.filename;
+//       if (file) {
+//         // Construct URL for the uploaded file
+//         const constructFileUrl = (
+//           file: Express.Multer.File
+//         ) => file.filename;
 
-        const fileUrl = constructFileUrl(file);
+//         const fileUrl = constructFileUrl(file);
 
-        // Attach the file URL to the request body
-        req.body.imageUrl = fileUrl;
+//         // Attach the file URL to the request body
+//         req.body.imageUrl = fileUrl;
 
-        console.log(
-          'File uploaded and URL constructed:',
-          fileUrl
-        );
-      } else {
-        console.log(
-          'No file uploaded. Proceeding with the existing data.'
-        );
-      }
+//         console.log(
+//           'File uploaded and URL constructed:',
+//           fileUrl
+//         );
+//       } else {
+//         console.log(
+//           'No file uploaded. Proceeding with the existing data.'
+//         );
+//       }
 
-      next();
-    } catch (error) {
-      console.error(
-        'Error processing uploaded files:',
-        error
-      );
-      res.status(500).json({
-        message: 'Internal server error.',
-      });
-    }
-  },
-  news
-);
+//       next();
+//     } catch (error) {
+//       console.error(
+//         'Error processing uploaded files:',
+//         error
+//       );
+//       res.status(500).json({
+//         message: 'Internal server error.',
+//       });
+//     }
+//   },
+//   news
+// );
 
 /* ROUTES */
 app.get('/', (req, res) => {

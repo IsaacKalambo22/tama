@@ -6,6 +6,10 @@ import {
 import useCustomPath from '@/hooks/use-custom-path';
 import { toast } from '@/hooks/use-toast';
 import { FileProps } from '@/lib/api';
+import {
+  getFileType,
+  handleFileUpload,
+} from '@/lib/utils';
 import CustomFormField, {
   FormFieldType,
 } from '@/modules/common/custom-form-field';
@@ -56,24 +60,30 @@ const ModalEditForm = ({
     console.log({ values });
     try {
       // Create FormData instance
-      const formData = new FormData();
-      formData.append(
-        'filename',
-        values.filename ?? ''
-      );
+      let fileUrl = '';
+      let type = '';
+      let extension = '';
+      let size = undefined;
 
       if (values.files.length > 0) {
-        const newFile = values.files[0];
-        formData.append('file', newFile);
-        const size = Number(file.size);
-        formData.append('size', size.toString()); // Ensure size is a number
-      }
-      for (const pair of formData.entries()) {
-        console.log(pair);
+        const file = values.files[0];
+        fileUrl = await handleFileUpload(file);
+        size = Number(file.size);
+        const fileProps = getFileType(file.name);
+        type = fileProps.type;
+        extension = fileProps.extension;
       }
 
+      const payload = {
+        filename: values.filename ?? '',
+        fileUrl,
+        type,
+        extension,
+        size,
+      };
+
       const result = await updateForms(
-        formData,
+        payload,
         file.id,
         fullPath,
         pathWithoutAdmin

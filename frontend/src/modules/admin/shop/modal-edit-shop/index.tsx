@@ -6,6 +6,7 @@ import {
 import useCustomPath from '@/hooks/use-custom-path';
 import { toast } from '@/hooks/use-toast';
 import { ShopProps } from '@/lib/api';
+import { handleFileUpload } from '@/lib/utils';
 import CustomFormField, {
   FormFieldType,
 } from '@/modules/common/custom-form-field';
@@ -60,29 +61,25 @@ const ModalEditShop = ({
     setIsLoading(true);
     console.log({ values });
     try {
-      // Create FormData instance
-      const formData = new FormData();
-      formData.append('name', values.name ?? '');
-      formData.append(
-        'openHours',
-        values.openHours ?? ''
-      );
-      formData.append(
-        'address',
-        values.address ?? ''
-      );
+      let fileUrl = '';
+      let size = undefined;
 
       if (values.files.length > 0) {
         const file = values.files[0];
-        formData.append('file', file);
+        fileUrl = await handleFileUpload(file);
+        size = Number(file.size);
       }
 
-      for (const pair of formData.entries()) {
-        console.log(pair);
-      }
+      const payload = {
+        name: values.name ?? '',
+        openHours: values.openHours ?? '',
+        address: values.address ?? '',
+        imageUrl: fileUrl ?? '',
+        size: size ?? '',
+      };
 
       const result = await updateShop(
-        formData,
+        payload,
         shop.id,
         fullPath,
         `/tobacco-business${pathWithoutAdmin}`

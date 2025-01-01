@@ -251,7 +251,7 @@ export const updateUser = async (
 };
 
 export const updateShop = async (
-  formData: FormData,
+  payload: Record<string, any>, // Use a JSON object as the payload
   id: string,
   fullPath: string,
   pathWithoutAdmin: string
@@ -271,8 +271,105 @@ export const updateShop = async (
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
-        body: formData,
+        body: JSON.stringify(payload), // Serialize the JSON object
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to upload files');
+    }
+
+    const result = await response.json();
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
+    return parseServerActionResponse({
+      ...result,
+      error: '',
+      status: 'SUCCESS',
+    });
+  } catch (error) {
+    console.log(error);
+
+    return parseServerActionResponse({
+      error: JSON.stringify(error),
+      status: 'ERROR',
+    });
+  }
+};
+export const updateForms = async (
+  payload: Record<string, any>, // Use a JSON object as the payload
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  try {
+    const session = await auth();
+    if (!session)
+      return parseServerActionResponse({
+        error: 'Not signed in',
+        status: 'ERROR',
+      });
+
+    const token = session?.accessToken;
+    const response = await fetch(
+      `${BASE_URL}/forms/${id}`,
+      {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload), // Serialize the JSON object
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to upload files');
+    }
+
+    const result = await response.json();
+    revalidatePath(fullPath);
+    revalidatePath(pathWithoutAdmin);
+    return parseServerActionResponse({
+      ...result,
+      error: '',
+      status: 'SUCCESS',
+    });
+  } catch (error) {
+    console.log(error);
+
+    return parseServerActionResponse({
+      error: JSON.stringify(error),
+      status: 'ERROR',
+    });
+  }
+};
+export const updateReports = async (
+  payload: Record<string, any>, // Use a JSON object as the payload
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  try {
+    const session = await auth();
+    if (!session)
+      return parseServerActionResponse({
+        error: 'Not signed in',
+        status: 'ERROR',
+      });
+
+    const token = session?.accessToken;
+    const response = await fetch(
+      `${BASE_URL}/reports-publications/${id}`,
+      {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload), // Serialize the JSON object
       }
     );
 
@@ -395,100 +492,6 @@ export const updateNews = async (
   }
 };
 
-export const updateReports = async (
-  formData: FormData,
-  id: string,
-  fullPath: string,
-  pathWithoutAdmin: string
-) => {
-  try {
-    const session = await auth();
-    if (!session)
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-
-    const token = session?.accessToken;
-    const response = await fetch(
-      `${BASE_URL}/reports-publications/${id}`,
-      {
-        method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to upload files');
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return parseServerActionResponse({
-      ...result,
-      error: '',
-      status: 'SUCCESS',
-    });
-  } catch (error) {
-    console.log(error);
-
-    return parseServerActionResponse({
-      error: JSON.stringify(error),
-      status: 'ERROR',
-    });
-  }
-};
-export const updateForms = async (
-  formData: FormData,
-  id: string,
-  fullPath: string,
-  pathWithoutAdmin: string
-) => {
-  try {
-    const session = await auth();
-    if (!session)
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-
-    const token = session?.accessToken;
-    const response = await fetch(
-      `${BASE_URL}/forms/${id}`,
-      {
-        method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to upload files');
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return parseServerActionResponse({
-      ...result,
-      error: '',
-      status: 'SUCCESS',
-    });
-  } catch (error) {
-    console.log(error);
-
-    return parseServerActionResponse({
-      error: JSON.stringify(error),
-      status: 'ERROR',
-    });
-  }
-};
 export const deleteShop = async (
   id: string,
   fullPath: string,
