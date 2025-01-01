@@ -61,12 +61,12 @@ const ModalEditShop = ({
     setIsLoading(true);
     console.log({ values });
     try {
-      let fileUrl = '';
+      let imageUrl = '';
       let size = undefined;
 
       if (values.files.length > 0) {
         const file = values.files[0];
-        fileUrl = await handleFileUpload(file);
+        imageUrl = await handleFileUpload(file);
         size = Number(file.size);
       }
 
@@ -74,8 +74,8 @@ const ModalEditShop = ({
         name: values.name ?? '',
         openHours: values.openHours ?? '',
         address: values.address ?? '',
-        imageUrl: fileUrl ?? '',
-        size: size ?? '',
+        imageUrl,
+        size: size,
       };
 
       const result = await updateShop(

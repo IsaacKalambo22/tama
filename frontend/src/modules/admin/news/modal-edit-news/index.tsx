@@ -6,6 +6,7 @@ import {
 import useCustomPath from '@/hooks/use-custom-path';
 import { toast } from '@/hooks/use-toast';
 import { NewsProps } from '@/lib/api';
+import { handleFileUpload } from '@/lib/utils';
 import CustomFormField, {
   FormFieldType,
 } from '@/modules/common/custom-form-field';
@@ -59,28 +60,25 @@ const ModalEditNews = ({
     setIsLoading(true);
     console.log({ values });
     try {
-      // Create FormData instance
-      const formData = new FormData();
-      formData.append(
-        'title',
-        values.title ?? ''
-      );
-      formData.append(
-        'content',
-        values.content ?? ''
-      );
-      formData.append(
-        'author',
-        values.author ?? ''
-      );
+      let imageUrl = '';
+      let size = undefined;
 
       if (values.files.length > 0) {
         const file = values.files[0];
-        formData.append('file', file);
+        imageUrl = await handleFileUpload(file);
+        size = Number(file.size);
       }
 
+      const payload = {
+        title: values.title ?? '',
+        content: values.content ?? '',
+        author: values.author ?? '',
+        imageUrl,
+        size: size,
+      };
+
       const result = await updateNews(
-        formData,
+        payload,
         news.id,
         fullPath,
         pathWithoutAdmin

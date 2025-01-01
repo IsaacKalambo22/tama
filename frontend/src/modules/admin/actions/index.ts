@@ -346,7 +346,7 @@ export const updateForms = async (
     });
   }
 };
-export const updateReports = async (
+export const updateNews = async (
   payload: Record<string, any>, // Use a JSON object as the payload
   id: string,
   fullPath: string,
@@ -362,7 +362,7 @@ export const updateReports = async (
 
     const token = session?.accessToken;
     const response = await fetch(
-      `${BASE_URL}/reports-publications/${id}`,
+      `${BASE_URL}/news/${id}`,
       {
         method: 'PATCH',
         headers: {
@@ -395,7 +395,7 @@ export const updateReports = async (
   }
 };
 export const updateBlog = async (
-  formData: FormData,
+  payload: Record<string, any>, // Use a JSON object as the payload
   id: string,
   fullPath: string,
   pathWithoutAdmin: string
@@ -415,8 +415,9 @@ export const updateBlog = async (
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
-        body: formData,
+        body: JSON.stringify(payload), // Serialize the JSON object
       }
     );
 
@@ -425,10 +426,8 @@ export const updateBlog = async (
     }
 
     const result = await response.json();
-
     revalidatePath(fullPath);
     revalidatePath(pathWithoutAdmin);
-
     return parseServerActionResponse({
       ...result,
       error: '',
@@ -443,9 +442,8 @@ export const updateBlog = async (
     });
   }
 };
-
-export const updateNews = async (
-  formData: FormData,
+export const updateReports = async (
+  payload: Record<string, any>, // Use a JSON object as the payload
   id: string,
   fullPath: string,
   pathWithoutAdmin: string
@@ -460,13 +458,14 @@ export const updateNews = async (
 
     const token = session?.accessToken;
     const response = await fetch(
-      `${BASE_URL}/news/${id}`,
+      `${BASE_URL}/reports-publications/${id}`,
       {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
-        body: formData,
+        body: JSON.stringify(payload), // Serialize the JSON object
       }
     );
 
