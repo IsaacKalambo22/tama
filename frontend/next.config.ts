@@ -20,6 +20,8 @@ const nextConfig: NextConfig = {
 
   // Image optimization settings
   images: {
+    minimumCacheTTL: 90, // Set a higher cache timeout
+
     remotePatterns: [
       {
         protocol: 'http',
@@ -30,7 +32,14 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname:
-          '"nknr42fug3.execute-api.eu-north-1.amazonaws.com',
+          'nknr42fug3.execute-api.eu-north-1.amazonaws.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname:
+          'madzalo-s3.s3.eu-north-1.amazonaws.com',
         port: '',
         pathname: '/**',
       },

@@ -1,3 +1,4 @@
+import { getSignedURL } from '@/modules/admin/actions';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { FileProps } from './api';
@@ -305,4 +306,45 @@ export const getFileTypesParams = (
     default:
       return ['document'];
   }
+};
+
+export const computeSHA256 = async (
+  file: File
+) => {
+  const buffer = await file.arrayBuffer();
+  const hashBuffer = await crypto.subtle.digest(
+    'SHA-256',
+    buffer
+  );
+  const hashArray = Array.from(
+    new Uint8Array(hashBuffer)
+  );
+  const hashHex = hashArray
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+  return hashHex;
+};
+
+export const handleFileUpload = async (
+  file: File
+) => {
+  const signedURLResult = await getSignedURL({
+    fileSize: file.size,
+    fileType: file.type,
+    checksum: await computeSHA256(file),
+  });
+  if (signedURLResult.failure !== undefined) {
+    throw new Error(signedURLResult.failure);
+  }
+  const { url } = signedURLResult.success;
+  await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': file.type,
+    },
+    body: file,
+  });
+
+  const fileUrl = url.split('?')[0];
+  return fileUrl;
 };

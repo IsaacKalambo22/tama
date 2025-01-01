@@ -39,7 +39,6 @@ const Desktop = () => {
                   width={43}
                   height={43}
                   alt='logo'
-                  layout='fixed'
                   className='object-contain'
                 />
               </div>

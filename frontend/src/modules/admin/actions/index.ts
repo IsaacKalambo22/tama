@@ -7,6 +7,11 @@ import {
   parseServerActionResponse,
   parseStringify,
 } from '@/lib/utils';
+import {
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { revalidatePath } from 'next/cache';
 
 const handleError = (
@@ -80,29 +85,32 @@ export const createForm = async (
 };
 
 export const createShop = async (
-  formData: FormData,
+  payload: Record<string, any>, // Use a JSON object as the payload
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
   try {
     const session = await auth();
 
-    if (!session)
+    if (!session) {
       return parseServerActionResponse({
         error: 'Not signed in',
         status: 'ERROR',
       });
+    }
 
-    const token = session?.accessToken;
+    const token = session.accessToken;
 
+    // Send JSON payload
     const response = await fetch(
       `${BASE_URL}/shops`,
       {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
-        body: formData,
+        body: JSON.stringify(payload), // Serialize the JSON object
       }
     );
 
@@ -114,6 +122,7 @@ export const createShop = async (
 
     revalidatePath(fullPath);
     revalidatePath(pathWithoutAdmin);
+
     return result;
   } catch (error) {
     console.error(
@@ -1315,5 +1324,154 @@ export const createReportAndPublication = async (
       error
     );
     throw error;
+  }
+};
+
+const allowedFileTypes = [
+  'image/jpeg',
+  'image/png',
+  'image/jpg',
+  'video/mp4',
+  'video/quicktime',
+];
+
+const maxFileSize = 1048576 * 1000; // 1 MB
+
+const s3Client = new S3Client({
+  region: process.env.AWS_BUCKET_REGION!,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY!,
+    secretAccessKey:
+      process.env.AWS_SECRET_ACCESS_KEY!,
+  },
+});
+
+const generateFileName = (length = 32) => {
+  const chars =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(
+      Math.floor(Math.random() * chars.length)
+    );
+  }
+  return result;
+};
+
+type SignedURLResponse = Promise<
+  | {
+      failure?: undefined;
+      success: { url: string };
+    }
+  | { failure: string; success?: undefined }
+>;
+
+type GetSignedURLParams = {
+  fileType: string;
+  fileSize: number;
+  checksum: string;
+};
+// export const getSignedURL = async ({
+//   fileType,
+//   fileSize,
+//   checksum,
+// }: GetSignedURLParams): SignedURLResponse => {
+//   const session = await auth();
+
+//   if (!session) {
+//     return { failure: 'not authenticated' };
+//   }
+
+//   if (!allowedFileTypes.includes(fileType)) {
+//     return { failure: 'File type not allowed' };
+//   }
+
+//   if (fileSize > maxFileSize) {
+//     return { failure: 'File size too large' };
+//   }
+
+//   const fileName = generateFileName();
+
+//   const putObjectCommand = new PutObjectCommand({
+//     Bucket: process.env.AWS_BUCKET_NAME!,
+//     Key: fileName,
+//     ContentType: fileType,
+//     ContentLength: fileSize,
+//     ChecksumSHA256: checksum,
+//   });
+
+//   const url = await getSignedUrl(
+//     s3Client,
+//     putObjectCommand,
+//     { expiresIn: 60 } // 60 seconds
+//   );
+
+//   console.log({ success: url });
+
+//   // const results = await db
+//   //   .insert(mediaTable)
+//   //   .values({
+//   //     type: fileType.startsWith('image')
+//   //       ? 'image'
+//   //       : 'video',
+//   //     url: url.split('?')[0],
+//   //     width: 0,
+//   //     height: 0,
+//   //     userId: session.user.id,
+//   //   })
+//   //   .returning();
+
+//   return { success: { url: url } };
+// };
+export const getSignedURL = async ({
+  fileType,
+  fileSize,
+  checksum,
+}: GetSignedURLParams): Promise<SignedURLResponse> => {
+  try {
+    const session = await auth();
+
+    if (!session) {
+      return { failure: 'not authenticated' };
+    }
+
+    if (!allowedFileTypes.includes(fileType)) {
+      return { failure: 'File type not allowed' };
+    }
+
+    if (fileSize > maxFileSize) {
+      return { failure: 'File size too large' };
+    }
+
+    const fileName = generateFileName();
+
+    // Modify the key to include the 'tama' folder path
+    const folderPath = 'tama'; // This is the folder within your S3 bucket
+    const s3Key = `${folderPath}/${fileName}`; // Full path in S3: tama/filename
+
+    const putObjectCommand = new PutObjectCommand(
+      {
+        Bucket: process.env.AWS_BUCKET_NAME!, // Your S3 bucket name
+        Key: s3Key, // The object key that includes the folder path
+        ContentType: fileType,
+        ContentLength: fileSize,
+        ChecksumSHA256: checksum,
+      }
+    );
+    const url = await getSignedUrl(
+      s3Client,
+      putObjectCommand,
+      { expiresIn: 180 } // 60 seconds
+    );
+
+    console.log('Generated Signed URL:', url);
+
+    return { success: { url: url } }; // Ensure the value is correctly returned
+  } catch (error) {
+    console.error(
+      'Error generating signed URL:',
+      error
+    );
+    return { failure: 'An error occurred' };
   }
 };

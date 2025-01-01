@@ -118,7 +118,6 @@ const ResetPassword = ({
                   alt='Logo'
                   width={64}
                   height={64}
-                  priority
                 />
               </div>
             </Link>

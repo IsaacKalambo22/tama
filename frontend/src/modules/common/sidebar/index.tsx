@@ -66,7 +66,6 @@ const Sidebar = ({ links }: SidebarProps) => {
                   width={40}
                   height={40}
                   alt='logo'
-                  layout='fixed'
                   className='object-contain'
                 />
               </div>

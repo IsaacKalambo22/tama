@@ -6,6 +6,7 @@ import {
 } from '@/components/ui/form';
 import useCustomPath from '@/hooks/use-custom-path';
 import { toast } from '@/hooks/use-toast';
+import { handleFileUpload } from '@/lib/utils';
 import CustomFormField, {
   FormFieldType,
 } from '@/modules/common/custom-form-field';
@@ -65,39 +66,38 @@ const ModalNewShop = ({
   ) => {
     setIsLoading(true);
     console.log({ values });
+
     try {
-      // Create FormData instance
-      const formData = new FormData();
-      formData.append('name', values.name);
-      formData.append(
-        'openHours',
-        values.openHours
-      );
-      formData.append('address', values.address);
-
-      // Directly append the file
+      // Upload the file separately to get the URL
       const file = values.files[0];
-      formData.append('file', file);
-      console.log('File name:', file.name);
+      const fileUrl = await handleFileUpload(
+        file
+      );
 
-      for (const pair of formData.entries()) {
-        console.log(pair);
-      }
+      console.log('File uploaded. URL:', fileUrl);
+
+      // Create a JSON object to send
+      const payload = {
+        name: values.name,
+        openHours: values.openHours,
+        address: values.address,
+        imageUrl: fileUrl, // Add the uploaded file URL
+      };
 
       const result = await createShop(
-        formData,
+        payload,
         fullPath,
         `/tobacco-business${pathWithoutAdmin}`
       );
 
       console.log('Upload result:', result);
+
       onClose();
       toast({
         title: 'Success',
         description:
           'New form or document has been created successfully',
       });
-      // Handle the result, such as showing success or error messages
     } catch (error) {
       toast({
         title: 'Error',
@@ -105,7 +105,7 @@ const ModalNewShop = ({
           'An unexpected error has occurred',
         variant: 'destructive',
       });
-      console.log('Upload error:', error);
+      console.error('Upload error:', error);
     } finally {
       setIsLoading(false);
     }
