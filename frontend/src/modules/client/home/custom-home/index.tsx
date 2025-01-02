@@ -33,7 +33,7 @@ const CustomHome = () => {
           imagePosition='right'
         />
         <ImageTextHome
-          imagePath='/assets/images/carousel/2.jpg'
+          imagePath='/assets/images/services/04.webp'
           heading='Our Mission'
           description='To provide visible and compelling services to the grower members and perpetuate sustainable balance in the generation of wealth in a manner that ascertains wider income diversification and value.'
         />
