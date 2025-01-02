@@ -1,15 +1,28 @@
 'use client';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useSidebarStore } from '@/providers/sidebar-state'; // Import Zustand store
-import { Search, Settings } from 'lucide-react';
-import Link from 'next/link';
+import { Search } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 import {
   AiOutlineMenuFold,
   AiOutlineMenuUnfold,
 } from 'react-icons/ai';
+
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 const Navbar = () => {
   // Access isSidebarCollapsed state from Zustand store
@@ -19,6 +32,16 @@ const Navbar = () => {
   const toggleSidebar = useSidebarStore(
     (state) => state.toggleSidebar
   ); // Use toggle function from Zustand
+  const { data: session } = useSession();
+
+  const [providers, setProviders] =
+    useState(null);
+  const [toggleDropdown, setToggleDropdown] =
+    useState(false);
+
+  useEffect(() => {
+    (async () => {})();
+  }, [session]);
 
   return (
     <Card className='flex w-full items-center justify-between rounded-none bg-white px-4 py-3 shadow-none dark:bg-black'>
@@ -51,14 +74,39 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Icons */}
-      <div className='mr-6 flex items-center gap-2'>
-        <Link
-          href='/settings'
-          className='h-min w-min rounded p-2 hover:bg-gray-100'
-        >
-          <Settings className='h-6 w-6 cursor-pointer dark:text-white' />
-        </Link>
+      <div className='mr-5'>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant='outline'>
+              {session?.name}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className='w-40'>
+            <DropdownMenuLabel>
+              My Account
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem asChild>
+                <Link href='/admin/profile'>
+                  Profile
+                  <DropdownMenuShortcut>
+                    ⇧⌘P
+                  </DropdownMenuShortcut>
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              Log out
+              <DropdownMenuShortcut>
+                ⇧⌘Q
+              </DropdownMenuShortcut>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </Card>
   );
