@@ -187,6 +187,7 @@ export const login = async (
         email: user.email,
         role: user.role,
         accessToken: access_token,
+        avatar: user.avatar,
       },
     });
   } catch (error) {

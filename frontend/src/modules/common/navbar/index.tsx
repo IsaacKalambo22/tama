@@ -21,6 +21,10 @@ import {
   AiOutlineMenuUnfold,
 } from 'react-icons/ai';
 
+import {
+  Avatar,
+  AvatarImage,
+} from '@/components/ui/avatar';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
@@ -64,7 +68,7 @@ const Navbar = () => {
             <AiOutlineMenuUnfold className='h-5 w-5 dark:text-white' />
           </Button>
         )}
-        <div className='relative flex h-min w-[200px]'>
+        <div className='relative hidden sm:flex h-min w-[200px]'>
           <Search className='absolute left-[4px] top-1/2 mr-2 h-5 w-5 -translate-y-1/2 transform cursor-pointer dark:text-white' />
           <Input
             className='w-full border-none bg-gray-100 p-2 pl-8 placeholder-gray-500 focus:border-transparent focus:outline-none dark:bg-gray-700 dark:text-white dark:placeholder-white'
@@ -77,7 +81,21 @@ const Navbar = () => {
       <div className='mr-5'>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline'>
+            <Button
+              className='h-10 '
+              variant='outline'
+            >
+              {session?.user?.image && (
+                <Avatar className='w-8 h-8'>
+                  <AvatarImage
+                    src={
+                      session?.user?.image ||
+                      '/profile.png'
+                    }
+                    alt={`${session?.name}'s profile`}
+                  />
+                </Avatar>
+              )}
               {session?.name}
             </Button>
           </DropdownMenuTrigger>
@@ -96,15 +114,15 @@ const Navbar = () => {
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
+            {/* <DropdownMenuSeparator /> */}
 
-            <DropdownMenuSeparator />
+            {/* <DropdownMenuSeparator />
             <DropdownMenuItem>
               Log out
               <DropdownMenuShortcut>
                 ⇧⌘Q
               </DropdownMenuShortcut>
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

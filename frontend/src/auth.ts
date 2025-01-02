@@ -69,6 +69,7 @@ export const { handlers, auth, signIn, signOut } =
                 name: data.user.name,
                 email: data.user.email,
                 role: data.user.role,
+                image: data.user.avatar,
               };
             }
 
@@ -96,6 +97,7 @@ export const { handlers, auth, signIn, signOut } =
           token.name = user.name;
           token.email = user.email;
           token.role = user.role;
+          token.image = user.image;
         } else {
           // console.log(
           //   'No user data passed to JWT callback. Using existing token.'
@@ -114,6 +116,7 @@ export const { handlers, auth, signIn, signOut } =
           name: token.name,
           email: token.email,
           role: token.role,
+          image: token.image,
         });
         // console.log('Updated Session:', session);
         return session;

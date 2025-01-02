@@ -4,7 +4,6 @@ import {
   AvatarImage,
 } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
-import SocialMediaIcons from '../social-media-icons';
 
 interface AvatarCardProps {
   name: string;
@@ -22,7 +21,7 @@ const AvatarCard = ({
     .toUpperCase(); // Get the first letter of the user's name
 
   return (
-    <Card className='w-full lg:w-64 h-auto gap-2 rounded-2xl shadow-none p-5'>
+    <Card className='w-full lg:w-64 h-auto gap-2 rounded-2xl shadow-none px-5 py-8'>
       <div className='flex justify-center items-center'>
         <Avatar className='w-32 h-32'>
           <AvatarImage
@@ -34,7 +33,7 @@ const AvatarCard = ({
           </AvatarFallback>
         </Avatar>
       </div>
-      <div className='flex flex-col gap-2 my-4 items-center'>
+      <div className='flex flex-col gap-2 mt-4 items-center'>
         <h2 className='font-medium text-center'>
           {name}
         </h2>
@@ -42,7 +41,6 @@ const AvatarCard = ({
           {role}
         </p>
       </div>
-      <SocialMediaIcons />
     </Card>
   );
 };
