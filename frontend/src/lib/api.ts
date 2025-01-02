@@ -67,6 +67,9 @@ export interface UserProps {
   email: string;
   phoneNumber: string;
   name: string;
+  avatar?: string;
+  district?: string;
+  about?: string;
   role: Role;
   lastLogin: string | null; // ISO date string or null if never logged in
   isVerified: boolean;

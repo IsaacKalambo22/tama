@@ -25,6 +25,9 @@ model User {
   password                   String
   phoneNumber                String
   name                       String
+  avatar                     String?
+  district                   String?
+  about                      String?
   role                       Role      @default(USER)
   lastLogin                  DateTime  @default(now())
   isVerified                 Boolean   @default(false)
