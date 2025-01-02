@@ -1,10 +1,9 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { UserProps } from '@/lib/api';
 import { BASE_URL } from '@/lib/utils';
-import { Edit } from 'lucide-react';
+import AddNewHeader from '@/modules/common/add-new-header';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -58,7 +57,9 @@ const Profile = () => {
   }, [session]);
 
   const handleEditProfile = () => {
-    router.push('/admin/profile/user-profile');
+    if (userDetails) {
+      router.push('/admin/profile/user-profile');
+    }
   };
 
   if (loading) {
@@ -79,15 +80,10 @@ const Profile = () => {
 
   return (
     <div className='flex flex-col'>
-      <div className='mb-5 flex w-full items-center justify-between'>
-        <h1 className='text-lg font-semibold dark:text-white'>
-          Profile
-        </h1>
-        <Button onClick={handleEditProfile}>
-          <Edit className='h-4 w-4' />
-          Edit Profile
-        </Button>
-      </div>
+      <AddNewHeader
+        name='Profile'
+        buttonName='Edit Profile'
+      />
       <Card className='flex flex-col lg:flex-row gap-8 shadow-none mt-4 p-8'>
         <div className='flex flex-col gap-4'>
           <AvatarCard
@@ -109,7 +105,6 @@ const Profile = () => {
                 userDetails.district ?? 'Not set',
             }}
           />
-
           <AboutMe about={userDetails.about} />
         </div>
       </Card>

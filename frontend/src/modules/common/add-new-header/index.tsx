@@ -6,6 +6,7 @@ import ModalNewCouncilList from '@/modules/admin/council-list/modal-new-council-
 import ModalNewEvent from '@/modules/admin/events/modal-new-event';
 import ModalNewForm from '@/modules/admin/forms-documents/modal-new-form';
 import ModalNewNews from '@/modules/admin/news/modal-new-news';
+import ModalEditProfile from '@/modules/admin/profile/edit-profile';
 import ModalNewPublication from '@/modules/admin/reports-publications/modal-new-publication';
 import ModalNewShop from '@/modules/admin/shop/modal-new-shop';
 import ModalNewUser from '@/modules/admin/user/modal-new-user';
@@ -17,6 +18,7 @@ export enum AddNewType {
   NEW_FORM = 'New Form',
   NEW_REPORT_OR_PUBLICATION = 'New Report or Publication',
   NEW_SHOP = 'New Shop',
+  EDIT_PROFILE = 'Edit Profile',
   NEW_BLOG = 'New Blog',
   ADD_NEWS = 'Add News',
   ADD_USER = 'Add User',
@@ -124,6 +126,14 @@ const AddNewHeader = ({
       {isOpen &&
         buttonName === AddNewType.ADD_USER && (
           <ModalNewUser
+            isOpen={isOpen}
+            onClose={handleClose}
+          />
+        )}
+      {isOpen &&
+        buttonName ===
+          AddNewType.EDIT_PROFILE && (
+          <ModalEditProfile
             isOpen={isOpen}
             onClose={handleClose}
           />

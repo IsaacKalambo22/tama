@@ -189,13 +189,7 @@ export const createUser = async (
 };
 export const updateUser = async (
   userId: string,
-  data: {
-    name?: string;
-    email?: string;
-    password?: string;
-    phoneNumber?: string;
-    role?: string;
-  },
+  payload: Record<string, any>, // Use a JSON object as the payload
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
@@ -219,7 +213,7 @@ export const updateUser = async (
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       }
     );
 

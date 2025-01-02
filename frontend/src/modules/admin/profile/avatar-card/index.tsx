@@ -1,5 +1,9 @@
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
-import Image from 'next/image';
 import SocialMediaIcons from '../social-media-icons';
 
 interface AvatarCardProps {
@@ -13,10 +17,23 @@ const AvatarCard = ({
   role,
   imageSrc,
 }: AvatarCardProps) => {
+  const userInitial = name
+    .charAt(0)
+    .toUpperCase(); // Get the first letter of the user's name
+
   return (
     <Card className='w-full lg:w-64 h-auto gap-2 rounded-2xl shadow-none p-5'>
       <div className='flex justify-center items-center'>
-        <div className='w-20 h-20 lg:w-32 lg:h-32 rounded-full bg-amber-100 flex items-center justify-center'>
+        <Avatar className='w-32 h-32'>
+          <AvatarImage
+            src={imageSrc}
+            alt={`${name}'s profile`}
+          />
+          <AvatarFallback>
+            {userInitial}
+          </AvatarFallback>
+        </Avatar>
+        {/* <div className='w-20 h-20 lg:w-32 lg:h-32 rounded-full bg-amber-100 flex items-center justify-center'>
           <Image
             src={imageSrc}
             alt={`${name}'s profile`}
@@ -24,7 +41,7 @@ const AvatarCard = ({
             height={80}
             className='rounded-full'
           />
-        </div>
+        </div> */}
       </div>
       <div className='flex flex-col gap-2 my-4 items-center'>
         <h2 className='font-medium text-center'>

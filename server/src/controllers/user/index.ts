@@ -106,6 +106,9 @@ export const updateUser = async (
     password,
     role,
     phoneNumber,
+    district,
+    avatar,
+    about,
   } = req.body;
 
   // Validate input
@@ -138,6 +141,11 @@ export const updateUser = async (
       typeof existingUser
     > = {
       name: name?.trim() || existingUser.name,
+      district:
+        district?.trim() || existingUser.district,
+      avatar:
+        avatar?.trim() || existingUser.avatar,
+      about: about?.trim() || existingUser.about,
       email: email?.trim() || existingUser.email,
       role: role?.trim() || existingUser.role,
       phoneNumber:
