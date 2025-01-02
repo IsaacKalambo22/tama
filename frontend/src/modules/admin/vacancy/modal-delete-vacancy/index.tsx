@@ -30,8 +30,7 @@ const ModalDeleteVacancy = ({
   const [isLoading, setIsLoading] =
     useState(false);
   const path = usePathname();
-  const { fullPath, pathWithoutAdmin } =
-    useCustomPath(path);
+  const { fullPath } = useCustomPath(path);
 
   const onSubmit = async () => {
     setIsLoading(true);
@@ -40,7 +39,8 @@ const ModalDeleteVacancy = ({
       const result = await deleteVacancy(
         vacancy.id,
         fullPath,
-        `/vacancies${pathWithoutAdmin}`
+        '/resources/vacancies',
+        '/admin'
       );
 
       console.log('Upload result:', result);

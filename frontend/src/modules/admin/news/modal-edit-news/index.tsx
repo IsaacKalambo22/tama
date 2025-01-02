@@ -81,7 +81,7 @@ const ModalEditNews = ({
         payload,
         news.id,
         fullPath,
-        pathWithoutAdmin
+        '/news-updates-news'
       );
 
       console.log('Upload result:', result);

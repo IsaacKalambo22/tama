@@ -100,7 +100,7 @@ const ModalEditVacancy = ({
           payload,
           vacancy.id,
           fullPath,
-          `/vacancies${pathWithoutAdmin}`
+          '/resources/vacancies'
         );
         onClose();
         toast({

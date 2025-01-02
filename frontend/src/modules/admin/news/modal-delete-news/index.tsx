@@ -5,6 +5,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from '@/components/ui/dialog';
+import useCustomPath from '@/hooks/use-custom-path';
 import { toast } from '@/hooks/use-toast';
 import { NewsProps } from '@/lib/api';
 import CustomButton, {
@@ -29,13 +30,16 @@ const ModalDeleteNews = ({
   const [isLoading, setIsLoading] =
     useState(false);
   const path = usePathname();
+  const { fullPath } = useCustomPath(path);
   const onSubmit = async () => {
     setIsLoading(true);
 
     try {
       const result = await deleteNews(
         news.id,
-        path
+        fullPath,
+        '/news-updates-news',
+        '/admin'
       );
 
       console.log('Upload result:', result);

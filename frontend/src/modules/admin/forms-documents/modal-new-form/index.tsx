@@ -85,7 +85,8 @@ const ModalNewForm = ({
       const result = await createForm(
         payload,
         fullPath,
-        pathWithoutAdmin
+        pathWithoutAdmin,
+        '/admin'
       );
 
       console.log('Upload result:', result);

@@ -143,7 +143,7 @@ async function handleFetch<T>(
     const response = await fetch(endpoint, {
       method: 'GET',
       headers,
-      next: { revalidate: 1 },
+      // next: { revalidate: 1 },
     });
     if (!response.ok) {
       console.log(

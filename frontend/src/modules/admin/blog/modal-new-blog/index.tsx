@@ -94,7 +94,8 @@ const ModalNewBlog = ({
       const result = await createBlog(
         payload,
         fullPath,
-        pathWithoutAdmin
+        pathWithoutAdmin,
+        '/admin'
       );
 
       console.log('Upload result:', result);

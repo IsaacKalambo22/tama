@@ -13,7 +13,7 @@ import CustomButton, {
 } from '@/modules/common/custom-button';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { deleteReports } from '../../actions';
+import { deleteReportAndPublication } from '../../actions';
 import Modal from '../../modal';
 
 type Props = {
@@ -36,11 +36,13 @@ const ModalDeleteReports = ({
     setIsLoading(true);
 
     try {
-      const result = await deleteReports(
-        file.id,
-        fullPath,
-        pathWithoutAdmin
-      );
+      const result =
+        await deleteReportAndPublication(
+          file.id,
+          fullPath,
+          pathWithoutAdmin,
+          '/admin'
+        );
 
       console.log('Upload result:', result);
       onClose();

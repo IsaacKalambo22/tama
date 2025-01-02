@@ -108,21 +108,20 @@ const ModalEditUser = ({
     values: zod.infer<typeof formSchema>
   ) => {
     setIsLoading(true);
-
+    const payload = {
+      name: values.name || undefined,
+      email: values.email || undefined,
+      password: values.password || undefined,
+      phoneNumber:
+        values.phoneNumber || undefined,
+      role: values.role || undefined,
+    };
     try {
       // Send the values directly as a JSON object
       await updateUser(
+        payload,
         user.id, // Assuming `user.id` is the unique identifier for the user
-        {
-          name: values.name || undefined,
-          email: values.email || undefined,
-          password: values.password || undefined,
-          phoneNumber:
-            values.phoneNumber || undefined,
-          role: values.role || undefined,
-        },
-        fullPath,
-        pathWithoutAdmin
+        fullPath
       );
 
       toast({

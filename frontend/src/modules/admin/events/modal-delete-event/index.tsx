@@ -30,8 +30,7 @@ const ModalDeleteEvent = ({
   const [isLoading, setIsLoading] =
     useState(false);
   const path = usePathname();
-  const { fullPath, pathWithoutAdmin } =
-    useCustomPath(path);
+  const { fullPath } = useCustomPath(path);
 
   const onSubmit = async () => {
     setIsLoading(true);
@@ -40,7 +39,8 @@ const ModalDeleteEvent = ({
       const result = await deleteEvent(
         event.id,
         fullPath,
-        `/tobacco-business${pathWithoutAdmin}`
+        `/tobacco-business/event-calendar`,
+        '/admin'
       );
 
       console.log('Upload result:', result);

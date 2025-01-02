@@ -2,6 +2,7 @@ import { Card } from '@/components/ui/card';
 import {
   fetchBlogs,
   fetchCouncilList,
+  fetchEvents,
   fetchFormsAndDocuments,
   fetchNews,
   fetchReportsAndPublications,
@@ -10,6 +11,7 @@ import {
 } from '@/lib/api';
 import { formatCount } from '@/lib/utils';
 import AddNewHeader from '@/modules/common/add-new-header';
+import { Calendar } from 'lucide-react';
 import {
   FaBook,
   FaClipboard,
@@ -98,6 +100,16 @@ const stats: AdminStats[] = [
       />
     ),
   },
+  {
+    title: 'Events',
+    count: 5, // Mocked value will be replaced by fetched data
+    icon: (
+      <Calendar
+        size={30}
+        className='text-green-500'
+      />
+    ),
+  },
 ];
 
 export default async function Dashboard() {
@@ -110,6 +122,7 @@ export default async function Dashboard() {
     councilLists,
     news,
     users,
+    events,
   ] = await Promise.all([
     fetchBlogs(),
     fetchShops(),
@@ -118,6 +131,7 @@ export default async function Dashboard() {
     fetchCouncilList(),
     fetchNews(),
     fetchUsers(),
+    fetchEvents(),
   ]);
 
   // Update the stats with fetched data or fallback to the mocked value
@@ -143,6 +157,9 @@ export default async function Dashboard() {
         break;
       case 'Council Lists':
         stat.count = councilLists?.length || 0;
+        break;
+      case 'Events':
+        stat.count = events?.length || 0;
         break;
       default:
         break;

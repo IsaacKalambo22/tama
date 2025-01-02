@@ -30,8 +30,7 @@ const ModalEditEvent = ({
   const [isLoading, setIsLoading] =
     useState(false);
   const path = usePathname();
-  const { fullPath, pathWithoutAdmin } =
-    useCustomPath(path);
+  const { fullPath } = useCustomPath(path);
 
   // Define the schema for event data
   const formSchema = zod.object({
@@ -82,7 +81,7 @@ const ModalEditEvent = ({
           payload,
           event?.id,
           fullPath,
-          `/events${pathWithoutAdmin}`
+          `/tobacco-business/event-calendar`
         );
         onClose();
         toast({

@@ -39,7 +39,7 @@ const ModalNewUser = ({
   const [isLoading, setIsLoading] =
     useState(false);
   const path = usePathname();
-  const { fullPath, pathWithoutAdmin } =
+  const { fullPath,  } =
     useCustomPath(path);
   const roleOptions = Object.values(Role); // Get the values of the Role enum
   const [showPassword, setShowPassword] =
@@ -106,14 +106,15 @@ const ModalNewUser = ({
       const password = values.password;
       const phoneNumber = values.phoneNumber;
       const role = values.role;
-      await createUser(
-        name,
+      const payload={name,
         email,
         password,
         phoneNumber,
-        role,
+        role,}
+      await createUser(
+        payload
         fullPath,
-        pathWithoutAdmin
+         '/admin'
       );
 
       // console.log('Upload result:', result);

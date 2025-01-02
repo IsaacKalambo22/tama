@@ -31,8 +31,7 @@ const ModalDeleteCouncilList = ({
     useState(false);
 
   const path = usePathname();
-  const { fullPath, pathWithoutAdmin } =
-    useCustomPath(path);
+  const { fullPath } = useCustomPath(path);
   const onSubmit = async () => {
     setIsLoading(true);
 
@@ -40,7 +39,8 @@ const ModalDeleteCouncilList = ({
       const result = await deleteCouncilList(
         councilList.id,
         fullPath,
-        pathWithoutAdmin
+        '/resources/council-list',
+        '/admin'
       );
 
       console.log('Upload result:', result);

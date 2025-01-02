@@ -28,8 +28,7 @@ const ModalNewEvent = ({
   const [isLoading, setIsLoading] =
     useState(false);
   const path = usePathname();
-  const { fullPath, pathWithoutAdmin } =
-    useCustomPath(path);
+  const { fullPath } = useCustomPath(path);
 
   // Define the schema for event data
   const formSchema = zod.object({
@@ -82,7 +81,8 @@ const ModalNewEvent = ({
       const result = await createEvent(
         payload,
         fullPath,
-        `/events${pathWithoutAdmin}`
+        `/tobacco-business/event-calendar`,
+        '/admin'
       );
       console.log('Upload result:', result);
 

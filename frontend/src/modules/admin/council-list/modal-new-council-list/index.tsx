@@ -61,8 +61,7 @@ const ModalNewCouncilList = ({
   });
 
   const path = usePathname();
-  const { fullPath, pathWithoutAdmin } =
-    useCustomPath(path);
+  const { fullPath } = useCustomPath(path);
 
   const form = useForm<
     zod.infer<typeof formSchema>
@@ -102,7 +101,8 @@ const ModalNewCouncilList = ({
       const result = await createCouncilList(
         payload,
         fullPath,
-        pathWithoutAdmin
+        '/resources/council-list',
+        '/admin'
       );
 
       console.log('Upload result:', result);

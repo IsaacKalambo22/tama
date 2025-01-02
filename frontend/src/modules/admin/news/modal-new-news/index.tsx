@@ -41,8 +41,7 @@ const ModalNewNews = ({
   const [isLoading, setIsLoading] =
     useState(false);
   const path = usePathname();
-  const { fullPath, pathWithoutAdmin } =
-    useCustomPath(path);
+  const { fullPath } = useCustomPath(path);
   const formSchema = zod.object({
     title: zod.string().min(2, {
       message:
@@ -94,7 +93,8 @@ const ModalNewNews = ({
       const result = await createNews(
         payload,
         fullPath,
-        pathWithoutAdmin
+        '/news-updates-news',
+        '/admin'
       );
 
       console.log('Upload result:', result);

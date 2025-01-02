@@ -82,7 +82,7 @@ const ModalEditShop = ({
         payload,
         shop.id,
         fullPath,
-        `/tobacco-business${pathWithoutAdmin}`
+        `/tobacco-business/shops`
       );
 
       console.log('Upload result:', result);

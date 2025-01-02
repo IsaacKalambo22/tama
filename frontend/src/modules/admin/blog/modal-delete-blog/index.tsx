@@ -40,7 +40,8 @@ const ModalDeleteBlog = ({
       const result = await deleteBlog(
         blog.id,
         fullPath,
-        pathWithoutAdmin
+        pathWithoutAdmin,
+        '/admin'
       );
 
       console.log('Upload result:', result);

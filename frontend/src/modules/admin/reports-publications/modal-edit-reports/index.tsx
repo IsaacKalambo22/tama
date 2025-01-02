@@ -20,7 +20,7 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
-import { updateReports } from '../../actions';
+import { updateReportAndPublication } from '../../actions';
 import Modal from '../../modal';
 
 type Props = {
@@ -82,12 +82,13 @@ const ModalEditReports = ({
         size,
       };
 
-      const result = await updateReports(
-        payload,
-        file.id,
-        fullPath,
-        pathWithoutAdmin
-      );
+      const result =
+        await updateReportAndPublication(
+          payload,
+          file.id,
+          fullPath,
+          pathWithoutAdmin
+        );
 
       console.log('Upload result:', result);
       onClose();

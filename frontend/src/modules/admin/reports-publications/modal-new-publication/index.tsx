@@ -86,7 +86,8 @@ const ModalNewPublication = ({
         await createReportAndPublication(
           payload,
           fullPath,
-          pathWithoutAdmin
+          pathWithoutAdmin,
+          '/admin'
         );
 
       console.log('Upload result:', result);

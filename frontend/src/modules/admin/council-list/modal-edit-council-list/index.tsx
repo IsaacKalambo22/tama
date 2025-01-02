@@ -70,8 +70,7 @@ const ModalEditCouncilList = ({
   });
 
   const path = usePathname();
-  const { fullPath, pathWithoutAdmin } =
-    useCustomPath(path);
+  const { fullPath } = useCustomPath(path);
 
   const form = useForm<
     zod.infer<typeof formSchema>
@@ -116,7 +115,7 @@ const ModalEditCouncilList = ({
         payload,
         councilList.id,
         fullPath,
-        pathWithoutAdmin
+        '/resources/council-list'
       );
 
       toast({

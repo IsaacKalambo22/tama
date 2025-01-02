@@ -40,7 +40,8 @@ const ModalDeleteShop = ({
       const result = await deleteShop(
         shop.id,
         fullPath,
-        `/tobacco-business${pathWithoutAdmin}`
+        `/tobacco-business/shops`,
+        '/admin'
       );
 
       console.log('Upload result:', result);

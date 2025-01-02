@@ -17,7 +17,7 @@ router.post(
 ); // Create a new event
 router.get('/', getAllEvents); // Get all events
 router.get('/:id', getEventById); // Get a specific event by ID
-router.put(
+router.patch(
   '/:id',
   verifyAdminAndManager,
   updateEvent

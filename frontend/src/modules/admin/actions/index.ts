@@ -1,11 +1,9 @@
 'use server';
 
 import { auth } from '@/auth';
-import { CouncilListProps } from '@/lib/api';
 import {
   BASE_URL,
   parseServerActionResponse,
-  parseStringify,
 } from '@/lib/utils';
 import {
   PutObjectCommand,
@@ -14,81 +12,16 @@ import {
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { revalidatePath } from 'next/cache';
 
-const handleError = (
-  error: unknown,
-  message: string
-) => {
-  console.log(error, message);
-  throw error;
-};
-
-export const deleteFile = async (
-  id: string,
-  path: string
-) => {
-  try {
-    console.log('Deleted file');
-    console.log({ id });
-
-    revalidatePath(path);
-    return parseStringify({ status: 'success' });
-  } catch (error) {
-    handleError(error, 'Failed to rename file');
-  }
-};
-export const uploadFile = async () => {};
-export const createForm = async (
-  payload: Record<string, any>, // Use a JSON object as the payload
-  fullPath: string,
-  pathWithoutAdmin: string
-) => {
-  try {
-    const session = await auth();
-
-    if (!session)
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-
-    const token = session?.accessToken;
-
-    const response = await fetch(
-      `${BASE_URL}/forms`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload), // Serialize the JSON object
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to upload files');
-    }
-
-    const result = await response.json();
-
-    revalidatePath(fullPath);
-    revalidatePath('/resources/forms');
-    revalidatePath('/admin/resources/forms');
-    revalidatePath(pathWithoutAdmin);
-    return result;
-  } catch (error) {
-    console.error(
-      'Error during file upload:',
-      error
-    );
-    throw error;
-  }
-};
-
-export const createShop = async (
-  payload: Record<string, any>, // Use a JSON object as the payload
-  fullPath: string,
-  pathWithoutAdmin: string
+export const serverAction = async (
+  endpoint: string,
+  method:
+    | 'GET'
+    | 'POST'
+    | 'PATCH'
+    | 'PUT'
+    | 'DELETE',
+  payload: Record<string, any> | null = null,
+  revalidatePaths: string[] = []
 ) => {
   try {
     const session = await auth();
@@ -101,383 +34,51 @@ export const createShop = async (
     }
 
     const token = session.accessToken;
+    const options: RequestInit = {
+      method,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    };
 
-    // Send JSON payload
-    const response = await fetch(
-      `${BASE_URL}/shops`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload), // Serialize the JSON object
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to upload files');
+    if (payload) {
+      options.body = JSON.stringify(payload);
     }
 
-    const result = await response.json();
-
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-
-    return result;
-  } catch (error) {
-    console.error(
-      'Error during file upload:',
-      error
-    );
-    throw error;
-  }
-};
-
-export const createUser = async (
-  name: string,
-  email: string,
-  password: string,
-  phoneNumber: string,
-  role: string,
-  fullPath: string,
-  pathWithoutAdmin: string
-) => {
-  try {
-    const session = await auth();
-
-    if (!session)
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-
-    const token = session?.accessToken;
     const response = await fetch(
-      `${BASE_URL}/auth/register`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-          phoneNumber,
-          role,
-        }),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to create genre');
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return result;
-  } catch (error) {
-    console.error(
-      'Error during genre creation:',
-      error
-    );
-    throw error;
-  }
-};
-export const updateUser = async (
-  userId: string,
-  payload: Record<string, any>, // Use a JSON object as the payload
-  fullPath: string,
-  pathWithoutAdmin: string
-) => {
-  try {
-    const session = await auth();
-
-    if (!session) {
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-    }
-
-    const token = session.accessToken;
-
-    const response = await fetch(
-      `${BASE_URL}/users/${userId}`,
-      {
-        method: 'PATCH', // PATCH is used for partial updates
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      }
+      `${BASE_URL}/${endpoint}`,
+      options
     );
 
     if (!response.ok) {
       const errorText = await response.text();
       console.error(
-        'Update user failed:',
+        'Server action failed:',
         errorText
       );
       throw new Error(
-        `Failed to update user. Server responded with status ${response.status}.`
+        `Server action failed. Status: ${response.status}, Error: ${errorText}`
       );
     }
 
     const result = await response.json();
 
-    // Revalidate the relevant paths
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
+    // Revalidate specified paths
+    for (const path of revalidatePaths) {
+      revalidatePath(path);
+    }
 
-    return result;
+    return parseServerActionResponse({
+      ...result,
+      error: '',
+      status: 'SUCCESS',
+    });
   } catch (error) {
     console.error(
-      'Error during user update:',
+      'Error during server action:',
       error
     );
-    throw error;
-  }
-};
-
-export const updateShop = async (
-  payload: Record<string, any>, // Use a JSON object as the payload
-  id: string,
-  fullPath: string,
-  pathWithoutAdmin: string
-) => {
-  try {
-    const session = await auth();
-    if (!session)
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-
-    const token = session?.accessToken;
-    const response = await fetch(
-      `${BASE_URL}/shops/${id}`,
-      {
-        method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload), // Serialize the JSON object
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to upload files');
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return parseServerActionResponse({
-      ...result,
-      error: '',
-      status: 'SUCCESS',
-    });
-  } catch (error) {
-    console.log(error);
-
-    return parseServerActionResponse({
-      error: JSON.stringify(error),
-      status: 'ERROR',
-    });
-  }
-};
-export const updateForms = async (
-  payload: Record<string, any>, // Use a JSON object as the payload
-  id: string,
-  fullPath: string,
-  pathWithoutAdmin: string
-) => {
-  try {
-    const session = await auth();
-    if (!session)
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-
-    const token = session?.accessToken;
-    const response = await fetch(
-      `${BASE_URL}/forms/${id}`,
-      {
-        method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload), // Serialize the JSON object
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to upload files');
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return parseServerActionResponse({
-      ...result,
-      error: '',
-      status: 'SUCCESS',
-    });
-  } catch (error) {
-    console.log(error);
-
-    return parseServerActionResponse({
-      error: JSON.stringify(error),
-      status: 'ERROR',
-    });
-  }
-};
-export const updateNews = async (
-  payload: Record<string, any>, // Use a JSON object as the payload
-  id: string,
-  fullPath: string,
-  pathWithoutAdmin: string
-) => {
-  try {
-    const session = await auth();
-    if (!session)
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-
-    const token = session?.accessToken;
-    const response = await fetch(
-      `${BASE_URL}/news/${id}`,
-      {
-        method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload), // Serialize the JSON object
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to upload files');
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return parseServerActionResponse({
-      ...result,
-      error: '',
-      status: 'SUCCESS',
-    });
-  } catch (error) {
-    console.log(error);
-
-    return parseServerActionResponse({
-      error: JSON.stringify(error),
-      status: 'ERROR',
-    });
-  }
-};
-export const updateBlog = async (
-  payload: Record<string, any>, // Use a JSON object as the payload
-  id: string,
-  fullPath: string,
-  pathWithoutAdmin: string
-) => {
-  try {
-    const session = await auth();
-    if (!session)
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-
-    const token = session?.accessToken;
-    const response = await fetch(
-      `${BASE_URL}/blogs/${id}`,
-      {
-        method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload), // Serialize the JSON object
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to upload files');
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return parseServerActionResponse({
-      ...result,
-      error: '',
-      status: 'SUCCESS',
-    });
-  } catch (error) {
-    console.log(error);
-
-    return parseServerActionResponse({
-      error: JSON.stringify(error),
-      status: 'ERROR',
-    });
-  }
-};
-export const updateReports = async (
-  payload: Record<string, any>, // Use a JSON object as the payload
-  id: string,
-  fullPath: string,
-  pathWithoutAdmin: string
-) => {
-  try {
-    const session = await auth();
-    if (!session)
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-
-    const token = session?.accessToken;
-    const response = await fetch(
-      `${BASE_URL}/reports-publications/${id}`,
-      {
-        method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload), // Serialize the JSON object
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to upload files');
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return parseServerActionResponse({
-      ...result,
-      error: '',
-      status: 'SUCCESS',
-    });
-  } catch (error) {
-    console.log(error);
-
     return parseServerActionResponse({
       error: JSON.stringify(error),
       status: 'ERROR',
@@ -485,846 +86,388 @@ export const updateReports = async (
   }
 };
 
-export const deleteShop = async (
-  id: string,
+// EVENTS SERVER ACTIONS
+export const createEvent = async (
+  payload: object,
+  fullPath: string,
+  pathWithoutAdmin: string,
+  layout: string
+) => {
+  return await serverAction(
+    'events',
+    'POST',
+    payload,
+    [fullPath, layout, pathWithoutAdmin] // Revalidate paths
+  );
+};
+
+export const updateEvent = async (
+  payload: object,
+  eventId: string,
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
-  try {
-    const session = await auth();
-    if (!session)
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-
-    const token = session?.accessToken;
-    const response = await fetch(
-      `${BASE_URL}/shops/${id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to upload files');
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return parseServerActionResponse({
-      ...result,
-      error: '',
-      status: 'SUCCESS',
-    });
-  } catch (error) {
-    console.log(error);
-
-    return parseServerActionResponse({
-      error: JSON.stringify(error),
-      status: 'ERROR',
-    });
-  }
+  return await serverAction(
+    `events/${eventId}`,
+    'PATCH',
+    payload,
+    [fullPath, pathWithoutAdmin]
+  );
 };
+
+export const deleteEvent = async (
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string,
+  layout: string
+) => {
+  return await serverAction(
+    `events/${id}`,
+    'DELETE',
+    null,
+    [fullPath, pathWithoutAdmin, layout]
+  );
+};
+
+// USERS SERVER ACTIONS
+export const createUser = async (
+  payload: object,
+  fullPath: string,
+  layout: string
+) => {
+  return await serverAction(
+    'users',
+    'POST',
+    payload,
+    [fullPath, layout] // Revalidate paths
+  );
+};
+
+export const updateUser = async (
+  payload: object,
+  userId: string,
+  fullPath: string
+) => {
+  return await serverAction(
+    `users/${userId}`,
+    'PATCH',
+    payload,
+    [fullPath]
+  );
+};
+
 export const deleteUser = async (
   id: string,
   fullPath: string,
-  pathWithoutAdmin: string
+  layout: string
 ) => {
-  try {
-    const session = await auth();
-    if (!session)
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-
-    const token = session?.accessToken;
-    const response = await fetch(
-      `${BASE_URL}/users/${id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to upload files');
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return parseServerActionResponse({
-      ...result,
-      error: '',
-      status: 'SUCCESS',
-    });
-  } catch (error) {
-    console.log(error);
-
-    return parseServerActionResponse({
-      error: JSON.stringify(error),
-      status: 'ERROR',
-    });
-  }
+  return await serverAction(
+    `users/${id}`,
+    'DELETE',
+    null,
+    [fullPath, layout]
+  );
 };
-export const deleteForms = async (
-  id: string,
+// COUNCIL LISTS SERVER ACTIONS
+export const createCouncilList = async (
+  payload: object,
+  fullPath: string,
+  pathWithoutAdmin: string,
+  layout: string
+) => {
+  return await serverAction(
+    'council-lists',
+    'POST',
+    payload,
+    [fullPath, layout, pathWithoutAdmin] // Revalidate paths
+  );
+};
+
+export const updateCouncilList = async (
+  payload: object,
+  councilListId: string,
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
-  try {
-    const session = await auth();
-    if (!session)
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-
-    const token = session?.accessToken;
-    const response = await fetch(
-      `${BASE_URL}/forms/${id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to upload files');
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return parseServerActionResponse({
-      ...result,
-      error: '',
-      status: 'SUCCESS',
-    });
-  } catch (error) {
-    console.log(error);
-
-    return parseServerActionResponse({
-      error: JSON.stringify(error),
-      status: 'ERROR',
-    });
-  }
-};
-export const deleteReports = async (
-  id: string,
-  fullPath: string,
-  pathWithoutAdmin: string
-) => {
-  try {
-    const session = await auth();
-    if (!session)
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-
-    const token = session?.accessToken;
-    const response = await fetch(
-      `${BASE_URL}/reports-publications/${id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to upload files');
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return parseServerActionResponse({
-      ...result,
-      error: '',
-      status: 'SUCCESS',
-    });
-  } catch (error) {
-    console.log(error);
-
-    return parseServerActionResponse({
-      error: JSON.stringify(error),
-      status: 'ERROR',
-    });
-  }
-};
-export const deleteBlog = async (
-  id: string,
-  fullPath: string,
-  pathWithoutAdmin: string
-) => {
-  try {
-    const session = await auth();
-    if (!session)
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-
-    const token = session?.accessToken;
-    const response = await fetch(
-      `${BASE_URL}/blogs/${id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to upload files');
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return parseServerActionResponse({
-      ...result,
-      error: '',
-      status: 'SUCCESS',
-    });
-  } catch (error) {
-    console.log(error);
-
-    return parseServerActionResponse({
-      error: JSON.stringify(error),
-      status: 'ERROR',
-    });
-  }
+  return await serverAction(
+    `council-lists/${councilListId}`,
+    'PATCH',
+    payload,
+    [fullPath, pathWithoutAdmin]
+  );
 };
 
 export const deleteCouncilList = async (
   id: string,
   fullPath: string,
-  pathWithoutAdmin: string
+  pathWithoutAdmin: string,
+  layout: string
 ) => {
-  try {
-    const session = await auth();
-    if (!session)
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-
-    const token = session?.accessToken;
-    const response = await fetch(
-      `${BASE_URL}/council-lists/${id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to upload files');
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return parseServerActionResponse({
-      ...result,
-      error: '',
-      status: 'SUCCESS',
-    });
-  } catch (error) {
-    console.log(error);
-
-    return parseServerActionResponse({
-      error: JSON.stringify(error),
-      status: 'ERROR',
-    });
-  }
-};
-export const deleteEvent = async (
-  id: string,
-  fullPath: string,
-  pathWithoutAdmin: string
-) => {
-  try {
-    const session = await auth();
-    if (!session)
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-
-    const token = session?.accessToken;
-    const response = await fetch(
-      `${BASE_URL}/events/${id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to upload files');
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return parseServerActionResponse({
-      ...result,
-      error: '',
-      status: 'SUCCESS',
-    });
-  } catch (error) {
-    console.log(error);
-
-    return parseServerActionResponse({
-      error: JSON.stringify(error),
-      status: 'ERROR',
-    });
-  }
-};
-export const deleteVacancy = async (
-  id: string,
-  fullPath: string,
-  pathWithoutAdmin: string
-) => {
-  try {
-    const session = await auth();
-    if (!session)
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-
-    const token = session?.accessToken;
-    const response = await fetch(
-      `${BASE_URL}/vacancies/${id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to upload files');
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return parseServerActionResponse({
-      ...result,
-      error: '',
-      status: 'SUCCESS',
-    });
-  } catch (error) {
-    console.log(error);
-
-    return parseServerActionResponse({
-      error: JSON.stringify(error),
-      status: 'ERROR',
-    });
-  }
-};
-export const deleteNews = async (
-  id: string,
-  fullPath: string,
-  pathWithoutAdmin: string
-) => {
-  try {
-    const session = await auth();
-    if (!session)
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-
-    const token = session?.accessToken;
-    const response = await fetch(
-      `${BASE_URL}/news/${id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to upload files');
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return parseServerActionResponse({
-      ...result,
-      error: '',
-      status: 'SUCCESS',
-    });
-  } catch (error) {
-    console.log(error);
-
-    return parseServerActionResponse({
-      error: JSON.stringify(error),
-      status: 'ERROR',
-    });
-  }
-};
-export const createBlog = async (
-  payload: Record<string, any>, // Use a JSON object as the payload
-  fullPath: string,
-  pathWithoutAdmin: string
-) => {
-  try {
-    const session = await auth();
-    console.log({ payload });
-    if (!session)
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-
-    const token = session?.accessToken;
-
-    const response = await fetch(
-      `${BASE_URL}/blogs`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload), // Serialize the JSON object
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to upload files');
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return result;
-  } catch (error) {
-    console.error(
-      'Error during file upload:',
-      error
-    );
-    throw error;
-  }
-};
-export const createNews = async (
-  payload: Record<string, any>, // Use a JSON object as the payload
-  fullPath: string,
-  pathWithoutAdmin: string
-) => {
-  try {
-    const session = await auth();
-    console.log({ payload });
-    if (!session)
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-
-    const token = session?.accessToken;
-
-    const response = await fetch(
-      `${BASE_URL}/news`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload), // Serialize the JSON object
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to upload files');
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return result;
-  } catch (error) {
-    console.error(
-      'Error during file upload:',
-      error
-    );
-    throw error;
-  }
+  return await serverAction(
+    `council-lists/${id}`,
+    'DELETE',
+    null,
+    [fullPath, pathWithoutAdmin, layout]
+  );
 };
 
-export const createEvent = async (
+// SHOPS SERVER ACTIONS
+export const createShop = async (
   payload: object,
   fullPath: string,
+  pathWithoutAdmin: string,
+  layout: string
+) => {
+  return await serverAction(
+    'shops',
+    'POST',
+    payload,
+    [fullPath, layout, pathWithoutAdmin] // Revalidate paths
+  );
+};
+
+export const updateShop = async (
+  payload: object,
+  shopId: string,
+  fullPath: string,
   pathWithoutAdmin: string
 ) => {
-  try {
-    const session = await auth();
-
-    if (!session) {
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-    }
-
-    const token = session?.accessToken;
-
-    const response = await fetch(
-      `${BASE_URL}/events`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(
-        'Failed to upload event data'
-      );
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return result;
-  } catch (error) {
-    console.error(
-      'Error during event creation:',
-      error
-    );
-    throw error;
-  }
+  return await serverAction(
+    `shops/${shopId}`,
+    'PATCH',
+    payload,
+    [fullPath, pathWithoutAdmin]
+  );
 };
+
+export const deleteShop = async (
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string,
+  layout: string
+) => {
+  return await serverAction(
+    `shops/${id}`,
+    'DELETE',
+    null,
+    [fullPath, pathWithoutAdmin, layout]
+  );
+};
+// VACANCIES SERVER ACTIONS
 export const createVacancy = async (
   payload: object,
   fullPath: string,
-  pathWithoutAdmin: string
+  pathWithoutAdmin: string,
+  layout: string
 ) => {
-  try {
-    const session = await auth();
-
-    if (!session) {
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-    }
-
-    const token = session?.accessToken;
-
-    const response = await fetch(
-      `${BASE_URL}/vacancies`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(
-        'Failed to upload vacancy data'
-      );
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return result;
-  } catch (error) {
-    console.error(
-      'Error during vacancy creation:',
-      error
-    );
-    throw error;
-  }
+  return await serverAction(
+    'vacancies',
+    'POST',
+    payload,
+    [fullPath, layout, pathWithoutAdmin] // Revalidate paths
+  );
 };
 
 export const updateVacancy = async (
   payload: object,
-  vacancyId: string, // Add vacancy ID for identifying the resource to update
+  vacancyId: string,
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
-  try {
-    const session = await auth();
-
-    if (!session) {
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-    }
-
-    const token = session?.accessToken;
-
-    const response = await fetch(
-      `${BASE_URL}/vacancies/${vacancyId}`, // URL updated to include the vacancy ID
-      {
-        method: 'PUT', // Use PUT method for updates
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload), // Pass the payload with the updated data
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(
-        'Failed to update vacancy data'
-      );
-    }
-
-    const result = await response.json();
-
-    // Revalidate the paths after successful update
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-
-    return result; // Return the result of the update
-  } catch (error) {
-    console.error(
-      'Error during vacancy update:',
-      error
-    );
-    throw error; // Re-throw the error after logging it
-  }
+  return await serverAction(
+    `vacancies/${vacancyId}`,
+    'PATCH',
+    payload,
+    [fullPath, pathWithoutAdmin]
+  );
 };
 
-export const updateEvent = async (
+export const deleteVacancy = async (
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string,
+  layout: string
+) => {
+  return await serverAction(
+    `vacancies/${id}`,
+    'DELETE',
+    null,
+    [fullPath, pathWithoutAdmin, layout]
+  );
+};
+
+// FORMS & DOCUMENTS SERVER ACTIONS
+export const createForm = async (
   payload: object,
-  eventId: string, // The ID of the event to update
   fullPath: string,
-  pathWithoutAdmin: string
+  pathWithoutAdmin: string,
+  layout: string
 ) => {
-  try {
-    const session = await auth();
-
-    if (!session) {
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-    }
-
-    const token = session?.accessToken;
-
-    const response = await fetch(
-      `${BASE_URL}/events/${eventId}`, // Use the eventId in the URL for updating
-      {
-        method: 'PATCH', // Use PUT for update
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(
-        'Failed to update event data'
-      );
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return result;
-  } catch (error) {
-    console.error(
-      'Error during event update:',
-      error
-    );
-    throw error;
-  }
+  return await serverAction(
+    'forms',
+    'POST',
+    payload,
+    [fullPath, layout, pathWithoutAdmin] // Revalidate paths
+  );
 };
 
-export const updateCouncilList = async (
+export const updateForm = async (
   payload: object,
-  councilListId: string, // The ID of the council list to update
+  formId: string,
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
-  try {
-    const session = await auth();
-
-    if (!session) {
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-    }
-
-    const token = session?.accessToken;
-
-    const response = await fetch(
-      `${BASE_URL}/council-lists/${councilListId}`, // Use the councilListId in the URL for updating
-      {
-        method: 'PATCH', // Use PUT for update
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(
-        'Failed to update council list data'
-      );
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return result;
-  } catch (error) {
-    console.error(
-      'Error during council list update:',
-      error
-    );
-    throw error;
-  }
+  return await serverAction(
+    `forms/${formId}`,
+    'PATCH',
+    payload,
+    [fullPath, pathWithoutAdmin]
+  );
 };
 
-export const createCouncilList = async (
-  councilData: Partial<CouncilListProps>,
+export const deleteForm = async (
+  id: string,
   fullPath: string,
-  pathWithoutAdmin: string
+  pathWithoutAdmin: string,
+  layout: string
 ) => {
-  try {
-    const session = await auth();
-
-    if (!session) {
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-    }
-
-    const token = session?.accessToken;
-    const requestBody =
-      JSON.stringify(councilData);
-
-    const response = await fetch(
-      `${BASE_URL}/council-lists`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: requestBody,
-      }
-    );
-
-    console.log(
-      'Response status:',
-      response.status
-    );
-
-    if (!response.ok) {
-      const errorDetails = await response.text();
-      console.error(
-        'Failed to upload data:',
-        errorDetails
-      );
-      throw new Error('Failed to upload data');
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return result;
-  } catch (error) {
-    console.error(
-      'Error during data upload:',
-      error
-    );
-    throw error;
-  }
+  return await serverAction(
+    `forms/${id}`,
+    'DELETE',
+    null,
+    [fullPath, pathWithoutAdmin, layout]
+  );
 };
 
+// REPORTS & PUBLICATIONS SERVER ACTIONS
 export const createReportAndPublication = async (
-  payload: Record<string, any>, // Use a JSON object as the payload
+  payload: object,
+  fullPath: string,
+  pathWithoutAdmin: string,
+  layout: string
+) => {
+  return await serverAction(
+    'reports-publication',
+    'POST',
+    payload,
+    [fullPath, layout, pathWithoutAdmin] // Revalidate paths
+  );
+};
+
+export const updateReportAndPublication = async (
+  payload: object,
+  reportId: string,
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
-  try {
-    const session = await auth();
-    if (!session)
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
-
-    const token = session?.accessToken;
-    const response = await fetch(
-      `${BASE_URL}/reports-publications`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload), // Serialize the JSON object
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to upload files');
-    }
-
-    const result = await response.json();
-    revalidatePath(fullPath);
-    revalidatePath(pathWithoutAdmin);
-    return result;
-  } catch (error) {
-    console.error(
-      'Error during file upload:',
-      error
-    );
-    throw error;
-  }
+  return await serverAction(
+    `reports-publication/${reportId}`,
+    'PATCH',
+    payload,
+    [fullPath, pathWithoutAdmin]
+  );
 };
+
+export const deleteReportAndPublication = async (
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string,
+  layout: string
+) => {
+  return await serverAction(
+    `reports-publication/${id}`,
+    'DELETE',
+    null,
+    [fullPath, pathWithoutAdmin, layout]
+  );
+};
+
+// NEWS SERVER ACTIONS
+export const createNews = async (
+  payload: object,
+  fullPath: string,
+  pathWithoutAdmin: string,
+  layout: string
+) => {
+  return await serverAction(
+    'news',
+    'POST',
+    payload,
+    [fullPath, layout, pathWithoutAdmin] // Revalidate paths
+  );
+};
+
+export const updateNews = async (
+  payload: object,
+  newsId: string,
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  return await serverAction(
+    `news/${newsId}`,
+    'PATCH',
+    payload,
+    [fullPath, pathWithoutAdmin]
+  );
+};
+
+export const deleteNews = async (
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string,
+  layout: string
+) => {
+  return await serverAction(
+    `news/${id}`,
+    'DELETE',
+    null,
+    [fullPath, pathWithoutAdmin, layout]
+  );
+};
+
+// BLOGS SERVER ACTIONS
+export const createBlog = async (
+  payload: object,
+  fullPath: string,
+  pathWithoutAdmin: string,
+  layout: string
+) => {
+  return await serverAction(
+    'blogs',
+    'POST',
+    payload,
+    [fullPath, layout, pathWithoutAdmin] // Revalidate paths
+  );
+};
+
+export const updateBlog = async (
+  payload: object,
+  blogsId: string,
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  return await serverAction(
+    `blogs/${blogsId}`,
+    'PATCH',
+    payload,
+    [fullPath, pathWithoutAdmin]
+  );
+};
+
+export const deleteBlog = async (
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string,
+  layout: string
+) => {
+  return await serverAction(
+    `blogs/${id}`,
+    'DELETE',
+    null,
+    [fullPath, pathWithoutAdmin, layout]
+  );
+};
+
 const allowedFileTypes = [
   'image/jpeg',
   'image/png',
@@ -1405,58 +548,6 @@ type GetSignedURLParams = {
   fileSize: number;
   checksum: string;
 };
-// export const getSignedURL = async ({
-//   fileType,
-//   fileSize,
-//   checksum,
-// }: GetSignedURLParams): SignedURLResponse => {
-//   const session = await auth();
-
-//   if (!session) {
-//     return { failure: 'not authenticated' };
-//   }
-
-//   if (!allowedFileTypes.includes(fileType)) {
-//     return { failure: 'File type not allowed' };
-//   }
-
-//   if (fileSize > maxFileSize) {
-//     return { failure: 'File size too large' };
-//   }
-
-//   const fileName = generateFileName();
-
-//   const putObjectCommand = new PutObjectCommand({
-//     Bucket: process.env.AWS_BUCKET_NAME!,
-//     Key: fileName,
-//     ContentType: fileType,
-//     ContentLength: fileSize,
-//     ChecksumSHA256: checksum,
-//   });
-
-//   const url = await getSignedUrl(
-//     s3Client,
-//     putObjectCommand,
-//     { expiresIn: 60 } // 60 seconds
-//   );
-
-//   console.log({ success: url });
-
-//   // const results = await db
-//   //   .insert(mediaTable)
-//   //   .values({
-//   //     type: fileType.startsWith('image')
-//   //       ? 'image'
-//   //       : 'video',
-//   //     url: url.split('?')[0],
-//   //     width: 0,
-//   //     height: 0,
-//   //     userId: session.user.id,
-//   //   })
-//   //   .returning();
-
-//   return { success: { url: url } };
-// };
 export const getSignedURL = async ({
   fileType,
   fileSize,

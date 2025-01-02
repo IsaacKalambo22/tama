@@ -13,7 +13,7 @@ import CustomButton, {
 } from '@/modules/common/custom-button';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { deleteForms } from '../../actions';
+import { deleteForm } from '../../actions';
 import Modal from '../../modal';
 
 type Props = {
@@ -36,10 +36,11 @@ const ModalDeleteForms = ({
     setIsLoading(true);
 
     try {
-      const result = await deleteForms(
+      const result = await deleteForm(
         file.id,
         fullPath,
-        pathWithoutAdmin
+        pathWithoutAdmin,
+        '/admin'
       );
 
       console.log('Upload result:', result);

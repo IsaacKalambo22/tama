@@ -30,7 +30,7 @@ const ModalDeleteUser = ({
   const [isLoading, setIsLoading] =
     useState(false);
   const path = usePathname();
-  const { fullPath, pathWithoutAdmin } =
+  const { fullPath,  } =
     useCustomPath(path);
 
   const onSubmit = async () => {
@@ -39,8 +39,7 @@ const ModalDeleteUser = ({
     try {
       const result = await deleteUser(
         user.id,
-        fullPath,
-        pathWithoutAdmin
+        fullPath, '/admin'
       );
 
       console.log('Upload result:', result);

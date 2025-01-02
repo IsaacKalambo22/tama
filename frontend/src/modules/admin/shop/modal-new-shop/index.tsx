@@ -32,8 +32,7 @@ const ModalNewShop = ({
   const [isLoading, setIsLoading] =
     useState(false);
   const path = usePathname();
-  const { fullPath, pathWithoutAdmin } =
-    useCustomPath(path);
+  const { fullPath } = useCustomPath(path);
   const formSchema = zod.object({
     name: zod.string().min(2, {
       message:
@@ -88,7 +87,8 @@ const ModalNewShop = ({
       const result = await createShop(
         payload,
         fullPath,
-        `/tobacco-business${pathWithoutAdmin}`
+        `/tobacco-business/shops`,
+        '/admin'
       );
 
       console.log('Upload result:', result);

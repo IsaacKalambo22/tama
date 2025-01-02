@@ -20,7 +20,7 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
-import { updateForms } from '../../actions';
+import { updateForm } from '../../actions';
 import Modal from '../../modal';
 
 type Props = {
@@ -82,7 +82,7 @@ const ModalEditForm = ({
         size,
       };
 
-      const result = await updateForms(
+      const result = await updateForm(
         payload,
         file.id,
         fullPath,

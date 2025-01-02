@@ -28,8 +28,7 @@ const ModalNewVacancy = ({
   const [isLoading, setIsLoading] =
     useState(false);
   const path = usePathname();
-  const { fullPath, pathWithoutAdmin } =
-    useCustomPath(path);
+  const { fullPath } = useCustomPath(path);
 
   // Define the schema for vacancy data
   const formSchema = zod.object({
@@ -107,7 +106,8 @@ const ModalNewVacancy = ({
       await createVacancy(
         payload,
         fullPath,
-        `/resources${pathWithoutAdmin}`
+        '/resources/vacancies',
+        '/admin'
       );
       onClose();
       toast({
