@@ -26,7 +26,7 @@ import {
   AvatarImage,
 } from '@/components/ui/avatar';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 const Navbar = () => {
   // Access isSidebarCollapsed state from Zustand store
@@ -35,13 +35,8 @@ const Navbar = () => {
   );
   const toggleSidebar = useSidebarStore(
     (state) => state.toggleSidebar
-  ); // Use toggle function from Zustand
+  );
   const { data: session } = useSession();
-
-  const [providers, setProviders] =
-    useState(null);
-  const [toggleDropdown, setToggleDropdown] =
-    useState(false);
 
   useEffect(() => {
     (async () => {})();

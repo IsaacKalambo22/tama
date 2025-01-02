@@ -158,10 +158,10 @@ async function handleFetch<T>(
       await response.json();
 
     if (data.success) {
-      console.log(
-        `Data fetched successfully from ${endpoint}:`,
-        data.data
-      );
+      // console.log(
+      //   `Data fetched successfully from ${endpoint}:`,
+      //   data.data
+      // );
       return data.data;
     } else {
       console.log(

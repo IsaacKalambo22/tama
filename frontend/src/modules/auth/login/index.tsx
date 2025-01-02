@@ -14,6 +14,7 @@ import RedirectionLoader from '@/modules/common/redirection-loader';
 import SubmitButton from '@/modules/common/submit-button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff } from 'lucide-react';
+import { getSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -67,17 +68,26 @@ const Login = () => {
         return;
       }
 
+      // Force session update
+      const session = await getSession();
+      if (!session) {
+        toast({
+          title: 'Session Error',
+          description:
+            'Failed to fetch session. Please try again.',
+          variant: 'destructive',
+        });
+        return;
+      }
+
       toast({
         title: 'Success',
         description: 'Logged in successfully!',
       });
 
-      router.refresh();
+      // Redirect to home or desired page
+      router.push('/');
       setIsRedirecting(true);
-
-      // Simulate a delay or wait for the actual navigation to complete
-      // setTimeout(() => {
-      // }, 5000);
     } catch (error) {
       console.error('Unexpected error:', error);
       toast({
