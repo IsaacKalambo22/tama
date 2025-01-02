@@ -1,14 +1,17 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { UserProps } from '@/lib/api';
 import { BASE_URL } from '@/lib/utils';
-import AddNewHeader from '@/modules/common/add-new-header';
+import CustomLoader from '@/modules/common/custom-loader';
+import { Edit } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import AboutMe from './about-me';
 import AvatarCard from './avatar-card';
+import ModalEditProfile from './edit-profile';
 import PersonalDetails from './personal-details';
 
 const Profile = () => {
@@ -17,57 +20,61 @@ const Profile = () => {
   const [userDetails, setUserDetails] =
     useState<UserProps | null>(null); // State for user details
   const [loading, setLoading] = useState(true); // State for loading
+  const [isModalOpen, setIsModalOpen] =
+    useState(false); // State for opening modal
 
-  // Fetch user details
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      if (session?.id && session?.accessToken) {
-        try {
-          const response = await fetch(
-            `${BASE_URL}/users/${session.id}`,
-            {
-              headers: {
-                Authorization: `Bearer ${session.accessToken}`, // Send bearer token
-                'Content-Type':
-                  'application/json',
-              },
-            }
-          );
+  // Fetch user details function
+  const fetchUserDetails = async () => {
+    if (session?.id && session?.accessToken) {
+      try {
+        const response = await fetch(
+          `${BASE_URL}/users/${session.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${session.accessToken}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
 
-          if (!response.ok)
-            throw new Error(
-              'Failed to fetch user details'
-            );
-          const data = await response.json();
-          setUserDetails(data.data);
-        } catch (error) {
-          console.error(
-            'Error fetching user details:',
-            error
+        if (!response.ok)
+          throw new Error(
+            'Failed to fetch user details'
           );
-        } finally {
-          setLoading(false);
-        }
-      } else {
-        setLoading(false); // Stop loading if no session or access token
+        const data = await response.json();
+        setUserDetails(data.data);
+      } catch (error) {
+        console.error(
+          'Error fetching user details:',
+          error
+        );
+      } finally {
+        setLoading(false);
       }
-    };
+    } else {
+      setLoading(false);
+    }
+  };
 
+  // Refetch user details
+  const refetchUserDetails = () => {
+    setLoading(true); // Set loading to true while fetching
+    fetchUserDetails();
+  };
+
+  // Fetch user details on initial load and when session changes
+  useEffect(() => {
     fetchUserDetails();
   }, [session]);
 
   const handleEditProfile = () => {
     if (userDetails) {
-      router.push('/admin/profile/user-profile');
+      setIsModalOpen(true); // Open the modal to edit profile
     }
   };
 
   if (loading) {
-    return (
-      <div className='text-center'>
-        Loading...
-      </div>
-    );
+    return <CustomLoader />;
   }
 
   if (!userDetails) {
@@ -80,10 +87,17 @@ const Profile = () => {
 
   return (
     <div className='flex flex-col'>
-      <AddNewHeader
-        name='Profile'
-        buttonName='Edit Profile'
-      />
+      <div className='mb-4 flex w-full items-center justify-between'>
+        <h1 className='text-lg font-semibold dark:text-white'>
+          Profile
+        </h1>
+
+        <Button onClick={handleEditProfile}>
+          <Edit className='h-4 w-4' />
+          Edit Profile
+        </Button>
+      </div>
+
       <Card className='flex flex-col lg:flex-row gap-8 shadow-none mt-4 p-8'>
         <div className='flex flex-col gap-4'>
           <AvatarCard
@@ -108,6 +122,12 @@ const Profile = () => {
           <AboutMe about={userDetails.about} />
         </div>
       </Card>
+      {/* Modal for editing profile */}
+      <ModalEditProfile
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        refetch={refetchUserDetails} // Pass the refetch function here
+      />
     </div>
   );
 };

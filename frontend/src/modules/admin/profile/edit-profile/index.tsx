@@ -14,7 +14,10 @@ import { FileUploader } from '@/modules/common/file-uploader';
 import SubmitButton from '@/modules/common/submit-button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSession } from 'next-auth/react';
-import { usePathname } from 'next/navigation';
+import {
+  usePathname,
+  useRouter,
+} from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
@@ -24,12 +27,13 @@ import Modal from '../../modal';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  //   shop: ShopProps;
+  refetch: () => void; // Accept refetch function as prop
 };
 
 const ModalEditProfile = ({
   isOpen,
   onClose,
+  refetch,
 }: Props) => {
   const { data: session } = useSession(); // Get session data
 
@@ -39,7 +43,7 @@ const ModalEditProfile = ({
   useState<UserProps | null>(null); // State to hold user details
   const [isLoading, setIsLoading] =
     useState(false);
-
+  const router = useRouter();
   const phoneNumberRegex = /^\+?[1-9]\d{1,14}$/;
 
   const formSchema = zod.object({
@@ -115,18 +119,13 @@ const ModalEditProfile = ({
         pathWithoutAdmin
       );
 
-      // Update the form's default values after successful update
-      form.reset({
-        name: values.name || '',
-        email: values.email || '',
-        phoneNumber: values.phoneNumber || '',
-      });
-
       toast({
         title: 'Success',
         description: `${values.name} has been updated successfully.`,
       });
+      refetch();
       onClose();
+      router.push('/admin/profile');
     } catch (error) {
       console.error(
         'Error updating user:',
