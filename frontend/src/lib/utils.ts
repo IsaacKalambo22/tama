@@ -1,7 +1,7 @@
-import { getSignedURL } from '@/modules/admin/actions';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { FileProps } from './api';
+import { getSignedURL } from './aws';
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }

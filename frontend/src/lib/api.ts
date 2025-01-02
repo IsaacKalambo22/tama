@@ -174,33 +174,21 @@ async function handleFetch<T>(
       `Error fetching data from ${endpoint}:`,
       error
     );
-    // return Promise.reject(
-    //   new Error(
-    //     `Failed to fetch data: ${error.message}`
-    //   )
-    // );
   }
 }
 
-// Fetch functions using the utility
 export const fetchReportsAndPublications =
   async (): Promise<FileProps[]> => {
     return handleFetch<FileProps[]>(
       `${BASE_URL}/reports-publications`
     );
   };
-// Fetch functions using the utility
 export const fetchUsers = async (): Promise<
   UserProps[]
 > => {
   try {
-    // Fetch user session for authentication
-    // const session = await auth();
-    // const token = session?.accessToken; // Token is optional, might be undefined if not signed in.
-
     const API_URL = `${BASE_URL}/users`;
 
-    // Use the handleFetch utility for making the API call
     return handleFetch<UserProps[]>(API_URL);
   } catch (error: any) {
     console.error(
