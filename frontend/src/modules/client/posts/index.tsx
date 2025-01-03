@@ -70,7 +70,7 @@ const Posts = () => {
       />
 
       <Tabs
-        defaultValue='facebook'
+        defaultValue='twitter'
         className='w-full'
       >
         <TabsList className='grid w-full grid-cols-2 mb-8 gap-4'>

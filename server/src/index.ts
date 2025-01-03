@@ -6,6 +6,7 @@ import fs from 'fs';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import multer from 'multer';
+import needle from 'needle';
 import path from 'path';
 import('node-fetch');
 
@@ -687,124 +688,310 @@ app.use(
   reportsPublications
 );
 
-// Define TypeScript types for the API response
-interface Tweet {
-  id: string;
-  text: string;
-  attachments?: {
-    media_keys: string[];
+// // Utility function to fetch tweets
+// const fetchTweets = async (
+//   userId: string,
+//   bearerToken: string
+// ): Promise<TwitterApiResponse> => {
+//   const url = `https://api.twitter.com/2/users/${userId}/tweets?tweet.fields=text,public_metrics,attachments&expansions=attachments.media_keys&media.fields=type,url&max_results=100`;
+
+//   const response = await fetch(url, {
+//     headers: {
+//       Authorization: `Bearer ${bearerToken}`,
+//     },
+//   });
+
+//   if (!response.ok) {
+//     throw new Error(
+//       `Twitter API error: ${response.statusText}`
+//     );
+//   }
+
+//   return response.json();
+// };
+
+// app.get('/tama/tweets', async (req, res) => {
+//   const BEARER_TOKEN =
+//     process.env.TWITTER_BEARER_TOKEN;
+//   const userId = '1799028002849984512'; // Replace with your Twitter user ID
+
+//   if (!BEARER_TOKEN) {
+//     res.status(500).json({
+//       error:
+//         'Missing Twitter Bearer Token in environment variables.',
+//     });
+//     return;
+//   }
+
+//   try {
+//     const data = await fetchTweets(
+//       userId,
+//       BEARER_TOKEN
+//     );
+
+//     // Extract relevant details from the response
+//     const tweets: SimplifiedTweet[] =
+//       data.data.map((tweet) => {
+//         const mediaKeys =
+//           tweet.attachments?.media_keys || [];
+//         const media = mediaKeys.map((key) =>
+//           data.includes?.media?.find(
+//             (m) => m.media_key === key
+//           )
+//         );
+
+//         return {
+//           text: tweet.text,
+//           images:
+//             media
+//               ?.filter((m) => m?.type === 'photo')
+//               .map((m) => m?.url || '') || [],
+//           metrics: {
+//             comments:
+//               tweet.public_metrics.reply_count,
+//             retweets:
+//               tweet.public_metrics.retweet_count,
+//             likes:
+//               tweet.public_metrics.like_count,
+//           },
+//         };
+//       });
+
+//     res.json(tweets);
+//   } catch (error: unknown) {
+//     const errorMessage =
+//       (error as Error).message ||
+//       'Internal server error';
+//     console.error(
+//       'Error fetching tweets:',
+//       errorMessage
+//     );
+//     res.status(502).json({ error: errorMessage });
+//   }
+// });
+
+// app.get('/tama/tweets', async (req, res) => {
+//   try {
+//     const client = new TwitterApi({
+//       appKey: process.env.API_KEY!,
+//       appSecret: process.env.API_SECRET!,
+//       accessToken: process.env.ACCESS_TOKEN,
+//       accessSecret: process.env.ACCESS_SECRET,
+//     });
+
+//     const bearer = new TwitterApi(
+//       process.env.BEARER_TOKEN!
+//     );
+
+//     const twitterClient = client.readWrite;
+//     const twitterBearer = bearer.readOnly;
+//     // Home timeline is available in v1 API, so use .v1 prefix
+//     const homeTimeline =
+//       await twitterClient.v2.ge;
+
+//     // Current page is in homeTimeline.tweets
+//     console.log(
+//       homeTimeline.tweets.length,
+//       'fetched.'
+//     );
+
+//     // const tweeter = await twitterClient.v2.tweet(
+//     //   'Hello world!'
+//     // );
+//     // console.log({ tweeter });
+//     // const jackTimeline =
+//     //   await client.v2.userTimeline('12', {
+//     //     expansions: [
+//     //       'attachments.media_keys',
+//     //       'attachments.poll_ids',
+//     //       'referenced_tweets.id',
+//     //     ],
+//     //     'media.fields': ['url'],
+//     //   });
+//     // console.log({ jackTimeline });
+
+//     res.status(200).json({
+//       success: true,
+//       data: homeTimeline, // Extract tweets
+//     });
+//     return;
+//   } catch (error) {
+//     console.error(
+//       'Error fetching tweets:',
+//       error
+//     );
+
+//     res.status(500).json({
+//       success: false,
+//       message: 'Failed to fetch tweets',
+//       error: error,
+//     });
+//     return;
+//   }
+// });
+interface Options {
+  headers: {
+    'User-Agent': string;
+    authorization: string;
   };
-  public_metrics: {
-    reply_count: number;
-    retweet_count: number;
-    like_count: number;
-  };
+}
+interface TweetParams {
+  max_results: number;
+  'tweet.fields': string;
+  'media.fields'?: string;
+  expansions: string;
+  pagination_token?: string; // Optional because it will only be added when paginating
 }
 
 interface Media {
   media_key: string;
-  type: string;
-  url: string;
+  type: string; // e.g., "photo", "video", etc.
+  url?: string; // For images or videos with URLs
+  preview_image_url?: string; // For videos
 }
 
-interface TwitterApiResponse {
-  data: Tweet[];
-  includes?: {
-    media?: Media[];
+interface TweetResponse {
+  data?: {
+    id: string;
+    text: string;
+    created_at: string;
+    attachments?: {
+      media_keys: string[];
+    };
+  }[];
+  includes: {
+    users: {
+      id: string;
+      username: string;
+    }[];
+    media?: Media[]; // Optional, as not all tweets have media
+  };
+  meta: {
+    result_count: number;
+    next_token?: string; // Optional because it might not exist
   };
 }
 
-interface SimplifiedTweet {
-  text: string;
-  images: string[];
-  metrics: {
-    comments: number;
-    retweets: number;
-    likes: number;
+const userId = process.env.USER_ID!;
+const url = `https://api.twitter.com/2/users/${userId}/tweets`;
+const bearerToken = process.env.BEARER_TOKEN!;
+
+// Function to fetch user tweets
+const getUserTweets = async (): Promise<{
+  userName: string;
+  userTweets: TweetResponse['data'];
+}> => {
+  let userTweets: TweetResponse['data'] = [];
+  const params: TweetParams = {
+    max_results: 100,
+    'tweet.fields': 'created_at',
+    expansions: 'author_id',
   };
-}
 
-// Utility function to fetch tweets
-const fetchTweets = async (
-  userId: string,
-  bearerToken: string
-): Promise<TwitterApiResponse> => {
-  const url = `https://api.twitter.com/2/users/${userId}/tweets?tweet.fields=text,public_metrics,attachments&expansions=attachments.media_keys&media.fields=type,url&max_results=100`;
-
-  const response = await fetch(url, {
+  const options: Options = {
     headers: {
-      Authorization: `Bearer ${bearerToken}`,
+      'User-Agent': 'v2UserTweetsJS',
+      authorization: `Bearer ${bearerToken}`,
     },
-  });
+  };
 
-  if (!response.ok) {
-    throw new Error(
-      `Twitter API error: ${response.statusText}`
+  let hasNextPage = true;
+  let nextToken: string | null = null;
+  let userName: string | undefined;
+
+  console.log('Retrieving Tweets...');
+
+  while (hasNextPage) {
+    const resp = await getPage(
+      params,
+      options,
+      nextToken
     );
+    if (
+      resp &&
+      resp.meta &&
+      resp.meta.result_count > 0
+    ) {
+      userName = resp.includes.users[0].username;
+      if (resp.data) {
+        userTweets.push(...resp.data);
+      }
+      if (resp.meta.next_token) {
+        nextToken = resp.meta.next_token;
+      } else {
+        hasNextPage = false;
+      }
+    } else {
+      hasNextPage = false;
+    }
   }
 
-  return response.json();
+  console.log(
+    `Got ${userTweets.length} Tweets from ${userName} (user ID ${userId})!`
+  );
+  return {
+    userName: userName || 'Unknown User',
+    userTweets,
+  };
 };
 
-app.get('/tama/tweets', async (req, res) => {
-  const BEARER_TOKEN =
-    process.env.TWITTER_BEARER_TOKEN;
-  const userId = '1799028002849984512'; // Replace with your Twitter user ID
-
-  if (!BEARER_TOKEN) {
-    res.status(500).json({
-      error:
-        'Missing Twitter Bearer Token in environment variables.',
-    });
-    return;
+// Helper function to fetch a single page of tweets
+const getPage = async (
+  params: TweetParams,
+  options: Options,
+  nextToken: string | null
+): Promise<TweetResponse | null> => {
+  if (nextToken) {
+    params.pagination_token = nextToken;
   }
 
   try {
-    const data = await fetchTweets(
-      userId,
-      BEARER_TOKEN
+    const resp = await needle(
+      'get',
+      url,
+      params,
+      options
     );
 
-    // Extract relevant details from the response
-    const tweets: SimplifiedTweet[] =
-      data.data.map((tweet) => {
-        const mediaKeys =
-          tweet.attachments?.media_keys || [];
-        const media = mediaKeys.map((key) =>
-          data.includes?.media?.find(
-            (m) => m.media_key === key
-          )
-        );
+    if (resp.statusCode !== 200) {
+      console.log(
+        `${resp.statusCode} ${resp.statusMessage}:\n${resp.body}`
+      );
+      return null;
+    }
 
-        return {
-          text: tweet.text,
-          images:
-            media
-              ?.filter((m) => m?.type === 'photo')
-              .map((m) => m?.url || '') || [],
-          metrics: {
-            comments:
-              tweet.public_metrics.reply_count,
-            retweets:
-              tweet.public_metrics.retweet_count,
-            likes:
-              tweet.public_metrics.like_count,
-          },
-        };
-      });
+    return resp.body as TweetResponse;
+  } catch (err) {
+    throw new Error(`Request failed: ${err}`);
+  }
+};
 
-    res.json(tweets);
-  } catch (error: unknown) {
-    const errorMessage =
-      (error as Error).message ||
-      'Internal server error';
+// Express route to fetch tweets
+app.get('/tama/tweets', async (req, res) => {
+  try {
+    const { userName, userTweets } =
+      await getUserTweets();
+
+    res.status(200).json({
+      success: true,
+      userName,
+      userId,
+      tweets: userTweets,
+    });
+  } catch (error) {
     console.error(
       'Error fetching tweets:',
-      errorMessage
+      error
     );
-    res.status(502).json({ error: errorMessage });
+
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch tweets',
+      error: error,
+    });
   }
 });
+
 /* SERVER */
 const PORT = Number(process.env.PORT) || 8000;
 app.listen(PORT, () => {

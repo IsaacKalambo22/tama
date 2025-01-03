@@ -20,6 +20,7 @@ const fs_1 = __importDefault(require("fs"));
 const helmet_1 = __importDefault(require("helmet"));
 const morgan_1 = __importDefault(require("morgan"));
 const multer_1 = __importDefault(require("multer"));
+const needle_1 = __importDefault(require("needle"));
 const path_1 = __importDefault(require("path"));
 import('node-fetch');
 /* ROUTE IMPORTS */
@@ -606,55 +607,88 @@ app.use('/tama/events', events_1.default);
 app.use('/tama/vacancies', vacancy_1.default);
 app.use('/tama/council-lists', council_list_1.default);
 app.use('/tama/reports-publications', reports_publications_1.default);
-// Utility function to fetch tweets
-const fetchTweets = (userId, bearerToken) => __awaiter(void 0, void 0, void 0, function* () {
-    const url = `https://api.twitter.com/2/users/${userId}/tweets?tweet.fields=text,public_metrics,attachments&expansions=attachments.media_keys&media.fields=type,url&max_results=100`;
-    const response = yield fetch(url, {
+const userId = process.env.USER_ID;
+const url = `https://api.twitter.com/2/users/${userId}/tweets`;
+const bearerToken = process.env.BEARER_TOKEN;
+// Function to fetch user tweets
+const getUserTweets = () => __awaiter(void 0, void 0, void 0, function* () {
+    let userTweets = [];
+    const params = {
+        max_results: 100,
+        'tweet.fields': 'created_at',
+        expansions: 'author_id',
+    };
+    const options = {
         headers: {
-            Authorization: `Bearer ${bearerToken}`,
+            'User-Agent': 'v2UserTweetsJS',
+            authorization: `Bearer ${bearerToken}`,
         },
-    });
-    if (!response.ok) {
-        throw new Error(`Twitter API error: ${response.statusText}`);
+    };
+    let hasNextPage = true;
+    let nextToken = null;
+    let userName;
+    console.log('Retrieving Tweets...');
+    while (hasNextPage) {
+        const resp = yield getPage(params, options, nextToken);
+        if (resp &&
+            resp.meta &&
+            resp.meta.result_count > 0) {
+            userName = resp.includes.users[0].username;
+            if (resp.data) {
+                userTweets.push(...resp.data);
+            }
+            if (resp.meta.next_token) {
+                nextToken = resp.meta.next_token;
+            }
+            else {
+                hasNextPage = false;
+            }
+        }
+        else {
+            hasNextPage = false;
+        }
     }
-    return response.json();
+    console.log(`Got ${userTweets.length} Tweets from ${userName} (user ID ${userId})!`);
+    return {
+        userName: userName || 'Unknown User',
+        userTweets,
+    };
 });
-app.get('/tama/tweets', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const BEARER_TOKEN = process.env.TWITTER_BEARER_TOKEN;
-    const userId = '1799028002849984512'; // Replace with your Twitter user ID
-    if (!BEARER_TOKEN) {
-        res.status(500).json({
-            error: 'Missing Twitter Bearer Token in environment variables.',
-        });
-        return;
+// Helper function to fetch a single page of tweets
+const getPage = (params, options, nextToken) => __awaiter(void 0, void 0, void 0, function* () {
+    if (nextToken) {
+        params.pagination_token = nextToken;
     }
     try {
-        const data = yield fetchTweets(userId, BEARER_TOKEN);
-        // Extract relevant details from the response
-        const tweets = data.data.map((tweet) => {
-            var _a;
-            const mediaKeys = ((_a = tweet.attachments) === null || _a === void 0 ? void 0 : _a.media_keys) || [];
-            const media = mediaKeys.map((key) => {
-                var _a, _b;
-                return (_b = (_a = data.includes) === null || _a === void 0 ? void 0 : _a.media) === null || _b === void 0 ? void 0 : _b.find((m) => m.media_key === key);
-            });
-            return {
-                text: tweet.text,
-                images: (media === null || media === void 0 ? void 0 : media.filter((m) => (m === null || m === void 0 ? void 0 : m.type) === 'photo').map((m) => (m === null || m === void 0 ? void 0 : m.url) || '')) || [],
-                metrics: {
-                    comments: tweet.public_metrics.reply_count,
-                    retweets: tweet.public_metrics.retweet_count,
-                    likes: tweet.public_metrics.like_count,
-                },
-            };
+        const resp = yield (0, needle_1.default)('get', url, params, options);
+        if (resp.statusCode !== 200) {
+            console.log(`${resp.statusCode} ${resp.statusMessage}:\n${resp.body}`);
+            return null;
+        }
+        return resp.body;
+    }
+    catch (err) {
+        throw new Error(`Request failed: ${err}`);
+    }
+});
+// Express route to fetch tweets
+app.get('/tama/tweets', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userName, userTweets } = yield getUserTweets();
+        res.status(200).json({
+            success: true,
+            userName,
+            userId,
+            tweets: userTweets,
         });
-        res.json(tweets);
     }
     catch (error) {
-        const errorMessage = error.message ||
-            'Internal server error';
-        console.error('Error fetching tweets:', errorMessage);
-        res.status(502).json({ error: errorMessage });
+        console.error('Error fetching tweets:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch tweets',
+            error: error,
+        });
     }
 }));
 /* SERVER */
