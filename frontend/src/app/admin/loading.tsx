@@ -1,21 +1,30 @@
-import Image from 'next/image';
-
 const Loading = () => {
   return (
-    <div className='flex items-center justify-center h-screen'>
-      <div className='flex flex-col  items-center gap-4'>
-        <Image
-          src='/assets/icons/loader.svg'
-          alt='loader'
-          width={40}
-          height={40}
-          className='animate-spin text-green-500'
-          style={{
-            filter:
-              'invert(27%) sepia(78%) saturate(493%) hue-rotate(90deg) brightness(90%) contrast(85%)',
-          }}
-        />
-        Please wait
+    <div className='flex flex-col justify-center items-center min-h-screen '>
+      <div className='flex flex-col items-center space-y-4'>
+        <svg
+          className='animate-spin h-12 w-12 text-green-500'
+          xmlns='http://www.w3.org/2000/svg'
+          fill='none'
+          viewBox='0 0 24 24'
+        >
+          <circle
+            className='opacity-25'
+            cx='12'
+            cy='12'
+            r='10'
+            stroke='currentColor'
+            strokeWidth='4'
+          ></circle>
+          <path
+            className='opacity-75'
+            fill='currentColor'
+            d='M4 12a8 8 0 018-8v4a4 4 0 100 8v4a8 8 0 01-8-8z'
+          ></path>
+        </svg>
+        <h2 className='text-sm font-semibold text-gray-800'>
+          Loading, please wait...
+        </h2>
       </div>
     </div>
   );

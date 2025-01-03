@@ -50,14 +50,14 @@ export default async function CustomNewsPage({
       </header>
 
       {/* News Image */}
-      <div className='relative w-full h-64 md:h-96 rounded-lg overflow-hidden mb-8'>
+      <div className='w-full mb-6'>
         <Image
           src={news.imageUrl}
           alt={news.title}
           width={900}
-          height={200}
+          height={600}
           unoptimized
-          className='rounded-2xl object-cover'
+          className='rounded-2xl object-fill h-auto max-h-[20rem] sm:max-h-[30rem]' // Added responsive max-height for small devices
         />
       </div>
 
