@@ -113,10 +113,9 @@ const ModalEditProfile = ({
         avatar,
       };
       await updateUser(
-        session?.id || '', // Pass the session user ID
         payload,
-        fullPath,
-        pathWithoutAdmin
+        session?.id || '', // Pass the session user ID
+        fullPath
       );
 
       toast({
@@ -148,81 +147,6 @@ const ModalEditProfile = ({
       onClose={onClose}
       name={`Edit Profile`}
     >
-      {/* <div className='overflow-auto max-h-[70vh] p-4'>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className='flex flex-col gap-5 w-full'
-          >
-            <CustomFormField
-              fieldType={FormFieldType.INPUT}
-              name='name'
-              label='Full name'
-              control={form.control}
-              placeholder='John Doe'
-            />
-
-            <CustomFormField
-              fieldType={FormFieldType.INPUT}
-              name='email'
-              label='Email'
-              control={form.control}
-              placeholder='johndoe@gmail.com'
-            />
-
-            <CustomFormField
-              fieldType={
-                FormFieldType.PHONE_INPUT
-              }
-              name='phoneNumber'
-              label='Phone Number'
-              control={form.control}
-              placeholder='Enter phone number'
-            />
-            <CustomFormField
-              fieldType={FormFieldType.INPUT}
-              name='district'
-              label='District'
-              control={form.control}
-              placeholder='Enter your district'
-            />
-            <CustomFormField
-              fieldType={FormFieldType.TEXTAREA}
-              name='about'
-              label='About'
-              control={form.control}
-              placeholder='Write something about yourself...'
-            />
-            <CustomFormField
-              fieldType={FormFieldType.SKELETON}
-              control={form.control}
-              name='files'
-              label='Profile image'
-              renderSkeleton={(field) => (
-                <FormControl>
-                  <FileUploader
-                    files={field.value}
-                    onChange={field.onChange}
-                  />
-                </FormControl>
-              )}
-            />
-
-            <SubmitButton
-              disabled={
-                isLoading ||
-                !form.formState.isValid
-              }
-              isLoading={isLoading}
-              loadingText='Updating...'
-              className='w-full h-9'
-            >
-              Update
-            </SubmitButton>
-          </form>
-        </Form>
-      </div> */}
-
       <Form {...form}>
         <form
           className='flex flex-col gap-5 w-full'

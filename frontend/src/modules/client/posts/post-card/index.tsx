@@ -1,5 +1,8 @@
 import { Card } from '@/components/ui/card';
-import { formatDateTime } from '@/lib/utils';
+import {
+  formatContent,
+  formatDateTime,
+} from '@/lib/utils';
 import Image from 'next/image';
 import React, { useState } from 'react';
 
@@ -32,6 +35,9 @@ const PostCard: React.FC<FacebookPostProps> = ({
 
   const imageUrl =
     attachments?.data[0]?.media?.image?.src || '';
+  const formattedContent = message
+    ? formatContent(message)
+    : [];
 
   return (
     <Card className='p-6 shadow-none rounded-3xl hover:shadow-lg transition-shadow'>
@@ -43,21 +49,26 @@ const PostCard: React.FC<FacebookPostProps> = ({
             width={900}
             height={600}
             unoptimized
-            className='rounded-2xl object-fill h-auto max-h-[20rem] sm:max-h-[30rem]' // Added responsive max-height for small devices
+            className='rounded-2xl object-fill h-auto max-h-[20rem] sm:max-h-[30rem]'
           />
         </div>
       )}
       <div className='text-gray-700 mb-4'>
-        {message ? (
+        {formattedContent.length ? (
           <>
-            <p
+            <div
               className={
                 showFullText ? '' : 'line-clamp-3'
               }
             >
-              {message}
-            </p>
-            {message.length > 100 && (
+              {formattedContent.map(
+                (content, index) => (
+                  <p key={index}>{content}</p>
+                )
+              )}
+            </div>
+            {formattedContent.join(' ').length >
+              100 && (
               <button
                 className='text-blue-500 underline text-sm mt-2'
                 onClick={handleToggleText}
