@@ -3,7 +3,6 @@ import {
   fetchNewsById,
 } from '@/lib/api';
 import {
-  BASE_URL,
   formatContent,
   formatDateTime,
 } from '@/lib/utils';
@@ -53,11 +52,12 @@ export default async function CustomNewsPage({
       {/* News Image */}
       <div className='relative w-full h-64 md:h-96 rounded-lg overflow-hidden mb-8'>
         <Image
-          src={`${BASE_URL}/uploads/${news.imageUrl}`}
+          src={news.imageUrl}
           alt={news.title}
-          layout='fill'
-          objectFit='cover'
-          className='rounded-2xl'
+          width={900}
+          height={200}
+          unoptimized
+          className='rounded-2xl object-cover'
         />
       </div>
 

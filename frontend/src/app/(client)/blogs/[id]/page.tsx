@@ -13,10 +13,10 @@ interface BlogPageProps {
   };
 }
 
-const BlogDetailsPage = ({
+const BlogDetailsPage = async ({
   params,
 }: BlogPageProps) => {
-  const id = params.id; // Extract the blog ID from the params
+  const id = (await params).id; // Extract the blog ID from the params
 
   return <CustomBlogPage id={id} />;
 };

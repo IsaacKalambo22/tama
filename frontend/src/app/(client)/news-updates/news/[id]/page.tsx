@@ -13,10 +13,10 @@ interface NewsPageProps {
   };
 }
 
-const NewsDetailsPage = ({
+const NewsDetailsPage = async ({
   params,
 }: NewsPageProps) => {
-  const id = params.id; // Extract the news ID from the params
+  const id = (await params).id; // Extract the news ID from the params
 
   return <CustomNewsPage id={id} />;
 };
