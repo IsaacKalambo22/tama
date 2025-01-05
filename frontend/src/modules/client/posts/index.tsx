@@ -59,48 +59,16 @@ const Posts = () => {
         title='Social Media Highlights'
         subtitle='Stay connected with our latest updates and stories from Facebook and Twitter'
       />
-
-      {/* <Tabs
-        defaultValue='twitter'
-        className='w-full'
-      >
-        <TabsList className='grid w-full grid-cols-2 mb-8 gap-4'>
-          <TabsTrigger asChild value='facebook'>
-            <Button
-              variant='ghost'
-              size='lg'
-              className='w-full justify-center text-gray-700 hover:text-blue-600 hover:bg-blue-100 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400'
-            >
-              <Facebook className='mr-2 h-5 w-5' />
-              Facebook
-            </Button>
-          </TabsTrigger>
-          <TabsTrigger asChild value='twitter'>
-            <Button
-              variant='ghost'
-              size='lg'
-              className='w-full justify-center text-gray-700 hover:text-sky-600 hover:bg-sky-100 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-400'
-            >
-              <Twitter className='mr-2 h-5 w-5' />
-              Twitter
-            </Button>
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value='facebook'>
-          <div className='max-w-4xl mx-auto flex flex-col gap-10'>
-            {posts.map((post) => (
-              <PostCard key={post.id} {...post} />
-            ))}
-          </div>
-        </TabsContent>
-        <TabsContent value='twitter'>
-          <TwitterPosts />
-        </TabsContent>
-      </Tabs> */}
       <div className='max-w-4xl mx-auto flex flex-col gap-10'>
-        {posts.map((post) => (
-          <PostCard key={post.id} {...post} />
-        ))}
+        {posts.length > 0 ? (
+          posts.map((post) => (
+            <PostCard key={post.id} {...post} />
+          ))
+        ) : (
+          <p className='text-center text-gray-500'>
+            No posts available.
+          </p>
+        )}
       </div>
     </div>
   );

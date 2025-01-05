@@ -131,7 +131,7 @@ export const createUser = async (
   layout: string
 ) => {
   return await serverAction(
-    'users',
+    'auth/register',
     'POST',
     payload,
     [fullPath, layout] // Revalidate paths
@@ -342,7 +342,7 @@ export const createReportAndPublication = async (
   layout: string
 ) => {
   return await serverAction(
-    'reports-publication',
+    'reports-publications',
     'POST',
     payload,
     [fullPath, layout, pathWithoutAdmin] // Revalidate paths
@@ -356,7 +356,7 @@ export const updateReportAndPublication = async (
   pathWithoutAdmin: string
 ) => {
   return await serverAction(
-    `reports-publication/${reportId}`,
+    `reports-publications/${reportId}`,
     'PATCH',
     payload,
     [fullPath, pathWithoutAdmin]
@@ -370,7 +370,7 @@ export const deleteReportAndPublication = async (
   layout: string
 ) => {
   return await serverAction(
-    `reports-publication/${id}`,
+    `reports-publications/${id}`,
     'DELETE',
     null,
     [fullPath, pathWithoutAdmin, layout]
