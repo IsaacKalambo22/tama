@@ -1,6 +1,6 @@
 const CustomLoader = () => {
   return (
-    <div className='flex flex-col justify-center items-center min-h-screen '>
+    <div className='flex flex-col justify-center items-center min-h-full '>
       <div className='flex flex-col items-center space-y-4'>
         <svg
           className='animate-spin h-12 w-12 text-green-500'

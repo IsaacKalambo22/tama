@@ -158,8 +158,8 @@ export const navItems: NavItem[] = [
     ),
   },
   {
-    title: 'Posts',
-    href: '/posts',
+    title: 'Social Media',
+    href: '/social-media',
     description:
       'Industry insights and articles from experts.',
     icon: (

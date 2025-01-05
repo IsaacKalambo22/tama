@@ -612,11 +612,13 @@ const url = `https://api.twitter.com/2/users/${userId}/tweets`;
 const bearerToken = process.env.BEARER_TOKEN;
 // Function to fetch user tweets
 const getUserTweets = () => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b, _c, _d, _e, _f;
     let userTweets = [];
     const params = {
         max_results: 100,
-        'tweet.fields': 'created_at',
-        expansions: 'author_id',
+        'tweet.fields': 'created_at,attachments',
+        'media.fields': 'url,preview_image_url,type',
+        expansions: 'attachments.media_keys',
     };
     const options = {
         headers: {
@@ -630,19 +632,28 @@ const getUserTweets = () => __awaiter(void 0, void 0, void 0, function* () {
     console.log('Retrieving Tweets...');
     while (hasNextPage) {
         const resp = yield getPage(params, options, nextToken);
-        if (resp &&
-            resp.meta &&
-            resp.meta.result_count > 0) {
-            userName = resp.includes.users[0].username;
-            if (resp.data) {
-                userTweets.push(...resp.data);
+        if (resp && ((_a = resp.meta) === null || _a === void 0 ? void 0 : _a.result_count) > 0) {
+            userName = (_b = resp.includes.users[0]) === null || _b === void 0 ? void 0 : _b.username;
+            // Map media to tweets
+            const mediaMap = new Map(((_d = (_c = resp.includes) === null || _c === void 0 ? void 0 : _c.media) === null || _d === void 0 ? void 0 : _d.map((media) => [
+                media.media_key,
+                media,
+            ])) || []);
+            const transformedTweets = (_e = resp.data) === null || _e === void 0 ? void 0 : _e.map((tweet) => ({
+                id: tweet.id,
+                text: tweet.text,
+                created_at: tweet.created_at,
+                attachments: tweet.attachments
+                    ? {
+                        media: tweet.attachments.media_keys.map((key) => mediaMap.get(key)),
+                    }
+                    : undefined,
+            }));
+            if (transformedTweets) {
+                userTweets.push(...transformedTweets);
             }
-            if (resp.meta.next_token) {
-                nextToken = resp.meta.next_token;
-            }
-            else {
-                hasNextPage = false;
-            }
+            nextToken = (_f = resp.meta.next_token) !== null && _f !== void 0 ? _f : null;
+            hasNextPage = !!nextToken;
         }
         else {
             hasNextPage = false;

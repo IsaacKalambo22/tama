@@ -1,18 +1,9 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/components/ui/tabs';
 import CustomLoader from '@/modules/common/custom-loader';
 import HeaderText from '@/modules/common/header-text';
-import { Facebook, Twitter } from 'lucide-react'; // Icons from lucide-react
 import { useEffect, useState } from 'react';
 import PostCard from './post-card';
-import TwitterPosts from './twitter-posts';
 
 const Posts = () => {
   const [posts, setPosts] = useState<any[]>([]);
@@ -69,7 +60,7 @@ const Posts = () => {
         subtitle='Stay connected with our latest updates and stories from Facebook and Twitter'
       />
 
-      <Tabs
+      {/* <Tabs
         defaultValue='twitter'
         className='w-full'
       >
@@ -105,7 +96,12 @@ const Posts = () => {
         <TabsContent value='twitter'>
           <TwitterPosts />
         </TabsContent>
-      </Tabs>
+      </Tabs> */}
+      <div className='max-w-4xl mx-auto flex flex-col gap-10'>
+        {posts.map((post) => (
+          <PostCard key={post.id} {...post} />
+        ))}
+      </div>
     </div>
   );
 };

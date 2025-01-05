@@ -1,6 +1,6 @@
 const RedirectionLoader = () => {
   return (
-    <div className='flex flex-col justify-center items-center min-h-screen'>
+    <div className='flex flex-col justify-center items-center min-h-full'>
       <div className='flex flex-col items-center space-y-4'>
         <svg
           className='animate-spin h-12 w-12 text-green-500'
@@ -26,8 +26,7 @@ const RedirectionLoader = () => {
           Redirecting, please wait...
         </h2>
         <p className='text-gray-600 text-sm text-center'>
-          This may take a few seconds. Thank you
-          for your patience.
+          This may take a few seconds.
         </p>
       </div>
     </div>

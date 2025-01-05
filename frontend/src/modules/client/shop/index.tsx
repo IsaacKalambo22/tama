@@ -46,7 +46,7 @@ const Shops = async () => {
 
       {/* Render the files */}
       <>
-        {shops.length > 0 ? (
+        {shops?.length > 0 ? (
           <div className='flex flex-col w-full max-w-7xl mx-auto gap-10'>
             <ShopList shops={shops} />
           </div>

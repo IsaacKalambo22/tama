@@ -695,11 +695,19 @@ interface Options {
   };
 }
 
+interface Media {
+  media_key: string;
+  type: string; // e.g., "photo", "video"
+  url?: string;
+  preview_image_url?: string;
+}
+
 interface TweetParams {
   max_results: number;
   'tweet.fields': string;
+  'media.fields': string;
   expansions: string;
-  pagination_token?: string; // Optional because it will only be added when paginating
+  pagination_token?: string; // Optional for pagination
 }
 
 interface TweetResponse {
@@ -707,16 +715,27 @@ interface TweetResponse {
     id: string;
     text: string;
     created_at: string;
+    attachments?: {
+      media_keys: string[];
+      poll_ids?: string[];
+    };
+    referenced_tweets?: { id: string }[];
+    in_reply_to_user_id?: string;
+    geo?: { place_id: string };
+    entities?: {
+      mentions: { username: string }[];
+    };
   }[];
-  meta: {
-    result_count: number;
-    next_token?: string; // Optional because it might not exist
-  };
   includes: {
     users: {
       id: string;
       username: string;
     }[];
+    media?: Media[];
+  };
+  meta: {
+    result_count: number;
+    next_token?: string; // Optional for pagination
   };
 }
 
@@ -727,13 +746,24 @@ const bearerToken = process.env.BEARER_TOKEN!;
 // Function to fetch user tweets
 const getUserTweets = async (): Promise<{
   userName: string;
-  userTweets: TweetResponse['data'];
+  userTweets: Array<{
+    id: string;
+    text: string;
+    created_at: string;
+    attachments?: { media: Media[] };
+  }>;
 }> => {
-  let userTweets: TweetResponse['data'] = [];
+  let userTweets: Array<{
+    id: string;
+    text: string;
+    created_at: string;
+    attachments?: { media: Media[] };
+  }> = [];
   const params: TweetParams = {
     max_results: 100,
-    'tweet.fields': 'created_at',
-    expansions: 'author_id',
+    'tweet.fields': 'created_at,attachments',
+    'media.fields': 'url,preview_image_url,type',
+    expansions: 'attachments.media_keys',
   };
 
   const options: Options = {
@@ -755,20 +785,40 @@ const getUserTweets = async (): Promise<{
       options,
       nextToken
     );
-    if (
-      resp &&
-      resp.meta &&
-      resp.meta.result_count > 0
-    ) {
-      userName = resp.includes.users[0].username;
-      if (resp.data) {
-        userTweets.push(...resp.data);
+
+    if (resp && resp.meta?.result_count > 0) {
+      userName = resp.includes.users[0]?.username;
+
+      // Map media to tweets
+      const mediaMap = new Map(
+        resp.includes?.media?.map((media) => [
+          media.media_key,
+          media,
+        ]) || []
+      );
+
+      const transformedTweets = resp.data?.map(
+        (tweet) => ({
+          id: tweet.id,
+          text: tweet.text,
+          created_at: tweet.created_at,
+          attachments: tweet.attachments
+            ? {
+                media:
+                  tweet.attachments.media_keys.map(
+                    (key) => mediaMap.get(key)!
+                  ),
+              }
+            : undefined,
+        })
+      );
+
+      if (transformedTweets) {
+        userTweets.push(...transformedTweets);
       }
-      if (resp.meta.next_token) {
-        nextToken = resp.meta.next_token;
-      } else {
-        hasNextPage = false;
-      }
+
+      nextToken = resp.meta.next_token ?? null;
+      hasNextPage = !!nextToken;
     } else {
       hasNextPage = false;
     }

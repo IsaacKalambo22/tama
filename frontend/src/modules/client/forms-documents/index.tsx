@@ -33,7 +33,7 @@ const Forms = async () => {
       />
 
       {/* Render the files */}
-      {forms.length > 0 ? (
+      {forms?.length > 0 ? (
         <FormsAndDocumentsList files={forms} />
       ) : (
         <p className='text-gray-500 text-center text-lg mt-5'>

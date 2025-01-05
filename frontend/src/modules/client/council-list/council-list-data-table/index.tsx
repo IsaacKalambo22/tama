@@ -23,7 +23,7 @@ const CouncilListDataTable = async () => {
   return (
     <div className='w-full'>
       <CustomDataTable
-        data={councilLists}
+        data={councilLists ?? []}
         columns={councilListDataColumns}
         filterPlaceholder='Filter council list...'
         filterColumn='demarcation'

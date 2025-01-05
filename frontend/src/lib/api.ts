@@ -191,7 +191,7 @@ export const fetchUsers = async (): Promise<
 
     return handleFetch<UserProps[]>(API_URL);
   } catch (error: any) {
-    console.error(
+    console.log(
       'Error during fetchUsers:',
       error.message || error
     );
