@@ -6,12 +6,13 @@ import {
   resetPassword,
   setPassword,
 } from '../../controllers/auth';
+import { verifyAdmin } from '../../middlewares/verify-token';
 
 const router = Router();
 
 router.post(
   '/register',
-  // verifyAdmin,
+  verifyAdmin,
   registerUser
 );
 router.post('/login', login);

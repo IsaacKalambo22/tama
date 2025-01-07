@@ -78,7 +78,7 @@ export const navItems: NavItem[] = [
         ),
       },
       {
-        title: 'Forms',
+        title: 'Forms & Documentss',
         href: '/resources/forms',
         description:
           'Documents and forms for industry use.',
