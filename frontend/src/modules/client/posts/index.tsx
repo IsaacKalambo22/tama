@@ -57,7 +57,7 @@ const Posts = () => {
     <div className='max-w-4xl mx-auto flex w-full flex-col gap-8 mb-16'>
       <HeaderText
         title='Social Media Highlights'
-        subtitle='Stay connected with our latest updates and stories from Facebook and Twitter'
+        subtitle='Stay connected with our latest updates and stories from Facebook'
       />
       <div className='max-w-4xl mx-auto flex flex-col gap-10'>
         {posts.length > 0 ? (
