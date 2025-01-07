@@ -1,5 +1,5 @@
 import { fetchVacancies } from '@/lib/api';
-import AddNewHeader from '@/modules/common/add-new-header';
+import AddNewHeader from '@/modules/admin/add-new-header';
 import VacancyList from './vacancy-list';
 
 const Vacancy = async () => {

@@ -1,5 +1,5 @@
 import { fetchEvents } from '@/lib/api';
-import AddNewHeader from '@/modules/common/add-new-header';
+import AddNewHeader from '@/modules/admin/add-new-header';
 import EventList from './event-list';
 
 const Event = async () => {

@@ -1,19 +1,8 @@
 import { fetchShops } from '@/lib/api';
-import HeaderText from '@/modules/common/header-text';
+import HeaderText from '@/modules/client/header-text';
 import ShopList from './shop-list';
 
 const Shops = async () => {
-  // // Fallback shop items
-  // const shopItems = Array.from(
-  //   { length: 10 },
-  //   (_, index) => ({
-  //     id: index + 1,
-  //     imageUrl: `/assets/images/carousel/${
-  //       index + 1
-  //     }.jpg`,
-  //     name: `Perique ${index + 1}`,
-  //   })
-  // );
   let shops = [];
   try {
     shops = await fetchShops(); // Fetch the data directly
@@ -44,32 +33,15 @@ const Shops = async () => {
         subtitle='Find Our Trusted Stores Near You'
       />
 
-      {/* Render the files */}
-      <>
-        {shops?.length > 0 ? (
-          <div className='flex flex-col w-full max-w-7xl mx-auto gap-10'>
-            <ShopList shops={shops} />
-          </div>
-        ) : (
-          <p className='text-gray-500 text-center text-lg mt-5'>
-            No shops are currently available.
-          </p>
-        )}
-        {/* Items for Sale */}
-        {/* <HeaderText
-          title='Available Items'
-          subtitle='Browse Items at Our Shops'
-        />
-        <div className='grid gap-8 grid-cols-1 sm:grid-cols-3 lg:grid-cols-4'>
-          {shopItems.map((item) => (
-            <ShopItemCard
-              key={item.id}
-              imageUrl={item.imageUrl}
-              name={item.name}
-            />
-          ))}
-        </div> */}
-      </>
+      {shops?.length > 0 ? (
+        <div className='flex flex-col w-full max-w-7xl mx-auto gap-10'>
+          <ShopList shops={shops} />
+        </div>
+      ) : (
+        <p className='text-gray-500 text-center text-lg mt-5'>
+          No shops are currently available.
+        </p>
+      )}
     </div>
   );
 };

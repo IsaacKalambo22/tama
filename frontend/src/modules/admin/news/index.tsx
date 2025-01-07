@@ -6,7 +6,7 @@ import {
 import { Card } from '@/components/ui/card';
 import { fetchNews } from '@/lib/api';
 import { formatDateTime } from '@/lib/utils';
-import AddNewHeader from '@/modules/common/add-new-header';
+import AddNewHeader from '@/modules/admin/add-new-header';
 import Image from 'next/image';
 import NewsActionDropdown from './news-action-dropdown';
 import NewsList from './news-list';

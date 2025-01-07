@@ -1,7 +1,7 @@
 'use client';
 
+import HeaderText from '@/modules/client/header-text';
 import CustomLoader from '@/modules/common/custom-loader';
-import HeaderText from '@/modules/common/header-text';
 import { useEffect, useState } from 'react';
 import PostCard from './post-card';
 

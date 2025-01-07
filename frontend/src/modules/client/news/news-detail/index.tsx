@@ -1,6 +1,6 @@
 import {
-  BlogProps,
-  fetchBlogById,
+  NewsProps,
+  fetchNewsById,
 } from '@/lib/api';
 import {
   formatContent,
@@ -8,54 +8,52 @@ import {
 } from '@/lib/utils';
 import Image from 'next/image';
 
-export default async function CustomBlogPage({
+export default async function NewsDetail({
   id,
 }: {
   id: string;
 }) {
-  const blog: BlogProps | null =
-    await fetchBlogById(id); // Fetch blog by ID
+  const news: NewsProps | null =
+    await fetchNewsById(id); // Fetch news by ID
 
-  if (!blog) {
+  if (!news) {
     return (
       <div className='flex flex-col items-center justify-center h-screen'>
         <h1 className='text-2xl font-semibold text-gray-700'>
-          Blog Not Found
+          News Not Found
         </h1>
         <p className='text-gray-500'>
-          We couldn&apos;t find the blog you were
+          We couldn&apos;t find the news you were
           looking for.
         </p>
       </div>
     );
   }
 
-  // Function to format the blog content
-
   const formattedContent = formatContent(
-    blog.content
+    news.content
   );
 
   return (
     <article className='max-w-4xl mx-auto px-6 py-12'>
-      {/* Blog Header */}
+      {/* News Header */}
       <header className='mb-8'>
         <h1 className='text-4xl font-bold text-gray-800'>
-          {blog.title}
+          {news.title}
         </h1>
         <div className='text-sm text-gray-500 mt-2'>
-          <span>By {blog.author}</span>
+          <span>By {news.author}</span>
           <span className='ml-4'>
-            {formatDateTime(blog.createdAt)}
+            {formatDateTime(news.createdAt)}
           </span>
         </div>
       </header>
 
-      {/* Blog Image */}
+      {/* News Image */}
       <div className='w-full mb-6'>
         <Image
-          src={blog.imageUrl}
-          alt={blog.title}
+          src={news.imageUrl}
+          alt={news.title}
           width={900}
           height={600}
           unoptimized
@@ -64,7 +62,7 @@ export default async function CustomBlogPage({
       </div>
 
       {/* Blog Content */}
-      <div className='prose prose-lg text-[0.9rem] max-w-none text-gray-700 space-y-8'>
+      <div className='prose prose-lg max-w-none text-gray-700 space-y-8'>
         {formattedContent.map(
           (paragraph, index) => (
             <p key={index}>{paragraph}</p>
@@ -72,11 +70,11 @@ export default async function CustomBlogPage({
         )}
       </div>
 
-      {/* Blog Footer */}
+      {/* News Footer */}
       <footer className='mt-12 pt-6 border-t'>
         <p className='text-sm text-gray-500'>
           Last updated:{' '}
-          {formatDateTime(blog.updatedAt)}
+          {formatDateTime(news.updatedAt)}
         </p>
       </footer>
     </article>

@@ -1,5 +1,5 @@
 import { fetchBlogs } from '@/lib/api';
-import AddNewHeader from '@/modules/common/add-new-header';
+import AddNewHeader from '@/modules/admin/add-new-header';
 import BlogList from './blog-list';
 
 const Blog = async () => {

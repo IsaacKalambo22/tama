@@ -1,4 +1,4 @@
-import CustomBlogPage from '@/modules/common/custom-blog-page';
+import BlogDetail from '@/modules/client/blog/blog-detail';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ const BlogDetailsPage = async ({
 }: BlogPageProps) => {
   const id = (await params).id; // Extract the blog ID from the params
 
-  return <CustomBlogPage id={id} />;
+  return <BlogDetail id={id} />;
 };
 
 export default BlogDetailsPage;

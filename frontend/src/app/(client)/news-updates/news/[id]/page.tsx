@@ -1,4 +1,4 @@
-import CustomNewsPage from '@/modules/common/custom-news-page';
+import NewsDetail from '@/modules/client/news/news-detail';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ const NewsDetailsPage = async ({
 }: NewsPageProps) => {
   const id = (await params).id; // Extract the news ID from the params
 
-  return <CustomNewsPage id={id} />;
+  return <NewsDetail id={id} />;
 };
 
 export default NewsDetailsPage;

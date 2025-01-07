@@ -1,5 +1,5 @@
 import { fetchVacancies } from '@/lib/api';
-import HeaderText from '@/modules/common/header-text';
+import HeaderText from '@/modules/client/header-text';
 import VacancyCard from './vacancy-card';
 
 const Vacancy = async () => {

@@ -1,15 +1,15 @@
 import { fetchUsers } from '@/lib/api';
-import AddNewHeader from '@/modules/common/add-new-header';
+import AddNewHeader from '@/modules/admin/add-new-header';
 import { CustomDataTable } from '@/modules/common/custom-data-table';
 import { userColumns } from '../user-data-columns';
 
 const UserDataTable = async () => {
-  let councilLists = [];
+  let users = [];
   try {
-    councilLists = await fetchUsers(); // Fetch the data directly
+    users = await fetchUsers(); // Fetch the data directly
   } catch (error) {
     console.error(
-      'Failed to fetch councilLists:',
+      'Failed to fetch users:',
       error
     );
     return (
@@ -28,7 +28,7 @@ const UserDataTable = async () => {
         buttonName='Add User'
       />
       <CustomDataTable
-        data={councilLists}
+        data={users}
         columns={userColumns}
         filterPlaceholder='Filter users...'
         filterColumn='name'

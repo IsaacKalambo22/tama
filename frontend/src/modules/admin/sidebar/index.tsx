@@ -16,15 +16,22 @@ import Link from 'next/link';
 import { SidebarLink } from './sidebar-link';
 
 export interface SidebarProps {
+  href?: string;
+  icon: LucideIcon;
+  label: string;
+  submenu?: { label: string; href: string }[];
+}
+
+interface Props {
   links: {
-    href: string;
+    href?: string;
     icon: LucideIcon;
     label: string;
     submenu?: { label: string; href: string }[];
   }[];
 }
 
-const Sidebar = ({ links }: SidebarProps) => {
+const Sidebar = ({ links }: Props) => {
   const { isSidebarCollapsed, toggleSidebar } =
     useSidebarStore((state) => state);
 

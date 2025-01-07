@@ -1,4 +1,4 @@
-import HeaderText from '@/modules/common/header-text';
+import HeaderText from '@/modules/client/header-text';
 import CustomService from '../home/custom-service';
 
 const Services = () => {

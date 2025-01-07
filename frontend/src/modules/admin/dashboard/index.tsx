@@ -10,7 +10,7 @@ import {
   fetchUsers,
 } from '@/lib/api';
 import { formatCount } from '@/lib/utils';
-import AddNewHeader from '@/modules/common/add-new-header';
+import AddNewHeader from '@/modules/admin/add-new-header';
 import { Calendar } from 'lucide-react';
 import {
   FaBook,

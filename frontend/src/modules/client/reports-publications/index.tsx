@@ -1,5 +1,5 @@
 import { fetchReportsAndPublications } from '@/lib/api';
-import HeaderText from '@/modules/common/header-text';
+import HeaderText from '@/modules/client/header-text';
 import ReportsAndPublicationsList from './reports-publications-list';
 
 const ReportsAndPublications = async () => {

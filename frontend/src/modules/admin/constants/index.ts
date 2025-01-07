@@ -1,20 +1,21 @@
-import { DashboardIcon } from '@radix-ui/react-icons';
 import {
   Book,
   BookOpen,
   Briefcase,
   Calendar,
+  LayoutGrid,
   MessageCircle,
   NewspaperIcon,
   ShoppingBag,
   UsersIcon,
 } from 'lucide-react'; // Adjust import path for icons if needed
+import { SidebarProps } from '../sidebar';
 
-export const ADMIN_LINKS = [
+export const ADMIN_LINKS: SidebarProps[] = [
   {
     label: 'Dashboard',
     href: '/admin',
-    icon: DashboardIcon,
+    icon: LayoutGrid,
   },
   {
     label: 'Resources',

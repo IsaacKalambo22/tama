@@ -1,5 +1,5 @@
 import { fetchFormsAndDocuments } from '@/lib/api';
-import AddNewHeader from '@/modules/common/add-new-header';
+import AddNewHeader from '@/modules/admin/add-new-header';
 import FormsAndDocumentsList from './forms-documents-list';
 
 const FormsAndDocuments = async () => {
