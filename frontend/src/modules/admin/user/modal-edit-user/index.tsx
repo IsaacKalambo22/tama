@@ -1,14 +1,6 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { Form } from '@/components/ui/form';
 import { SelectItem } from '@/components/ui/select';
 import useCustomPath from '@/hooks/use-custom-path';
 import { toast } from '@/hooks/use-toast';
@@ -18,7 +10,6 @@ import CustomFormField, {
 } from '@/modules/common/custom-form-field';
 import SubmitButton from '@/modules/common/submit-button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Eye, EyeOff } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -48,11 +39,6 @@ const ModalEditUser = ({
 
   const roleOptions = Object.values(Role);
 
-  const toggleShowPassword = () =>
-    setShowPassword(!showPassword);
-
-  const passwordRegex =
-    /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   const phoneNumberRegex = /^\+?[1-9]\d{1,14}$/;
 
   const formSchema = zod.object({
@@ -66,13 +52,6 @@ const ModalEditUser = ({
     email: zod
       .string()
       .email('Invalid email address.')
-      .optional(),
-    password: zod
-      .string()
-      .regex(passwordRegex, {
-        message:
-          'Password must be at least 8 characters long, include one uppercase letter, one number, and one special character.',
-      })
       .optional(),
     phoneNumber: zod
       .string()
@@ -98,7 +77,6 @@ const ModalEditUser = ({
     defaultValues: {
       name: user.name || '',
       email: user.email || '',
-      password: '',
       phoneNumber: user.phoneNumber || '',
       role: user.role,
     },
@@ -111,7 +89,6 @@ const ModalEditUser = ({
     const payload = {
       name: values.name || undefined,
       email: values.email || undefined,
-      password: values.password || undefined,
       phoneNumber:
         values.phoneNumber || undefined,
       role: values.role || undefined,
@@ -170,44 +147,6 @@ const ModalEditUser = ({
             label='Email'
             control={form.control}
             placeholder='johndoe@gmail.com'
-          />
-          <FormField
-            control={form.control}
-            name='password'
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <div className='relative'>
-                    <Input
-                      placeholder='Password'
-                      type={
-                        showPassword
-                          ? 'text'
-                          : 'password'
-                      }
-                      {...field}
-                      className='form_input'
-                    />
-                    <Button
-                      size='icon'
-                      variant='ghost'
-                      onClick={(e) => {
-                        e.preventDefault();
-                        toggleShowPassword();
-                      }}
-                      className='absolute inset-y-0 right-0 px-3 py-2 text-sm font-medium text-gray-500'
-                    >
-                      {showPassword ? (
-                        <EyeOff />
-                      ) : (
-                        <Eye />
-                      )}
-                    </Button>
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
           />
           <CustomFormField
             fieldType={FormFieldType.SELECT}

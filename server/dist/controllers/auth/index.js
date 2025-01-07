@@ -20,12 +20,9 @@ const emails_1 = require("../../mailtrap/emails");
 const generate_tokens_1 = require("../../utils/generate-tokens");
 const prisma = new client_1.PrismaClient();
 const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, email, password, role, phoneNumber, } = req.body;
+    const { name, email, role, phoneNumber } = req.body;
     // Validate user input
-    if (!name ||
-        !email ||
-        !password ||
-        !phoneNumber) {
+    if (!name || !email || !phoneNumber) {
         res.status(400).json({
             success: false,
             message: 'Name, email, phoneNumber and password are required.',
@@ -44,8 +41,6 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             });
             return; // Ensure early exit after sending response
         }
-        // Hash the password
-        const hashedPassword = yield bcrypt_1.default.hash(password, 10);
         const verificationToken = crypto_1.default
             .randomBytes(32)
             .toString('hex');
@@ -60,7 +55,6 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 name,
                 email,
                 phoneNumber,
-                password: hashedPassword,
                 role: role || client_1.Role.USER,
                 verificationToken: hashedToken,
                 verificationTokenExpiresAt, // 24 hours

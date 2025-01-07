@@ -1,5 +1,8 @@
 import * as zod from 'zod';
 
+export const passwordRegex =
+  /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
 export const LoginSchema = zod.object({
   email: zod
     .string()
@@ -20,22 +23,10 @@ export const LoginSchema = zod.object({
 
 export const SetPasswordSchema = zod
   .object({
-    password: zod
-      .string({
-        required_error: 'Password is required',
-      })
-      .min(8, {
-        message:
-          'Password must be at least 8 characters long',
-      })
-      .regex(/[A-Z]/, {
-        message:
-          'Password must include at least one uppercase letter',
-      })
-      .regex(/[\W_]/, {
-        message:
-          'Password must include at least one special character',
-      }),
+    password: zod.string().regex(passwordRegex, {
+      message:
+        'Password must be at least 8 characters long, include one uppercase letter, one number, and one special character.',
+    }),
     confirmPassword: zod.string({
       required_error:
         'Confirm Password is required',

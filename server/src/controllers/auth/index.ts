@@ -20,21 +20,11 @@ export const registerUser = async (
   req: Request,
   res: Response<APIResponse>
 ): Promise<void> => {
-  const {
-    name,
-    email,
-    password,
-    role,
-    phoneNumber,
-  } = req.body;
+  const { name, email, role, phoneNumber } =
+    req.body;
 
   // Validate user input
-  if (
-    !name ||
-    !email ||
-    !password ||
-    !phoneNumber
-  ) {
+  if (!name || !email || !phoneNumber) {
     res.status(400).json({
       success: false,
       message:
@@ -58,12 +48,6 @@ export const registerUser = async (
       return; // Ensure early exit after sending response
     }
 
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(
-      password,
-      10
-    );
-
     const verificationToken = crypto
       .randomBytes(32)
       .toString('hex');
@@ -83,7 +67,6 @@ export const registerUser = async (
         name,
         email,
         phoneNumber,
-        password: hashedPassword,
         role: role || Role.USER,
         verificationToken: hashedToken,
         verificationTokenExpiresAt, // 24 hours
@@ -148,7 +131,7 @@ export const login = async (
     // Compare the provided password with the stored hash
     const isPasswordValid = await bcrypt.compare(
       password,
-      user.password
+      user.password!
     );
     if (!isPasswordValid) {
       res.status(401).json({
