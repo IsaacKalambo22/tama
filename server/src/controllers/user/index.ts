@@ -99,7 +99,7 @@ export const updateUser = async (
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params;
-  console.log(req.body);
+
   const {
     name,
     email,

@@ -113,7 +113,7 @@ export const updateReportAndPublication = async (
     type,
     extension,
   } = req.body;
-  console.log(req.body);
+
   // Validate input
   if (!id) {
     res.status(400).json({

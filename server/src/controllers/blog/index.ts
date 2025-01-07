@@ -15,7 +15,6 @@ export const createBlog = async (
     author,
     size,
   } = req.body;
-  console.log(req.body);
   // Validate input
   if (
     !title ||

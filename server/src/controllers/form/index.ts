@@ -15,7 +15,7 @@ export const createForm = async (
     type,
     extension,
   } = req.body;
-  console.log(req.body);
+
   // Validate input
   if (
     !fileUrl ||

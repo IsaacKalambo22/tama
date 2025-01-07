@@ -107,7 +107,6 @@ export const updateShop = async (
     openHours,
     size,
   } = req.body;
-  console.log(req.body);
 
   // Validate input
   if (!id) {

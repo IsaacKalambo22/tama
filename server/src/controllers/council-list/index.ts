@@ -15,7 +15,6 @@ export const createCouncilList = async (
     firstAlternateCouncillor,
     secondAlternateCouncillor,
   } = req.body;
-  console.log(req.body);
   // Validate input
   if (
     !demarcation ||

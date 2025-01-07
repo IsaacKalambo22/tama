@@ -15,7 +15,6 @@ export const createNews = async (
     author,
     size,
   } = req.body;
-  console.log(req.body);
 
   // Validate input
   if (

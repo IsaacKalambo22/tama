@@ -16,7 +16,7 @@ export const createEvent = async (
     time,
     location,
   } = req.body;
-  console.log(req.body);
+
   // Validate required input fields
   if (!title || !description || !date) {
     res.status(400).json({
