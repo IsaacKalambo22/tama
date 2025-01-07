@@ -1,5 +1,5 @@
 import { fetchEvents } from '@/lib/api';
-import HeaderText from '@/modules/client/header-text';
+import HeaderText from '@/modules/common/header-text';
 import EventCard from './event-card';
 
 const EventCalendar = async () => {

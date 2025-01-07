@@ -6,7 +6,7 @@ import {
 import { Card } from '@/components/ui/card';
 import { fetchNews, NewsProps } from '@/lib/api';
 import { formatDateTime } from '@/lib/utils';
-import HeaderText from '@/modules/client/header-text';
+import HeaderText from '@/modules/common/header-text';
 import Image from 'next/image';
 import Link from 'next/link';
 

@@ -2,10 +2,10 @@
 
 import { Form } from '@/components/ui/form';
 import { toast } from '@/hooks/use-toast';
-import HeaderText from '@/modules/client/header-text';
 import CustomFormField, {
   FormFieldType,
 } from '@/modules/common/custom-form-field';
+import HeaderText from '@/modules/common/header-text';
 import SubmitButton from '@/modules/common/submit-button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';

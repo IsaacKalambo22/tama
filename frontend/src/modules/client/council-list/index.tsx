@@ -1,4 +1,4 @@
-import HeaderText from '@/modules/client/header-text';
+import HeaderText from '@/modules/common/header-text';
 import CouncilListDataTable from './council-list-data-table';
 
 const CouncilList = () => {
