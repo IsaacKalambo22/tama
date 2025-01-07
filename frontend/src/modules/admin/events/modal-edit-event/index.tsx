@@ -61,8 +61,6 @@ const ModalEditEvent = ({
     values: zod.infer<typeof formSchema>
   ) => {
     setIsLoading(true);
-    console.log({ values });
-
     try {
       const payload = {
         title: values.title,

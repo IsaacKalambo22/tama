@@ -15,23 +15,10 @@ export const middleware = auth(async (req) => {
     throw new Error('AUTH_SECRET is not defined');
   }
 
-  // const token = await getToken({
-  //   req,
-  //   secret: secretKey,
-  // });
   const token = req.auth;
-  // console.log(
-  //   'Auth Request !!!!!!!!!!!!!!',
-  //   req.auth
-  // );
-  // console.log(
-  //   'Auth Request User AccessToken!!!!!!!!!!!!!!',
-  //   token
-  // );
 
   const { nextUrl } = req;
   const isLoggedIn = !!token;
-  console.log({ isLoggedIn });
 
   // Route checks
   const isApiAuthRoute =

@@ -58,7 +58,6 @@ const ModalEditNews = ({
     values: zod.infer<typeof formSchema>
   ) => {
     setIsLoading(true);
-    console.log({ values });
     try {
       let imageUrl = '';
       let size = undefined;
@@ -84,7 +83,6 @@ const ModalEditNews = ({
         '/news-updates-news'
       );
 
-      console.log('Upload result:', result);
       onClose();
       toast({
         title: 'Success',
@@ -98,7 +96,6 @@ const ModalEditNews = ({
           'An unexpected error has occurred',
         variant: 'destructive',
       });
-      console.log('Upload error:', error);
     } finally {
       setIsLoading(false);
     }

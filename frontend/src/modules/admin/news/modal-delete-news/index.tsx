@@ -42,7 +42,6 @@ const ModalDeleteNews = ({
         '/admin'
       );
 
-      console.log('Upload result:', result);
       onClose();
       toast({
         title: 'Success',
@@ -56,7 +55,6 @@ const ModalDeleteNews = ({
           'An unexpected error has occurred',
         variant: 'destructive',
       });
-      console.log('Upload error:', error);
     } finally {
       setIsLoading(false);
     }

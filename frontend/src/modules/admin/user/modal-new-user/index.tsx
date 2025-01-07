@@ -79,7 +79,6 @@ const ModalNewUser = ({
     values: zod.infer<typeof formSchema>
   ) => {
     setIsLoading(true);
-    console.log({ values });
     try {
       // Combine first name and last name
       const name =
@@ -99,7 +98,7 @@ const ModalNewUser = ({
         '/admin'
       );
 
-      // console.log('Upload result:', result);
+      //
       onClose();
       toast({
         title: 'Success',
@@ -114,7 +113,6 @@ const ModalNewUser = ({
           'An unexpected error has occurred',
         variant: 'destructive',
       });
-      console.log('Upload error:', error);
     } finally {
       setIsLoading(false);
     }

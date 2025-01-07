@@ -64,8 +64,6 @@ const ModalNewShop = ({
     values: zod.infer<typeof formSchema>
   ) => {
     setIsLoading(true);
-    console.log({ values });
-
     try {
       // Upload the file separately to get the URL
       const file = values.files[0];
@@ -90,8 +88,6 @@ const ModalNewShop = ({
         `/tobacco-business/shops`,
         '/admin'
       );
-
-      console.log('Upload result:', result);
 
       onClose();
       toast({

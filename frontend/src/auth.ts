@@ -19,9 +19,7 @@ export const { handlers, auth, signIn, signOut } =
           },
         },
         async authorize(credentials) {
-          console.log('Authorizing User...');
           const { email, password } = credentials;
-          console.log({ email, password });
 
           try {
             const response = await fetch(
@@ -39,11 +37,6 @@ export const { handlers, auth, signIn, signOut } =
               }
             );
 
-            console.log(
-              'Server Response:',
-              response
-            );
-
             if (!response.ok) {
               const errorDetails =
                 await response.json();
@@ -59,7 +52,6 @@ export const { handlers, auth, signIn, signOut } =
             }
 
             const data = await response.json();
-            console.log('Parsed Data:', data);
 
             if (data?.user?.accessToken) {
               return {
@@ -86,12 +78,7 @@ export const { handlers, auth, signIn, signOut } =
     ],
     callbacks: {
       async jwt({ token, user }) {
-        // console.log('JWT Callback called');
         if (user) {
-          // console.log(
-          //   'Adding user data to token:',
-          //   user
-          // );
           token.accessToken = user.accessToken;
           token.id = user.id;
           token.name = user.name;
@@ -99,17 +86,10 @@ export const { handlers, auth, signIn, signOut } =
           token.role = user.role;
           token.image = user.image;
         } else {
-          // console.log(
-          //   'No user data passed to JWT callback. Using existing token.'
-          // );
         }
-        // console.log('Updated Token:', token);
         return token;
       },
       async session({ session, token }) {
-        // console.log('Session Callback called');
-        // console.log('Existing Session:', session);
-        // console.log('Token Data:', token);
         Object.assign(session, {
           id: token.id,
           accessToken: token.accessToken,
@@ -118,7 +98,6 @@ export const { handlers, auth, signIn, signOut } =
           role: token.role,
           image: token.image,
         });
-        // console.log('Updated Session:', session);
         return session;
       },
     },
@@ -129,19 +108,4 @@ export const { handlers, auth, signIn, signOut } =
     jwt: {
       maxAge: 30 * 60, // 30 minutes in seconds
     },
-    // cookies: {
-    //   sessionToken: {
-    //     name:
-    //       process.env.NODE_ENV === 'production'
-    //         ? '__Secure-authjs.session-token'
-    //         : 'authjs.session-token',
-    //     options: {
-    //       httpOnly: true,
-    //       secure:
-    //         process.env.NODE_ENV === 'production', // Only use secure cookies in production
-    //       path: '/',
-    //       sameSite: 'lax', // Set sameSite to 'lax' or 'strict' based on your needs
-    //     },
-    //   },
-    // },
   });

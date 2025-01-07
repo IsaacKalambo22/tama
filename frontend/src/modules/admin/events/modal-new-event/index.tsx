@@ -65,7 +65,6 @@ const ModalNewEvent = ({
     values: zod.infer<typeof formSchema>
   ) => {
     setIsLoading(true);
-    console.log({ values });
     try {
       const payload = {
         title: values.title,
@@ -84,7 +83,6 @@ const ModalNewEvent = ({
         `/tobacco-business/event-calendar`,
         '/admin'
       );
-      console.log('Upload result:', result);
 
       onClose();
       toast({

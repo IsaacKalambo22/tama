@@ -43,7 +43,6 @@ const ModalDeleteCouncilList = ({
         '/admin'
       );
 
-      console.log('Upload result:', result);
       onClose();
       toast({
         title: 'Success',
@@ -57,7 +56,6 @@ const ModalDeleteCouncilList = ({
           'An unexpected error has occurred',
         variant: 'destructive',
       });
-      console.log('Upload error:', error);
     } finally {
       setIsLoading(false);
     }

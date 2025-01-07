@@ -37,15 +37,11 @@ const AddNewHeader = ({
   const [isOpen, setIsOpen] = useState(false);
 
   const handleButtonClick = () => {
-    console.log({ buttonName });
-    console.log('Button name:', buttonName); // Debugging log
     setIsOpen((prev) => !prev); // Toggle isOpen state
-    console.log(`${buttonName} button clicked!`);
   };
 
   const handleClose = () => {
     setIsOpen(false); // Close modal
-    console.log('Modal closed!');
   };
 
   return (

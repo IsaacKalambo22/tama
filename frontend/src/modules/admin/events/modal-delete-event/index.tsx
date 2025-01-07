@@ -43,7 +43,6 @@ const ModalDeleteEvent = ({
         '/admin'
       );
 
-      console.log('Upload result:', result);
       onClose();
       toast({
         title: 'Success',
@@ -57,7 +56,6 @@ const ModalDeleteEvent = ({
           'An unexpected error has occurred',
         variant: 'destructive',
       });
-      console.log('Upload error:', error);
     } finally {
       setIsLoading(false);
     }

@@ -94,7 +94,6 @@ const ModalEditProfile = ({
     values: zod.infer<typeof formSchema>
   ) => {
     setIsLoading(true);
-    console.log({ values });
     try {
       let avatar = '';
       let size = undefined;

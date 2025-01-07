@@ -12,14 +12,10 @@ export const config = {
 };
 
 export async function POST(req: NextRequest) {
-  console.log('Received request:', req.method);
-
   // Read and parse the body of the request
   const body = await req.json();
-  console.log('Request Body:', body);
 
   if (req.method !== 'POST') {
-    console.log('Method not allowed');
     return NextResponse.json(
       { message: 'Method not allowed' },
       { status: 405 }
@@ -41,7 +37,6 @@ export async function POST(req: NextRequest) {
     !phoneNumber ||
     !message
   ) {
-    console.log('Missing required fields');
     return NextResponse.json(
       { message: 'All fields are required' },
       { status: 400 }
@@ -67,14 +62,7 @@ export async function POST(req: NextRequest) {
       `,
     };
 
-    console.log(
-      'Sending email with data:',
-      mailData
-    );
-
     const res = await sendMail(mailData);
-    console.log({ res });
-    console.log('Email sent successfully');
     return NextResponse.json(
       { message: 'Email sent successfully!' },
       { status: 200 }

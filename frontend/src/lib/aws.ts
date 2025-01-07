@@ -128,8 +128,6 @@ export const getSignedURL = async ({
       { expiresIn: 180 } // 60 seconds
     );
 
-    console.log('Generated Signed URL:', url);
-
     return { success: { url: url } }; // Ensure the value is correctly returned
   } catch (error) {
     console.error(

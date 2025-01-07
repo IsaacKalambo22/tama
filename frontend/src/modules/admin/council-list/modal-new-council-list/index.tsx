@@ -79,8 +79,6 @@ const ModalNewCouncilList = ({
     values: zod.infer<typeof formSchema>
   ) => {
     setIsLoading(true);
-    console.log({ values });
-
     try {
       // Destructure values to map them to the required props
       const {
@@ -105,7 +103,6 @@ const ModalNewCouncilList = ({
         '/admin'
       );
 
-      console.log('Upload result:', result);
       onClose();
 
       // Show success notification
@@ -122,7 +119,6 @@ const ModalNewCouncilList = ({
           'An unexpected error has occurred',
         variant: 'destructive',
       });
-      console.log('Upload error:', error);
     } finally {
       setIsLoading(false);
     }

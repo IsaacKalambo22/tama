@@ -73,7 +73,6 @@ const ModalNewNews = ({
     values: zod.infer<typeof formSchema>
   ) => {
     setIsLoading(true);
-    console.log({ values });
     try {
       const file = values.files[0];
       const fileUrl = await handleFileUpload(
@@ -97,7 +96,6 @@ const ModalNewNews = ({
         '/admin'
       );
 
-      console.log('Upload result:', result);
       onClose();
       toast({
         title: 'Success',
@@ -112,7 +110,6 @@ const ModalNewNews = ({
           'An unexpected error has occurred',
         variant: 'destructive',
       });
-      console.log('Upload error:', error);
     } finally {
       setIsLoading(false);
     }

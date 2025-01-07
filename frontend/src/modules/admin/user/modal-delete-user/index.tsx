@@ -30,8 +30,7 @@ const ModalDeleteUser = ({
   const [isLoading, setIsLoading] =
     useState(false);
   const path = usePathname();
-  const { fullPath,  } =
-    useCustomPath(path);
+  const { fullPath } = useCustomPath(path);
 
   const onSubmit = async () => {
     setIsLoading(true);
@@ -39,10 +38,10 @@ const ModalDeleteUser = ({
     try {
       const result = await deleteUser(
         user.id,
-        fullPath, '/admin'
+        fullPath,
+        '/admin'
       );
 
-      console.log('Upload result:', result);
       onClose();
       toast({
         title: 'Success',
@@ -56,7 +55,6 @@ const ModalDeleteUser = ({
           'An unexpected error has occurred',
         variant: 'destructive',
       });
-      console.log('Upload error:', error);
     } finally {
       setIsLoading(false);
     }

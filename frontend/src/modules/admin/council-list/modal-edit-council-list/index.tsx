@@ -93,8 +93,6 @@ const ModalEditCouncilList = ({
     values: zod.infer<typeof formSchema>
   ) => {
     setIsLoading(true);
-    console.log({ values });
-
     try {
       const {
         demarcation,

@@ -57,7 +57,6 @@ const ModalEditForm = ({
     values: zod.infer<typeof formSchema>
   ) => {
     setIsLoading(true);
-    console.log({ values });
     try {
       // Create FormData instance
       let fileUrl = '';
@@ -89,7 +88,6 @@ const ModalEditForm = ({
         pathWithoutAdmin
       );
 
-      console.log('Upload result:', result);
       onClose();
       toast({
         title: 'Success',
@@ -103,7 +101,6 @@ const ModalEditForm = ({
           'An unexpected error has occurred',
         variant: 'destructive',
       });
-      console.log('Upload error:', error);
     } finally {
       setIsLoading(false);
     }
