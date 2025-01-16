@@ -1,9 +1,5 @@
 import { Card } from '@/components/ui/card';
 import { User } from 'lucide-react'; // Example icon
-import {
-  FaFacebook,
-  FaLinkedin,
-} from 'react-icons/fa';
 
 export interface TeamMember {
   name: string;
@@ -38,7 +34,7 @@ const Team = ({ teamMembers }: TeamProps) => {
             <p className='text-gray-600 text-center text-sm'>
               {member.description}
             </p>
-            <div className='flex gap-4 mt-3'>
+            {/* <div className='flex gap-4 mt-3'>
               <a
                 href={member.linkedinUrl}
                 target='_blank'
@@ -55,7 +51,7 @@ const Team = ({ teamMembers }: TeamProps) => {
               >
                 <FaFacebook className='text-blue-600 text-xl hover:text-blue-800' />
               </a>
-            </div>
+            </div> */}
           </Card>
         ))}
       </div>

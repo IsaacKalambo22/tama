@@ -65,7 +65,7 @@ export const navItems: NavItem[] = [
     submenu: true,
     subMenuItems: [
       {
-        title: 'Reports & Publications',
+        title: ' Publications',
         href: '/resources/reports-publications',
         description:
           'Research and publications related to tobacco.',
@@ -78,7 +78,7 @@ export const navItems: NavItem[] = [
         ),
       },
       {
-        title: 'Forms & Documentss',
+        title: 'Current Forms',
         href: '/resources/forms',
         description:
           'Documents and forms for industry use.',
@@ -103,11 +103,18 @@ export const navItems: NavItem[] = [
           />
         ),
       },
+    ],
+  },
+  {
+    title: 'News & Updates',
+    href: '/news-updates',
+    submenu: true,
+    subMenuItems: [
       {
-        title: 'Vacancies',
-        href: '/resources/vacancies',
+        title: 'Current News & Updates',
+        href: '/news-updates/current-news-updates',
         description:
-          'Open job positions and career opportunities.',
+          'Various business current-news-updates for the tobacco industry.',
         icon: (
           <Icon
             icon='lucide:briefcase'
@@ -116,21 +123,22 @@ export const navItems: NavItem[] = [
           />
         ),
       },
+      {
+        title: 'Vacancies',
+        href: '/news-updates/vacancies',
+        description:
+          'Upcoming industry vacancies and important dates.',
+        icon: (
+          <Icon
+            icon='lucide:calendar'
+            width='16'
+            height='16'
+          />
+        ),
+      },
     ],
   },
 
-  {
-    title: 'News & Updates',
-    href: '/news-updates/news',
-    description: '',
-    icon: (
-      <Icon
-        icon='lucide:pen-tool'
-        width='16'
-        height='16'
-      />
-    ),
-  },
   {
     title: 'Blogs',
     href: '/blogs',

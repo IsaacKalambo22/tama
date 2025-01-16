@@ -47,7 +47,7 @@ const VacancyCard = ({ vacancy }: Props) => {
 
   return (
     <Link
-      href={`/resources/vacancies/${vacancy.id}`}
+      href={`/news-updates/vacancies/${vacancy.id}`}
     >
       <Card className='p-8 shadow-lg relative border rounded-3xl'>
         <div className='flex w-full justify-between items-center'>

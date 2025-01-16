@@ -81,7 +81,7 @@ const stats: AdminStats[] = [
   },
 
   {
-    title: 'Reports & Publications',
+    title: ' Publications',
     count: 8, // Mocked value will be replaced by fetched data
     icon: (
       <FaBook
@@ -152,7 +152,7 @@ export default async function Dashboard() {
       case 'Users':
         stat.count = users?.length || 0;
         break;
-      case 'Reports & Publications':
+      case ' Publications':
         stat.count = reports?.length || 0;
         break;
       case 'Council Lists':

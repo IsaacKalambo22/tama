@@ -22,11 +22,11 @@ export const ADMIN_LINKS: SidebarProps[] = [
     icon: BookOpen,
     submenu: [
       {
-        label: 'Reports & Publications',
+        label: ' Publications',
         href: '/admin/resources/reports-publications',
       },
       {
-        label: 'Forms & Documents',
+        label: 'Current Forms',
         href: '/admin/resources/forms-documents',
       },
       {
