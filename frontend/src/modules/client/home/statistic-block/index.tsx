@@ -49,7 +49,7 @@ const StatisticBlock = ({
       <h1 className='text-[2.5rem] font-bold text-gray-700'>
         {formatCount(animatedCount)}
       </h1>
-      <p className=' mt-2 text-lg font-medium text-gray-700'>
+      <p className='text-center mt-2 text-lg font-medium text-gray-700'>
         {label}
       </p>
     </Card>

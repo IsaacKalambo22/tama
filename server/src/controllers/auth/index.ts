@@ -20,8 +20,13 @@ export const registerUser = async (
   req: Request,
   res: Response<APIResponse>
 ): Promise<void> => {
-  const { name, email, role, phoneNumber } =
-    req.body;
+  const {
+    name,
+    email,
+    role,
+    phoneNumber,
+    password,
+  } = req.body;
 
   // Validate user input
   if (!name || !email || !phoneNumber) {
@@ -60,13 +65,22 @@ export const registerUser = async (
     const verificationTokenExpiresAt = new Date(
       Date.now() + 24 * 60 * 60 * 1000
     ); // 24 hours from now
-
+    let hashedPassword = '';
+    // Hash the password if it's being updated
+    if (password) {
+      const saltRounds = 10;
+      hashedPassword = await bcrypt.hash(
+        password,
+        saltRounds
+      );
+    }
     // Create the user
     const newUser = await prisma.user.create({
       data: {
         name,
         email,
         phoneNumber,
+        password: hashedPassword || null,
         role: role || Role.USER,
         verificationToken: hashedToken,
         verificationTokenExpiresAt, // 24 hours
@@ -103,7 +117,7 @@ export const login = async (
   res: Response
 ): Promise<void> => {
   const { email, password } = req.body;
-
+  console.log(email, password);
   // Validate user input
   if (!email || !password) {
     res.status(400).json({
@@ -118,7 +132,7 @@ export const login = async (
     const user = await prisma.user.findUnique({
       where: { email },
     });
-
+    console.log({ user });
     if (!user) {
       res.status(404).json({
         success: false,

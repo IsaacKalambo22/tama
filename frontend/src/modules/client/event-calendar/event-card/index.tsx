@@ -1,5 +1,8 @@
 import { Card } from '@/components/ui/card';
-import { formatDate } from '@/lib/utils';
+import {
+  formatDate,
+  formatTime,
+} from '@/lib/utils';
 import { Calendar, Clock } from 'lucide-react';
 import { EventProps } from '../../../../lib/api';
 
@@ -73,7 +76,9 @@ const EventCard = ({ event }: EventCardProps) => {
           {time && (
             <div className='flex items-center gap-1'>
               <Clock className='w-5 h-5 text-gray-700' />
-              <span className='mt-1'>{time}</span>
+              <span className='mt-1'>
+                {formatTime(time)}
+              </span>
             </div>
           )}
         </div>

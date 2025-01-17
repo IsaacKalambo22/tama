@@ -20,7 +20,7 @@ const emails_1 = require("../../mailtrap/emails");
 const generate_tokens_1 = require("../../utils/generate-tokens");
 const prisma = new client_1.PrismaClient();
 const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, email, role, phoneNumber } = req.body;
+    const { name, email, role, phoneNumber, password, } = req.body;
     // Validate user input
     if (!name || !email || !phoneNumber) {
         res.status(400).json({
@@ -49,12 +49,19 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             .update(verificationToken)
             .digest('hex');
         const verificationTokenExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours from now
+        let hashedPassword = '';
+        // Hash the password if it's being updated
+        if (password) {
+            const saltRounds = 10;
+            hashedPassword = yield bcrypt_1.default.hash(password, saltRounds);
+        }
         // Create the user
         const newUser = yield prisma.user.create({
             data: {
                 name,
                 email,
                 phoneNumber,
+                password: hashedPassword || null,
                 role: role || client_1.Role.USER,
                 verificationToken: hashedToken,
                 verificationTokenExpiresAt, // 24 hours
@@ -83,6 +90,7 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.registerUser = registerUser;
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
+    console.log(email, password);
     // Validate user input
     if (!email || !password) {
         res.status(400).json({
@@ -96,6 +104,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield prisma.user.findUnique({
             where: { email },
         });
+        console.log({ user });
         if (!user) {
             res.status(404).json({
                 success: false,

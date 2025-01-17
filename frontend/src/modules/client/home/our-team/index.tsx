@@ -2,45 +2,51 @@ import Team, { TeamMember } from './team';
 
 const teamMembers: TeamMember[] = [
   {
-    name: 'Councilor A.M. Kalima Banda',
-    role: 'President',
+    name: 'Mr. Nickson Lita',
+    role: 'Chief Executive Officer',
     description:
-      'Leading the executive committee with dedication and visionary leadership.',
-    imageUrl: '', // No image, use icon instead
+      'Providing strategic direction and oversight, driving growth initiatives, and ensuring the overall success of the organization.',
+    linkedinUrl:
+      'https://linkedin.com/in/nicksonlita',
+    facebookUrl:
+      'https://facebook.com/nicksonlita',
   },
   {
-    name: 'Councilor R.D. Sulumba',
-    role: '1st Vice President',
+    name: 'Mr. Sam Gift Kasambala',
+    role: 'Head of Operations',
     description:
-      'Assisting the president and ensuring the smooth operation of the committee.',
-    imageUrl: '', // No image, use icon instead
+      'Overseeing day-to-day operational activities, optimizing processes, and ensuring efficient service delivery across all departments.',
+    linkedinUrl:
+      'https://linkedin.com/in/samgiftkasambala',
+    facebookUrl:
+      'https://facebook.com/samgiftkasambala',
   },
   {
-    name: 'Councilor A.V. Siame',
-    role: '2nd Vice President',
+    name: 'Mrs. Jaqueline Moleni Nee Chakwana',
+    role: 'Head of Finance',
     description:
-      'Supporting leadership and enhancing strategic decisions within the committee.',
-    imageUrl: '', // No image, use icon instead
+      'Managing financial planning, budgeting, and risk assessment while ensuring financial sustainability and compliance with regulations.',
+    linkedinUrl:
+      'https://linkedin.com/in/jaquelinemoleni',
+    facebookUrl:
+      'https://facebook.com/jaquelinemoleni',
   },
-  // {
-  //   name: 'Councilor J.N. Sibande',
-  //   role: 'Agricultural Services Board Chair',
-  //   description:
-  //     'Overseeing agricultural programs and ensuring their alignment with community goals.',
-  //   imageUrl: "", // No image, use icon instead
-  // },
-  // {
-  //   name: 'Councilor A. Kachenje (Mrs.)',
-  //   role: 'Enterprise Services Board Chair',
-  //   description:
-  //     'Driving enterprise growth and managing board strategies to foster success.',
-  //   imageUrl: "", // No image, use icon instead
-  // },
 ];
 
 export default function OurTeam() {
   return (
-    <div>
+    <div className='flex flex-col items-center gap-1'>
+      <span className='home-text'>
+        Meet Our Team
+      </span>
+      <p className='text-gray-600 text-lg text-center'>
+        Our passionate and skilled team members
+        work tirelessly to achieve our mission and
+        vision.
+      </p>
+      <span className='text-center font-bold green_gradient text-2xl sm:text-3xl mt-2'>
+        Management Team
+      </span>
       <Team teamMembers={teamMembers} />
     </div>
   );

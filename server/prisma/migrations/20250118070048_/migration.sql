@@ -5,9 +5,12 @@ CREATE TYPE "Role" AS ENUM ('ADMIN', 'MANAGER', 'USER');
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
+    "password" TEXT,
     "phoneNumber" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "avatar" TEXT,
+    "district" TEXT,
+    "about" TEXT,
     "role" "Role" NOT NULL DEFAULT 'USER',
     "lastLogin" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "isVerified" BOOLEAN NOT NULL DEFAULT false,

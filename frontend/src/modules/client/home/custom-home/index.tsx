@@ -52,8 +52,8 @@ const CustomHome = () => {
       <Card className='mx-auto bg-inherit w-full border-none h-auto shadow-none'>
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 '>
           <StatisticBlock
-            count={51_000}
-            label='Registered customers'
+            count={18_000}
+            label='Registered Growers'
             icon={<FaUsers />}
           />
           <StatisticBlock
@@ -62,13 +62,13 @@ const CustomHome = () => {
             icon={<FaUsersCog />}
           />
           <StatisticBlock
-            count={50}
-            label='Cooperatives'
+            count={3}
+            label='Tobacco Grading Centers'
             icon={<FaWarehouse />}
           />
           <StatisticBlock
-            count={5}
-            label='Shops'
+            count={54}
+            label='Hessian & Tobacco Satellite Depots'
             icon={<FaStore />}
           />
         </div>

@@ -1,11 +1,16 @@
 import { Card } from '@/components/ui/card';
 import { User } from 'lucide-react'; // Example icon
+import {
+  FaFacebook,
+  FaLinkedin,
+} from 'react-icons/fa';
 
 export interface TeamMember {
   name: string;
   role: string;
   description: string;
-  imageUrl: string;
+  linkedinUrl: string;
+  facebookUrl: string;
 }
 
 interface TeamProps {
@@ -15,14 +20,6 @@ interface TeamProps {
 const Team = ({ teamMembers }: TeamProps) => {
   return (
     <div className='flex flex-col items-center gap-1'>
-      <span className='home-text'>
-        Meet Our Team
-      </span>
-      <p className='text-gray-600 text-lg text-center'>
-        Our passionate and skilled team members
-        work tirelessly to achieve our mission and
-        vision.
-      </p>
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 w-full mt-8'>
         {teamMembers.map((member, index) => (
           <Card
@@ -41,6 +38,24 @@ const Team = ({ teamMembers }: TeamProps) => {
             <p className='text-gray-600 text-center text-sm'>
               {member.description}
             </p>
+            <div className='flex gap-4 mt-3'>
+              <a
+                href={member.linkedinUrl}
+                target='_blank'
+                rel='noopener noreferrer'
+                aria-label={`LinkedIn profile of ${member.name}`}
+              >
+                <FaLinkedin className='text-blue-700 text-xl hover:text-blue-900' />
+              </a>
+              <a
+                href={member.facebookUrl}
+                target='_blank'
+                rel='noopener noreferrer'
+                aria-label={`Facebook profile of ${member.name}`}
+              >
+                <FaFacebook className='text-blue-600 text-xl hover:text-blue-800' />
+              </a>
+            </div>
           </Card>
         ))}
       </div>
