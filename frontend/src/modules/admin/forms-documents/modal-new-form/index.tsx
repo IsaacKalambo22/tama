@@ -43,12 +43,46 @@ const ModalNewForm = ({
   const path = usePathname();
   const { fullPath, pathWithoutAdmin } =
     useCustomPath(path);
+
+  const MAX_FILE_SIZE_MB = 50; // Maximum file size in MB
+  const MAX_FILE_SIZE_BYTES =
+    MAX_FILE_SIZE_MB * 1024 * 1024; // Convert to bytes
+  const VALID_FILE_TYPE = 'application/pdf'; // Only allow PDF files
+
   const formSchema = zod.object({
     filename: zod.string().min(2, {
       message:
         'Filename must be at least 2 characters.',
     }),
-    files: zod.custom<File[]>(),
+    files: zod
+      .array(zod.instanceof(File))
+      .refine((files) => files.length > 0, {
+        message: 'At least one file is required.',
+      })
+      .refine((files) => files.length <= 2, {
+        message:
+          'You can upload up to 4 files only.',
+      })
+      .refine(
+        (files) =>
+          files.every(
+            (file) =>
+              file.size <= MAX_FILE_SIZE_BYTES
+          ),
+        {
+          message: `Each file must be less than ${MAX_FILE_SIZE_MB} MB.`,
+        }
+      )
+      .refine(
+        (files) =>
+          files.every(
+            (file) =>
+              file.type === VALID_FILE_TYPE
+          ),
+        {
+          message: 'Only PDF files are allowed.',
+        }
+      ),
   });
 
   const form = useForm<

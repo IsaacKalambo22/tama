@@ -47,7 +47,6 @@ export const metadata: Metadata = {
     ],
     type: 'website',
   },
-  viewport: 'width=device-width, initial-scale=1',
   robots: {
     index: true,
     follow: true,

@@ -24,38 +24,45 @@ export function MainCarousel() {
   // Array of image data
   const slides = [
     {
-      imagePath: '/assets/images/carousel/1.jpg',
+      imagePath:
+        '/assets/images/tama-images/4.jpg',
       title: 'TAMA Farmers Trust',
       subtitle: 'Leading farmers to prosperity',
     },
     {
-      imagePath: '/assets/images/carousel/7.jpg',
+      imagePath:
+        '/assets/images/tama-images/7.jpg',
       title: 'Empowering Farmers',
       subtitle:
         'Innovative solutions for agriculture',
     },
     {
-      imagePath: '/assets/images/carousel/5.jpg',
+      imagePath:
+        '/assets/images/tama-images/6.jpg',
       title: 'Sustainable Growth',
       subtitle: 'Fostering long-term development',
     },
     {
-      imagePath: '/assets/images/carousel/6.jpg',
+      imagePath:
+        '/assets/images/tama-images/5.jpg',
       title: 'Community Impact',
       subtitle: 'Strengthening local economies',
     },
     {
-      imagePath: '/assets/images/carousel/8.jpg',
+      imagePath:
+        '/assets/images/tama-images/10.jpg',
       title: 'Advanced Technology',
       subtitle: 'Modern tools for better yields',
     },
     {
-      imagePath: '/assets/images/carousel/9.jpg',
+      imagePath:
+        '/assets/images/tama-images/8.jpg',
       title: 'Global Reach',
       subtitle: 'Connecting farmers worldwide',
     },
     {
-      imagePath: '/assets/images/carousel/10.jpg',
+      imagePath:
+        '/assets/images/tama-images/9.jpg',
       title: 'Trusted Partnerships',
       subtitle: 'Collaborating for success',
     },
@@ -72,7 +79,7 @@ export function MainCarousel() {
         {slides.map((slide, index) => (
           <CarouselItem key={index}>
             <div className='p-1 relative'>
-              <Card className='w-full h-[25rem] sm:h-[40rem] shadow-none rounded-2xl relative overflow-hidden'>
+              <Card className='w-full h-[25rem] sm:h-[37rem] shadow-none rounded-2xl relative overflow-hidden'>
                 {/* Image with opacity */}
                 <Image
                   src={slide.imagePath}
@@ -85,11 +92,11 @@ export function MainCarousel() {
                   priority={index === 0}
                 />
                 {/* Dark overlay */}
-                <div className='absolute inset-0 bg-black bg-opacity-50 rounded-2xl'></div>
+                <div className='absolute inset-0 bg-black bg-opacity-60 rounded-2xl'></div>
                 {/* Centered Text */}
                 <div className='absolute inset-0 flex flex-col items-center justify-center'>
                   <h1 className='text-center font-bold flex flex-col leading-snug text-white drop-shadow-md'>
-                    <span className='text-3xl sm:text-5xl'>
+                    <span className='text-3xl sm:text-5xl text-amber-500'>
                       {slide.title}
                     </span>
                     <span className='text-2xl sm:text-3xl'>

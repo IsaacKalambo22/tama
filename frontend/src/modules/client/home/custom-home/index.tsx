@@ -22,23 +22,23 @@ const CustomHome = () => {
       </div>
       <div className='flex flex-col gap-20'>
         <ImageTextHome
-          imagePath='/assets/images/carousel/9.jpg'
+          imagePath='/assets/images/tama-images/3.jpg'
           heading='Who We Are'
           description='We at The TAMA Farmers Trust believe that the success of the nation lies in the concerted efforts of all stakeholders in the economy.'
         />
         <ImageTextHome
-          imagePath='/assets/images/carousel/11.jpg'
+          imagePath='/assets/images/tama-images/1.jpg'
           heading='Working Together with Farmers'
           description='TAMA Farmers Trust works together with smallholder farmers, medium to large farmers, and corporate farmers for the sustainability of the Malawi economy.'
           imagePosition='right'
         />
         <ImageTextHome
-          imagePath='/assets/images/services/04.webp'
+          imagePath='/assets/images/tama-images/4.jpg'
           heading='Our Mission'
           description='To provide visible and compelling services to the grower members and perpetuate sustainable balance in the generation of wealth in a manner that ascertains wider income diversification and value.'
         />
         <ImageTextHome
-          imagePath='/assets/images/carousel/13.jpg'
+          imagePath='/assets/images/tama-images/2.jpg'
           heading='Our Vision'
           description='To be the most effective and successful Association in the representation of grower member interests in promoting tobacco production and marketing.'
           imagePosition='right'

@@ -1,7 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { ShopProps } from '@/lib/api';
-import { BASE_URL } from '@/lib/utils';
 import Modal from '@/modules/admin/modal';
 import Image from 'next/image';
 
@@ -27,7 +26,7 @@ const ModalViewShop = ({
         {shop.imageUrl && (
           <div className='w-full h-64 relative rounded-lg overflow-hidden'>
             <Image
-              src={`${BASE_URL}/uploads/${shop.imageUrl}`}
+              src={shop.imageUrl}
               alt={shop.name}
               layout='fill'
               objectFit='cover'
