@@ -5,12 +5,13 @@ import {
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import { Request, Response } from 'express';
+
 import {
   sendPasswordResetEmail,
   sendResetSuccessEmail,
   sendSetPasswordSuccessEmail,
   setPasswordRequestEmail,
-} from '../../mailtrap/emails';
+} from '../../nodemailer/emails';
 import { APIResponse } from '../../types';
 import { generateTokens } from '../../utils/generate-tokens';
 

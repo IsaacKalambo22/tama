@@ -16,7 +16,7 @@ exports.forgotPassword = exports.resetPassword = exports.setPassword = exports.l
 const client_1 = require("@prisma/client");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const crypto_1 = __importDefault(require("crypto"));
-const emails_1 = require("../../mailtrap/emails");
+const emails_1 = require("../../nodemailer/emails");
 const generate_tokens_1 = require("../../utils/generate-tokens");
 const prisma = new client_1.PrismaClient();
 const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

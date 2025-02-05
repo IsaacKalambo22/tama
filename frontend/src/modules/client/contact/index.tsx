@@ -74,6 +74,7 @@ const Contact = () => {
 
     if (result.success) {
       toast.success('Message sent successfully');
+      form.reset();
     } else {
       toast.error(
         result.error ??

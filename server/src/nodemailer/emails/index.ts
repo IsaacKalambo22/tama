@@ -291,3 +291,49 @@ export const sendContactEmail = async (
     };
   }
 };
+
+export const sendSetPasswordSuccessEmail = async (
+  email: string
+): Promise<{
+  success: boolean;
+  message: string;
+}> => {
+  try {
+    const result = await sendEmail({
+      to: email,
+      subject: 'Password Set Successful',
+      text: 'Your password has been set successfully.',
+      html: PASSWORD_RESET_SUCCESS_TEMPLATE,
+    });
+
+    if (result.success) {
+      console.log(
+        'Password set success email sent successfully'
+      );
+      return {
+        success: true,
+        message:
+          'Password set success email sent successfully!',
+      };
+    } else {
+      console.error(
+        'Failed to send password set success email:',
+        result.message
+      );
+      return {
+        success: false,
+        message: result.message,
+      };
+    }
+  } catch (error) {
+    console.error(
+      'Error sending password set success email:',
+      error
+    );
+    return {
+      success: false,
+      message:
+        'Failed to send password set success email. Please try again later.',
+    };
+  }
+};
