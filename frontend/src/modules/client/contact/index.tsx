@@ -1,7 +1,7 @@
 'use client';
 
 import { Form } from '@/components/ui/form';
-import { toast } from '@/hooks/use-toast';
+import { sendContactMessage } from '@/modules/admin/actions';
 import CustomFormField, {
   FormFieldType,
 } from '@/modules/common/custom-form-field';
@@ -10,6 +10,7 @@ import SubmitButton from '@/modules/common/submit-button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import * as z from 'zod';
 
 // Define the Zod schema
@@ -57,48 +58,29 @@ const Contact = () => {
     data: ContactFormData
   ) => {
     console.log({ data });
-    try {
-      setIsLoading(true);
-      const payload = {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        phoneNumber: data.phoneNumber,
-        message: data.message,
-      };
-      const response = await fetch(
-        '/api/emails',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
-        }
+    const name = `${data.firstName} ${data.lastName}`;
+
+    setIsLoading(true);
+    const payload = {
+      name,
+      email: data.email,
+      phoneNumber: data.phoneNumber,
+      message: data.message,
+    };
+    const result = await sendContactMessage(
+      payload
+    );
+    console.log({ result });
+
+    if (result.success) {
+      toast.success('Message sent successfully');
+    } else {
+      toast.error(
+        result.error ??
+          'An error occurred while sending message.'
       );
-
-      console.log({ response });
-
-      if (!response.ok) {
-        throw new Error('Failed to send message');
-      }
-
-      toast({
-        title: 'Success',
-        description:
-          'Message has been sent successfully',
-      });
-      form.reset();
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description:
-          'An unexpected error has occurred',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false);
     }
+    setIsLoading(false);
   };
 
   return (

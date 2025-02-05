@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
+import { sendContactEmail } from '../../nodemailer/emails';
 import { APIResponse } from '../../types';
 
 const prisma = new PrismaClient();
@@ -239,6 +240,67 @@ export const deleteUser = async (
       message:
         'An error occurred while deleting the user. Please try again later.',
       error: error.message,
+    });
+  }
+};
+
+export const sendContactMessage = async (
+  req: Request,
+  res: Response<APIResponse>
+): Promise<void> => {
+  const { name, email, phoneNumber, message } =
+    req.body;
+
+  // Validate user input
+  if (
+    !name ||
+    !email ||
+    !phoneNumber ||
+    !message
+  ) {
+    res.status(400).json({
+      success: false,
+      message:
+        'Name, email, phone number, and message are required.',
+    });
+    return;
+  }
+
+  try {
+    // Format email body using template
+
+    // Send email
+    const result = await sendContactEmail(
+      email,
+      name,
+      message,
+      phoneNumber
+    );
+
+    if (result.success) {
+      console.log(
+        'Contact email sent successfully'
+      );
+      res.status(200).json({
+        success: true,
+        message: 'Email sent successfully!',
+      });
+    } else {
+      console.error(
+        'Failed to send contact email:',
+        result.message
+      );
+      res.status(500).json({
+        success: false,
+        message: result.message,
+      });
+    }
+  } catch (error) {
+    console.error('Error sending email:', error);
+    res.status(500).json({
+      success: false,
+      message:
+        'An error occurred while sending email. Please try again later.',
     });
   }
 };

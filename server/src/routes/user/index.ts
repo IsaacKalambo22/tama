@@ -3,6 +3,7 @@ import {
   deleteUser,
   getAllUsers,
   getUserById,
+  sendContactMessage,
   updateUser,
 } from '../../controllers/user';
 import {
@@ -13,6 +14,7 @@ import {
 const router = Router();
 
 router.get('/', getAllUsers);
+router.post('/contact-email', sendContactMessage);
 router.get('/:id', verifyToken, getUserById);
 router.patch('/:id', verifyToken, updateUser);
 router.delete('/:id', verifyAdmin, deleteUser);

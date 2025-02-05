@@ -16,24 +16,32 @@ export const serverAction = async (
     | 'PUT'
     | 'DELETE',
   payload: Record<string, any> | null = null,
-  revalidatePaths: string[] = []
+  revalidatePaths: string[] = [],
+  useSession: boolean = true // Default to true
 ) => {
   try {
-    const session = await auth();
+    let token: string | undefined = undefined;
 
-    if (!session) {
-      return parseServerActionResponse({
-        error: 'Not signed in',
-        status: 'ERROR',
-      });
+    if (useSession) {
+      const session = await auth();
+
+      if (!session) {
+        return parseServerActionResponse({
+          error: 'Not signed in',
+          status: 'ERROR',
+        });
+      }
+
+      token = session.accessToken;
     }
 
-    const token = session.accessToken;
     const options: RequestInit = {
       method,
       headers: {
-        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
+        ...(token && {
+          Authorization: `Bearer ${token}`,
+        }), // Include token only if available
       },
     };
 
@@ -46,39 +54,46 @@ export const serverAction = async (
       options
     );
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(
-        'Server action failed:',
-        errorText
-      );
-      throw new Error(
-        `Server action failed. Status: ${response.status}, Error: ${errorText}`
-      );
-    }
-
     const result = await response.json();
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error:
+          result.message ||
+          'Something went wrong',
+      };
+    }
 
     // Revalidate specified paths
     for (const path of revalidatePaths) {
       revalidatePath(path);
     }
 
-    return parseServerActionResponse({
-      ...result,
-      error: '',
-      status: 'SUCCESS',
-    });
+    return { success: true };
   } catch (error) {
-    console.error(
-      'Error during server action:',
-      error
-    );
-    return parseServerActionResponse({
-      error: JSON.stringify(error),
-      status: 'ERROR',
-    });
+    // General error handling
+    console.log(error);
+    return {
+      success: false,
+      error:
+        error instanceof Error
+          ? error.message
+          : 'An unexpected error occurred',
+    };
   }
+};
+
+export const sendContactMessage = async (
+  payload: object
+) => {
+  return await serverAction(
+    'users/contact-email',
+    'POST',
+    payload,
+    [],
+    false
+  );
 };
 
 // EVENTS SERVER ACTIONS
