@@ -83,7 +83,7 @@ const ModalNewEvent = ({
 
     onClose();
     if (result.success) {
-      toast.success('Event updated successfully');
+      toast.success('Event created successfully');
     } else {
       toast.error(
         result.error ?? 'An error occurred.'

@@ -4,7 +4,6 @@ import {
   FormControl,
 } from '@/components/ui/form';
 import useCustomPath from '@/hooks/use-custom-path';
-import { toast } from '@/hooks/use-toast';
 import { FileProps } from '@/lib/api';
 import {
   getFileType,
@@ -19,6 +18,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import * as zod from 'zod';
 import { updateForm } from '../../actions';
 import Modal from '../../modal';
@@ -57,54 +57,46 @@ const ModalEditForm = ({
     values: zod.infer<typeof formSchema>
   ) => {
     setIsLoading(true);
-    try {
-      // Create FormData instance
-      let fileUrl = '';
-      let type = '';
-      let extension = '';
-      let size = undefined;
+    let fileUrl = '';
+    let type = '';
+    let extension = '';
+    let size = undefined;
 
-      if (values.files.length > 0) {
-        const file = values.files[0];
-        fileUrl = await handleFileUpload(file);
-        size = Number(file.size);
-        const fileProps = getFileType(file.name);
-        type = fileProps.type;
-        extension = fileProps.extension;
-      }
-
-      const payload = {
-        filename: values.filename ?? '',
-        fileUrl,
-        type,
-        extension,
-        size,
-      };
-
-      const result = await updateForm(
-        payload,
-        file.id,
-        fullPath,
-        pathWithoutAdmin
-      );
-
-      onClose();
-      toast({
-        title: 'Success',
-        description: `${file.filename} has been updated successfully`,
-      });
-      // Handle the result, such as showing success or error messages
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description:
-          'An unexpected error has occurred',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false);
+    if (values.files.length > 0) {
+      const file = values.files[0];
+      fileUrl = await handleFileUpload(file);
+      size = Number(file.size);
+      const fileProps = getFileType(file.name);
+      type = fileProps.type;
+      extension = fileProps.extension;
     }
+
+    const payload = {
+      filename: values.filename ?? '',
+      fileUrl,
+      type,
+      extension,
+      size,
+    };
+
+    const result = await updateForm(
+      payload,
+      file.id,
+      fullPath,
+      pathWithoutAdmin
+    );
+
+    onClose();
+    if (result.success) {
+      toast.success('Form updated successfully');
+    } else {
+      toast.error(
+        result.error ?? 'An error occurred.'
+      );
+    }
+    setIsLoading(false);
   };
+
   return (
     <Modal
       isOpen={isOpen}
