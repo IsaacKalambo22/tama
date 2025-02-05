@@ -163,12 +163,12 @@ export const SET_PASSWORD_REQUEST_TEMPLATE = `
 
 export const CONTACT_EMAIL_TEMPLATE = `
   <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto;">
-    <h2 style="color: #007bff;">New Contact Form Submission</h2>
+    <h2 style="color: #4CAF50;">New Contact Form Submission</h2>
     <p><strong>Name:</strong> {senderName}</p>
-    <p><strong>Email:</strong> <a href="mailto:{senderEmail}" style="color: #007bff; text-decoration: none;">{senderEmail}</a></p>
-    <p><strong>Phone:</strong> <a href="tel:{senderPhone}" style="color: #007bff; text-decoration: none;">{senderPhone}</a></p>
+    <p><strong>Email:</strong> <a href="mailto:{senderEmail}" style="color: #4CAF50; text-decoration: none;">{senderEmail}</a></p>
+    <p><strong>Phone:</strong> <a href="tel:{senderPhone}" style="color: #4CAF50; text-decoration: none;">{senderPhone}</a></p>
     <p><strong>Message:</strong></p>
-    <p style="background: #f9f9f9; padding: 10px; border-left: 4px solid #007bff;">{message}</p>
+    <p style="background: #f9f9f9; padding: 10px; border-left: 4px solid #4CAF50;">{message}</p>
     <hr>
     <p style="font-size: 12px; color: #666;">This message was sent from the contact form on your website.</p>
   </div>

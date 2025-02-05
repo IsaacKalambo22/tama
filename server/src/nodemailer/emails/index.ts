@@ -236,15 +236,21 @@ export const sendContactEmail = async (
   success: boolean;
   message: string;
 }> => {
+  console.log({
+    senderEmail,
+    senderName,
+    message,
+    senderPhone,
+  });
   try {
     const contactEmailBody =
       CONTACT_EMAIL_TEMPLATE.replace(
-        '{senderName}',
+        /{senderName}/g,
         senderName
       )
-        .replace('{senderEmail}', senderEmail)
-        .replace('{senderPhone}', senderPhone)
-        .replace('{message}', message);
+        .replace(/{senderEmail}/g, senderEmail)
+        .replace(/{senderPhone}/g, senderPhone)
+        .replace(/{message}/g, message);
 
     const result = await sendEmail({
       to: DOMAIN_EMAIL!, // Replace with your support email
