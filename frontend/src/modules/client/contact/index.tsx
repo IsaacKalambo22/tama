@@ -70,7 +70,6 @@ const Contact = () => {
     const result = await sendContactMessage(
       payload
     );
-    console.log({ result });
 
     if (result.success) {
       toast.success('Message sent successfully');

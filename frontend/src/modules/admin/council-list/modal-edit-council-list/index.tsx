@@ -9,7 +9,6 @@ import {
 } from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
 import useCustomPath from '@/hooks/use-custom-path';
-import { toast } from '@/hooks/use-toast';
 import CustomFormField, {
   FormFieldType,
 } from '@/modules/common/custom-form-field';
@@ -18,6 +17,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import * as zod from 'zod';
 import { updateCouncilList } from '../../actions';
 
@@ -93,46 +93,40 @@ const ModalEditCouncilList = ({
     values: zod.infer<typeof formSchema>
   ) => {
     setIsLoading(true);
-    try {
-      const {
-        demarcation,
-        tobaccoType,
-        councillor,
-        firstAlternateCouncillor,
-        secondAlternateCouncillor,
-      } = values;
-      const payload = {
-        demarcation,
-        tobaccoType,
-        councillor,
-        firstAlternateCouncillor,
-        secondAlternateCouncillor,
-      };
+    const {
+      demarcation,
+      tobaccoType,
+      councillor,
+      firstAlternateCouncillor,
+      secondAlternateCouncillor,
+    } = values;
+    const payload = {
+      demarcation,
+      tobaccoType,
+      councillor,
+      firstAlternateCouncillor,
+      secondAlternateCouncillor,
+    };
 
-      await updateCouncilList(
-        payload,
-        councilList.id,
-        fullPath,
-        '/resources/council-list'
+    const result = await updateCouncilList(
+      payload,
+      councilList.id,
+      fullPath,
+      '/resources/council-list'
+    );
+
+    onClose();
+    if (result.success) {
+      toast.success(
+        'Council list updated successfully'
       );
-
-      toast({
-        title: 'Success',
-        description:
-          'Council list has been updated successfully.',
-      });
-      onClose();
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description:
-          'An unexpected error has occurred.',
-        variant: 'destructive',
-      });
-      console.error('Update error:', error);
-    } finally {
-      setIsLoading(false);
+    } else {
+      toast.error(
+        result.error ??
+          'An error occurred while updating council list.'
+      );
     }
+    setIsLoading(false);
   };
 
   return (

@@ -9,7 +9,6 @@ import {
 } from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
 import useCustomPath from '@/hooks/use-custom-path';
-import { toast } from '@/hooks/use-toast';
 import CustomFormField, {
   FormFieldType,
 } from '@/modules/common/custom-form-field';
@@ -18,6 +17,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import * as zod from 'zod';
 import { createCouncilList } from '../../actions';
 type Props = {
@@ -79,49 +79,42 @@ const ModalNewCouncilList = ({
     values: zod.infer<typeof formSchema>
   ) => {
     setIsLoading(true);
-    try {
-      // Destructure values to map them to the required props
-      const {
-        demarcation,
-        tobaccoType,
-        councillor,
-        firstAlternateCouncillor,
-        secondAlternateCouncillor,
-      } = values;
-      const payload = {
-        demarcation,
-        tobaccoType,
-        councillor,
-        firstAlternateCouncillor,
-        secondAlternateCouncillor,
-      };
-      // Call the createCouncilList function with the required arguments
-      const result = await createCouncilList(
-        payload,
-        fullPath,
-        '/resources/council-list',
-        '/admin'
+
+    const {
+      demarcation,
+      tobaccoType,
+      councillor,
+      firstAlternateCouncillor,
+      secondAlternateCouncillor,
+    } = values;
+    const payload = {
+      demarcation,
+      tobaccoType,
+      councillor,
+      firstAlternateCouncillor,
+      secondAlternateCouncillor,
+    };
+    // Call the createCouncilList function with the required arguments
+    const result = await createCouncilList(
+      payload,
+      fullPath,
+      '/resources/council-list',
+      '/admin'
+    );
+
+    onClose();
+
+    if (result.success) {
+      toast.success(
+        'Council list created successfully'
       );
-
-      onClose();
-
-      // Show success notification
-      toast({
-        title: 'Success',
-        description:
-          'New form or document has been created successfully',
-      });
-    } catch (error) {
-      // Show error notification
-      toast({
-        title: 'Error',
-        description:
-          'An unexpected error has occurred',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false);
+    } else {
+      toast.error(
+        result.error ??
+          'An error occurred while creating council list.'
+      );
     }
+    setIsLoading(false);
   };
 
   return (
