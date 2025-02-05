@@ -2,7 +2,6 @@
 
 import { Form } from '@/components/ui/form';
 import useCustomPath from '@/hooks/use-custom-path';
-import { toast } from '@/hooks/use-toast';
 import { EventProps } from '@/lib/api';
 import CustomFormField, {
   FormFieldType,
@@ -12,6 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import * as zod from 'zod';
 import { updateEvent } from '../../actions';
 import Modal from '../../modal';
@@ -60,55 +60,34 @@ const ModalEditEvent = ({
   const onSubmit = async (
     values: zod.infer<typeof formSchema>
   ) => {
+    if (!event?.id) return;
+
     setIsLoading(true);
-    try {
-      const payload = {
-        title: values.title,
-        description: values.description,
-        date: values.date,
-        time: values.time || null,
-        endDate: values.endDate || null,
-        location: values.location,
-      };
+    const payload = {
+      title: values.title,
+      description: values.description,
+      date: values.date,
+      time: values.time || null,
+      endDate: values.endDate || null,
+      location: values.location,
+    };
 
-      console.log('JSON Payload:', payload);
-
-      if (event?.id) {
-        // Update event
-        await updateEvent(
-          payload,
-          event?.id,
-          fullPath,
-          `/tobacco-business/event-calendar`
-        );
-        onClose();
-        toast({
-          title: 'Event Updated',
-          description:
-            'Your event has been updated successfully!',
-        });
-      } else {
-        toast({
-          title: 'Error',
-          description:
-            'Event ID is required for updating the event.',
-          variant: 'destructive',
-        });
-      }
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description:
-          'An unexpected error has occurred while updating the event.',
-        variant: 'destructive',
-      });
-      console.error(
-        'Error updating event:',
-        error
+    // Update event
+    const result = await updateEvent(
+      payload,
+      event.id,
+      fullPath,
+      `/tobacco-business/event-calendar`
+    );
+    onClose();
+    if (result.success) {
+      toast.success('Event updated successfully');
+    } else {
+      toast.error(
+        result.error ?? 'An error occurred.'
       );
-    } finally {
-      setIsLoading(false);
     }
+    setIsLoading(false);
   };
 
   return (

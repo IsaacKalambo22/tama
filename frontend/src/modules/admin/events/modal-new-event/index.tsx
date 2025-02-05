@@ -2,7 +2,6 @@
 
 import { Form } from '@/components/ui/form';
 import useCustomPath from '@/hooks/use-custom-path';
-import { toast } from '@/hooks/use-toast';
 import CustomFormField, {
   FormFieldType,
 } from '@/modules/common/custom-form-field';
@@ -11,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import * as zod from 'zod';
 import { createEvent } from '../../actions';
 import Modal from '../../modal';
@@ -65,44 +65,32 @@ const ModalNewEvent = ({
     values: zod.infer<typeof formSchema>
   ) => {
     setIsLoading(true);
-    try {
-      const payload = {
-        title: values.title,
-        description: values.description,
-        date: values.startDate,
-        time: values.time || null,
-        endDate: values.endDate || null,
-        location: values.location,
-      };
+    const payload = {
+      title: values.title,
+      description: values.description,
+      date: values.startDate,
+      time: values.time || null,
+      endDate: values.endDate || null,
+      location: values.location,
+    };
 
-      console.log('JSON Payload:', payload);
+    const result = await createEvent(
+      payload,
+      fullPath,
+      `/tobacco-business/event-calendar`,
+      '/admin'
+    );
 
-      const result = await createEvent(
-        payload,
-        fullPath,
-        `/tobacco-business/event-calendar`,
-        '/admin'
+    onClose();
+    if (result.success) {
+      toast.success('Event updated successfully');
+    } else {
+      toast.error(
+        result.error ?? 'An error occurred.'
       );
-
-      onClose();
-      toast({
-        title: 'Success',
-        description:
-          'Event has been created successfully',
-      });
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description:
-          'An unexpected error has occurred',
-        variant: 'destructive',
-      });
-      console.error('Upload error:', error);
-    } finally {
-      setIsLoading(false);
     }
+    setIsLoading(false);
   };
-
   return (
     <Modal
       isOpen={isOpen}
