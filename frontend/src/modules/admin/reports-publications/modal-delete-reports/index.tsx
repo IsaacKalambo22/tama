@@ -6,13 +6,13 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import useCustomPath from '@/hooks/use-custom-path';
-import { toast } from '@/hooks/use-toast';
 import { FileProps } from '@/lib/api';
 import CustomButton, {
   BUTTON_VARIANT,
 } from '@/modules/common/custom-button';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { deleteReportAndPublication } from '../../actions';
 import Modal from '../../modal';
 
@@ -35,32 +35,27 @@ const ModalDeleteReports = ({
   const onSubmit = async () => {
     setIsLoading(true);
 
-    try {
-      const result =
-        await deleteReportAndPublication(
-          file.id,
-          fullPath,
-          pathWithoutAdmin,
-          '/admin'
-        );
+    const result =
+      await deleteReportAndPublication(
+        file.id,
+        fullPath,
+        pathWithoutAdmin,
+        '/admin'
+      );
 
-      onClose();
-      toast({
-        title: 'Success',
-        description: `${file.filename} has been deleted successfully`,
-      });
-      // Handle the result, such as showing success or error messages
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description:
-          'An unexpected error has occurred',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false);
+    onClose();
+    if (result.success) {
+      toast.success(
+        'Publication deleted successfully'
+      );
+    } else {
+      toast.error(
+        result.error ?? 'An error occurred.'
+      );
     }
+    setIsLoading(false);
   };
+
   return (
     <Modal
       isOpen={isOpen}
