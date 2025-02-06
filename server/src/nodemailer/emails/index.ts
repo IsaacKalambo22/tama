@@ -16,7 +16,7 @@ interface EmailOptions {
 }
 
 const DOMAIN_EMAIL = process.env.EMAIL_USER;
-const DOMAIN_FULL_EMAIL = `Resten Madzalo <${process.env.EMAIL_USER}>`;
+const DOMAIN_FULL_EMAIL = `TAMA Farmers Trust <${process.env.EMAIL_USER}>`;
 // Configure the transporter with environment variables
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
@@ -37,7 +37,7 @@ export const sendEmail = async ({
   subject,
   text,
   html,
-  from = 'Resten Madzalo <resten.madzalo@infi-tech.net>',
+  from = 'TAMA Farmers Trust <resten.madzalo@infi-tech.net>',
 }: EmailOptions): Promise<{
   success: boolean;
   message: string;
