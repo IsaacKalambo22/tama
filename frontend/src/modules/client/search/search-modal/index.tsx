@@ -1,16 +1,14 @@
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
 } from '@/components/ui/dialog';
 
 type Props = {
   children: React.ReactNode;
   isOpen: boolean;
-  onClose: () => React.Dispatch<
-    React.SetStateAction<boolean>
-  >;
+  onClose: () => void;
   name: string;
 };
 
@@ -23,7 +21,7 @@ const SearchModal = ({
   if (!isOpen) return null;
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className='sm:max-w-[500px]'>
+      <DialogContent className='sm:max-w-[540px] '>
         <DialogHeader>
           <DialogTitle>{name} </DialogTitle>
         </DialogHeader>

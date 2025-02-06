@@ -25,7 +25,8 @@ const Desktop = () => {
   const pathname = usePathname();
   const [isSearchOpen, setIsSearchOpen] =
     React.useState(false);
-
+  const [isModalOpen, setIsModalOpen] =
+    React.useState(false);
   return (
     <>
       <div className='max-w-7xl mx-auto px-6 sm:px-2 flex justify-between items-center h-full'>
@@ -186,9 +187,7 @@ const Desktop = () => {
               className='w-8 h-7'
               variant='ghost'
               size='icon'
-              onClick={() =>
-                setIsSearchOpen(true)
-              }
+              onClick={() => setIsModalOpen(true)}
             >
               <Search className='h-4 w-4' />
             </Button>
@@ -214,8 +213,8 @@ const Desktop = () => {
       {/* SEARCH DIALOG */}
       {isSearchOpen && (
         <SearchDialog
-          isOpen={isSearchOpen}
-          onClose={() => setIsSearchOpen(false)}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
         />
       )}
     </>

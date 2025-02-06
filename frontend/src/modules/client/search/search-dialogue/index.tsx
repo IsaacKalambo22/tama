@@ -1,7 +1,12 @@
 'use client';
 
 import { Input } from '@/components/ui/input';
-import { BlogProps, FileProps } from '@/lib/api';
+import {
+  BlogProps,
+  EventProps,
+  FileProps,
+  ShopProps,
+} from '@/lib/api';
 import { BASE_URL } from '@/lib/utils';
 import CustomError from '@/modules/common/custom-error';
 import CustomLoader from '@/modules/common/custom-loader';
@@ -11,6 +16,8 @@ import {
   useRef,
   useState,
 } from 'react';
+import EventCard from '../../event-calendar/event-card';
+import ShopCard from '../../shop/shop-card';
 import SearchBlogCard from '../search-blog-card';
 import SearchFileCard from '../search-file-card';
 import SearchModal from '../search-modal';
@@ -20,9 +27,7 @@ const SearchDialog = ({
   setIsOpen,
 }: {
   isOpen: boolean;
-  setIsOpen: React.Dispatch<
-    React.SetStateAction<boolean>
-  >;
+  setIsOpen: () => void;
 }) => {
   const [searchQuery, setSearchQuery] =
     useState('');
@@ -104,7 +109,7 @@ const SearchDialog = ({
   };
 
   return (
-    <div className='max-w-xl sm:px-16 flex flex-col w-full gap-10 sm:gap-16 mb-16'>
+    <div className='max-w-xl sm:px-16 flex flex-col w-full gap-10 sm:gap-16 mb-16 min-h-40 h-full'>
       {isOpen && (
         <SearchModal
           name='search'
@@ -128,7 +133,7 @@ const SearchDialog = ({
             {!isLoading &&
               !isError &&
               searchResults && (
-                <div className='w-full'>
+                <div className='w-full flex flex-col gap-4'>
                   {/* ✅ Section for Forms */}
                   {searchResults.forms &&
                     searchResults.forms.length >
@@ -172,6 +177,25 @@ const SearchDialog = ({
                         </div>
                       </>
                     )}
+                  {searchResults.shops &&
+                    searchResults.shops.length >
+                      0 && (
+                      <>
+                        <h2 className='text-lg font-semibold mb-4'>
+                          Shops
+                        </h2>
+                        <div className='w-full grid grid-cols-1 sm:grid-cols-2 gap-6'>
+                          {searchResults.shops.map(
+                            (shop: ShopProps) => (
+                              <ShopCard
+                                shop={shop}
+                                key={shop.id}
+                              />
+                            )
+                          )}
+                        </div>
+                      </>
+                    )}
                   {searchResults.blogs &&
                     searchResults.blogs.length >
                       0 && (
@@ -185,6 +209,46 @@ const SearchDialog = ({
                               <SearchBlogCard
                                 blog={blog}
                                 key={blog.id}
+                              />
+                            )
+                          )}
+                        </div>
+                      </>
+                    )}
+                  {searchResults.news &&
+                    searchResults.news.length >
+                      0 && (
+                      <>
+                        <h2 className='text-lg font-semibold mb-4'>
+                          News
+                        </h2>
+                        <div className='w-full grid grid-cols-1 sm:grid-cols-2 gap-6'>
+                          {searchResults.news.map(
+                            (news: BlogProps) => (
+                              <SearchBlogCard
+                                blog={news}
+                                key={news.id}
+                              />
+                            )
+                          )}
+                        </div>
+                      </>
+                    )}
+                  {searchResults.events &&
+                    searchResults.events.length >
+                      0 && (
+                      <>
+                        <h2 className='text-lg font-semibold mb-4'>
+                          Events
+                        </h2>
+                        <div className='w-full grid grid-cols-1 gap-6'>
+                          {searchResults.events.map(
+                            (
+                              event: EventProps
+                            ) => (
+                              <EventCard
+                                event={event}
+                                key={event.id}
                               />
                             )
                           )}
