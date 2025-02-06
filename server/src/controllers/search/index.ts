@@ -134,8 +134,7 @@ export const search = async (
         ],
       },
     });
-    const publication =
-      await prisma.reportAndPublication.findMany();
+
     const publications =
       await prisma.reportAndPublication.findMany({
         where: {
@@ -149,8 +148,6 @@ export const search = async (
           ],
         },
       });
-    console.log('Search Results:', publications);
-    console.log('Search Results:', publication);
 
     res.status(200).json({
       success: true,

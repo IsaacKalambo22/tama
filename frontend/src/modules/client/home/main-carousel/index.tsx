@@ -92,11 +92,11 @@ export function MainCarousel() {
                   priority={index === 0}
                 />
                 {/* Dark overlay */}
-                <div className='absolute inset-0 bg-black bg-opacity-60 rounded-2xl'></div>
+                <div className='absolute inset-0 bg-black bg-opacity-50 rounded-2xl'></div>
                 {/* Centered Text */}
                 <div className='absolute inset-0 flex flex-col items-center justify-center'>
                   <h1 className='text-center font-bold flex flex-col leading-snug text-white drop-shadow-md'>
-                    <span className='text-3xl sm:text-5xl text-amber-500'>
+                    <span className='text-3xl sm:text-5xl '>
                       {slide.title}
                     </span>
                     <span className='text-2xl sm:text-3xl'>

@@ -12,16 +12,19 @@ import { cn } from '@/lib/utils';
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { Search } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import * as React from 'react';
 import { navItems } from '../../constants/nav-items';
-import NavIconButtons from '../nav-con-buttons';
+import SearchDialog from '../../search/search-dialogue';
 
 const Desktop = () => {
   const user = false;
   const pathname = usePathname();
+  const [isSearchOpen, setIsSearchOpen] =
+    React.useState(false);
 
   return (
     <>
@@ -178,8 +181,17 @@ const Desktop = () => {
 
         {/* RIGHT SIDE */}
         <div className='flex-1 text-right '>
-          <div className='flex gap-2 justify-end items-center'>
-            <NavIconButtons />
+          <div className='flex gap-4 justify-end items-center'>
+            <Button
+              className='w-8 h-7'
+              variant='ghost'
+              size='icon'
+              onClick={() =>
+                setIsSearchOpen(true)
+              }
+            >
+              <Search className='h-4 w-4' />
+            </Button>
             {user ? (
               <Button
                 type='button'
@@ -198,6 +210,14 @@ const Desktop = () => {
           </div>
         </div>
       </div>
+
+      {/* SEARCH DIALOG */}
+      {isSearchOpen && (
+        <SearchDialog
+          isOpen={isSearchOpen}
+          onClose={() => setIsSearchOpen(false)}
+        />
+      )}
     </>
   );
 };
