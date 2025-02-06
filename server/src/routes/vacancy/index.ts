@@ -17,7 +17,7 @@ router.post(
 );
 router.get('/', getAllVacancies);
 router.get('/:id', getVacancyById);
-router.put(
+router.patch(
   '/:id',
   verifyAdminAndManager,
   updateVacancy

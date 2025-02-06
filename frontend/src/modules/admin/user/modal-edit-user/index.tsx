@@ -104,6 +104,7 @@ const ModalEditUser = ({
         result.error ?? 'An error occurred.'
       );
     }
+    setIsLoading(false);
   };
 
   return (

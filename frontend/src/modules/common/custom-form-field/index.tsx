@@ -167,6 +167,7 @@ const RenderInput = ({
       return (
         <FormControl>
           <Textarea
+            rows={4}
             placeholder={props.placeholder}
             {...field}
             className='shad-textArea'

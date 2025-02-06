@@ -40,10 +40,7 @@ const ModalNewVacancy = ({
       message:
         'Description must be at least 10 characters.',
     }),
-    company: zod.string().min(10, {
-      message:
-        'Company must be at least 10 characters.',
-    }),
+    company: zod.string().optional(),
     location: zod.string().min(2, {
       message:
         'Location must be at least 2 characters.',
@@ -75,7 +72,7 @@ const ModalNewVacancy = ({
       description: '',
       location: '',
       salary: '',
-      company: '',
+      company: 'TAMA Farmers Trust',
       qualifications: '',
       duties: '',
       howToApply: '',
@@ -118,6 +115,7 @@ const ModalNewVacancy = ({
         result.error ?? 'An error occurred.'
       );
     }
+    setIsLoading(false);
   };
 
   return (
@@ -165,28 +163,28 @@ const ModalNewVacancy = ({
               name='company'
               label='Company (optional)'
               control={form.control}
-              placeholder='Enter company range'
+              placeholder='Enter company'
             />
             <CustomFormField
               fieldType={FormFieldType.TEXTAREA}
               name='duties'
-              label='Duties (optional)'
+              label='Duties'
               control={form.control}
-              placeholder='Enter duties range'
+              placeholder='Enter duties'
             />
             <CustomFormField
               fieldType={FormFieldType.TEXTAREA}
               name='qualifications'
-              label='Qualifications (optional)'
+              label='Qualifications'
               control={form.control}
-              placeholder='Enter qualifications range'
+              placeholder='Enter qualifications'
             />
             <CustomFormField
               fieldType={FormFieldType.TEXTAREA}
               name='howToApply'
-              label='How to apply (optional)'
+              label='How to apply'
               control={form.control}
-              placeholder='Enter how to apply range'
+              placeholder='Enter how to apply'
             />
             <CustomFormField
               fieldType={

@@ -52,6 +52,7 @@ const ModalDeleteVacancy = ({
         result.error ?? 'An error occurred.'
       );
     }
+    setIsLoading(false);
   };
 
   return (

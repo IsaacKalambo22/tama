@@ -51,6 +51,7 @@ const ModalDeleteShop = ({
         result.error ?? 'An error occurred.'
       );
     }
+    setIsLoading(false);
   };
 
   return (
