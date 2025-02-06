@@ -12,7 +12,6 @@ import {
   FormControl,
 } from '@/components/ui/form';
 import useCustomPath from '@/hooks/use-custom-path';
-import { toast } from '@/hooks/use-toast';
 import {
   getFileType,
   handleFileUpload,
@@ -26,6 +25,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import * as zod from 'zod';
 import { createNews } from '../../actions';
 type Props = {
@@ -73,46 +73,35 @@ const ModalNewNews = ({
     values: zod.infer<typeof formSchema>
   ) => {
     setIsLoading(true);
-    try {
-      const file = values.files[0];
-      const fileUrl = await handleFileUpload(
-        file
-      );
-      const fileProps = getFileType(file.name);
-      console.log({ fileProps });
-      // Create a JSON object to send
-      const payload = {
-        title: values.title,
-        content: values.content,
-        author: values.author,
-        size: file.size,
-        imageUrl: fileUrl, // Add the uploaded file URL
-      };
-      // Call the createForm function to send data to the server
-      const result = await createNews(
-        payload,
-        fullPath,
-        '/news-updates-news',
-        '/admin'
-      );
+    const file = values.files[0];
+    const fileUrl = await handleFileUpload(file);
+    const fileProps = getFileType(file.name);
+    console.log({ fileProps });
+    // Create a JSON object to send
+    const payload = {
+      title: values.title,
+      content: values.content,
+      author: values.author,
+      size: file.size,
+      imageUrl: fileUrl, // Add the uploaded file URL
+    };
+    // Call the createForm function to send data to the server
+    const result = await createNews(
+      payload,
+      fullPath,
+      '/news-updates-news',
+      '/admin'
+    );
 
-      onClose();
-      toast({
-        title: 'Success',
-        description:
-          'New form or document has been created successfully',
-      });
-      // Handle the result, such as showing success or error messages
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description:
-          'An unexpected error has occurred',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false);
+    onClose();
+    if (result.success) {
+      toast.success('News created successfully');
+    } else {
+      toast.error(
+        result.error ?? 'An error occurred.'
+      );
     }
+    setIsLoading(false);
   };
 
   return (

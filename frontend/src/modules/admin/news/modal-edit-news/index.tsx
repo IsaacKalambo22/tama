@@ -4,7 +4,6 @@ import {
   FormControl,
 } from '@/components/ui/form';
 import useCustomPath from '@/hooks/use-custom-path';
-import { toast } from '@/hooks/use-toast';
 import { NewsProps } from '@/lib/api';
 import { handleFileUpload } from '@/lib/utils';
 import CustomFormField, {
@@ -16,6 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import * as zod from 'zod';
 import { updateNews } from '../../actions';
 import Modal from '../../modal';
@@ -58,48 +58,41 @@ const ModalEditNews = ({
     values: zod.infer<typeof formSchema>
   ) => {
     setIsLoading(true);
-    try {
-      let imageUrl = '';
-      let size = undefined;
+    let imageUrl = '';
+    let size = undefined;
 
-      if (values.files.length > 0) {
-        const file = values.files[0];
-        imageUrl = await handleFileUpload(file);
-        size = Number(file.size);
-      }
-
-      const payload = {
-        title: values.title ?? '',
-        content: values.content ?? '',
-        author: values.author ?? '',
-        imageUrl,
-        size: size,
-      };
-
-      const result = await updateNews(
-        payload,
-        news.id,
-        fullPath,
-        '/news-updates-news'
-      );
-
-      onClose();
-      toast({
-        title: 'Success',
-        description: `${news.title} has been updated successfully`,
-      });
-      // Handle the result, such as showing success or error messages
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description:
-          'An unexpected error has occurred',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false);
+    if (values.files.length > 0) {
+      const file = values.files[0];
+      imageUrl = await handleFileUpload(file);
+      size = Number(file.size);
     }
+
+    const payload = {
+      title: values.title ?? '',
+      content: values.content ?? '',
+      author: values.author ?? '',
+      imageUrl,
+      size: size,
+    };
+
+    const result = await updateNews(
+      payload,
+      news.id,
+      fullPath,
+      '/news-updates-news'
+    );
+
+    onClose();
+    if (result.success) {
+      toast.success('News updated successfully');
+    } else {
+      toast.error(
+        result.error ?? 'An error occurred.'
+      );
+    }
+    setIsLoading(false);
   };
+
   return (
     <Modal
       isOpen={isOpen}
