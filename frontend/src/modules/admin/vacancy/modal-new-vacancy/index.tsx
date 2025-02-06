@@ -1,7 +1,6 @@
 import { Form } from '@/components/ui/form';
 import { SelectItem } from '@/components/ui/select';
 import useCustomPath from '@/hooks/use-custom-path';
-import { toast } from '@/hooks/use-toast';
 import { VacancyStatus } from '@/lib/api';
 import CustomFormField, {
   FormFieldType,
@@ -11,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import * as zod from 'zod';
 import { createVacancy } from '../../actions';
 import Modal from '../../modal';
@@ -88,43 +88,35 @@ const ModalNewVacancy = ({
     values: zod.infer<typeof formSchema>
   ) => {
     setIsLoading(true);
-    try {
-      const payload = {
-        title: values.title,
-        description: values.description,
-        location: values.location,
-        company: values.company,
-        duties: values.duties,
-        qualifications: values.qualifications,
-        howToApply: values.howToApply,
-        salary: values.salary || null,
-        applicationDeadline:
-          values.applicationDeadline,
-        status: values.status,
-      };
+    const payload = {
+      title: values.title,
+      description: values.description,
+      location: values.location,
+      company: values.company,
+      duties: values.duties,
+      qualifications: values.qualifications,
+      howToApply: values.howToApply,
+      salary: values.salary || null,
+      applicationDeadline:
+        values.applicationDeadline,
+      status: values.status,
+    };
 
-      await createVacancy(
-        payload,
-        fullPath,
-        '/resources/vacancies',
-        '/admin'
+    const result = await createVacancy(
+      payload,
+      fullPath,
+      '/resources/vacancies',
+      '/admin'
+    );
+    onClose();
+    if (result.success) {
+      toast.success(
+        'Vacancy created successfully'
       );
-      onClose();
-      toast({
-        title: 'Success',
-        description:
-          'Vacancy has been created successfully',
-      });
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description:
-          'An unexpected error has occurred',
-        variant: 'destructive',
-      });
-      console.error('Upload error:', error);
-    } finally {
-      setIsLoading(false);
+    } else {
+      toast.error(
+        result.error ?? 'An error occurred.'
+      );
     }
   };
 

@@ -3,7 +3,6 @@
 import { Form } from '@/components/ui/form';
 import { SelectItem } from '@/components/ui/select';
 import useCustomPath from '@/hooks/use-custom-path';
-import { toast } from '@/hooks/use-toast';
 import {
   VacancyProps,
   VacancyStatus,
@@ -16,6 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import * as zod from 'zod';
 import { updateVacancy } from '../../actions'; // Ensure this function is properly defined
 import Modal from '../../modal';
@@ -23,7 +23,7 @@ import Modal from '../../modal';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  vacancy?: VacancyProps; // Preloaded vacancy data for editing
+  vacancy: VacancyProps; // Preloaded vacancy data for editing
 };
 
 const ModalEditVacancy = ({
@@ -79,56 +79,35 @@ const ModalEditVacancy = ({
   ) => {
     setIsLoading(true);
 
-    try {
-      const payload = {
-        title: values.title,
-        description: values.description,
-        location: values.location,
-        company: values.company,
-        duties: values.duties,
-        qualifications: values.qualifications,
-        howToApply: values.howToApply,
-        salary: values.salary || null,
-        applicationDeadline:
-          values.applicationDeadline,
-        status: values.status,
-      };
+    const payload = {
+      title: values.title,
+      description: values.description,
+      location: values.location,
+      company: values.company,
+      duties: values.duties,
+      qualifications: values.qualifications,
+      howToApply: values.howToApply,
+      salary: values.salary || null,
+      applicationDeadline:
+        values.applicationDeadline,
+      status: values.status,
+    };
 
-      if (vacancy?.id) {
-        // Update vacancy
-        await updateVacancy(
-          payload,
-          vacancy.id,
-          fullPath,
-          '/resources/vacancies'
-        );
-        onClose();
-        toast({
-          title: 'Success',
-          description:
-            'Vacancy has been updated successfully',
-        });
-      } else {
-        toast({
-          title: 'Error',
-          description:
-            'Vacancy ID is required for updating the vacancy.',
-          variant: 'destructive',
-        });
-      }
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description:
-          'An unexpected error occurred while updating the vacancy.',
-        variant: 'destructive',
-      });
-      console.error(
-        'Error updating vacancy:',
-        error
+    const result = await updateVacancy(
+      payload,
+      vacancy.id,
+      fullPath,
+      '/resources/vacancies'
+    );
+    onClose();
+    if (result.success) {
+      toast.success(
+        'Vacancy updated successfully'
       );
-    } finally {
-      setIsLoading(false);
+    } else {
+      toast.error(
+        result.error ?? 'An error occurred.'
+      );
     }
   };
 
