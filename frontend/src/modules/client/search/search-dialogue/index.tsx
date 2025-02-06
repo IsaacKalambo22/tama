@@ -1,7 +1,7 @@
 'use client';
 
 import { Input } from '@/components/ui/input';
-import { FileProps } from '@/lib/api';
+import { BlogProps, FileProps } from '@/lib/api';
 import { BASE_URL } from '@/lib/utils';
 import CustomError from '@/modules/common/custom-error';
 import CustomLoader from '@/modules/common/custom-loader';
@@ -11,6 +11,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import SearchBlogCard from '../search-blog-card';
 import SearchFileCard from '../search-file-card';
 import SearchModal from '../search-modal';
 
@@ -118,7 +119,7 @@ const SearchDialog = ({
             className='w-full h-11 pl-5 pr-4  rounded-lg focus:outline-none'
           />
           {/* 🔎 Search Results Container */}
-          <div className='w-full flex flex-col overflow-y-auto max-h-[80vh]'>
+          <div className='w-full flex flex-col overflow-y-auto max-h-[70vh]'>
             {isLoading && <CustomLoader />}
             {isError && (
               <CustomError message='Error fetching data' />
@@ -165,6 +166,25 @@ const SearchDialog = ({
                                 key={
                                   publication.id
                                 }
+                              />
+                            )
+                          )}
+                        </div>
+                      </>
+                    )}
+                  {searchResults.blogs &&
+                    searchResults.blogs.length >
+                      0 && (
+                      <>
+                        <h2 className='text-lg font-semibold mb-4'>
+                          Blogs
+                        </h2>
+                        <div className='w-full grid grid-cols-1 sm:grid-cols-2 gap-6'>
+                          {searchResults.blogs.map(
+                            (blog: BlogProps) => (
+                              <SearchBlogCard
+                                blog={blog}
+                                key={blog.id}
                               />
                             )
                           )}
