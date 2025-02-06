@@ -5,7 +5,6 @@ import {
   FormControl,
 } from '@/components/ui/form';
 import useCustomPath from '@/hooks/use-custom-path';
-import { toast } from '@/hooks/use-toast';
 import { handleFileUpload } from '@/lib/utils';
 import CustomFormField, {
   FormFieldType,
@@ -16,6 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import * as zod from 'zod';
 import { createShop } from '../../actions';
 import Modal from '../../modal';
@@ -64,47 +64,34 @@ const ModalNewShop = ({
     values: zod.infer<typeof formSchema>
   ) => {
     setIsLoading(true);
-    try {
-      // Upload the file separately to get the URL
-      const file = values.files[0];
-      const fileUrl = await handleFileUpload(
-        file
+    const file = values.files[0];
+    const fileUrl = await handleFileUpload(file);
+
+    console.log('File uploaded. URL:', fileUrl);
+
+    // Create a JSON object to send
+    const payload = {
+      name: values.name,
+      openHours: values.openHours,
+      address: values.address,
+      imageUrl: fileUrl, // Add the uploaded file URL
+      size: file.size, // Add the uploaded file URL
+    };
+
+    const result = await createShop(
+      payload,
+      fullPath,
+      `/tobacco-business/shops`,
+      '/admin'
+    );
+
+    onClose();
+    if (result.success) {
+      toast.success('Shop created successfully');
+    } else {
+      toast.error(
+        result.error ?? 'An error occurred.'
       );
-
-      console.log('File uploaded. URL:', fileUrl);
-
-      // Create a JSON object to send
-      const payload = {
-        name: values.name,
-        openHours: values.openHours,
-        address: values.address,
-        imageUrl: fileUrl, // Add the uploaded file URL
-        size: file.size, // Add the uploaded file URL
-      };
-
-      const result = await createShop(
-        payload,
-        fullPath,
-        `/tobacco-business/shops`,
-        '/admin'
-      );
-
-      onClose();
-      toast({
-        title: 'Success',
-        description:
-          'New form or document has been created successfully',
-      });
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description:
-          'An unexpected error has occurred',
-        variant: 'destructive',
-      });
-      console.error('Upload error:', error);
-    } finally {
-      setIsLoading(false);
     }
   };
 

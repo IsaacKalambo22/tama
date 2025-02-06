@@ -6,13 +6,13 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import useCustomPath from '@/hooks/use-custom-path';
-import { toast } from '@/hooks/use-toast';
 import { ShopProps } from '@/lib/api';
 import CustomButton, {
   BUTTON_VARIANT,
 } from '@/modules/common/custom-button';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { deleteShop } from '../../actions';
 import Modal from '../../modal';
 
@@ -36,31 +36,23 @@ const ModalDeleteShop = ({
   const onSubmit = async () => {
     setIsLoading(true);
 
-    try {
-      const result = await deleteShop(
-        shop.id,
-        fullPath,
-        `/tobacco-business/shops`,
-        '/admin'
-      );
+    const result = await deleteShop(
+      shop.id,
+      fullPath,
+      `/tobacco-business/shops`,
+      '/admin'
+    );
 
-      onClose();
-      toast({
-        title: 'Success',
-        description: `${shop.name} has been deleted successfully`,
-      });
-      // Handle the result, such as showing success or error messages
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description:
-          'An unexpected error has occurred',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false);
+    onClose();
+    if (result.success) {
+      toast.success('Shop deleted successfully');
+    } else {
+      toast.error(
+        result.error ?? 'An error occurred.'
+      );
     }
   };
+
   return (
     <Modal
       isOpen={isOpen}
