@@ -3,7 +3,6 @@
 import { Form } from '@/components/ui/form';
 import { SelectItem } from '@/components/ui/select';
 import useCustomPath from '@/hooks/use-custom-path';
-import { toast } from '@/hooks/use-toast';
 import { Role, UserProps } from '@/lib/api';
 import CustomFormField, {
   FormFieldType,
@@ -13,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import * as zod from 'zod';
 import { updateUser } from '../../actions';
 import Modal from '../../modal';
@@ -30,12 +30,9 @@ const ModalEditUser = ({
 }: Props) => {
   const [isLoading, setIsLoading] =
     useState(false);
-  const [showPassword, setShowPassword] =
-    useState(false);
 
   const path = usePathname();
-  const { fullPath, pathWithoutAdmin } =
-    useCustomPath(path);
+  const { fullPath } = useCustomPath(path);
 
   const roleOptions = Object.values(Role);
 
@@ -93,32 +90,19 @@ const ModalEditUser = ({
         values.phoneNumber || undefined,
       role: values.role || undefined,
     };
-    try {
-      // Send the values directly as a JSON object
-      await updateUser(
-        payload,
-        user.id, // Assuming `user.id` is the unique identifier for the user
-        fullPath
-      );
+    const result = await updateUser(
+      payload,
+      user.id,
+      fullPath
+    );
 
-      toast({
-        title: 'Success',
-        description: `${user.name} has been updated successfully.`,
-      });
-      onClose();
-    } catch (error) {
-      console.error(
-        'Error updating user:',
-        error
+    onClose();
+    if (result.success) {
+      toast.success('User updated successfully');
+    } else {
+      toast.error(
+        result.error ?? 'An error occurred.'
       );
-      toast({
-        title: 'Error',
-        description:
-          'An error occurred while updating the user.',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false);
     }
   };
 

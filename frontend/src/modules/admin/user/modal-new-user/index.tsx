@@ -3,7 +3,6 @@
 import { Form } from '@/components/ui/form';
 import { SelectItem } from '@/components/ui/select';
 import useCustomPath from '@/hooks/use-custom-path';
-import { toast } from '@/hooks/use-toast';
 import { Role } from '@/lib/api';
 import CustomFormField, {
   FormFieldType,
@@ -13,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import * as zod from 'zod';
 import { createUser } from '../../actions';
 import Modal from '../../modal';
@@ -79,42 +79,31 @@ const ModalNewUser = ({
     values: zod.infer<typeof formSchema>
   ) => {
     setIsLoading(true);
-    try {
-      // Combine first name and last name
-      const name =
-        `${values.firstName} ${values.lastName}`.trim();
-      const email = values.email;
-      const phoneNumber = values.phoneNumber;
-      const role = values.role;
-      const payload = {
-        name,
-        email,
-        phoneNumber,
-        role,
-      };
-      await createUser(
-        payload,
-        fullPath,
-        '/admin'
-      );
+    const name =
+      `${values.firstName} ${values.lastName}`.trim();
+    const email = values.email;
+    const phoneNumber = values.phoneNumber;
+    const role = values.role;
+    const payload = {
+      name,
+      email,
+      phoneNumber,
+      role,
+    };
 
-      //
-      onClose();
-      toast({
-        title: 'Success',
-        description:
-          'New user has been created successfully',
-      });
-      // Handle the result, such as showing success or error messages
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description:
-          'An unexpected error has occurred',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false);
+    const result = await createUser(
+      payload,
+      fullPath,
+      '/admin'
+    );
+
+    onClose();
+    if (result.success) {
+      toast.success('User created successfully');
+    } else {
+      toast.error(
+        result.error ?? 'An error occurred.'
+      );
     }
   };
 

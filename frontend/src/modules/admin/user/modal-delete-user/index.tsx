@@ -6,13 +6,13 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import useCustomPath from '@/hooks/use-custom-path';
-import { toast } from '@/hooks/use-toast';
 import { UserProps } from '@/lib/api';
 import CustomButton, {
   BUTTON_VARIANT,
 } from '@/modules/common/custom-button';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { deleteUser } from '../../actions';
 import Modal from '../../modal';
 
@@ -35,30 +35,22 @@ const ModalDeleteUser = ({
   const onSubmit = async () => {
     setIsLoading(true);
 
-    try {
-      const result = await deleteUser(
-        user.id,
-        fullPath,
-        '/admin'
-      );
+    const result = await deleteUser(
+      user.id,
+      fullPath,
+      '/admin'
+    );
 
-      onClose();
-      toast({
-        title: 'Success',
-        description: `${user.name} has been deleted successfully`,
-      });
-      // Handle the result, such as showing success or error messages
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description:
-          'An unexpected error has occurred',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false);
+    onClose();
+    if (result.success) {
+      toast.success('User deleted successfully');
+    } else {
+      toast.error(
+        result.error ?? 'An error occurred.'
+      );
     }
   };
+
   return (
     <Modal
       isOpen={isOpen}
