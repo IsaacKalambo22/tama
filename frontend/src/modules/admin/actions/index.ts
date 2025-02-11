@@ -1,10 +1,7 @@
 'use server';
 
 import { auth } from '@/auth';
-import {
-  BASE_URL,
-  parseServerActionResponse,
-} from '@/lib/utils';
+import { BASE_URL } from '@/lib/utils';
 import { revalidatePath } from 'next/cache';
 
 export const serverAction = async (
@@ -26,10 +23,10 @@ export const serverAction = async (
       const session = await auth();
 
       if (!session) {
-        return parseServerActionResponse({
+        return {
+          success: false,
           error: 'Not signed in',
-          status: 'ERROR',
-        });
+        };
       }
 
       token = session.accessToken;
