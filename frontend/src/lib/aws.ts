@@ -1,5 +1,4 @@
 'use server';
-
 import { auth } from '@/auth';
 import {
   DeleteObjectCommand,
@@ -7,6 +6,7 @@ import {
   S3Client,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { v4 as uuidv4 } from 'uuid';
 import config from './config';
 
 const allowedFileTypes = [
@@ -88,12 +88,13 @@ type GetSignedURLParams = {
   fileType: string;
   fileSize: number;
   checksum: string;
-  fileName?: string;
+  fileName: string;
 };
 export const getSignedURL = async ({
   fileType,
   fileSize,
   checksum,
+  fileName,
 }: GetSignedURLParams): Promise<SignedURLResponse> => {
   try {
     const session = await auth();
@@ -110,11 +111,13 @@ export const getSignedURL = async ({
       return { failure: 'File size too large' };
     }
 
-    const fileName = generateFileName();
-
-    // Modify the key to include the 'tama' folder path
-    const folderPath = 'tama'; // This is the folder within your S3 bucket
-    const s3Key = `${folderPath}/${fileName}`; // Full path in S3: tama/filename
+    const uniqueFileName = uuidv4();
+    const sanitizedFileName = fileName.replace(
+      /\s*-\s*|\s+/g,
+      '-'
+    );
+    const folderPath = config.env.aws.folderPath; // This is the folder within your S3 bucket
+    const s3Key = `${folderPath}/${uniqueFileName}-${sanitizedFileName}`;
 
     const putObjectCommand = new PutObjectCommand(
       {

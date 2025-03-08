@@ -333,6 +333,7 @@ export const handleFileUpload = async (
     fileSize: file.size,
     fileType: file.type,
     checksum: await computeSHA256(file),
+    fileName: file.name,
   });
   if (signedURLResult.failure !== undefined) {
     throw new Error(signedURLResult.failure);
