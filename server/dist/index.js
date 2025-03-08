@@ -19,6 +19,7 @@ const form_1 = __importDefault(require("./routes/form"));
 const news_1 = __importDefault(require("./routes/news"));
 const reports_publications_1 = __importDefault(require("./routes/reports-publications"));
 const search_1 = __importDefault(require("./routes/search"));
+const service_1 = __importDefault(require("./routes/service"));
 const shop_1 = __importDefault(require("./routes/shop"));
 const user_1 = __importDefault(require("./routes/user"));
 const vacancy_1 = __importDefault(require("./routes/vacancy"));
@@ -47,6 +48,7 @@ app.use('/tama/news', news_1.default);
 app.use('/tama/users', user_1.default);
 app.use('/tama/events', events_1.default);
 app.use('/tama/vacancies', vacancy_1.default);
+app.use('/tama/services', service_1.default);
 app.use('/tama/council-lists', council_list_1.default);
 app.use('/tama/reports-publications', reports_publications_1.default);
 /* SERVER */

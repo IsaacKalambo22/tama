@@ -15,6 +15,7 @@ import forms from './routes/form';
 import news from './routes/news';
 import reportsPublications from './routes/reports-publications';
 import search from './routes/search';
+import services from './routes/service';
 import shops from './routes/shop';
 import users from './routes/user';
 import vacancies from './routes/vacancy';
@@ -52,6 +53,7 @@ app.use('/tama/news', news);
 app.use('/tama/users', users);
 app.use('/tama/events', events);
 app.use('/tama/vacancies', vacancies);
+app.use('/tama/services', services);
 app.use('/tama/council-lists', councilLists);
 app.use(
   '/tama/reports-publications',
