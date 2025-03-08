@@ -1,52 +1,36 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { useState } from 'react';
+import { ServiceProps } from '@/lib/api';
+import Image from 'next/image';
 
 interface ServiceCardProps {
-  title: string;
-  points: string[];
+  service: ServiceProps;
 }
 
 const ServiceCard = ({
-  title,
-  points,
+  service,
 }: ServiceCardProps) => {
-  const [showAll, setShowAll] = useState(false);
-
-  const handleToggle = () => {
-    setShowAll(!showAll);
-  };
-
   return (
-    <Card className='flex flex-col rounded-3xl cursor-pointer items-center p-8 w-full text-center hover:border-green-500  shadow-none'>
-      <span className='green_subtitle font-bold text-lg md:text-xl lg:text-2xl mb-4'>
-        {title}
-      </span>
-      <div
-        className={`transition-all duration-500 overflow-hidden ${
-          showAll
-            ? 'max-h-[1000px] opacity-100'
-            : 'max-h-[160px] opacity-90'
-        }`}
-      >
-        <ol className='text-gray-700 text-base text-left md:text-lg leading-relaxed list-decimal list-inside'>
-          {points.map((point, index) => (
-            <li key={index} className='mb-2'>
-              {point}
-            </li>
-          ))}
-        </ol>
+    <Card className='shadow-lg rounded-3xl overflow-hidden hover:shadow-xl transition-shadow duration-300 p-6'>
+      <div className='relative w-full h-[12rem]'>
+        <Image
+          src={service.imageUrl}
+          alt={service.title}
+          layout='fill'
+          objectFit='cover'
+          className='rounded-2xl'
+          unoptimized
+        />
       </div>
-      {points.length > 5 && (
-        <Button
-          onClick={handleToggle}
-          className='mt-4'
-        >
-          {showAll ? 'View Less' : 'View More'}
-        </Button>
-      )}
+      <div className='pt-3'>
+        <h3 className='text-xl font-semibold text-gray-800 mb-2'>
+          {service.title}
+        </h3>
+        <p className='text-gray-600 text-sm leading-relaxed'>
+          {service.description}
+        </p>
+      </div>
     </Card>
   );
 };

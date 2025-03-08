@@ -12,6 +12,12 @@ export interface CouncilListProps {
   updatedAt: string;
 }
 
+export interface ServiceProps {
+  id: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+}
 export interface NewsProps {
   id: string;
   title: string;
@@ -224,6 +230,13 @@ export const fetchVacancies = async (): Promise<
 > => {
   return handleFetch<VacancyProps[]>(
     `${BASE_URL}/vacancies`
+  );
+};
+export const fetchServices = async (): Promise<
+  ServiceProps[]
+> => {
+  return handleFetch<ServiceProps[]>(
+    `${BASE_URL}/services`
   );
 };
 
