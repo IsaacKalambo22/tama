@@ -2,10 +2,12 @@
 
 import { auth } from '@/auth';
 import {
+  DeleteObjectCommand,
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import config from './config';
 
 const allowedFileTypes = [
   'image/jpeg',
@@ -54,11 +56,11 @@ const allowedFileTypes = [
 const maxFileSize = 1048576 * 1000; // 1 MB
 
 const s3Client = new S3Client({
-  region: process.env.AWS_BUCKET_REGION!,
+  region: config.env.aws.bucketRegion,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY!,
+    accessKeyId: config.env.aws.accessKey,
     secretAccessKey:
-      process.env.AWS_SECRET_ACCESS_KEY!,
+      config.env.aws.secretAccessKey,
   },
 });
 
@@ -86,6 +88,7 @@ type GetSignedURLParams = {
   fileType: string;
   fileSize: number;
   checksum: string;
+  fileName?: string;
 };
 export const getSignedURL = async ({
   fileType,
@@ -115,7 +118,7 @@ export const getSignedURL = async ({
 
     const putObjectCommand = new PutObjectCommand(
       {
-        Bucket: process.env.AWS_BUCKET_NAME!, // Your S3 bucket name
+        Bucket: config.env.aws.bucketName, // Your S3 bucket name
         Key: s3Key, // The object key that includes the folder path
         ContentType: fileType,
         ContentLength: fileSize,
@@ -135,5 +138,93 @@ export const getSignedURL = async ({
       error
     );
     return { failure: 'An error occurred' };
+  }
+};
+export const removeFromS3 = async (
+  urls: string | string[]
+) => {
+  try {
+    const session = await auth();
+
+    if (!session) {
+      return {
+        success: false,
+        error: 'Not signed in',
+      };
+    }
+
+    const bucketName = config.env.aws.bucketName;
+
+    // Ensure urls is an array
+    const urlList = Array.isArray(urls)
+      ? urls
+      : [urls];
+
+    const deleteResponses = await Promise.all(
+      urlList.map(async (url) => {
+        try {
+          const key = url.split('.net/')[1]; // Extract everything after the domain
+
+          if (!key) {
+            throw new Error(
+              `Invalid URL format: ${url}`
+            );
+          }
+
+          console.log(
+            'Attempting to delete file:',
+            key
+          );
+          console.log({ url });
+
+          const deleteParams = {
+            Bucket: bucketName,
+            Key: key,
+          };
+
+          const response = await s3Client.send(
+            new DeleteObjectCommand(deleteParams)
+          );
+
+          console.log(
+            `Deleted: ${key}`,
+            response
+          );
+          return { url, success: true };
+        } catch (error) {
+          console.error(
+            `Error deleting ${url}:`,
+            error
+          );
+          return {
+            url,
+            success: false,
+            error:
+              error instanceof Error
+                ? error.message
+                : error,
+          };
+        }
+      })
+    );
+
+    return {
+      success: deleteResponses.every(
+        (res) => res.success
+      ),
+      details: deleteResponses,
+    };
+  } catch (error) {
+    console.error(
+      'Unknown error occurred while deleting from S3:',
+      error
+    );
+    return {
+      success: false,
+      error:
+        error instanceof Error
+          ? error.message
+          : error,
+    };
   }
 };

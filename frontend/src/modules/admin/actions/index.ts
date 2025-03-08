@@ -260,6 +260,49 @@ export const deleteShop = async (
     [fullPath, pathWithoutAdmin, layout]
   );
 };
+
+// SERVICES SERVER ACTIONS
+export const createService = async (
+  payload: object,
+  fullPath: string,
+  pathWithoutAdmin: string,
+  layout: string
+) => {
+  return await serverAction(
+    'services',
+    'POST',
+    payload,
+    [fullPath, layout, pathWithoutAdmin] // Revalidate paths
+  );
+};
+
+export const updateService = async (
+  payload: object,
+  serviceId: string,
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  return await serverAction(
+    `services/${serviceId}`,
+    'PATCH',
+    payload,
+    [fullPath, pathWithoutAdmin]
+  );
+};
+
+export const deleteService = async (
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string,
+  layout: string
+) => {
+  return await serverAction(
+    `services/${id}`,
+    'DELETE',
+    null,
+    [fullPath, pathWithoutAdmin, layout]
+  );
+};
 // VACANCIES SERVER ACTIONS
 export const createVacancy = async (
   payload: object,

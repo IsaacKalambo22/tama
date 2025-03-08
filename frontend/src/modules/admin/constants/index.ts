@@ -8,6 +8,7 @@ import {
   NewspaperIcon,
   ShoppingBag,
   UsersIcon,
+  Wrench,
 } from 'lucide-react'; // Adjust import path for icons if needed
 import { SidebarProps } from '../sidebar';
 
@@ -64,6 +65,11 @@ export const ADMIN_LINKS: SidebarProps[] = [
     label: 'Vacancies',
     href: '/admin/vacancies',
     icon: Briefcase,
+  },
+  {
+    label: 'Services',
+    href: '/admin/services',
+    icon: Wrench,
   },
   {
     label: 'Messaging', // New "Messaging" section

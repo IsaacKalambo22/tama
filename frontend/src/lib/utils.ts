@@ -2,12 +2,13 @@ import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { FileProps } from './api';
 import { getSignedURL } from './aws';
+import config from './config';
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 export const BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL;
+  process.env.NEXT_PUBLIC_API_ENDPOINT;
 
 export const formatContent = (
   content: string
@@ -347,4 +348,77 @@ export const handleFileUpload = async (
 
   const fileUrl = url.split('?')[0];
   return fileUrl;
+};
+
+export const handleFileUploads = async (
+  file: File,
+  onProgress: (progress: number) => void
+): Promise<string | null> => {
+  console.log({ file });
+  try {
+    const signedURLResult = await getSignedURL({
+      fileSize: file.size,
+      fileType: file.type,
+      checksum: await computeSHA256(file),
+      fileName: file.name,
+    });
+
+    if (signedURLResult.failure !== undefined) {
+      throw new Error(signedURLResult.failure);
+    }
+
+    const { url } = signedURLResult.success;
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('PUT', url, true);
+    xhr.setRequestHeader(
+      'Content-Type',
+      file.type
+    );
+
+    xhr.upload.onprogress = (event) => {
+      if (event.lengthComputable) {
+        const progress =
+          (event.loaded / event.total) * 100;
+        onProgress(progress);
+      }
+    };
+
+    await new Promise<void>((resolve, reject) => {
+      xhr.onload = () => resolve();
+      xhr.onerror = () =>
+        reject(new Error('Upload failed.'));
+      xhr.send(file);
+    });
+
+    const fileUrl = url.split('?')[0];
+    const startFrom = fileUrl.substring(
+      fileUrl.indexOf(
+        `${config.env.aws.folderPath}`
+      )
+    );
+
+    const cloudFrontUrl = `${config.env.aws.cloudFrontDomain}/${startFrom}`;
+
+    return cloudFrontUrl;
+  } catch (error) {
+    console.error('Upload error:', error);
+    return null;
+  }
+};
+
+export const updateFileProgress = (
+  key: string,
+  progress: FileState['progress'],
+  setState: React.Dispatch<
+    React.SetStateAction<FileState[]>
+  >
+) => {
+  setState((prevStates) =>
+    prevStates.map((fileState) =>
+      fileState.key === key
+        ? { ...fileState, progress }
+        : fileState
+    )
+  );
 };

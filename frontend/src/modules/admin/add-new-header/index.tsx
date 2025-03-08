@@ -12,11 +12,13 @@ import ModalNewUser from '@/modules/admin/user/modal-new-user';
 import ModalNewVacancy from '@/modules/admin/vacancy/modal-new-vacancy';
 import { PlusSquare } from 'lucide-react';
 import { ReactElement, useState } from 'react';
+import ModalNewService from '../services/modal-new-service';
 
 export enum AddNewType {
   NEW_FORM = 'New Form',
   NEW_REPORT_OR_PUBLICATION = 'New Report or Publication',
   NEW_SHOP = 'New Shop',
+  NEW_SERVICE = 'New Service',
   NEW_BLOG = 'New Blog',
   ADD_NEWS = 'Add News',
   ADD_USER = 'Add User',
@@ -120,6 +122,13 @@ const AddNewHeader = ({
       {isOpen &&
         buttonName === AddNewType.ADD_USER && (
           <ModalNewUser
+            isOpen={isOpen}
+            onClose={handleClose}
+          />
+        )}
+      {isOpen &&
+        buttonName === AddNewType.NEW_SERVICE && (
+          <ModalNewService
             isOpen={isOpen}
             onClose={handleClose}
           />

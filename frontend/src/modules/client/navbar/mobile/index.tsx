@@ -8,7 +8,6 @@ import {
   SVGMotionProps,
   useCycle,
 } from 'framer-motion';
-import { Search } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -323,14 +322,14 @@ const Mobile: React.FC = () => {
         </motion.ul>
         <div className='flex mr-14 items-center justify-between pt-1 z-50'>
           <div className='flex-1 gap-2 text-right mt-3 pointer-events-auto'>
-            <Button
+            {/* <Button
               className='w-8 h-7'
               variant='ghost'
               size='icon'
               onClick={() => {}}
             >
               <Search className='h-4 w-4' />
-            </Button>
+            </Button> */}
           </div>
           <MenuToggle toggle={toggleOpen} />
         </div>

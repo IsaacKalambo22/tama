@@ -12,7 +12,6 @@ import { cn } from '@/lib/utils';
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Search } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -183,14 +182,14 @@ const Desktop = () => {
         {/* RIGHT SIDE */}
         <div className='flex-1 text-right '>
           <div className='flex gap-4 justify-end items-center'>
-            <Button
+            {/* <Button
               className='w-8 h-7'
               variant='ghost'
               size='icon'
               onClick={() => setIsModalOpen(true)}
             >
               <Search className='h-4 w-4' />
-            </Button>
+            </Button> */}
             {user ? (
               <Button
                 type='button'
