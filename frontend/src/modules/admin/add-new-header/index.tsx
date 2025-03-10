@@ -13,6 +13,7 @@ import ModalNewVacancy from '@/modules/admin/vacancy/modal-new-vacancy';
 import { PlusSquare } from 'lucide-react';
 import { ReactElement, useState } from 'react';
 import ModalNewHomeCarousel from '../home-carousel/modal-new-home-carousel';
+import ModalNewHomeImageText from '../home-image-text/modal-new-home-image-text';
 import ModalNewService from '../services/modal-new-service';
 
 export enum AddNewType {
@@ -21,6 +22,7 @@ export enum AddNewType {
   NEW_SHOP = 'New Shop',
   NEW_SERVICE = 'New Service',
   NEW_CAROUSEL = 'New Carousel',
+  NEW_IMAGES = 'New Images',
   NEW_BLOG = 'New Blog',
   ADD_NEWS = 'Add News',
   ADD_USER = 'Add User',
@@ -139,6 +141,13 @@ const AddNewHeader = ({
         buttonName ===
           AddNewType.NEW_CAROUSEL && (
           <ModalNewHomeCarousel
+            isOpen={isOpen}
+            onClose={handleClose}
+          />
+        )}
+      {isOpen &&
+        buttonName === AddNewType.NEW_IMAGES && (
+          <ModalNewHomeImageText
             isOpen={isOpen}
             onClose={handleClose}
           />

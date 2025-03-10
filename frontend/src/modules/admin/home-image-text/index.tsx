@@ -9,17 +9,17 @@ const HomeImageText = async () => {
     homeImageText = response || [];
   } catch (error) {
     console.error(
-      'Failed to fetch home carousel:',
+      'Failed to fetch home images:',
       error
     );
     return (
       <div>
         <AddNewHeader
-          name='Home Carousel'
-          buttonName='New Carousel'
+          name='Home Images'
+          buttonName='New Images'
         />
         <p className='text-red-500'>
-          Failed to load home carousel. Please try
+          Failed to load home images. Please try
           again later.
         </p>
       </div>
@@ -29,8 +29,8 @@ const HomeImageText = async () => {
   return (
     <div>
       <AddNewHeader
-        name='Home Carousel'
-        buttonName='New Carousel'
+        name='Home Images'
+        buttonName='New Images'
       />
       {homeImageText.length > 0 ? (
         <HomeImageTextList
@@ -38,8 +38,8 @@ const HomeImageText = async () => {
         />
       ) : (
         <p className='text-gray-500 text-lg mt-5'>
-          No home carousel available. Create a new
-          carousel to get started!
+          No home images available. Create a new
+          images to get started!
         </p>
       )}
     </div>

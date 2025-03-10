@@ -41,16 +41,10 @@ const ModalNewHomeCarousel = ({
   >([]);
 
   const formSchema = zod.object({
-    title: zod
-      .string()
-      .min(2, {
-        message:
-          'Title must be at least 2 characters.',
-      })
-      .max(50, {
-        message:
-          'Title must not be more than 50 characters.',
-      }),
+    title: zod.string().min(2, {
+      message:
+        'Title must be at least 2 characters.',
+    }),
     description: zod.string().min(2, {
       message:
         'Description must be at least 2 characters.',

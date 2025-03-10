@@ -41,16 +41,10 @@ const ModalNewHomeImageText = ({
   >([]);
 
   const formSchema = zod.object({
-    heading: zod
-      .string()
-      .min(2, {
-        message:
-          'Heading must be at least 2 characters.',
-      })
-      .max(50, {
-        message:
-          'Heading must not be more than 50 characters.',
-      }),
+    heading: zod.string().min(2, {
+      message:
+        'Heading must be at least 2 characters.',
+    }),
     description: zod.string().min(2, {
       message:
         'Description must be at least 2 characters.',

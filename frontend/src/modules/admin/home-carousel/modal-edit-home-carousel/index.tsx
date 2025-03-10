@@ -49,10 +49,6 @@ const ModalEditHomeCarousel = ({
         message:
           'Title must be at least 2 characters.',
       })
-      .max(50, {
-        message:
-          'Title must not be more than 50 characters.',
-      })
       .optional(),
     description: zod
       .string()

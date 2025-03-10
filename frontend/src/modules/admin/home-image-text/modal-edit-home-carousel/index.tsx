@@ -49,10 +49,6 @@ const ModalEditHomeImageText = ({
         message:
           'Heading must be at least 2 characters.',
       })
-      .max(50, {
-        message:
-          'Heading must not be more than 50 characters.',
-      })
       .optional(),
     description: zod
       .string()
