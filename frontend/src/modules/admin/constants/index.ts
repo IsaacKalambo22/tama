@@ -1,5 +1,4 @@
 import {
-  Album,
   Book,
   BookOpen,
   Images,
@@ -46,7 +45,21 @@ export const ADMIN_LINKS: SidebarProps[] = [
       },
       {
         label: 'Event Calendar',
-        href: '/admin/tobacco-business/event-calendar',
+        href: '/admin/tobacco-business/events',
+      },
+    ],
+  },
+  {
+    label: 'Home Display',
+    icon: Images,
+    submenu: [
+      {
+        label: 'Home Carousel',
+        href: '/admin/home-display/carousel',
+      },
+      {
+        label: 'Home Image Text',
+        href: '/admin/home-display/home-image-text',
       },
     ],
   },
@@ -64,7 +77,11 @@ export const ADMIN_LINKS: SidebarProps[] = [
       },
     ],
   },
-
+  {
+    label: 'Services',
+    href: '/admin/services',
+    icon: Wrench,
+  },
   {
     label: 'Blogs',
     href: '/admin/blogs',
@@ -74,22 +91,6 @@ export const ADMIN_LINKS: SidebarProps[] = [
     label: 'Users',
     href: '/admin/users',
     icon: UsersIcon,
-  },
-
-  {
-    label: 'Services',
-    href: '/admin/services',
-    icon: Wrench,
-  },
-  {
-    label: 'Home Carousel',
-    href: '/admin/carousel',
-    icon: Album,
-  },
-  {
-    label: 'Home Images',
-    href: '/admin/home-image-text',
-    icon: Images,
   },
   {
     label: 'Messaging', // New "Messaging" section
