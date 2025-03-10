@@ -96,10 +96,7 @@ const ModalEditHomeImageText = ({
       );
       imageUrl = imageUrls[0];
     }
-    if (
-      homeImageText.imageUrl !== imageUrl &&
-      homeImageText.imageUrl
-    ) {
+    if (imageUrl && homeImageText.imageUrl) {
       await removeFromS3(homeImageText.imageUrl);
     }
 

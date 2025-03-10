@@ -25,53 +25,6 @@ export function CustomCarousel({
     })
   );
 
-  // Array of image data
-  const slides = [
-    {
-      imagePath:
-        '/assets/images/tama-images/4.jpg',
-      title: 'TAMA Farmers Trust',
-      subtitle: 'Leading farmers to prosperity',
-    },
-    {
-      imagePath:
-        '/assets/images/tama-images/7.jpg',
-      title: 'Empowering Farmers',
-      subtitle:
-        'Innovative solutions for agriculture',
-    },
-    {
-      imagePath:
-        '/assets/images/tama-images/6.jpg',
-      title: 'Sustainable Growth',
-      subtitle: 'Fostering long-term development',
-    },
-    {
-      imagePath:
-        '/assets/images/tama-images/5.jpg',
-      title: 'Community Impact',
-      subtitle: 'Strengthening local economies',
-    },
-    {
-      imagePath:
-        '/assets/images/tama-images/10.jpg',
-      title: 'Advanced Technology',
-      subtitle: 'Modern tools for better yields',
-    },
-    {
-      imagePath:
-        '/assets/images/tama-images/8.jpg',
-      title: 'Global Reach',
-      subtitle: 'Connecting farmers worldwide',
-    },
-    {
-      imagePath:
-        '/assets/images/tama-images/9.jpg',
-      title: 'Trusted Partnerships',
-      subtitle: 'Collaborating for success',
-    },
-  ];
-
   return (
     <Carousel
       plugins={[plugin.current]}
@@ -93,7 +46,7 @@ export function CustomCarousel({
                   width={800}
                   height={1600}
                   className='w-full h-full object-cover rounded-2xl opacity-90'
-                  // priority={index === 0}
+                  priority={index === 0}
                   unoptimized
                 />
                 {/* Dark overlay */}

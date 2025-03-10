@@ -95,10 +95,7 @@ const ModalEditHomeCarousel = ({
       );
       coverUrl = imageUrls[0];
     }
-    if (
-      homeCarousel.coverUrl !== coverUrl &&
-      homeCarousel.coverUrl
-    ) {
+    if (coverUrl && homeCarousel.coverUrl) {
       await removeFromS3(homeCarousel.coverUrl);
     }
 

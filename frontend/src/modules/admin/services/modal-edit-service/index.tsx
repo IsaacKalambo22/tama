@@ -49,10 +49,6 @@ const ModalEditService = ({
         message:
           'Title must be at least 2 characters.',
       })
-      .max(50, {
-        message:
-          'Title must not be more than 50 characters.',
-      })
       .optional(),
     description: zod
       .string()
@@ -99,10 +95,7 @@ const ModalEditService = ({
       );
       imageUrl = imageUrls[0];
     }
-    if (
-      service.imageUrl !== imageUrl &&
-      service.imageUrl
-    ) {
+    if (imageUrl && service.imageUrl) {
       await removeFromS3(service.imageUrl);
     }
 
