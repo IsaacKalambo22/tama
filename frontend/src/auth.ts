@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import { BASE_URL } from './lib/utils';
+import config from './lib/config';
 
 export const { handlers, auth, signIn, signOut } =
   NextAuth({
@@ -21,58 +21,35 @@ export const { handlers, auth, signIn, signOut } =
         async authorize(credentials) {
           const { email, password } = credentials;
 
-          try {
-            const response = await fetch(
-              `${BASE_URL}/auth/login`,
-              {
-                method: 'POST',
-                headers: {
-                  'Content-Type':
-                    'application/json',
-                },
-                body: JSON.stringify({
-                  email,
-                  password,
-                }),
-              }
-            );
-
-            if (!response.ok) {
-              const errorDetails =
-                await response.json();
-              console.error(
-                'Authorization failed:',
-                errorDetails.message ||
-                  response.statusText
-              );
-              throw new Error(
-                errorDetails.message ||
-                  'Invalid credentials'
-              );
+          const response = await fetch(
+            `${config.env.baseUrl}/auth/sign-in`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type':
+                  'application/json',
+              },
+              body: JSON.stringify({
+                email,
+                password,
+              }),
             }
+          );
 
-            const data = await response.json();
-
-            if (data?.user?.accessToken) {
-              return {
-                accessToken:
-                  data.user.accessToken,
-                id: data.user.id,
-                name: data.user.name,
-                email: data.user.email,
-                role: data.user.role,
-                image: data.user.avatar,
-              };
-            }
-
+          if (!response.ok) {
             return null;
-          } catch (error) {
-            console.error(
-              'Error during authorization:',
-              error
-            );
-            throw error;
           }
+
+          const data = await response.json();
+
+          return {
+            accessToken: data.user.accessToken,
+            id: data.user.id,
+            name: data.user.name,
+            email: data.user.email,
+            role: data.user.role,
+            image: data.user.avatar,
+          };
         },
       }),
     ],

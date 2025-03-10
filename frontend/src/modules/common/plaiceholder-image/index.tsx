@@ -1,5 +1,5 @@
+import { getImage } from '@/lib/get-image';
 import { cn } from '@/lib/utils';
-import { getImage } from '@/modules/admin/actions';
 import Image from 'next/image';
 
 const PlaiceholderImage = async ({

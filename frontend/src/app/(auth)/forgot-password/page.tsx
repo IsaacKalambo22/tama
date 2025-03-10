@@ -1,9 +1,9 @@
 import ForgotPassword from '@/modules/auth/forgot-password';
 import { Metadata } from 'next';
 export const metadata: Metadata = {
-  title: 'Forgot Password - TAMA Farmers Trust',
+  title: 'Forgot Password - Pacific Diagnostics',
   description:
-    'Access your account and manage your activities with TAMA Farmers Trust.',
+    'Access your account and manage your activities with Pacific Diagnostics.',
 };
 
 const ForgotPasswordPage = () => {

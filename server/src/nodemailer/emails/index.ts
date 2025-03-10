@@ -4,6 +4,7 @@ import {
   PASSWORD_RESET_REQUEST_TEMPLATE,
   PASSWORD_RESET_SUCCESS_TEMPLATE,
   SET_PASSWORD_REQUEST_TEMPLATE,
+  SET_PASSWORD_SUCCESS_TEMPLATE,
 } from '../email-templates';
 
 // Define email options interface
@@ -303,7 +304,7 @@ export const sendSetPasswordSuccessEmail = async (
       to: email,
       subject: 'Password Set Successful',
       text: 'Your password has been set successfully.',
-      html: PASSWORD_RESET_SUCCESS_TEMPLATE,
+      html: SET_PASSWORD_SUCCESS_TEMPLATE,
     });
 
     if (result.success) {

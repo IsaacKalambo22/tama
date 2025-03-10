@@ -1,5 +1,5 @@
 import { Card } from '@/components/ui/card';
-import Image from 'next/image';
+import PlaiceholderImage from '@/modules/common/plaiceholder-image';
 import HomeCarouselActionDropdown from '../home-carousel-action-dropdown';
 
 interface Props {
@@ -17,9 +17,12 @@ const HomeCarouselCard = ({
         />
       </div>
 
-      <div className='flex flex-row rounded-2xl border border-neutral-100 dark:border-white/[0.2] p-4  items-start space-x-2 bg-white dark:bg-black'>
-        <div className='relative w-full h-[12rem]'>
-          <Image
+      <PlaiceholderImage
+        src={homeCarousel.coverUrl}
+        alt={homeCarousel.title}
+        className='rounded-xl object-cover h-[12rem] mb-2 w-full'
+      />
+      {/* <Image
             src={homeCarousel.coverUrl}
             alt={homeCarousel.title}
             layout='fill'
@@ -28,9 +31,7 @@ const HomeCarouselCard = ({
             className='rounded-xl'
             unoptimized
             loading='lazy'
-          />
-        </div>
-      </div>
+          /> */}
       <div className='flex flex-col gap-2 '>
         <span className='font-sans font-bold text-neutral-600 dark:text-neutral-200 '>
           {homeCarousel.title}

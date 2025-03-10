@@ -1,12 +1,17 @@
 'use server';
 
 import { signIn } from '@/auth';
-import { BASE_URL } from '@/lib/utils';
+import config from '@/lib/config';
+import { AuthError } from 'next-auth';
 
-export const login = async (
-  email: string,
-  password: string
+export const signInWithCredentials = async (
+  params: Pick<
+    AuthCredentials,
+    'email' | 'password'
+  >
 ) => {
+  const { email, password } = params;
+
   try {
     const result = await signIn('credentials', {
       email,
@@ -14,27 +19,175 @@ export const login = async (
       redirect: false,
     });
 
-    console.log('Sign-in Result:', result);
+    if (result?.error) {
+      return {
+        success: false,
+        error: result.error,
+      };
+    }
 
-    return {
-      status: 'SUCCESS',
-      user: result.user,
-    };
+    return { success: true };
   } catch (error) {
-    console.error('Error during login:', error);
+    // Handle specific AuthError or other errors
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+          return {
+            success: false,
+            error: 'Invalid credentials',
+          };
+        default:
+          return {
+            success: false,
+            error: 'Something went wrong',
+          };
+      }
+    }
+
+    throw error;
+  }
+};
+
+export const signUp = async (
+  params: AuthCredentials
+) => {
+  const { fullName, email } = params;
+
+  try {
+    // Step 1: Register the user
+    const registrationResponse = await fetch(
+      `${config.env.baseUrl}/auth/register`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          name: fullName,
+        }),
+      }
+    );
+
+    // Step 2: Check for errors in the registration response
+    if (!registrationResponse.ok) {
+      const registrationError =
+        await registrationResponse.json();
+      return {
+        success: false,
+        error:
+          registrationError.message ||
+          'Registration failed. Please try again.',
+      };
+    }
+
+    // Step 3: Sign in the user with the credentials (after successful registration)
+    // const signInResult =
+    //   await signInWithCredentials({
+    //     email,
+    //     password,
+    //   });
+
+    // if (!signInResult.success) {
+    //   return {
+    //     success: false,
+    //     error:
+    //       signInResult.error ||
+    //       'Sign-in failed. Please check your credentials.',
+    //   };
+    // }
+
+    // If everything is successful
+    return { success: true };
+  } catch (error) {
+    // General error handling
+    console.log(error, 'Signup error');
     return {
-      status: 'ERROR',
-      error: 'Email or password is incorrect.',
+      success: false,
+      error:
+        error instanceof Error
+          ? error.message
+          : 'An unexpected error occurred during signup.',
     };
   }
 };
 
 export const setPassword = async (
-  verificationToken: string,
-  password: string
+  params: Pick<
+    AuthCredentials,
+    'verificationToken' | 'password'
+  >
 ) => {
+  const { verificationToken, password } = params;
+
+  // try {
+  //   // Prepare the payload
+  //   const payload = {
+  //     verificationToken, // Use the id as the verification token
+  //     password, // Send the password
+  //   };
+  //   console.log({ payload });
+
+  //   // Replace with your actual API endpoint
+  //   const response = await fetch(
+  //     `${config.env.baseUrl}/auth/set-password`,
+  //     {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(payload),
+  //     }
+  //   );
+
+  //   const result = await response.json();
+
+  //   if (!response.ok) {
+  //     throw new Error(
+  //       result.error || 'Failed to set password'
+  //     );
+  //   }
+
+  //   console.log(
+  //     'Password Set Successful:',
+  //     result
+  //   );
+
+  //   const email = result.email;
+  //   // Step 3: Sign in the user with the credentials (after successful registration)
+  //   const signInResult =
+  //     await signInWithCredentials({
+  //       email,
+  //       password,
+  //     });
+
+  //   if (!signInResult.success) {
+  //     return {
+  //       success: false,
+  //       error:
+  //         signInResult.error ||
+  //         'Sign-in failed. Please check your credentials.',
+  //     };
+  //   }
+
+  //   // If everything is successful
+  //   return { success: true };
+  // } catch (error) {
+  //   console.error(
+  //     'Error during password set:',
+  //     error
+  //   );
+
+  //   return {
+  //     success: false,
+  //     error:
+  //       error instanceof Error
+  //         ? error.message
+  //         : 'An unexpected error occurred during signup.',
+  //   };
+  // }
+
   try {
-    // Prepare the payload
     const payload = {
       verificationToken, // Use the id as the verification token
       password, // Send the password
@@ -43,7 +196,7 @@ export const setPassword = async (
 
     // Replace with your actual API endpoint
     const response = await fetch(
-      `${BASE_URL}/auth/set-password`,
+      `${config.env.baseUrl}/auth/set-password`,
       {
         method: 'POST',
         headers: {
@@ -55,40 +208,58 @@ export const setPassword = async (
 
     const result = await response.json();
 
+    // Step 2: Check for errors in the registration response
     if (!response.ok) {
-      throw new Error(
-        result.error || 'Failed to set password'
-      );
+      return {
+        success: false,
+        error:
+          result.message ||
+          'Failed to set password, please try again',
+      };
     }
 
-    console.log(
-      'Password Set Successful:',
-      result
-    );
+    // Step 3: Sign in the user with the credentials (after successful
+    // password set)
 
     const email = result.email;
-    await login(email, password);
-    return {
-      status: 'SUCCESS',
-      message: 'Password set successfully.',
-    };
-  } catch (error) {
-    console.error(
-      'Error during password set:',
-      error
-    );
 
+    const signInResult =
+      await signInWithCredentials({
+        email,
+        password,
+      });
+
+    if (!signInResult.success) {
+      return {
+        success: false,
+        error:
+          signInResult.error ||
+          'Sign-in failed. Please check your credentials.',
+      };
+    }
+
+    // If everything is successful
+    return { success: true };
+  } catch (error) {
+    // General error handling
     return {
-      status: 'ERROR',
+      success: false,
       error:
-        'Failed to set password. Please try again later.',
+        error instanceof Error
+          ? error.message
+          : 'An unexpected error occurred during password set.',
     };
   }
 };
+
 export const resetPassword = async (
-  verificationToken: string,
-  password: string
+  params: Pick<
+    AuthCredentials,
+    'verificationToken' | 'password'
+  >
 ) => {
+  const { verificationToken, password } = params;
+
   try {
     // Prepare the payload
     const payload = {
@@ -99,7 +270,7 @@ export const resetPassword = async (
 
     // Replace with your actual API endpoint
     const response = await fetch(
-      `${BASE_URL}/auth/reset-password`,
+      `${config.env.baseUrl}/auth/reset-password`,
       {
         method: 'POST',
         headers: {
@@ -112,38 +283,50 @@ export const resetPassword = async (
     const result = await response.json();
 
     if (!response.ok) {
-      throw new Error(
-        result.error || 'Failed to set password'
-      );
+      return {
+        success: false,
+        error:
+          result.message ||
+          'Failed to reset password, please try again',
+      };
     }
 
-    console.log(
-      'Password Set Successful:',
-      result
-    );
-
     const email = result.email;
-    await login(email, password);
-    return {
-      status: 'SUCCESS',
-      message: 'Password set successfully.',
-    };
-  } catch (error) {
-    console.error(
-      'Error during password set:',
-      error
-    );
 
+    const signInResult =
+      await signInWithCredentials({
+        email,
+        password,
+      });
+
+    if (!signInResult.success) {
+      return {
+        success: false,
+        error:
+          signInResult.error ||
+          'Sign-in failed. Please check your credentials.',
+      };
+    }
+
+    // If everything is successful
+    return { success: true };
+  } catch (error) {
+    // General error handling
     return {
-      status: 'ERROR',
+      success: false,
       error:
-        'Failed to set password. Please try again later.',
+        error instanceof Error
+          ? error.message
+          : 'An unexpected error occurred during password reset.',
     };
   }
 };
+
 export const forgotPassword = async (
-  email: string
+  params: Pick<AuthCredentials, 'email'>
 ) => {
+  const { email } = params;
+
   try {
     // Prepare the payload
     const payload = {
@@ -153,7 +336,7 @@ export const forgotPassword = async (
 
     // Replace with your actual API endpoint
     const response = await fetch(
-      `${BASE_URL}/auth/forgot-password`,
+      `${config.env.baseUrl}/auth/forgot-password`,
       {
         method: 'POST',
         headers: {
@@ -166,30 +349,24 @@ export const forgotPassword = async (
     const result = await response.json();
 
     if (!response.ok) {
-      throw new Error(
-        result.error || 'Failed to reset password'
-      );
+      return {
+        success: false,
+        error:
+          result.message ||
+          'Failed to reset password, please try again',
+      };
     }
 
-    console.log(
-      'Password Reset Successful:',
-      result
-    );
-
-    return {
-      status: 'SUCCESS',
-      message: 'Password reset successfully.',
-    };
+    // If everything is successful
+    return { success: true };
   } catch (error) {
-    console.error(
-      'Error during password reset:',
-      error
-    );
-
+    // General error handling
     return {
-      status: 'ERROR',
+      success: false,
       error:
-        'Failed to reset password. Please try again later.',
+        error instanceof Error
+          ? error.message
+          : 'An unexpected error occurred during password reset.',
     };
   }
 };

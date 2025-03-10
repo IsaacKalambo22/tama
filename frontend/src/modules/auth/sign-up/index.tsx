@@ -1,24 +1,26 @@
 'use client';
 
 import { FormFieldType } from '@/modules/common/custom-form-field';
-import { forgotPassword } from '../actions';
+import { signUp } from '../actions';
 import AuthForm, { FormType } from '../auth-form';
-import { forgotPasswordSchema } from '../validation';
+import { signUpSchema } from '../validation';
 
-const ForgotPassword = () => {
+const SignUp = () => {
   return (
     <AuthForm
-      type={FormType.FORGOT_PASSWORD}
-      schema={forgotPasswordSchema}
+      type={FormType.SIGN_UP}
+      schema={signUpSchema}
       defaultValues={{
+        fullName: '',
         email: '',
       }}
       fieldTypes={{
+        fullName: FormFieldType.INPUT,
         email: FormFieldType.INPUT,
       }}
-      onSubmit={forgotPassword}
+      onSubmit={signUp}
     />
   );
 };
 
-export default ForgotPassword;
+export default SignUp;

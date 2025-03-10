@@ -2,9 +2,9 @@ import ResetPassword from '@/modules/auth/reset-password';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Reset Password - TAMA Farmers Trust',
+  title: 'Reset Password - Pacific Diagnostics',
   description:
-    'Access your account and manage your activities with TAMA Farmers Trust.',
+    'Access your account and manage your activities with Pacific Diagnostics.',
 };
 
 interface ResetPasswordProps {

@@ -10,7 +10,7 @@ import {
 const router = Router();
 
 router.post(
-  '/register',
+  '/sign-up',
   // verifyAdmin,
   registerUser
 );

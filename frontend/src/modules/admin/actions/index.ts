@@ -9,7 +9,7 @@ export async function getImage(src: string) {
   const controller = new AbortController();
   const timeout = setTimeout(
     () => controller.abort(),
-    30000
+    90000
   ); // 30 seconds timeout
 
   const response = await fetch(src, {

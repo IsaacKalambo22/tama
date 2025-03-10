@@ -1,12 +1,25 @@
 import { NextResponse } from 'next/server';
 
 import { auth } from './auth';
-import {
-  apiAuthPrefix,
-  authRoutes,
-  DEFAULT_LOGIN_REDIRECT,
-  publicRoutes,
-} from './route';
+const publicRoutes = [
+  '/',
+  '/services',
+  '/social-media',
+  '/blogs',
+  '/contact',
+];
+
+export const authRoutes = [
+  '/sign-in',
+  '/sign-up',
+  '/forgot-password',
+];
+export const apiAuthPrefix = '/api/auth';
+
+export const DEFAULT_LOGIN_REDIRECT = '/';
+
+export const userRoutes = '/user';
+export const adminRoutes = '/admin';
 
 export const middleware = auth(async (req) => {
   const secretKey = process.env.AUTH_SECRET;
@@ -19,16 +32,24 @@ export const middleware = auth(async (req) => {
 
   const { nextUrl } = req;
   const isLoggedIn = !!token;
+  console.log({ isLoggedIn });
 
   // Route checks
   const isApiAuthRoute =
     nextUrl.pathname.startsWith(apiAuthPrefix);
-  const isAuthRoute = authRoutes.includes(
-    nextUrl.pathname
-  );
+  const isAuthRoute =
+    authRoutes.includes(nextUrl.pathname) ||
+    nextUrl.pathname.startsWith(
+      '/set-password'
+    ) ||
+    nextUrl.pathname.startsWith(
+      '/reset-password'
+    );
+
+  const isAdminRoute =
+    nextUrl.pathname.startsWith(adminRoutes);
   const isPublicRoute =
     publicRoutes.includes(nextUrl.pathname) ||
-    nextUrl.pathname.startsWith('/blogs') ||
     nextUrl.pathname.startsWith(
       '/tobacco-business'
     ) ||
@@ -36,47 +57,52 @@ export const middleware = auth(async (req) => {
       '/news-updates'
     ) ||
     nextUrl.pathname.startsWith('/resources') ||
-    nextUrl.pathname.startsWith('/contact') ||
-    nextUrl.pathname.startsWith(
-      '/social-media'
-    ) ||
-    nextUrl.pathname.startsWith('/services') ||
-    nextUrl.pathname.startsWith('/posts') ||
-    nextUrl.pathname.startsWith(
-      '/set-password'
-    ) ||
-    nextUrl.pathname.startsWith(
-      '/reset-password'
-    ) ||
-    nextUrl.pathname.startsWith(
-      '/forgot-password'
-    ) ||
-    nextUrl.pathname.startsWith('/api') ||
-    nextUrl.pathname.startsWith('/about');
+    nextUrl.pathname.startsWith('/api');
 
   // Skip API auth routes
   if (isApiAuthRoute) return;
+  if (isPublicRoute) return;
 
   // Allow public access to the login page without redirecting if not logged in
-  if (
-    (nextUrl.pathname === '/login' ||
-      nextUrl.pathname === '/register') &&
-    !isLoggedIn
-  )
-    return;
+  if (isAuthRoute && !isLoggedIn) return;
 
-  // Redirect logged-in users away from login and register pages
+  // Redirect logged-in users away from sign-in/up pages
   if (isAuthRoute && isLoggedIn) {
+    const redirectTo =
+      token.role === 'ADMIN' ||
+      token.role === 'MANAGER'
+        ? '/admin'
+        : '/user';
     return NextResponse.redirect(
-      new URL('/', nextUrl)
+      new URL(redirectTo, nextUrl)
     );
   }
 
   // Redirect to login if not logged in and accessing a protected route
   if (!isLoggedIn && !isPublicRoute) {
     return NextResponse.redirect(
-      new URL('/login', nextUrl)
+      new URL('/sign-in', nextUrl)
     );
+  }
+
+  // Restrict access to admin routes
+  if (isAdminRoute) {
+    if (!isLoggedIn) {
+      return NextResponse.redirect(
+        new URL('/sign-in', nextUrl)
+      );
+    }
+
+    if (
+      token.role !== 'ADMIN' &&
+      token.role !== 'MANAGER'
+    ) {
+      return NextResponse.redirect(
+        new URL('/current-dashboard', nextUrl)
+      ); // Prevent non-admin users from accessing
+    }
+
+    return;
   }
 
   // Role-based redirection if logged in and accessing the wrong route

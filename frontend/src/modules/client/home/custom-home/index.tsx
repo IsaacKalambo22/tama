@@ -7,11 +7,11 @@ import {
 } from 'react-icons/fa'; // Add more icons as needed
 import { CustomFaq } from '../custom-faq';
 import { ImageTextHome } from '../image-text-home';
-import { MainCarousel } from '../main-carousel';
+import MainCarousel from '../main-carousel';
 import OurTeam from '../our-team';
 import StatisticBlock from '../statistic-block';
 
-const CustomHome = () => {
+const CustomHome = async () => {
   return (
     <div className='flex flex-col items-center gap-8 mb-16'>
       <MainCarousel />
