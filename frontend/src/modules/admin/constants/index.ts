@@ -2,8 +2,7 @@ import {
   Album,
   Book,
   BookOpen,
-  Briefcase,
-  Calendar,
+  Images,
   LayoutGrid,
   MessageCircle,
   NewspaperIcon,
@@ -38,15 +37,34 @@ export const ADMIN_LINKS: SidebarProps[] = [
     ],
   },
   {
-    label: 'News & Updates',
-    icon: NewspaperIcon,
-    href: '/admin/news-updates/news',
+    label: 'Tobacco Business',
+    icon: ShoppingBag,
+    submenu: [
+      {
+        label: 'Shops',
+        href: '/admin/tobacco-business/shops',
+      },
+      {
+        label: 'Event Calendar',
+        href: '/admin/tobacco-business/event-calendar',
+      },
+    ],
   },
   {
-    label: 'Shops',
-    href: '/admin/shops',
-    icon: ShoppingBag,
+    label: 'News & Updates',
+    icon: NewspaperIcon,
+    submenu: [
+      {
+        label: 'News',
+        href: '/admin/news-updates/news',
+      },
+      {
+        label: 'Vacancies',
+        href: '/admin/news-updates/vacancies',
+      },
+    ],
   },
+
   {
     label: 'Blogs',
     href: '/admin/blogs',
@@ -55,27 +73,23 @@ export const ADMIN_LINKS: SidebarProps[] = [
   {
     label: 'Users',
     href: '/admin/users',
-    icon: UsersIcon, // Replace with the appropriate icon if `UsersIcon` is unavailable
+    icon: UsersIcon,
   },
-  {
-    label: 'Events',
-    href: '/admin/events',
-    icon: Calendar,
-  },
-  {
-    label: 'Vacancies',
-    href: '/admin/vacancies',
-    icon: Briefcase,
-  },
+
   {
     label: 'Services',
     href: '/admin/services',
     icon: Wrench,
   },
   {
-    label: 'Carousel',
+    label: 'Home Carousel',
     href: '/admin/carousel',
     icon: Album,
+  },
+  {
+    label: 'Home Images',
+    href: '/admin/home-image-text',
+    icon: Images,
   },
   {
     label: 'Messaging', // New "Messaging" section

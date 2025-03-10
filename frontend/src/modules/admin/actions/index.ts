@@ -374,6 +374,49 @@ export const deleteHomeCarousel = async (
     [fullPath, pathWithoutAdmin, layout]
   );
 };
+
+// SERVICES SERVER ACTIONS
+export const createHomeImageText = async (
+  payload: object,
+  fullPath: string,
+  pathWithoutAdmin: string,
+  layout: string
+) => {
+  return await serverAction(
+    'home/image-text',
+    'POST',
+    payload,
+    [fullPath, layout, pathWithoutAdmin] // Revalidate paths
+  );
+};
+
+export const updateHomeImageText = async (
+  payload: object,
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  return await serverAction(
+    `home/image-text/${id}`,
+    'PATCH',
+    payload,
+    [fullPath, pathWithoutAdmin]
+  );
+};
+
+export const deleteHomeImageText = async (
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string,
+  layout: string
+) => {
+  return await serverAction(
+    `home/image-text/${id}`,
+    'DELETE',
+    null,
+    [fullPath, pathWithoutAdmin, layout]
+  );
+};
 // VACANCIES SERVER ACTIONS
 export const createVacancy = async (
   payload: object,

@@ -292,3 +292,9 @@ export const fetchHomeCarousel =
       `${BASE_URL}/home/carousel`
     );
   };
+export const fetchHomeImageText =
+  async (): Promise<HomeImageText[]> => {
+    return handleFetch<HomeImageText[]>(
+      `${BASE_URL}/home/image-text`
+    );
+  };

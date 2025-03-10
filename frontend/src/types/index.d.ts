@@ -44,6 +44,12 @@ declare global {
     description: string;
     coverUrl: string;
   }
+  interface HomeImageText {
+    id: string;
+    heading: string;
+    description: string;
+    imageUrl: string;
+  }
   interface Product {
     id: string;
     productName: string;
