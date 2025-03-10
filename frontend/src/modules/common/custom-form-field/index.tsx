@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
   FormControl,
@@ -15,13 +16,19 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { E164Number } from 'libphonenumber-js/core';
-import { CalendarIcon } from 'lucide-react';
+import {
+  CalendarIcon,
+  Eye,
+  EyeOff,
+} from 'lucide-react';
 import Image from 'next/image';
+import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Control } from 'react-hook-form';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+
 export enum FormFieldType {
   INPUT = 'input',
   NUMBER = 'number',
@@ -33,6 +40,7 @@ export enum FormFieldType {
   SKELETON = 'skeleton',
   DATE = 'DATE',
   TIME_PICKER = 'timePicker',
+  PASSWORD = 'password',
 }
 
 interface CustomProps {
@@ -60,6 +68,12 @@ const RenderInput = ({
   field: any;
   props: CustomProps;
 }) => {
+  const [showPassword, setShowPassword] =
+    useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   switch (props.fieldType) {
     case FormFieldType.INPUT:
     case FormFieldType.NUMBER:
@@ -103,6 +117,50 @@ const RenderInput = ({
           </FormControl>
         </div>
       );
+    case FormFieldType.PASSWORD:
+      return (
+        <div className='flex rounded-md border border-gray-500 relative'>
+          {props.iconSrc && (
+            <Image
+              src={props.iconSrc}
+              height={24}
+              width={24}
+              alt={props.iconAlt || 'icon'}
+              className='ml-2'
+            />
+          )}
+          <FormControl>
+            <Input
+              type={
+                showPassword ? 'text' : 'password'
+              }
+              placeholder={props.placeholder}
+              {...field}
+              value={field.value}
+              onChange={(e) =>
+                field.onChange(e.target.value)
+              }
+              className='shad-input border-0 pr-10' // Adjust padding for the icon
+            />
+          </FormControl>
+          <Button
+            size='icon'
+            variant='ghost'
+            onClick={(e) => {
+              e.preventDefault();
+              togglePasswordVisibility();
+            }}
+            className='absolute inset-y-0 right-0 px-3 py-2 text-sm font-medium hover:bg-inherit text-gray-500'
+          >
+            {showPassword ? (
+              <EyeOff className='w-5 h-5' />
+            ) : (
+              <Eye className='w-5 h-5' />
+            )}
+          </Button>
+        </div>
+      );
+
     case FormFieldType.DATE_PICKER:
       return (
         <div className='flex relative items-center w-full h-10'>
@@ -112,7 +170,7 @@ const RenderInput = ({
                 props.showTimeSelect ?? false
               }
               selected={field.value}
-              onChange={(date: Date) =>
+              onChange={(date: Date | null) =>
                 field.onChange(date)
               }
               timeInputLabel='Time:'
@@ -138,7 +196,7 @@ const RenderInput = ({
           <FormControl>
             <DatePicker
               selected={field.value}
-              onChange={(time: Date) =>
+              onChange={(time: Date | null) =>
                 field.onChange(time)
               }
               showTimeSelect

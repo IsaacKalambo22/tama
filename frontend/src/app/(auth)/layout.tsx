@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 
@@ -12,9 +13,14 @@ const Layout = async ({
         <div className='mx-auto flex w-full max-w-[405px] flex-col p-10'>
           <div className='flex items-center justify-center flex-row '>
             <Link href='/'>
-              <h1 className='text-xl font-semibold text-primary'>
-                Pacific Diagnostics Limited
-              </h1>
+              <div className='flex items-center justify-center w-16 h-16'>
+                <Image
+                  src='/assets/images/logo.png'
+                  alt='Logo'
+                  width={64}
+                  height={64}
+                />
+              </div>
             </Link>
           </div>
 

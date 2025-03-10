@@ -97,16 +97,16 @@ const AuthForm = <T extends FieldValues>({
           ? 'Verification details sent to your email.'
           : 'Password has been set successfully.'
       );
-      await getSession();
 
-      router.push('/');
       setIsRedirecting(true);
+      if (isForgotPassword) router.push('/');
+      await getSession();
+      router.refresh();
     } else {
       toast.error(
         result.error ?? 'An error occurred.'
       );
     }
-
     setIsLoading(false);
   };
 
@@ -170,16 +170,16 @@ const AuthForm = <T extends FieldValues>({
               !form.formState.isValid
             }
             isLoading={isLoading || isRedirecting}
-            className='w-full h-9 mt-4'
+            className='w-full h-9 mt-3'
             loadingText={
-              isSignIn
+              isRedirecting
+                ? 'Redirecting...'
+                : isSignIn
                 ? 'Signing in...'
                 : isResetPassword
                 ? 'Resetting...'
                 : isForgotPassword
                 ? 'Sending reset link...'
-                : isRedirecting
-                ? 'Redirecting...'
                 : 'Setting password...'
             }
           >
