@@ -16,6 +16,7 @@ const blog_1 = __importDefault(require("./routes/blog"));
 const council_list_1 = __importDefault(require("./routes/council-list"));
 const events_1 = __importDefault(require("./routes/events"));
 const form_1 = __importDefault(require("./routes/form"));
+const home_1 = __importDefault(require("./routes/home"));
 const news_1 = __importDefault(require("./routes/news"));
 const reports_publications_1 = __importDefault(require("./routes/reports-publications"));
 const search_1 = __importDefault(require("./routes/search"));
@@ -40,6 +41,7 @@ app.get('/', (req, res) => {
     res.send('<html><body><h1>Welcome to the Home Route</h1></body></html>');
 });
 app.use('/tama/auth', auth_1.default);
+app.use('/tama/home', home_1.default);
 app.use('/tama/shops', shop_1.default);
 app.use('/tama/forms', form_1.default);
 app.use('/tama/blogs', blog_1.default);

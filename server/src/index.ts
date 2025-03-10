@@ -12,6 +12,7 @@ import blogs from './routes/blog';
 import councilLists from './routes/council-list';
 import events from './routes/events';
 import forms from './routes/form';
+import home from './routes/home';
 import news from './routes/news';
 import reportsPublications from './routes/reports-publications';
 import search from './routes/search';
@@ -35,6 +36,7 @@ app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({ extended: false })
 );
+
 app.use(cors());
 
 /* ROUTES */
@@ -45,6 +47,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/tama/auth', auth);
+app.use('/tama/home', home);
 app.use('/tama/shops', shops);
 app.use('/tama/forms', forms);
 app.use('/tama/blogs', blogs);
