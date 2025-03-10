@@ -3,6 +3,7 @@ import { twMerge } from 'tailwind-merge';
 import { FileProps } from './api';
 import { getSignedURL } from './aws';
 import config from './config';
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }

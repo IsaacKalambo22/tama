@@ -40,6 +40,7 @@ export const middleware = auth(async (req) => {
     nextUrl.pathname.startsWith(
       '/social-media'
     ) ||
+    nextUrl.pathname.startsWith('/services') ||
     nextUrl.pathname.startsWith('/posts') ||
     nextUrl.pathname.startsWith(
       '/set-password'

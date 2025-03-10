@@ -1,8 +1,36 @@
 'use server';
+import { getPlaiceholder } from 'plaiceholder';
 
 import { auth } from '@/auth';
 import { BASE_URL } from '@/lib/utils';
 import { revalidatePath } from 'next/cache';
+
+export async function getImage(src: string) {
+  const controller = new AbortController();
+  const timeout = setTimeout(
+    () => controller.abort(),
+    30000
+  ); // 30 seconds timeout
+
+  const response = await fetch(src, {
+    signal: controller.signal,
+  });
+  const buffer = Buffer.from(
+    await response.arrayBuffer()
+  );
+
+  clearTimeout(timeout);
+
+  const {
+    metadata: { height, width },
+    ...plaiceholder
+  } = await getPlaiceholder(buffer, { size: 10 });
+
+  return {
+    ...plaiceholder,
+    img: { src, height, width },
+  };
+}
 
 export const serverAction = async (
   endpoint: string,
@@ -298,6 +326,49 @@ export const deleteService = async (
 ) => {
   return await serverAction(
     `services/${id}`,
+    'DELETE',
+    null,
+    [fullPath, pathWithoutAdmin, layout]
+  );
+};
+
+// SERVICES SERVER ACTIONS
+export const createHomeCarousel = async (
+  payload: object,
+  fullPath: string,
+  pathWithoutAdmin: string,
+  layout: string
+) => {
+  return await serverAction(
+    'home/carousel',
+    'POST',
+    payload,
+    [fullPath, layout, pathWithoutAdmin] // Revalidate paths
+  );
+};
+
+export const updateHomeCarousel = async (
+  payload: object,
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  return await serverAction(
+    `home/carousel/${id}`,
+    'PATCH',
+    payload,
+    [fullPath, pathWithoutAdmin]
+  );
+};
+
+export const deleteHomeCarousel = async (
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string,
+  layout: string
+) => {
+  return await serverAction(
+    `home/carousel/${id}`,
     'DELETE',
     null,
     [fullPath, pathWithoutAdmin, layout]

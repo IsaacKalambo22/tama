@@ -14,23 +14,23 @@ export type NavItem = {
 // Create and export the navigation items object.
 export const navItems: NavItem[] = [
   {
+    title: 'Home',
+    href: '/',
+    description:
+      'Industry insights and articles from experts.',
+    icon: (
+      <Icon
+        icon='lucide:pen-tool'
+        width='16'
+        height='16'
+      />
+    ),
+  },
+  {
     title: 'Tobacco Business',
     href: '/tobacco-business',
     submenu: true,
     subMenuItems: [
-      {
-        title: 'Services',
-        href: '/tobacco-business/services',
-        description:
-          'Various business services for the tobacco industry.',
-        icon: (
-          <Icon
-            icon='lucide:briefcase'
-            width='16'
-            height='16'
-          />
-        ),
-      },
       {
         title: 'Event Calendar',
         href: '/tobacco-business/event-calendar',
@@ -58,6 +58,19 @@ export const navItems: NavItem[] = [
         ),
       },
     ],
+  },
+  {
+    title: 'Services',
+    href: '/services',
+    description:
+      'Industry insights and articles from experts.',
+    icon: (
+      <Icon
+        icon='lucide:pen-tool'
+        width='16'
+        height='16'
+      />
+    ),
   },
   {
     title: 'Resources',

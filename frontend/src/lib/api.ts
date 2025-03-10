@@ -286,3 +286,9 @@ export const fetchCouncilList = async (): Promise<
     `${BASE_URL}/council-lists`
   );
 };
+export const fetchHomeCarousel =
+  async (): Promise<HomeCarousel[]> => {
+    return handleFetch<HomeCarousel[]>(
+      `${BASE_URL}/home/carousel`
+    );
+  };

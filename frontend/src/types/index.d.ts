@@ -38,6 +38,12 @@ declare global {
     description: string;
     imageUrl: string;
   }
+  interface HomeCarousel {
+    id: string;
+    title: string;
+    description: string;
+    coverUrl: string;
+  }
   interface Product {
     id: string;
     productName: string;

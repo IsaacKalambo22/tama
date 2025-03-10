@@ -1,4 +1,5 @@
 import {
+  Album,
   Book,
   BookOpen,
   Briefcase,
@@ -70,6 +71,11 @@ export const ADMIN_LINKS: SidebarProps[] = [
     label: 'Services',
     href: '/admin/services',
     icon: Wrench,
+  },
+  {
+    label: 'Carousel',
+    href: '/admin/carousel',
+    icon: Album,
   },
   {
     label: 'Messaging', // New "Messaging" section
