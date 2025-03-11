@@ -23,7 +23,7 @@ const MainCarousel = async () => {
     <div className='flex w-full flex-col gap-10 mb-16'>
       {homeCarousel?.length === 0 ? (
         <p className='text-gray-500 text-center text-lg mt-5'>
-          No homeCarousel are currently available.
+          No data currently available.
         </p>
       ) : (
         <CustomCarousel
