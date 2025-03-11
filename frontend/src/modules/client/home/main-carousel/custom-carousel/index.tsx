@@ -36,7 +36,7 @@ export function CustomCarousel({
         {homeCarousel.map((slide, index) => (
           <CarouselItem key={index}>
             <div className='p-1 relative'>
-              <Card className='w-full h-[25rem] sm:h-[37rem] shadow-none rounded-2xl relative overflow-hidden'>
+              <Card className='w-full h-[25rem] sm:h-[35rem] shadow-none rounded-2xl relative overflow-hidden'>
                 {/* Image with opacity */}
                 <Image
                   src={slide.coverUrl}
