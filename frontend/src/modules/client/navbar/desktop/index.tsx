@@ -7,6 +7,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 import { cn } from '@/lib/utils';
 
@@ -30,7 +31,7 @@ const Desktop = () => {
     <>
       <div className='max-w-7xl mx-auto px-6 sm:px-2 flex justify-between items-center h-full'>
         {/* LEFT SIDE */}
-        <div className='flex-1 items-center h-full gap-2'>
+        <div className='items-center h-full gap-2'>
           <div className='flex items-center h-full gap-2'>
             <Link
               href='/'
@@ -55,9 +56,9 @@ const Desktop = () => {
           </div>
         </div>
         {/* MIDDLE */}
-        <div className='items-center justify-center'>
+        <div className='items-center justify-center '>
           <NavigationMenu>
-            <NavigationMenuList>
+            <NavigationMenuList className='space-x-0'>
               {navItems.map((section) => (
                 <NavigationMenuItem
                   key={section.title}
@@ -156,22 +157,44 @@ const Desktop = () => {
                       </NavigationMenuContent>
                     </>
                   ) : (
-                    <Link
-                      href={section.href}
-                      legacyBehavior
-                      passHref
-                    >
-                      <NavigationMenuLink
-                        className={cn(
-                          'text-gray-600 hover:text-green-600 mr-5',
-                          pathname ===
-                            section.href &&
-                            'text-green-600'
-                        )}
+                    <>
+                      <NavigationMenuItem>
+                        <Link
+                          href={section.href}
+                          legacyBehavior
+                          passHref
+                        >
+                          <NavigationMenuLink
+                            className={cn(
+                              navigationMenuTriggerStyle(),
+                              'text-gray-600 hover:text-green-600',
+                              pathname ===
+                                section.href &&
+                                'text-green-600'
+                            )}
+                            // className={navigationMenuTriggerStyle()}
+                          >
+                            {section.title}
+                          </NavigationMenuLink>
+                        </Link>
+                      </NavigationMenuItem>
+                      {/* <Link
+                        href={section.href}
+                        legacyBehavior
+                        passHref
                       >
-                        {section.title}
-                      </NavigationMenuLink>
-                    </Link>
+                        <NavigationMenuLink
+                          className={cn(
+                            'text-gray-600 hover:text-green-600 mr-5',
+                            pathname ===
+                              section.href &&
+                              'text-green-600'
+                          )}
+                        >
+                          {section.title}
+                        </NavigationMenuLink>
+                      </Link> */}
+                    </>
                   )}
                 </NavigationMenuItem>
               ))}
@@ -180,7 +203,7 @@ const Desktop = () => {
         </div>
 
         {/* RIGHT SIDE */}
-        <div className='flex-1 text-right '>
+        <div className=' text-right '>
           <div className='flex gap-4 justify-end items-center'>
             {/* <Button
               className='w-8 h-7'

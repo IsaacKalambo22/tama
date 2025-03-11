@@ -17,32 +17,28 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: '100MB', // Increase body size limit for server actions
     },
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
   },
 
+  webpack: () => {
+    return null; // Disable Webpack
+  },
   // Image optimization settings
   images: {
     minimumCacheTTL: 90, // Set a higher cache timeout
 
     remotePatterns: [
       {
-        protocol: 'http',
-        hostname: '13.48.70.174',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname:
-          'nknr42fug3.execute-api.eu-north-1.amazonaws.com',
-        port: '',
-        pathname: '/**',
-      },
-      {
         protocol: 'https',
         hostname:
           'madzalo-s3.s3.eu-north-1.amazonaws.com',
-        port: '',
-        pathname: '/**',
       },
       {
         protocol: 'http',
@@ -54,8 +50,6 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname:
           'z-p3-scontent.fblz1-1.fna.fbcdn.net',
-        port: '',
-        pathname: '/**',
       },
       {
         protocol: 'https',
