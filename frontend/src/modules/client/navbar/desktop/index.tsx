@@ -7,7 +7,6 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 import { cn } from '@/lib/utils';
 
@@ -166,8 +165,8 @@ const Desktop = () => {
                         >
                           <NavigationMenuLink
                             className={cn(
-                              navigationMenuTriggerStyle(),
-                              'text-gray-600 hover:text-green-600',
+                              // navigationMenuTriggerStyle()
+                              'text-gray-600 hover:text-green-600 group inline-flex h-9 w-max items-center justify-center  px-3 py-2 text-sm font-medium transition-colors   focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50',
                               pathname ===
                                 section.href &&
                                 'text-green-600'
@@ -272,7 +271,7 @@ const ListItem = React.forwardRef<
           <a
             ref={ref}
             className={cn(
-              ' select-none space-y-1 rounded-lg p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-gray-700 focus:bg-accent focus:text-gray-700 text-gray-700 flex items-center gap-4',
+              ' select-none space-y-1 rounded-lg p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-gray-700 focus:bg-accent focus:text-gray-700 text-gray-700 flex items-center gap-4',
               className
             )}
             {...props}
