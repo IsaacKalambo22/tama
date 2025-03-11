@@ -12,9 +12,7 @@ import {
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { useSidebarStore } from '@/providers/sidebar-state'; // Import Zustand store
-import { Search } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import {
   AiOutlineMenuFold,
@@ -63,14 +61,6 @@ const Navbar = () => {
             <AiOutlineMenuUnfold className='h-5 w-5 dark:text-white' />
           </Button>
         )}
-        <div className='relative hidden sm:flex h-min w-[200px]'>
-          <Search className='absolute left-[4px] top-1/2 mr-2 h-5 w-5 -translate-y-1/2 transform cursor-pointer dark:text-white' />
-          <Input
-            className='w-full border-none bg-gray-100 p-2 pl-8 placeholder-gray-500 focus:border-transparent focus:outline-none dark:bg-gray-700 dark:text-white dark:placeholder-white'
-            type='search'
-            placeholder='Search...'
-          />
-        </div>
       </div>
 
       <div className='mr-5'>

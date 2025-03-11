@@ -27,9 +27,9 @@ const nextConfig: NextConfig = {
     },
   },
 
-  webpack: () => {
-    return null; // Disable Webpack
-  },
+  // webpack: () => {
+  //   return null; // Disable Webpack
+  // },
   // Image optimization settings
   images: {
     minimumCacheTTL: 90, // Set a higher cache timeout
