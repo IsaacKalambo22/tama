@@ -2,7 +2,7 @@ import Team, { TeamMember } from './team';
 
 const teamMembers: TeamMember[] = [
   {
-    name: 'Mr. Nickson Lita',
+    name: 'Nixon Lita',
     role: 'Chief Executive Officer',
     description:
       'Providing strategic direction and oversight, driving growth initiatives, and ensuring the overall success of the organization.',
@@ -12,7 +12,7 @@ const teamMembers: TeamMember[] = [
       'https://facebook.com/nicksonlita',
   },
   {
-    name: 'Mr. Sam Gift Kasambala',
+    name: 'Sam Gift Kasambala',
     role: 'Head of Operations',
     description:
       'Overseeing day-to-day operational activities, optimizing processes, and ensuring efficient service delivery across all departments.',
@@ -22,7 +22,7 @@ const teamMembers: TeamMember[] = [
       'https://facebook.com/samgiftkasambala',
   },
   {
-    name: 'Mrs. Jaqueline Moleni Nee Chakwana',
+    name: 'Jacqueline Chakwana Moleni',
     role: 'Head of Finance',
     description:
       'Managing financial planning, budgeting, and risk assessment while ensuring financial sustainability and compliance with regulations.',

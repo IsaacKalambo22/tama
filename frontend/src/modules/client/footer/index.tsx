@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { TwitterLogoIcon } from '@radix-ui/react-icons';
-import { Facebook } from 'lucide-react';
+import { Facebook, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { navItems } from '../constants/nav-items';
@@ -10,7 +10,7 @@ const Footer = () => {
   return (
     <Card className='w-full min-w-full bg-[#FFFFFF66] max-w-7xl p-8 sm:p-20 mb-10 shadow-none'>
       <div className='max-w-7xl mx-auto px-6 sm:px-2 flex gap-10 flex-col  h-full w-full '>
-        <div className='grid grid-cols-1 md:grid-cols-4 gap-8'>
+        <div className='flex gap-2 flex-wrap justify-between w-full'>
           {/* Column 1 - Logo and Text */}
           <div>
             <Link
@@ -39,7 +39,7 @@ const Footer = () => {
                   variant='outline'
                   size='icon'
                 >
-                  <TwitterLogoIcon />
+                  <X />
                 </Button>
               </Link>
 
@@ -126,7 +126,7 @@ const Footer = () => {
             </h3>
             <div className='flex flex-col gap-3'>
               <address className='text-gray-600'>
-                TAMA HOUSE, Independence Avenue,
+                TAMA HOUSE, Independence Drive,
                 <br />
                 P.O. Box 31360, Capital City,
                 <br />
@@ -144,6 +144,31 @@ const Footer = () => {
               <p className='text-gray-600'>
                 Phone: 01 773 099
               </p>
+            </div>
+          </div>
+          {/* Column 4 - Contact Us */}
+          <div>
+            <h3 className='font-semibold mb-4 text-gray-900'>
+              Region Offices
+            </h3>
+            <div className='flex flex-col gap-3'>
+              <address className='text-gray-600'>
+                Mzuzu P/Bag 95, Mzuzu. Phone: +265
+                997 752 394
+                <br />
+              </address>
+              <address className='text-gray-600'>
+                Limbe P.O. Box 51112, Limbe.
+                <br />
+              </address>
+              <address className='text-gray-600'>
+                Chinkhoma Phone: +265 990 226 850
+                <br />
+              </address>
+              <address className='text-gray-600'>
+                Mchezi Phone: +265 994 065 062
+                <br />
+              </address>
             </div>
           </div>
         </div>

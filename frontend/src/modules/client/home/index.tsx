@@ -30,7 +30,7 @@ const Home = async () => {
       <Card className='mx-auto bg-inherit w-full border-none h-auto shadow-none'>
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 '>
           <StatisticBlock
-            count={18_000}
+            count={17_000}
             label='Registered Growers'
             icon={<FaUsers />}
           />
@@ -40,12 +40,12 @@ const Home = async () => {
             icon={<FaUsersCog />}
           />
           <StatisticBlock
-            count={3}
+            count={4}
             label='Tobacco Grading Centers'
             icon={<FaWarehouse />}
           />
           <StatisticBlock
-            count={54}
+            count={55}
             label='Hessian & Tobacco Satellite Depots'
             icon={<FaStore />}
           />

@@ -92,7 +92,7 @@ export function CustomFaq() {
                   ✔
                 </span>
                 <p>
-                  International (ITGA) and Local
+                  International and Local
                   Representation
                 </p>
               </div>
@@ -133,6 +133,15 @@ export function CustomFaq() {
                   ✔
                 </span>
                 <p>
+                  False Labour Prevention &
+                  Protection
+                </p>
+              </div>
+              <div className='flex items-start gap-3'>
+                <span className='text-green-500 text-[1rem]'>
+                  ✔
+                </span>
+                <p>
                   Marketing of member products
                   within and outside Malawi
                 </p>
@@ -165,8 +174,8 @@ export function CustomFaq() {
           </AccordionTrigger>
           <AccordionContent className='text-gray-700 mt-4 text-sm leading-relaxed'>
             Yes, all growers are encouraged to
-            register with TCC and endorse TAMA as
-            their Association.
+            register with Tobacco Commission and
+            endorse TAMA as their Association.
             <br />
             Members of the association benefit
             from the association’s services on

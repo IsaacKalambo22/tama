@@ -17,62 +17,6 @@ export const councilListDataColumns: ColumnDef<CouncilListProps>[] =
         );
       },
     },
-    {
-      accessorKey: 'councilArea',
-      header: ({ column }) => {
-        return (
-          <Button
-            className='h-8 max-sm:hidden'
-            variant='ghost'
-            onClick={() =>
-              column.toggleSorting(
-                column.getIsSorted() === 'asc'
-              )
-            }
-          >
-            Council Area
-            <ArrowUpDown className='ml-2 h-4 w-4 ' />
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        return (
-          <div className='flex ml-4 gap-2 items-center'>
-            <div className='capitalize'>
-              {row.getValue('councilArea')}
-            </div>
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: 'demarcation',
-      header: ({ column }) => {
-        return (
-          <Button
-            className='h-8'
-            variant='ghost'
-            onClick={() =>
-              column.toggleSorting(
-                column.getIsSorted() === 'asc'
-              )
-            }
-          >
-            Demarcation
-            <ArrowUpDown className='ml-2 h-4 w-4' />
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        return (
-          <div className='flex ml-4 gap-2 items-center'>
-            <div className='capitalize'>
-              {row.getValue('demarcation')}
-            </div>
-          </div>
-        );
-      },
-    },
 
     {
       accessorKey: 'council',
@@ -87,7 +31,7 @@ export const councilListDataColumns: ColumnDef<CouncilListProps>[] =
               )
             }
           >
-            Council
+            Councillor
             <ArrowUpDown className='ml-2 h-4 w-4' />
           </Button>
         );
@@ -158,6 +102,34 @@ export const councilListDataColumns: ColumnDef<CouncilListProps>[] =
               {row.getValue(
                 'secondAlternateCouncillor'
               )}
+            </div>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: 'demarcation',
+      header: ({ column }) => {
+        return (
+          <Button
+            className='h-8'
+            variant='ghost'
+            onClick={() =>
+              column.toggleSorting(
+                column.getIsSorted() === 'asc'
+              )
+            }
+          >
+            Demarcation
+            <ArrowUpDown className='ml-2 h-4 w-4' />
+          </Button>
+        );
+      },
+      cell: ({ row }) => {
+        return (
+          <div className='flex ml-4 gap-2 items-center'>
+            <div className='capitalize'>
+              {row.getValue('demarcation')}
             </div>
           </div>
         );
