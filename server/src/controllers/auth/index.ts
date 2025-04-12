@@ -1,7 +1,3 @@
-import {
-  PrismaClient,
-  Role,
-} from '@prisma/client';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import { Request, Response } from 'express';
@@ -14,8 +10,9 @@ import {
 } from '../../nodemailer/emails';
 import { APIResponse } from '../../types';
 import { generateTokens } from '../../utils/generate-tokens';
+import { Role } from '../../../prisma/generated/prisma';
+import prisma from '../../config';
 
-const prisma = new PrismaClient();
 
 export const registerUser = async (
   req: Request,

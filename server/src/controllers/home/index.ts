@@ -1,8 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+
 import { Request, Response } from 'express';
 import { APIResponse } from '../../types';
+import prisma from '../../config';
 
-const prisma = new PrismaClient();
 
 export const createCarousel = async (
   req: Request,

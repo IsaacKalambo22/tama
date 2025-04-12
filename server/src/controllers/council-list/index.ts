@@ -1,8 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+
 import { Request, Response } from 'express';
 import { APIResponse } from '../../types';
+import prisma from '../../config';
 
-const prisma = new PrismaClient();
 
 export const createCouncilList = async (
   req: Request,
@@ -12,6 +12,7 @@ export const createCouncilList = async (
     demarcation,
     councilArea,
     council,
+    imageUrl,
     firstAlternateCouncillor,
     secondAlternateCouncillor,
   } = req.body;
@@ -20,6 +21,7 @@ export const createCouncilList = async (
     !demarcation ||
     !councilArea ||
     !council ||
+    !imageUrl ||
     !firstAlternateCouncillor ||
     !secondAlternateCouncillor
   ) {
@@ -40,6 +42,7 @@ export const createCouncilList = async (
           demarcation,
           councilArea,
           council,
+          imageUrl,
           firstAlternateCouncillor,
           secondAlternateCouncillor,
         },
@@ -106,6 +109,7 @@ export const updateCouncilList = async (
     demarcation,
     councilArea,
     council,
+    imageUrl,
     firstAlternateCouncillor,
     secondAlternateCouncillor,
   } = req.body;
@@ -149,6 +153,9 @@ export const updateCouncilList = async (
           council:
             council ??
             existingCouncilList.council,
+          imageUrl:
+            imageUrl ??
+            existingCouncilList.imageUrl,
           firstAlternateCouncillor:
             firstAlternateCouncillor ??
             existingCouncilList.firstAlternateCouncillor,

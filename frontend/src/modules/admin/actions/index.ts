@@ -1,36 +1,36 @@
 'use server';
-import { getPlaiceholder } from 'plaiceholder';
+
 
 import { auth } from '@/auth';
 import { BASE_URL } from '@/lib/utils';
 import { revalidatePath } from 'next/cache';
 
-export async function getImage(src: string) {
-  const controller = new AbortController();
-  const timeout = setTimeout(
-    () => controller.abort(),
-    90000
-  ); // 30 seconds timeout
+// export async function getImage(src: string) {
+//   const controller = new AbortController();
+//   const timeout = setTimeout(
+//     () => controller.abort(),
+//     90000
+//   ); // 30 seconds timeout
 
-  const response = await fetch(src, {
-    signal: controller.signal,
-  });
-  const buffer = Buffer.from(
-    await response.arrayBuffer()
-  );
+//   const response = await fetch(src, {
+//     signal: controller.signal,
+//   });
+//   const buffer = Buffer.from(
+//     await response.arrayBuffer()
+//   );
 
-  clearTimeout(timeout);
+//   clearTimeout(timeout);
 
-  const {
-    metadata: { height, width },
-    ...plaiceholder
-  } = await getPlaiceholder(buffer, { size: 10 });
+//   const {
+//     metadata: { height, width },
+//     ...plaiceholder
+//   } = await plaiceholder(buffer, { size: 10 });
 
-  return {
-    ...plaiceholder,
-    img: { src, height, width },
-  };
-}
+//   return {
+//     ...plaiceholder,
+//     img: { src, height, width },
+//   };
+// }
 
 export const serverAction = async (
   endpoint: string,
@@ -626,6 +626,93 @@ export const deleteBlog = async (
 ) => {
   return await serverAction(
     `blogs/${id}`,
+    'DELETE',
+    null,
+    [fullPath, pathWithoutAdmin, layout]
+  );
+};
+
+// SERVICES SERVER ACTIONS FOR TEAMS
+export const createTeam = async (
+  payload: object,
+  fullPath: string,
+  pathWithoutAdmin: string,
+  layout: string
+) => {
+  return await serverAction(
+    '/home/teams',
+    'POST',
+    payload,
+    [fullPath, layout, pathWithoutAdmin] // Revalidate paths
+  );
+};
+
+export const updateTeam = async (
+  payload: object,
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  return await serverAction(
+    `/home/teams/${id}`,
+    'PATCH',
+    payload,
+    [fullPath, pathWithoutAdmin]
+  );
+};
+
+export const deleteTeam = async (
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string,
+  layout: string
+) => {
+  return await serverAction(
+    `/home/teams/${id}`,
+    'DELETE',
+    null,
+    [fullPath, pathWithoutAdmin, layout]
+  );
+};
+
+
+// SERVICES SERVER ACTIONS FOR STAT
+export const createStat = async (
+  payload: object,
+  fullPath: string,
+  pathWithoutAdmin: string,
+  layout: string
+) => {
+  return await serverAction(
+    '/home/stats',
+    'POST',
+    payload,
+    [fullPath, layout, pathWithoutAdmin] // Revalidate paths
+  );
+};
+
+export const updateStat = async (
+  payload: object,
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  return await serverAction(
+    `/home/stats/${id}`,
+    'PATCH',
+    payload,
+    [fullPath, pathWithoutAdmin]
+  );
+};
+
+export const deleteStat = async (
+  id: string,
+  fullPath: string,
+  pathWithoutAdmin: string,
+  layout: string
+) => {
+  return await serverAction(
+    `/home/stats/${id}`,
     'DELETE',
     null,
     [fullPath, pathWithoutAdmin, layout]

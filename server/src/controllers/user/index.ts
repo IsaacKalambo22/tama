@@ -1,10 +1,8 @@
-import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import { sendContactEmail } from '../../nodemailer/emails';
 import { APIResponse } from '../../types';
-
-const prisma = new PrismaClient();
+import prisma from '../../config';
 
 export const getAllUsers = async (
   req: Request,

@@ -1,5 +1,6 @@
-import { Role } from '@prisma/client';
+
 import jwt from 'jsonwebtoken';
+import { Role } from '../../../prisma/generated/prisma/client';
 
 interface TokenResponse {
   access_token: string;

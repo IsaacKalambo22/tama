@@ -1,8 +1,6 @@
-import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import { APIResponse } from '../../types';
-
-const prisma = new PrismaClient();
+import prisma from '../../config';
 
 export const createShop = async (
   req: Request,

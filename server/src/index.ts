@@ -19,6 +19,8 @@ import services from './routes/service';
 import shops from './routes/shop';
 import users from './routes/user';
 import vacancies from './routes/vacancy';
+import team from './routes/team';
+import stat from './routes/stat';
 
 /* CONFIGURATIONS */
 dotenv.config();
@@ -51,6 +53,8 @@ app.use('/tama/shops', shops);
 app.use('/tama/forms', forms);
 app.use('/tama/blogs', blogs);
 app.use('/tama/search', search);
+app.use('/tama/team', team);
+app.use('/tama/stat', stat);
 app.use('/tama/news', news);
 app.use('/tama/users', users);
 app.use('/tama/events', events);

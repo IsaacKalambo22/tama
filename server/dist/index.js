@@ -23,6 +23,8 @@ const service_1 = __importDefault(require("./routes/service"));
 const shop_1 = __importDefault(require("./routes/shop"));
 const user_1 = __importDefault(require("./routes/user"));
 const vacancy_1 = __importDefault(require("./routes/vacancy"));
+const team_1 = __importDefault(require("./routes/team"));
+const stat_1 = __importDefault(require("./routes/stat"));
 /* CONFIGURATIONS */
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -45,6 +47,8 @@ app.use('/tama/shops', shop_1.default);
 app.use('/tama/forms', form_1.default);
 app.use('/tama/blogs', blog_1.default);
 app.use('/tama/search', search_1.default);
+app.use('/tama/team', team_1.default);
+app.use('/tama/stat', stat_1.default);
 app.use('/tama/news', news_1.default);
 app.use('/tama/users', user_1.default);
 app.use('/tama/events', events_1.default);

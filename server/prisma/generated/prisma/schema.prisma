@@ -1,0 +1,185 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  USER
+}
+
+model User {
+  id                         String    @id @default(uuid())
+  email                      String    @unique
+  password                   String?
+  phoneNumber                String
+  name                       String
+  avatar                     String?
+  district                   String?
+  about                      String?
+  role                       Role      @default(USER)
+  lastLogin                  DateTime  @default(now())
+  isVerified                 Boolean   @default(false)
+  resetPasswordToken         String?
+  resetPasswordExpiresAt     DateTime?
+  verificationToken          String?
+  verificationTokenExpiresAt DateTime?
+  createdAt                  DateTime  @default(now())
+  updatedAt                  DateTime  @updatedAt
+}
+
+model Shop {
+  id        String   @id @default(uuid())
+  name      String
+  imageUrl  String
+  address   String
+  openHours String
+  size      Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ReportAndPublication {
+  id        String   @id @default(uuid())
+  fileUrl   String
+  filename  String
+  type      String
+  extension String
+  size      Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Form {
+  id        String   @id @default(uuid())
+  fileUrl   String
+  filename  String
+  type      String
+  extension String
+  size      Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Blog {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  imageUrl  String
+  size      Int
+  author    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model News {
+  id          String   @id @default(uuid())
+  title       String
+  content     String
+  imageUrl    String
+  author      String
+  readingTime Int
+  size        Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model CouncilList {
+  id                        String   @id @default(uuid())
+  demarcation               String
+  councilArea               String
+  imageUrl                  String
+  council                   String
+  firstAlternateCouncillor  String
+  secondAlternateCouncillor String
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+}
+
+model Event {
+  id          String    @id @default(uuid())
+  title       String // Event title
+  description String // Event description
+  location    String? // Event title
+  date        DateTime // Start date of the event
+  endDate     DateTime? // Optional end date of the event
+  time        String? // Optional time of the event
+  createdAt   DateTime  @default(now()) // Automatically set creation timestamp
+  updatedAt   DateTime  @updatedAt // Automatically updated on modification
+}
+
+model Vacancy {
+  id                  String   @id @default(uuid())
+  title               String
+  description         String
+  company             String
+  location            String
+  status              String
+  applicationDeadline DateTime
+  salary              String?
+  duties              String?
+  qualifications      String?
+  howToApply          String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model Service {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  imageUrl    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Carousel {
+  id          String   @id @default(uuid())
+  coverUrl    String
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ImageText {
+  id          String   @id @default(uuid())
+  heading     String
+  description String
+  imageUrl    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Team {
+  id              String  @id @default(uuid())
+  name            String
+  position        String
+  imageUrl        String
+  facebookUrl     String?
+  linkedInProfile String?
+  twitterUrl      String?
+  description     String
+}
+
+model Stat {
+  id                  String   @id @default(uuid())
+  registeredCustomers Float
+  shops               Float
+  councilors          Float
+  cooperatives        Float
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}

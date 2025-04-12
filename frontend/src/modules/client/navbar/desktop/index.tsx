@@ -161,7 +161,7 @@ const Desktop = () => {
                         <Link
                           href={section.href}
                           legacyBehavior
-                          passHref
+                          passHref                     
                         >
                           <NavigationMenuLink
                             className={cn(

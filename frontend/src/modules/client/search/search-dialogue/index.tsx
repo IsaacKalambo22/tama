@@ -104,7 +104,7 @@ const SearchDialog = ({
         e.target as Node
       )
     ) {
-      setIsOpen(false);
+      setIsOpen();
     }
   };
 

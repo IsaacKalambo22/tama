@@ -125,6 +125,26 @@ export interface ApiResponse<T> {
   data: T;
 }
 
+export interface TeamProps {
+  id: string;
+  name: string;
+  position: string;
+  imageUrl: string;
+  facebookUrl: string;
+  linkedInProfile: string;
+  twitterUrl: string;
+  description: string;
+}
+export interface StatProps {
+  id: string;
+  registeredCustomers: number;
+  shops: number;
+  councilors: number;
+  cooperatives: number;
+  createdAt?: string; // Automatically set during creation
+  updatedAt?: string; // Automatically updated on modification
+}
+
 // Utility function for API requests
 async function handleFetch<T>(
   endpoint: string,
@@ -298,3 +318,20 @@ export const fetchHomeImageText =
       `${BASE_URL}/home/image-text`
     );
   };
+
+  export const fetchTeam = async (): Promise<
+  TeamProps[]
+> => {
+  return handleFetch<TeamProps[]>(
+    `${BASE_URL}/home/teams`
+  );
+};
+
+
+export const fetchStat = async (): Promise<
+  StatProps[]
+> => {
+  return handleFetch<StatProps[]>(
+    `${BASE_URL}/home/stats`
+  );
+};

@@ -61,6 +61,14 @@ export const ADMIN_LINKS: SidebarProps[] = [
         label: 'Home Image Text',
         href: '/admin/home-display/home-image-text',
       },
+      {
+        label: 'Our Team',
+        href: '/admin/home-display/team',
+      },
+      {
+        label: 'Status',
+        href: '/admin/home-display/status',
+      },
     ],
   },
   {

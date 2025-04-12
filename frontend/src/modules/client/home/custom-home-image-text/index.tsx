@@ -21,12 +21,12 @@ const CustomHomeImageText = async () => {
 
   return (
     <div className='flex w-full flex-col gap-10 mb-16'>
-      {homeImageText.length === 0 ? (
+      {homeImageText?.length === 0 ? (
         <p className='text-gray-500 text-center text-lg mt-5'>
           No data currently available.
         </p>
       ) : (
-        homeImageText.map((item, index) => (
+        homeImageText?.map((item, index) => (
           <div
             key={item.id || index}
             className='flex flex-col gap-20'
