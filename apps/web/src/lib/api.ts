@@ -242,10 +242,10 @@ export const fetchCouncilList = async (): Promise<CouncilListProps[]> => {
   return handleFetch<CouncilListProps[]>(`${BASE_URL}/council-lists`)
 }
 export const fetchHomeCarousel = async (): Promise<HomeCarousel[]> => {
-  return handleFetch<HomeCarousel[]>(`${BASE_URL}/carousel`)
+  return handleFetch<HomeCarousel[]>(`${BASE_URL}/home/carousel`)
 }
 export const fetchHomeImageText = async (): Promise<HomeImageText[]> => {
-  return handleFetch<HomeImageText[]>(`${BASE_URL}/image-text`)
+  return handleFetch<HomeImageText[]>(`${BASE_URL}/home/image-text`)
 }
 
 export const fetchTeam = async (): Promise<TeamProps[]> => {
