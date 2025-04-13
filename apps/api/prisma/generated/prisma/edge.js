@@ -300,7 +300,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/programmer/Desktop/programmer/programmerscode/turborepo/tama-farmers-trust/apps/api/prisma/generated/prisma",
+      "value": "/Users/isaackalambo/Desktop/Work/NextJs/infi-tech/tama-farmers-trust-v1/apps/api/prisma/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -309,12 +309,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "debian-openssl-3.0.x",
+        "value": "darwin",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/programmer/Desktop/programmer/programmerscode/turborepo/tama-farmers-trust/apps/api/prisma/schema.prisma",
+    "sourceFilePath": "/Users/isaackalambo/Desktop/Work/NextJs/infi-tech/tama-farmers-trust-v1/apps/api/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

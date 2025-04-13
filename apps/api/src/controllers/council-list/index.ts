@@ -134,7 +134,8 @@ export const updateCouncilList = async (
         demarcation: demarcation ?? existingCouncilList.demarcation,
         councilArea: councilArea ?? existingCouncilList.councilArea,
         council: council ?? existingCouncilList.council,
-        imageUrl: imageUrl ?? existingCouncilList.imageUrl,
+        imageUrl:
+          imageUrl?.trim() === "" ? existingCouncilList.imageUrl : imageUrl,
         firstAlternateCouncillor:
           firstAlternateCouncillor ??
           existingCouncilList.firstAlternateCouncillor,

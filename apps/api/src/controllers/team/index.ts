@@ -113,7 +113,7 @@ export const updateTeam = async (
       data: {
         name: name ?? existingTeam.name,
         position: position ?? existingTeam.position,
-        imageUrl: imageUrl ?? existingTeam.imageUrl,
+        imageUrl: imageUrl?.trim() === "" ? existingTeam.imageUrl : imageUrl,
         facebookUrl: facebookUrl ?? existingTeam.facebookUrl,
         linkedInProfile: linkedInProfile ?? existingTeam.linkedInProfile,
         twitterUrl: twitterUrl ?? existingTeam.twitterUrl,

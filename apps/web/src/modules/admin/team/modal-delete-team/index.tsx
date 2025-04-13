@@ -39,7 +39,7 @@ const ModalDeleteTeam = ({ isOpen, onClose, team }: Props) => {
       onClose()
       toast({
         title: "Success",
-        description: `${team.id} has been deleted successfully`,
+        description: `${team.name} has been deleted successfully`,
       })
       // Handle the result, such as showing success or error messages
     } catch (error) {
@@ -53,10 +53,8 @@ const ModalDeleteTeam = ({ isOpen, onClose, team }: Props) => {
     }
   }
   return (
-    <Modal isOpen={isOpen} onClose={onClose} name={`Delete ${team.id}`}>
-      <DialogDescription>
-        Are you sure you want to delete {team.id}?
-      </DialogDescription>
+    <Modal isOpen={isOpen} onClose={onClose} name={`Delete ${team.name}`}>
+      <DialogDescription>Are you sure you want to delete?</DialogDescription>
       <DialogFooter className="flex flex-col gap-3 md:flex-row">
         <DialogClose asChild>
           <Button type="button" className="h-9" variant="secondary">

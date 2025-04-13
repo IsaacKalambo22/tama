@@ -20,7 +20,15 @@ const Home = async () => {
       <Card className="mx-auto bg-inherit w-full border-none h-auto shadow-none">
         <CommunityStats />
       </Card>
-      <OurTeam />
+
+      <div className="w-full flex flex-col gap-2 items-center justify-center">
+        <span className="home-text">Meet Our Management Team</span>
+        <p className="text-gray-600 text-lg text-center">
+          Our passionate and skilled team members work tirelessly to achieve our
+          mission and vision.
+        </p>
+        <OurTeam />
+      </div>
 
       <div className="flex flex-col gap-1">
         <span className="home-text">Frequently Asked Questions</span>

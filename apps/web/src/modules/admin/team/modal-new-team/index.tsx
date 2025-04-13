@@ -42,6 +42,9 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
     position: zod.string().min(2, {
       message: "Author must be at least 2 characters.",
     }),
+    facebookUrl: zod.string().url("Must be a valid URL").optional(),
+    linkedInProfile: zod.string().url("Must be a valid URL").optional(),
+    twitterUrl: zod.string().url("Must be a valid URL").optional(),
     files: zod.custom<File[]>(),
   })
 
@@ -51,6 +54,9 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
       name: "",
       description: "",
       position: "",
+      facebookUrl: "",
+      linkedInProfile: "",
+      twitterUrl: "",
       files: [],
     },
   })
@@ -66,6 +72,9 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
         name: values.name,
         description: values.description,
         position: values.position,
+        facebookUrl: values.facebookUrl,
+        linkedInProfile: values.linkedInProfile,
+        twitterUrl: values.twitterUrl,
         size: file.size,
         imageUrl: fileUrl, // Add the uploaded file URL
       }
@@ -97,36 +106,60 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
         </DialogHeader>
         <Form {...form}>
           <form
-            className="flex flex-col gap-5 w-full max-w-[400px]"
+            className="flex flex-col gap-5 w-full"
             onSubmit={form.handleSubmit(onSubmit)}
           >
-            <CustomFormField
-              fieldType={FormFieldType.INPUT}
-              name="name"
-              label="Name"
-              control={form.control}
-              placeholder="Enter Name"
-            />
-            <CustomFormField
-              fieldType={FormFieldType.TEXTAREA}
-              name="description"
-              label="Description"
-              control={form.control}
-              placeholder="Enter content"
-            />
+            <div className="grid grid-cols-2 gap-4">
+              <CustomFormField
+                fieldType={FormFieldType.INPUT}
+                name="name"
+                label="Name"
+                control={form.control}
+                placeholder="Enter team member name"
+              />
+              <CustomFormField
+                fieldType={FormFieldType.INPUT}
+                name="facebookUrl"
+                label="Facebook URL"
+                control={form.control}
+                placeholder="Enter Facebook URL"
+              />
+              <CustomFormField
+                fieldType={FormFieldType.INPUT}
+                name="linkedInProfile"
+                label="LinkedIn Profile"
+                control={form.control}
+                placeholder="Enter LinkedIn Profile URL"
+              />
+              <CustomFormField
+                fieldType={FormFieldType.INPUT}
+                name="twitterUrl"
+                label="Twitter URL"
+                control={form.control}
+                placeholder="Enter Twitter URL"
+              />
+            </div>
+
             <CustomFormField
               fieldType={FormFieldType.INPUT}
               name="position"
               label="Position"
               control={form.control}
-              placeholder="Enter Position"
+              placeholder="Enter position"
             />
 
+            <CustomFormField
+              fieldType={FormFieldType.TEXTAREA}
+              name="description"
+              label="Description"
+              control={form.control}
+              placeholder="Enter team member description"
+            />
             <CustomFormField
               fieldType={FormFieldType.SKELETON}
               control={form.control}
               name="files"
-              label="Image"
+              label="Team Member Image"
               renderSkeleton={(field) => (
                 <FormControl>
                   <FileUploader files={field.value} onChange={field.onChange} />
@@ -137,7 +170,7 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
             <SubmitButton
               disabled={isLoading || !form.formState.isValid}
               isLoading={isLoading}
-              className="w-full  h-9"
+              className="w-full h-9"
               loadingText="Saving..."
             >
               Save

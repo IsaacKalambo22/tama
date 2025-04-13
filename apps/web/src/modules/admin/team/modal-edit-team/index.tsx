@@ -30,6 +30,9 @@ const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
     name: zod.string().optional(),
     description: zod.string().optional(),
     position: zod.string().optional(),
+    facebookUrl: zod.string().url("Must be a valid URL").optional(),
+    linkedInProfile: zod.string().url("Must be a valid URL").optional(),
+    twitterUrl: zod.string().url("Must be a valid URL").optional(),
     files: zod.custom<File[]>(),
   })
 
@@ -38,9 +41,12 @@ const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
   const form = useForm<zod.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      description: "",
-      position: "",
+      name: team.name ?? "",
+      description: team.description ?? "",
+      position: team.position ?? "",
+      facebookUrl: team.facebookUrl ?? "",
+      linkedInProfile: team.linkedInProfile ?? "",
+      twitterUrl: team.twitterUrl ?? "",
       files: [],
     },
   })
@@ -60,6 +66,9 @@ const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
         name: values.name ?? "",
         description: values.description ?? "",
         position: values.position ?? "",
+        facebookUrl: values.facebookUrl,
+        linkedInProfile: values.linkedInProfile,
+        twitterUrl: values.twitterUrl,
         imageUrl,
         size: size,
       }
@@ -74,7 +83,7 @@ const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
       onClose()
       toast({
         title: "Success",
-        description: `${team.id} has been updated successfully`,
+        description: `${team.name} has been updated successfully`,
       })
       // Handle the result, such as showing success or error messages
     } catch (error) {
@@ -88,39 +97,63 @@ const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
     }
   }
   return (
-    <Modal isOpen={isOpen} onClose={onClose} name={`Edit ${team.id}`}>
+    <Modal isOpen={isOpen} onClose={onClose} name={`Edit ${team.name}`}>
       <Form {...form}>
         <form
           className="flex flex-col gap-5 w-full"
           onSubmit={form.handleSubmit(onSubmit)}
         >
-          <CustomFormField
-            fieldType={FormFieldType.INPUT}
-            name="name"
-            label="Name"
-            control={form.control}
-            placeholder="Enter Name"
-          />
-          <CustomFormField
-            fieldType={FormFieldType.TEXTAREA}
-            name="description"
-            label="Description"
-            control={form.control}
-            placeholder="Enter description"
-          />
+          <div className="grid grid-cols-2 gap-4">
+            <CustomFormField
+              fieldType={FormFieldType.INPUT}
+              name="name"
+              label="Name"
+              control={form.control}
+              placeholder="Enter team member name"
+            />
+            <CustomFormField
+              fieldType={FormFieldType.INPUT}
+              name="facebookUrl"
+              label="Facebook URL"
+              control={form.control}
+              placeholder="Enter Facebook URL"
+            />
+            <CustomFormField
+              fieldType={FormFieldType.INPUT}
+              name="linkedInProfile"
+              label="LinkedIn Profile"
+              control={form.control}
+              placeholder="Enter LinkedIn Profile URL"
+            />
+            <CustomFormField
+              fieldType={FormFieldType.INPUT}
+              name="twitterUrl"
+              label="Twitter URL"
+              control={form.control}
+              placeholder="Enter Twitter URL"
+            />
+          </div>
+
           <CustomFormField
             fieldType={FormFieldType.INPUT}
             name="position"
             label="Position"
             control={form.control}
-            placeholder="Enter Position"
+            placeholder="Enter position"
           />
 
+          <CustomFormField
+            fieldType={FormFieldType.TEXTAREA}
+            name="description"
+            label="Description"
+            control={form.control}
+            placeholder="Enter team member description"
+          />
           <CustomFormField
             fieldType={FormFieldType.SKELETON}
             control={form.control}
             name="files"
-            label="Image"
+            label="Team Member Image"
             renderSkeleton={(field) => (
               <FormControl>
                 <FileUploader files={field.value} onChange={field.onChange} />
@@ -131,10 +164,10 @@ const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
           <SubmitButton
             disabled={isLoading || !form.formState.isValid}
             isLoading={isLoading}
-            className="w-full  h-9"
-            loadingText="Updating..."
+            className="w-full h-9"
+            loadingText="Saving..."
           >
-            Update
+            Save
           </SubmitButton>
         </form>
       </Form>
