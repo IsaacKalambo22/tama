@@ -1,0 +1,47 @@
+#!/bin/sh
+
+set -e # Exit immediately if a command exits with a non-zero status
+
+echo "🔍 Running pre-commit hook to check the code looks good & format it... 🔍"
+
+git add .
+
+# Ensure Git is installed and inside a repository
+if ! command -v git >/dev/null 2>&1; then
+    echo "❌ Git not found! Ensure Git is installed."
+    exit 1
+fi
+
+if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo "❌ Not inside a Git repository! Please run this inside a repo."
+    exit 1
+fi
+
+# Load NVM if available (useful for managing Node.js versions)
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# Ensure `pnpm` is available
+echo "Checking if pnpm is available..."
+if ! command -v pnpm >/dev/null 2>&1; then
+    echo "❌ pnpm not found! Please ensure pnpm is installed and available in PATH."
+    exit 1
+fi
+
+# Run format
+echo "Running format..."
+if pnpm format; then
+    # Check if any files were modified after formatting
+    if git diff --quiet; then
+        echo "✅ No formatting changes detected."
+    else
+        echo "📌 Formatting made changes, adding to commit..."
+        git add .
+    fi
+else
+    echo "❌ Formatting failed! Run 'pnpm lint:fix' to fix the easy issues."
+    echo "Once you're done, don't forget to add the changes before committing! 🤩"
+    exit 1
+fi
+
+echo "👍 All checks passed! Committing changes..."

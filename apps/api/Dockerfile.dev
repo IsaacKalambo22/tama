@@ -1,0 +1,29 @@
+# Dockerfile.dev
+
+# Use a lightweight base image
+FROM node:23-alpine3.19
+
+RUN apk add --no-cache libc6-compat git
+
+
+
+WORKDIR /app
+
+COPY package.json package-lock.* ./
+RUN npm install --frozen-lockfile --prefer-frozen-lockfile
+
+
+ENV NODE_ENV development
+
+COPY . .
+
+
+# Expose the port for development
+# Exposed port (for orchestrators and dynamic reverse proxies)
+EXPOSE 8000
+ENV PORT 8000
+ENV HOSTNAME "0.0.0.0"
+
+
+# Start the application in development mode
+CMD ["npm", "run", "dev"]

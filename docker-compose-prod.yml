@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+  iih-web:
+    container_name: iih-web
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+      args:
+        NEXT_PUBLIC_API_ENDPOINT: http://iih-api:8000/identity-impact-hub
+
+    image: iih-web
+    restart: unless-stopped
+    ports:
+      - 3001:3000
+    networks:
+      - iih_network
+    env_file:
+      - ./apps/web/.env.prod
+
+  iih-api:
+    container_name: iih-api
+    build:
+      context: .
+      dockerfile: ./apps/api/Dockerfile
+    image: iih-api
+    restart: unless-stopped
+    ports:
+      - 8001:8000
+    networks:
+      - iih_network
+    env_file:
+      - ./apps/api/.env.prod
+
+  iih-db:
+    image: postgres:17-alpine3.21
+    container_name: iih-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: identity
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - '5443:5432'
+    networks:
+      - iih_network
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'pg_isready -U postgres -d postgres',
+        ]
+      interval: 5s
+      timeout: 2s
+      retries: 20
+
+# Define a network, which allows containers to communicate
+# with each other, by using their container name as a hostname
+networks:
+  iih_network:
+    external: true
