@@ -1,5 +1,6 @@
 "use client"
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { CouncilListProps } from "@/lib/api"
 import { ColumnDef } from "@tanstack/react-table"
@@ -26,17 +27,21 @@ export const councilListDataColumns: ColumnDef<CouncilListProps>[] = [
         </Button>
       )
     },
+
     cell: ({ row }) => {
       const item = row.original
+      const initials = item.council
+        .split(" ")
+        .map((word: string) => word[0])
+        .join("")
+        .toUpperCase()
+
       return (
         <div className="w-full h-20 flex items-center gap-3">
-          <div className="w-20 h-20 overflow-hidden rounded-full">
-            <img
-              src={item.imageUrl}
-              alt={item.council}
-              className="w-full h-full object-cover"
-            />
-          </div>
+          <Avatar className="w-20 h-20">
+            <AvatarImage src={item.imageUrl} alt={item.council} />
+            <AvatarFallback>{initials}</AvatarFallback>
+          </Avatar>
           <div>
             <div className="font-medium">{item.council}</div>
             <span className="mt-0.5 text-xs text-muted-foreground">
