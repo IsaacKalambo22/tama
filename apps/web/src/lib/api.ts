@@ -9,6 +9,7 @@ export interface CouncilListProps {
   firstAlternateCouncillor: string;
   secondAlternateCouncillor: string;
   createdAt: string;
+  imageUrl: string;
   updatedAt: string;
 }
 

@@ -33,7 +33,7 @@ export function CustomCarousel({
       onMouseLeave={plugin.current.reset}
     >
       <CarouselContent>
-        {homeCarousel.map((slide, index) => (
+        {homeCarousel?.map((slide, index) => (
           <CarouselItem key={index}>
             <div className='p-1 relative'>
               <Card className='w-full h-[25rem] sm:h-[35rem] shadow-none rounded-2xl relative overflow-hidden'>

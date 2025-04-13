@@ -188,7 +188,7 @@ export function CustomDataTable<T>({
                     {row
                       .getVisibleCells()
                       .map((cell) => (
-                        <TableCell key={cell.id}>
+                        <TableCell className="h-20" key={cell.id}>
                           {flexRender(
                             cell.column.columnDef
                               .cell,
