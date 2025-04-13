@@ -1,9 +1,0 @@
-packages:
-  - apps/*
-onlyBuiltDependencies:
-  - esbuild
-  - prettier
-  - prisma
-  - sharp
-  - turbo
-  - turbo-linux-64

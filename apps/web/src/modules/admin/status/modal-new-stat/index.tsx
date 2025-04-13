@@ -75,14 +75,14 @@ const ModalNewStat = ({ isOpen, onClose }: Props) => {
     <Form {...form}>
       <form className='flex flex-col gap-5 w-full' onSubmit={form.handleSubmit(onSubmit)}>
         <CustomFormField
-          fieldType={FormFieldType.INPUT}
+          fieldType={FormFieldType.NUMBER}
           name='registeredCustomers'
           label='Registered Customers'
           control={form.control}
           type='number'
         />
         <CustomFormField
-          fieldType={FormFieldType.INPUT}
+          fieldType={FormFieldType.NUMBER}
           name='shops'
           label='Shops'
           control={form.control}
@@ -90,7 +90,7 @@ const ModalNewStat = ({ isOpen, onClose }: Props) => {
           placeholder='Enter number of shops'
         />
         <CustomFormField
-          fieldType={FormFieldType.INPUT}
+          fieldType={FormFieldType.NUMBER}
           name='councilors'
           label='Councilors'
           control={form.control}
@@ -98,7 +98,7 @@ const ModalNewStat = ({ isOpen, onClose }: Props) => {
           placeholder='Enter number of councilors'
         />
         <CustomFormField
-          fieldType={FormFieldType.INPUT}
+          fieldType={FormFieldType.NUMBER}
           name='cooperatives'
           label='Cooperatives'
           control={form.control}

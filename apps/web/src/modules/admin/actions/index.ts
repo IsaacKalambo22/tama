@@ -78,7 +78,7 @@ export const serverAction = async (
       `${BASE_URL}/${endpoint}`,
       options
     );
-
+console.log(`${BASE_URL}/${endpoint}`)
     const result = await response.json();
 
     if (!response.ok) {
@@ -640,7 +640,7 @@ export const createTeam = async (
   layout: string
 ) => {
   return await serverAction(
-    '/home/team',
+    'team',
     'POST',
     payload,
     [fullPath, layout, pathWithoutAdmin] // Revalidate paths
@@ -654,7 +654,7 @@ export const updateTeam = async (
   pathWithoutAdmin: string
 ) => {
   return await serverAction(
-    `/home/team/${id}`,
+    `team/${id}`,
     'PATCH',
     payload,
     [fullPath, pathWithoutAdmin]
@@ -668,7 +668,7 @@ export const deleteTeam = async (
   layout: string
 ) => {
   return await serverAction(
-    `/home/team/${id}`,
+    `team/${id}`,
     'DELETE',
     null,
     [fullPath, pathWithoutAdmin, layout]
@@ -684,7 +684,7 @@ export const createStat = async (
   layout: string
 ) => {
   return await serverAction(
-    '/home/stats',
+    'stats',
     'POST',
     payload,
     [fullPath, layout, pathWithoutAdmin] // Revalidate paths
@@ -698,7 +698,7 @@ export const updateStat = async (
   pathWithoutAdmin: string
 ) => {
   return await serverAction(
-    `/home/stats/${id}`,
+    `stats/${id}`,
     'PATCH',
     payload,
     [fullPath, pathWithoutAdmin]
@@ -712,7 +712,7 @@ export const deleteStat = async (
   layout: string
 ) => {
   return await serverAction(
-    `/home/stats/${id}`,
+    `stats/${id}`,
     'DELETE',
     null,
     [fullPath, pathWithoutAdmin, layout]

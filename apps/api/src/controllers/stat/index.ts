@@ -1,7 +1,6 @@
 import { Request, Response } from "express"
 import prisma from "../../config"
 import { APIResponse } from "../../types"
-
 export const createStat = async (
   req: Request,
   res: Response<APIResponse>
@@ -9,7 +8,12 @@ export const createStat = async (
   const { registeredCustomers, shops, councilors, cooperatives } = req.body
 
   // Validate input
-  if (!registeredCustomers || !shops || !councilors || !cooperatives) {
+  if (
+    registeredCustomers == null ||
+    shops == null ||
+    councilors == null ||
+    cooperatives == null
+  ) {
     res.status(400).json({
       success: false,
       message:
@@ -20,6 +24,18 @@ export const createStat = async (
   }
 
   try {
+    // Check if a stat already exists
+    const existingStat = await prisma.stat.findFirst()
+
+    if (existingStat) {
+      res.status(400).json({
+        success: false,
+        message: "Stat already exists.",
+        error: "Start already exists, please edit the exist stat",
+      })
+      return
+    }
+
     // Create the new stat entry
     const newStat = await prisma.stat.create({
       data: {
@@ -48,7 +64,7 @@ export const createStat = async (
 }
 
 export const getStat = async (
-  req: Request,
+  _req: Request,
   res: Response<APIResponse>
 ): Promise<void> => {
   try {

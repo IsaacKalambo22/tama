@@ -40,6 +40,7 @@ const ModalDeleteStat = ({
       const result = await deleteStat(
         stat.id,
         fullPath,
+        `/status${pathWithoutAdmin}`,
         `/status${pathWithoutAdmin}`
       );
 
@@ -66,11 +67,10 @@ const ModalDeleteStat = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      name={`Delete ${stat.id}`}
+      name={`Delete Stat`}
     >
       <DialogDescription>
-        Are you sure you want to delete{' '}
-        {stat.id}?
+        Are you sure you want to delete?
       </DialogDescription>
       <DialogFooter className='flex flex-col gap-3 md:flex-row'>
         <DialogClose asChild>

@@ -17,7 +17,7 @@ import reportsPublications from "./routes/reports-publications"
 import search from "./routes/search"
 import services from "./routes/service"
 import shops from "./routes/shop"
-import stat from "./routes/stat"
+import stats from "./routes/stat"
 import team from "./routes/team"
 import users from "./routes/user"
 import vacancies from "./routes/vacancy"
@@ -50,7 +50,7 @@ app.use("/tama/forms", forms)
 app.use("/tama/blogs", blogs)
 app.use("/tama/search", search)
 app.use("/tama/team", team)
-app.use("/tama/stat", stat)
+app.use("/tama/stats", stats)
 app.use("/tama/news", news)
 app.use("/tama/users", users)
 app.use("/tama/events", events)

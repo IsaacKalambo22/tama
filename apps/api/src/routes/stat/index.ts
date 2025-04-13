@@ -15,7 +15,7 @@ router.post(
   createStat
 )
 
-router.get("/", verifyAdminAndManager, getStat)
+router.get("/", getStat)
 
 router.patch(
   "/:id",

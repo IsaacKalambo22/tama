@@ -5,7 +5,7 @@ interface Props {
 }
 const StatList = ({ stats }: Props) => {
   return (
-    <div className='grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+    <div className='grid gap-8 grid-cols-1 '>
       {stats.map((stat) => (
         <StatCard key={stat.id} stat={stat} />
       ))}

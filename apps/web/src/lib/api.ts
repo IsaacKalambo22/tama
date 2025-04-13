@@ -309,13 +309,13 @@ export const fetchCouncilList = async (): Promise<
 export const fetchHomeCarousel =
   async (): Promise<HomeCarousel[]> => {
     return handleFetch<HomeCarousel[]>(
-      `${BASE_URL}/home/carousel`
+      `${BASE_URL}/carousel`
     );
   };
 export const fetchHomeImageText =
   async (): Promise<HomeImageText[]> => {
     return handleFetch<HomeImageText[]>(
-      `${BASE_URL}/home/image-text`
+      `${BASE_URL}/image-text`
     );
   };
 
@@ -323,7 +323,7 @@ export const fetchHomeImageText =
   TeamProps[]
 > => {
   return handleFetch<TeamProps[]>(
-    `${BASE_URL}/home/team`
+    `${BASE_URL}/team`
   );
 };
 
@@ -332,6 +332,6 @@ export const fetchStat = async (): Promise<
   StatProps[]
 > => {
   return handleFetch<StatProps[]>(
-    `${BASE_URL}/home/stats`
+    `${BASE_URL}/stats`
   );
 };
