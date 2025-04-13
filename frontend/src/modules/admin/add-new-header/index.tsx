@@ -15,6 +15,8 @@ import { ReactElement, useState } from 'react';
 import ModalNewHomeCarousel from '../home-carousel/modal-new-home-carousel';
 import ModalNewHomeImageText from '../home-image-text/modal-new-home-image-text';
 import ModalNewService from '../services/modal-new-service';
+import ModalNewTeam from '../team/modal-new-team';
+import ModalNewStat from '../status/modal-new-stat';
 
 export enum AddNewType {
   NEW_FORM = 'New Form',
@@ -24,6 +26,8 @@ export enum AddNewType {
   NEW_CAROUSEL = 'New Carousel',
   NEW_IMAGES = 'New Images',
   NEW_BLOG = 'New Blog',
+  NEW_TEAM = 'New Team',
+  NEW_STAT = 'New Stat',
   ADD_NEWS = 'Add News',
   ADD_USER = 'Add User',
   NEW_EVENT = 'New Event',
@@ -148,6 +152,20 @@ const AddNewHeader = ({
       {isOpen &&
         buttonName === AddNewType.NEW_IMAGES && (
           <ModalNewHomeImageText
+            isOpen={isOpen}
+            onClose={handleClose}
+          />
+        )}
+        {isOpen &&
+        buttonName === AddNewType.NEW_TEAM && (
+          <ModalNewTeam
+            isOpen={isOpen}
+            onClose={handleClose}
+          />
+        )}
+        {isOpen &&
+        buttonName === AddNewType.NEW_STAT && (
+          <ModalNewStat
             isOpen={isOpen}
             onClose={handleClose}
           />

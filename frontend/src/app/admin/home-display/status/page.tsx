@@ -1,7 +1,8 @@
-import HomeCarousel from '@/modules/admin/home-carousel';
 
-const HomeCarouselPage = () => {
-  return <HomeCarousel />;
+import Stat from '@/modules/admin/status';
+
+const StatPage = () => {
+  return <Stat />;
 };
 
-export default HomeCarouselPage;
+export default StatPage;

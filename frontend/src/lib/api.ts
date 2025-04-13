@@ -323,7 +323,7 @@ export const fetchHomeImageText =
   TeamProps[]
 > => {
   return handleFetch<TeamProps[]>(
-    `${BASE_URL}/home/teams`
+    `${BASE_URL}/home/team`
   );
 };
 

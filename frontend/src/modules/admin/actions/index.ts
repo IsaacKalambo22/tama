@@ -640,7 +640,7 @@ export const createTeam = async (
   layout: string
 ) => {
   return await serverAction(
-    '/home/teams',
+    '/home/team',
     'POST',
     payload,
     [fullPath, layout, pathWithoutAdmin] // Revalidate paths
@@ -654,7 +654,7 @@ export const updateTeam = async (
   pathWithoutAdmin: string
 ) => {
   return await serverAction(
-    `/home/teams/${id}`,
+    `/home/team/${id}`,
     'PATCH',
     payload,
     [fullPath, pathWithoutAdmin]
@@ -668,7 +668,7 @@ export const deleteTeam = async (
   layout: string
 ) => {
   return await serverAction(
-    `/home/teams/${id}`,
+    `/home/team/${id}`,
     'DELETE',
     null,
     [fullPath, pathWithoutAdmin, layout]

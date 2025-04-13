@@ -1,7 +1,7 @@
-import HomeCarousel from '@/modules/admin/home-carousel';
+import Team from '@/modules/admin/team';
 
-const HomeCarouselPage = () => {
-  return <HomeCarousel />;
+const TeamPage = () => {
+  return <Team />;
 };
 
-export default HomeCarouselPage;
+export default TeamPage;
