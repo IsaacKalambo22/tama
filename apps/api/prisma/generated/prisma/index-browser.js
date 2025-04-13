@@ -181,6 +181,27 @@ exports.Prisma.BlogScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.TeamScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  position: 'position',
+  imageUrl: 'imageUrl',
+  facebookUrl: 'facebookUrl',
+  linkedInProfile: 'linkedInProfile',
+  twitterUrl: 'twitterUrl',
+  description: 'description'
+};
+
+exports.Prisma.StatScalarFieldEnum = {
+  id: 'id',
+  registeredCustomers: 'registeredCustomers',
+  shops: 'shops',
+  councilors: 'councilors',
+  cooperatives: 'cooperatives',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.NewsScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -260,27 +281,6 @@ exports.Prisma.ImageTextScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.TeamScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  position: 'position',
-  imageUrl: 'imageUrl',
-  facebookUrl: 'facebookUrl',
-  linkedInProfile: 'linkedInProfile',
-  twitterUrl: 'twitterUrl',
-  description: 'description'
-};
-
-exports.Prisma.StatScalarFieldEnum = {
-  id: 'id',
-  registeredCustomers: 'registeredCustomers',
-  shops: 'shops',
-  councilors: 'councilors',
-  cooperatives: 'cooperatives',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -307,15 +307,15 @@ exports.Prisma.ModelName = {
   ReportAndPublication: 'ReportAndPublication',
   Form: 'Form',
   Blog: 'Blog',
+  Team: 'Team',
+  Stat: 'Stat',
   News: 'News',
   CouncilList: 'CouncilList',
   Event: 'Event',
   Vacancy: 'Vacancy',
   Service: 'Service',
   Carousel: 'Carousel',
-  ImageText: 'ImageText',
-  Team: 'Team',
-  Stat: 'Stat'
+  ImageText: 'ImageText'
 };
 
 /**

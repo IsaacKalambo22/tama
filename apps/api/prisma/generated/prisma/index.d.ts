@@ -39,6 +39,16 @@ export type Form = $Result.DefaultSelection<Prisma.$FormPayload>
  */
 export type Blog = $Result.DefaultSelection<Prisma.$BlogPayload>
 /**
+ * Model Team
+ * 
+ */
+export type Team = $Result.DefaultSelection<Prisma.$TeamPayload>
+/**
+ * Model Stat
+ * 
+ */
+export type Stat = $Result.DefaultSelection<Prisma.$StatPayload>
+/**
  * Model News
  * 
  */
@@ -73,16 +83,6 @@ export type Carousel = $Result.DefaultSelection<Prisma.$CarouselPayload>
  * 
  */
 export type ImageText = $Result.DefaultSelection<Prisma.$ImageTextPayload>
-/**
- * Model Team
- * 
- */
-export type Team = $Result.DefaultSelection<Prisma.$TeamPayload>
-/**
- * Model Stat
- * 
- */
-export type Stat = $Result.DefaultSelection<Prisma.$StatPayload>
 
 /**
  * Enums
@@ -278,6 +278,26 @@ export class PrismaClient<
   get blog(): Prisma.BlogDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.team`: Exposes CRUD operations for the **Team** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Teams
+    * const teams = await prisma.team.findMany()
+    * ```
+    */
+  get team(): Prisma.TeamDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.stat`: Exposes CRUD operations for the **Stat** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Stats
+    * const stats = await prisma.stat.findMany()
+    * ```
+    */
+  get stat(): Prisma.StatDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.news`: Exposes CRUD operations for the **News** model.
     * Example usage:
     * ```ts
@@ -346,26 +366,6 @@ export class PrismaClient<
     * ```
     */
   get imageText(): Prisma.ImageTextDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.team`: Exposes CRUD operations for the **Team** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Teams
-    * const teams = await prisma.team.findMany()
-    * ```
-    */
-  get team(): Prisma.TeamDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.stat`: Exposes CRUD operations for the **Stat** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Stats
-    * const stats = await prisma.stat.findMany()
-    * ```
-    */
-  get stat(): Prisma.StatDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -811,15 +811,15 @@ export namespace Prisma {
     ReportAndPublication: 'ReportAndPublication',
     Form: 'Form',
     Blog: 'Blog',
+    Team: 'Team',
+    Stat: 'Stat',
     News: 'News',
     CouncilList: 'CouncilList',
     Event: 'Event',
     Vacancy: 'Vacancy',
     Service: 'Service',
     Carousel: 'Carousel',
-    ImageText: 'ImageText',
-    Team: 'Team',
-    Stat: 'Stat'
+    ImageText: 'ImageText'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -838,7 +838,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "shop" | "reportAndPublication" | "form" | "blog" | "news" | "councilList" | "event" | "vacancy" | "service" | "carousel" | "imageText" | "team" | "stat"
+      modelProps: "user" | "shop" | "reportAndPublication" | "form" | "blog" | "team" | "stat" | "news" | "councilList" | "event" | "vacancy" | "service" | "carousel" | "imageText"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1209,6 +1209,154 @@ export namespace Prisma {
           count: {
             args: Prisma.BlogCountArgs<ExtArgs>
             result: $Utils.Optional<BlogCountAggregateOutputType> | number
+          }
+        }
+      }
+      Team: {
+        payload: Prisma.$TeamPayload<ExtArgs>
+        fields: Prisma.TeamFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TeamFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TeamFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamPayload>
+          }
+          findFirst: {
+            args: Prisma.TeamFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TeamFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamPayload>
+          }
+          findMany: {
+            args: Prisma.TeamFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamPayload>[]
+          }
+          create: {
+            args: Prisma.TeamCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamPayload>
+          }
+          createMany: {
+            args: Prisma.TeamCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TeamCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamPayload>[]
+          }
+          delete: {
+            args: Prisma.TeamDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamPayload>
+          }
+          update: {
+            args: Prisma.TeamUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamPayload>
+          }
+          deleteMany: {
+            args: Prisma.TeamDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TeamUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TeamUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamPayload>[]
+          }
+          upsert: {
+            args: Prisma.TeamUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamPayload>
+          }
+          aggregate: {
+            args: Prisma.TeamAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTeam>
+          }
+          groupBy: {
+            args: Prisma.TeamGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TeamGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TeamCountArgs<ExtArgs>
+            result: $Utils.Optional<TeamCountAggregateOutputType> | number
+          }
+        }
+      }
+      Stat: {
+        payload: Prisma.$StatPayload<ExtArgs>
+        fields: Prisma.StatFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.StatFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StatPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.StatFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StatPayload>
+          }
+          findFirst: {
+            args: Prisma.StatFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StatPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.StatFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StatPayload>
+          }
+          findMany: {
+            args: Prisma.StatFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StatPayload>[]
+          }
+          create: {
+            args: Prisma.StatCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StatPayload>
+          }
+          createMany: {
+            args: Prisma.StatCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.StatCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StatPayload>[]
+          }
+          delete: {
+            args: Prisma.StatDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StatPayload>
+          }
+          update: {
+            args: Prisma.StatUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StatPayload>
+          }
+          deleteMany: {
+            args: Prisma.StatDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.StatUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.StatUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StatPayload>[]
+          }
+          upsert: {
+            args: Prisma.StatUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StatPayload>
+          }
+          aggregate: {
+            args: Prisma.StatAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateStat>
+          }
+          groupBy: {
+            args: Prisma.StatGroupByArgs<ExtArgs>
+            result: $Utils.Optional<StatGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.StatCountArgs<ExtArgs>
+            result: $Utils.Optional<StatCountAggregateOutputType> | number
           }
         }
       }
@@ -1730,154 +1878,6 @@ export namespace Prisma {
           }
         }
       }
-      Team: {
-        payload: Prisma.$TeamPayload<ExtArgs>
-        fields: Prisma.TeamFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.TeamFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TeamPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.TeamFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TeamPayload>
-          }
-          findFirst: {
-            args: Prisma.TeamFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TeamPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.TeamFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TeamPayload>
-          }
-          findMany: {
-            args: Prisma.TeamFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TeamPayload>[]
-          }
-          create: {
-            args: Prisma.TeamCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TeamPayload>
-          }
-          createMany: {
-            args: Prisma.TeamCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.TeamCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TeamPayload>[]
-          }
-          delete: {
-            args: Prisma.TeamDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TeamPayload>
-          }
-          update: {
-            args: Prisma.TeamUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TeamPayload>
-          }
-          deleteMany: {
-            args: Prisma.TeamDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.TeamUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.TeamUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TeamPayload>[]
-          }
-          upsert: {
-            args: Prisma.TeamUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TeamPayload>
-          }
-          aggregate: {
-            args: Prisma.TeamAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateTeam>
-          }
-          groupBy: {
-            args: Prisma.TeamGroupByArgs<ExtArgs>
-            result: $Utils.Optional<TeamGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.TeamCountArgs<ExtArgs>
-            result: $Utils.Optional<TeamCountAggregateOutputType> | number
-          }
-        }
-      }
-      Stat: {
-        payload: Prisma.$StatPayload<ExtArgs>
-        fields: Prisma.StatFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.StatFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$StatPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.StatFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$StatPayload>
-          }
-          findFirst: {
-            args: Prisma.StatFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$StatPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.StatFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$StatPayload>
-          }
-          findMany: {
-            args: Prisma.StatFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$StatPayload>[]
-          }
-          create: {
-            args: Prisma.StatCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$StatPayload>
-          }
-          createMany: {
-            args: Prisma.StatCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.StatCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$StatPayload>[]
-          }
-          delete: {
-            args: Prisma.StatDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$StatPayload>
-          }
-          update: {
-            args: Prisma.StatUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$StatPayload>
-          }
-          deleteMany: {
-            args: Prisma.StatDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.StatUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.StatUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$StatPayload>[]
-          }
-          upsert: {
-            args: Prisma.StatUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$StatPayload>
-          }
-          aggregate: {
-            args: Prisma.StatAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateStat>
-          }
-          groupBy: {
-            args: Prisma.StatGroupByArgs<ExtArgs>
-            result: $Utils.Optional<StatGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.StatCountArgs<ExtArgs>
-            result: $Utils.Optional<StatCountAggregateOutputType> | number
-          }
-        }
-      }
     }
   } & {
     other: {
@@ -1967,6 +1967,8 @@ export namespace Prisma {
     reportAndPublication?: ReportAndPublicationOmit
     form?: FormOmit
     blog?: BlogOmit
+    team?: TeamOmit
+    stat?: StatOmit
     news?: NewsOmit
     councilList?: CouncilListOmit
     event?: EventOmit
@@ -1974,8 +1976,6 @@ export namespace Prisma {
     service?: ServiceOmit
     carousel?: CarouselOmit
     imageText?: ImageTextOmit
-    team?: TeamOmit
-    stat?: StatOmit
   }
 
   /* Types for Logging */
@@ -7494,6 +7494,2107 @@ export namespace Prisma {
 
 
   /**
+   * Model Team
+   */
+
+  export type AggregateTeam = {
+    _count: TeamCountAggregateOutputType | null
+    _min: TeamMinAggregateOutputType | null
+    _max: TeamMaxAggregateOutputType | null
+  }
+
+  export type TeamMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    position: string | null
+    imageUrl: string | null
+    facebookUrl: string | null
+    linkedInProfile: string | null
+    twitterUrl: string | null
+    description: string | null
+  }
+
+  export type TeamMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    position: string | null
+    imageUrl: string | null
+    facebookUrl: string | null
+    linkedInProfile: string | null
+    twitterUrl: string | null
+    description: string | null
+  }
+
+  export type TeamCountAggregateOutputType = {
+    id: number
+    name: number
+    position: number
+    imageUrl: number
+    facebookUrl: number
+    linkedInProfile: number
+    twitterUrl: number
+    description: number
+    _all: number
+  }
+
+
+  export type TeamMinAggregateInputType = {
+    id?: true
+    name?: true
+    position?: true
+    imageUrl?: true
+    facebookUrl?: true
+    linkedInProfile?: true
+    twitterUrl?: true
+    description?: true
+  }
+
+  export type TeamMaxAggregateInputType = {
+    id?: true
+    name?: true
+    position?: true
+    imageUrl?: true
+    facebookUrl?: true
+    linkedInProfile?: true
+    twitterUrl?: true
+    description?: true
+  }
+
+  export type TeamCountAggregateInputType = {
+    id?: true
+    name?: true
+    position?: true
+    imageUrl?: true
+    facebookUrl?: true
+    linkedInProfile?: true
+    twitterUrl?: true
+    description?: true
+    _all?: true
+  }
+
+  export type TeamAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Team to aggregate.
+     */
+    where?: TeamWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Teams to fetch.
+     */
+    orderBy?: TeamOrderByWithRelationInput | TeamOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TeamWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Teams from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Teams.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Teams
+    **/
+    _count?: true | TeamCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TeamMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TeamMaxAggregateInputType
+  }
+
+  export type GetTeamAggregateType<T extends TeamAggregateArgs> = {
+        [P in keyof T & keyof AggregateTeam]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTeam[P]>
+      : GetScalarType<T[P], AggregateTeam[P]>
+  }
+
+
+
+
+  export type TeamGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TeamWhereInput
+    orderBy?: TeamOrderByWithAggregationInput | TeamOrderByWithAggregationInput[]
+    by: TeamScalarFieldEnum[] | TeamScalarFieldEnum
+    having?: TeamScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TeamCountAggregateInputType | true
+    _min?: TeamMinAggregateInputType
+    _max?: TeamMaxAggregateInputType
+  }
+
+  export type TeamGroupByOutputType = {
+    id: string
+    name: string
+    position: string
+    imageUrl: string
+    facebookUrl: string | null
+    linkedInProfile: string | null
+    twitterUrl: string | null
+    description: string
+    _count: TeamCountAggregateOutputType | null
+    _min: TeamMinAggregateOutputType | null
+    _max: TeamMaxAggregateOutputType | null
+  }
+
+  type GetTeamGroupByPayload<T extends TeamGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TeamGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TeamGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TeamGroupByOutputType[P]>
+            : GetScalarType<T[P], TeamGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TeamSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    position?: boolean
+    imageUrl?: boolean
+    facebookUrl?: boolean
+    linkedInProfile?: boolean
+    twitterUrl?: boolean
+    description?: boolean
+  }, ExtArgs["result"]["team"]>
+
+  export type TeamSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    position?: boolean
+    imageUrl?: boolean
+    facebookUrl?: boolean
+    linkedInProfile?: boolean
+    twitterUrl?: boolean
+    description?: boolean
+  }, ExtArgs["result"]["team"]>
+
+  export type TeamSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    position?: boolean
+    imageUrl?: boolean
+    facebookUrl?: boolean
+    linkedInProfile?: boolean
+    twitterUrl?: boolean
+    description?: boolean
+  }, ExtArgs["result"]["team"]>
+
+  export type TeamSelectScalar = {
+    id?: boolean
+    name?: boolean
+    position?: boolean
+    imageUrl?: boolean
+    facebookUrl?: boolean
+    linkedInProfile?: boolean
+    twitterUrl?: boolean
+    description?: boolean
+  }
+
+  export type TeamOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "position" | "imageUrl" | "facebookUrl" | "linkedInProfile" | "twitterUrl" | "description", ExtArgs["result"]["team"]>
+
+  export type $TeamPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Team"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      position: string
+      imageUrl: string
+      facebookUrl: string | null
+      linkedInProfile: string | null
+      twitterUrl: string | null
+      description: string
+    }, ExtArgs["result"]["team"]>
+    composites: {}
+  }
+
+  type TeamGetPayload<S extends boolean | null | undefined | TeamDefaultArgs> = $Result.GetResult<Prisma.$TeamPayload, S>
+
+  type TeamCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TeamFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TeamCountAggregateInputType | true
+    }
+
+  export interface TeamDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Team'], meta: { name: 'Team' } }
+    /**
+     * Find zero or one Team that matches the filter.
+     * @param {TeamFindUniqueArgs} args - Arguments to find a Team
+     * @example
+     * // Get one Team
+     * const team = await prisma.team.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TeamFindUniqueArgs>(args: SelectSubset<T, TeamFindUniqueArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Team that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TeamFindUniqueOrThrowArgs} args - Arguments to find a Team
+     * @example
+     * // Get one Team
+     * const team = await prisma.team.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TeamFindUniqueOrThrowArgs>(args: SelectSubset<T, TeamFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Team that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamFindFirstArgs} args - Arguments to find a Team
+     * @example
+     * // Get one Team
+     * const team = await prisma.team.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TeamFindFirstArgs>(args?: SelectSubset<T, TeamFindFirstArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Team that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamFindFirstOrThrowArgs} args - Arguments to find a Team
+     * @example
+     * // Get one Team
+     * const team = await prisma.team.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TeamFindFirstOrThrowArgs>(args?: SelectSubset<T, TeamFindFirstOrThrowArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Teams that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Teams
+     * const teams = await prisma.team.findMany()
+     * 
+     * // Get first 10 Teams
+     * const teams = await prisma.team.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const teamWithIdOnly = await prisma.team.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TeamFindManyArgs>(args?: SelectSubset<T, TeamFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Team.
+     * @param {TeamCreateArgs} args - Arguments to create a Team.
+     * @example
+     * // Create one Team
+     * const Team = await prisma.team.create({
+     *   data: {
+     *     // ... data to create a Team
+     *   }
+     * })
+     * 
+     */
+    create<T extends TeamCreateArgs>(args: SelectSubset<T, TeamCreateArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Teams.
+     * @param {TeamCreateManyArgs} args - Arguments to create many Teams.
+     * @example
+     * // Create many Teams
+     * const team = await prisma.team.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TeamCreateManyArgs>(args?: SelectSubset<T, TeamCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Teams and returns the data saved in the database.
+     * @param {TeamCreateManyAndReturnArgs} args - Arguments to create many Teams.
+     * @example
+     * // Create many Teams
+     * const team = await prisma.team.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Teams and only return the `id`
+     * const teamWithIdOnly = await prisma.team.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TeamCreateManyAndReturnArgs>(args?: SelectSubset<T, TeamCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Team.
+     * @param {TeamDeleteArgs} args - Arguments to delete one Team.
+     * @example
+     * // Delete one Team
+     * const Team = await prisma.team.delete({
+     *   where: {
+     *     // ... filter to delete one Team
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TeamDeleteArgs>(args: SelectSubset<T, TeamDeleteArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Team.
+     * @param {TeamUpdateArgs} args - Arguments to update one Team.
+     * @example
+     * // Update one Team
+     * const team = await prisma.team.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TeamUpdateArgs>(args: SelectSubset<T, TeamUpdateArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Teams.
+     * @param {TeamDeleteManyArgs} args - Arguments to filter Teams to delete.
+     * @example
+     * // Delete a few Teams
+     * const { count } = await prisma.team.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TeamDeleteManyArgs>(args?: SelectSubset<T, TeamDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Teams.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Teams
+     * const team = await prisma.team.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TeamUpdateManyArgs>(args: SelectSubset<T, TeamUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Teams and returns the data updated in the database.
+     * @param {TeamUpdateManyAndReturnArgs} args - Arguments to update many Teams.
+     * @example
+     * // Update many Teams
+     * const team = await prisma.team.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Teams and only return the `id`
+     * const teamWithIdOnly = await prisma.team.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TeamUpdateManyAndReturnArgs>(args: SelectSubset<T, TeamUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Team.
+     * @param {TeamUpsertArgs} args - Arguments to update or create a Team.
+     * @example
+     * // Update or create a Team
+     * const team = await prisma.team.upsert({
+     *   create: {
+     *     // ... data to create a Team
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Team we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TeamUpsertArgs>(args: SelectSubset<T, TeamUpsertArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Teams.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamCountArgs} args - Arguments to filter Teams to count.
+     * @example
+     * // Count the number of Teams
+     * const count = await prisma.team.count({
+     *   where: {
+     *     // ... the filter for the Teams we want to count
+     *   }
+     * })
+    **/
+    count<T extends TeamCountArgs>(
+      args?: Subset<T, TeamCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TeamCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Team.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TeamAggregateArgs>(args: Subset<T, TeamAggregateArgs>): Prisma.PrismaPromise<GetTeamAggregateType<T>>
+
+    /**
+     * Group by Team.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TeamGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TeamGroupByArgs['orderBy'] }
+        : { orderBy?: TeamGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TeamGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTeamGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Team model
+   */
+  readonly fields: TeamFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Team.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TeamClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Team model
+   */
+  interface TeamFieldRefs {
+    readonly id: FieldRef<"Team", 'String'>
+    readonly name: FieldRef<"Team", 'String'>
+    readonly position: FieldRef<"Team", 'String'>
+    readonly imageUrl: FieldRef<"Team", 'String'>
+    readonly facebookUrl: FieldRef<"Team", 'String'>
+    readonly linkedInProfile: FieldRef<"Team", 'String'>
+    readonly twitterUrl: FieldRef<"Team", 'String'>
+    readonly description: FieldRef<"Team", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Team findUnique
+   */
+  export type TeamFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * Filter, which Team to fetch.
+     */
+    where: TeamWhereUniqueInput
+  }
+
+  /**
+   * Team findUniqueOrThrow
+   */
+  export type TeamFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * Filter, which Team to fetch.
+     */
+    where: TeamWhereUniqueInput
+  }
+
+  /**
+   * Team findFirst
+   */
+  export type TeamFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * Filter, which Team to fetch.
+     */
+    where?: TeamWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Teams to fetch.
+     */
+    orderBy?: TeamOrderByWithRelationInput | TeamOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Teams.
+     */
+    cursor?: TeamWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Teams from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Teams.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Teams.
+     */
+    distinct?: TeamScalarFieldEnum | TeamScalarFieldEnum[]
+  }
+
+  /**
+   * Team findFirstOrThrow
+   */
+  export type TeamFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * Filter, which Team to fetch.
+     */
+    where?: TeamWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Teams to fetch.
+     */
+    orderBy?: TeamOrderByWithRelationInput | TeamOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Teams.
+     */
+    cursor?: TeamWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Teams from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Teams.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Teams.
+     */
+    distinct?: TeamScalarFieldEnum | TeamScalarFieldEnum[]
+  }
+
+  /**
+   * Team findMany
+   */
+  export type TeamFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * Filter, which Teams to fetch.
+     */
+    where?: TeamWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Teams to fetch.
+     */
+    orderBy?: TeamOrderByWithRelationInput | TeamOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Teams.
+     */
+    cursor?: TeamWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Teams from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Teams.
+     */
+    skip?: number
+    distinct?: TeamScalarFieldEnum | TeamScalarFieldEnum[]
+  }
+
+  /**
+   * Team create
+   */
+  export type TeamCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Team.
+     */
+    data: XOR<TeamCreateInput, TeamUncheckedCreateInput>
+  }
+
+  /**
+   * Team createMany
+   */
+  export type TeamCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Teams.
+     */
+    data: TeamCreateManyInput | TeamCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Team createManyAndReturn
+   */
+  export type TeamCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * The data used to create many Teams.
+     */
+    data: TeamCreateManyInput | TeamCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Team update
+   */
+  export type TeamUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Team.
+     */
+    data: XOR<TeamUpdateInput, TeamUncheckedUpdateInput>
+    /**
+     * Choose, which Team to update.
+     */
+    where: TeamWhereUniqueInput
+  }
+
+  /**
+   * Team updateMany
+   */
+  export type TeamUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Teams.
+     */
+    data: XOR<TeamUpdateManyMutationInput, TeamUncheckedUpdateManyInput>
+    /**
+     * Filter which Teams to update
+     */
+    where?: TeamWhereInput
+    /**
+     * Limit how many Teams to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Team updateManyAndReturn
+   */
+  export type TeamUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * The data used to update Teams.
+     */
+    data: XOR<TeamUpdateManyMutationInput, TeamUncheckedUpdateManyInput>
+    /**
+     * Filter which Teams to update
+     */
+    where?: TeamWhereInput
+    /**
+     * Limit how many Teams to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Team upsert
+   */
+  export type TeamUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Team to update in case it exists.
+     */
+    where: TeamWhereUniqueInput
+    /**
+     * In case the Team found by the `where` argument doesn't exist, create a new Team with this data.
+     */
+    create: XOR<TeamCreateInput, TeamUncheckedCreateInput>
+    /**
+     * In case the Team was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TeamUpdateInput, TeamUncheckedUpdateInput>
+  }
+
+  /**
+   * Team delete
+   */
+  export type TeamDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * Filter which Team to delete.
+     */
+    where: TeamWhereUniqueInput
+  }
+
+  /**
+   * Team deleteMany
+   */
+  export type TeamDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Teams to delete
+     */
+    where?: TeamWhereInput
+    /**
+     * Limit how many Teams to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Team without action
+   */
+  export type TeamDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Stat
+   */
+
+  export type AggregateStat = {
+    _count: StatCountAggregateOutputType | null
+    _avg: StatAvgAggregateOutputType | null
+    _sum: StatSumAggregateOutputType | null
+    _min: StatMinAggregateOutputType | null
+    _max: StatMaxAggregateOutputType | null
+  }
+
+  export type StatAvgAggregateOutputType = {
+    registeredCustomers: number | null
+    shops: number | null
+    councilors: number | null
+    cooperatives: number | null
+  }
+
+  export type StatSumAggregateOutputType = {
+    registeredCustomers: number | null
+    shops: number | null
+    councilors: number | null
+    cooperatives: number | null
+  }
+
+  export type StatMinAggregateOutputType = {
+    id: string | null
+    registeredCustomers: number | null
+    shops: number | null
+    councilors: number | null
+    cooperatives: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type StatMaxAggregateOutputType = {
+    id: string | null
+    registeredCustomers: number | null
+    shops: number | null
+    councilors: number | null
+    cooperatives: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type StatCountAggregateOutputType = {
+    id: number
+    registeredCustomers: number
+    shops: number
+    councilors: number
+    cooperatives: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type StatAvgAggregateInputType = {
+    registeredCustomers?: true
+    shops?: true
+    councilors?: true
+    cooperatives?: true
+  }
+
+  export type StatSumAggregateInputType = {
+    registeredCustomers?: true
+    shops?: true
+    councilors?: true
+    cooperatives?: true
+  }
+
+  export type StatMinAggregateInputType = {
+    id?: true
+    registeredCustomers?: true
+    shops?: true
+    councilors?: true
+    cooperatives?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type StatMaxAggregateInputType = {
+    id?: true
+    registeredCustomers?: true
+    shops?: true
+    councilors?: true
+    cooperatives?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type StatCountAggregateInputType = {
+    id?: true
+    registeredCustomers?: true
+    shops?: true
+    councilors?: true
+    cooperatives?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type StatAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Stat to aggregate.
+     */
+    where?: StatWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Stats to fetch.
+     */
+    orderBy?: StatOrderByWithRelationInput | StatOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: StatWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Stats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Stats.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Stats
+    **/
+    _count?: true | StatCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: StatAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: StatSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: StatMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: StatMaxAggregateInputType
+  }
+
+  export type GetStatAggregateType<T extends StatAggregateArgs> = {
+        [P in keyof T & keyof AggregateStat]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateStat[P]>
+      : GetScalarType<T[P], AggregateStat[P]>
+  }
+
+
+
+
+  export type StatGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StatWhereInput
+    orderBy?: StatOrderByWithAggregationInput | StatOrderByWithAggregationInput[]
+    by: StatScalarFieldEnum[] | StatScalarFieldEnum
+    having?: StatScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: StatCountAggregateInputType | true
+    _avg?: StatAvgAggregateInputType
+    _sum?: StatSumAggregateInputType
+    _min?: StatMinAggregateInputType
+    _max?: StatMaxAggregateInputType
+  }
+
+  export type StatGroupByOutputType = {
+    id: string
+    registeredCustomers: number
+    shops: number
+    councilors: number
+    cooperatives: number
+    createdAt: Date
+    updatedAt: Date
+    _count: StatCountAggregateOutputType | null
+    _avg: StatAvgAggregateOutputType | null
+    _sum: StatSumAggregateOutputType | null
+    _min: StatMinAggregateOutputType | null
+    _max: StatMaxAggregateOutputType | null
+  }
+
+  type GetStatGroupByPayload<T extends StatGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<StatGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof StatGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], StatGroupByOutputType[P]>
+            : GetScalarType<T[P], StatGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type StatSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    registeredCustomers?: boolean
+    shops?: boolean
+    councilors?: boolean
+    cooperatives?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["stat"]>
+
+  export type StatSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    registeredCustomers?: boolean
+    shops?: boolean
+    councilors?: boolean
+    cooperatives?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["stat"]>
+
+  export type StatSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    registeredCustomers?: boolean
+    shops?: boolean
+    councilors?: boolean
+    cooperatives?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["stat"]>
+
+  export type StatSelectScalar = {
+    id?: boolean
+    registeredCustomers?: boolean
+    shops?: boolean
+    councilors?: boolean
+    cooperatives?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type StatOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "registeredCustomers" | "shops" | "councilors" | "cooperatives" | "createdAt" | "updatedAt", ExtArgs["result"]["stat"]>
+
+  export type $StatPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Stat"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      registeredCustomers: number
+      shops: number
+      councilors: number
+      cooperatives: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["stat"]>
+    composites: {}
+  }
+
+  type StatGetPayload<S extends boolean | null | undefined | StatDefaultArgs> = $Result.GetResult<Prisma.$StatPayload, S>
+
+  type StatCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<StatFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: StatCountAggregateInputType | true
+    }
+
+  export interface StatDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Stat'], meta: { name: 'Stat' } }
+    /**
+     * Find zero or one Stat that matches the filter.
+     * @param {StatFindUniqueArgs} args - Arguments to find a Stat
+     * @example
+     * // Get one Stat
+     * const stat = await prisma.stat.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends StatFindUniqueArgs>(args: SelectSubset<T, StatFindUniqueArgs<ExtArgs>>): Prisma__StatClient<$Result.GetResult<Prisma.$StatPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Stat that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {StatFindUniqueOrThrowArgs} args - Arguments to find a Stat
+     * @example
+     * // Get one Stat
+     * const stat = await prisma.stat.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends StatFindUniqueOrThrowArgs>(args: SelectSubset<T, StatFindUniqueOrThrowArgs<ExtArgs>>): Prisma__StatClient<$Result.GetResult<Prisma.$StatPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Stat that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StatFindFirstArgs} args - Arguments to find a Stat
+     * @example
+     * // Get one Stat
+     * const stat = await prisma.stat.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends StatFindFirstArgs>(args?: SelectSubset<T, StatFindFirstArgs<ExtArgs>>): Prisma__StatClient<$Result.GetResult<Prisma.$StatPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Stat that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StatFindFirstOrThrowArgs} args - Arguments to find a Stat
+     * @example
+     * // Get one Stat
+     * const stat = await prisma.stat.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends StatFindFirstOrThrowArgs>(args?: SelectSubset<T, StatFindFirstOrThrowArgs<ExtArgs>>): Prisma__StatClient<$Result.GetResult<Prisma.$StatPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Stats that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StatFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Stats
+     * const stats = await prisma.stat.findMany()
+     * 
+     * // Get first 10 Stats
+     * const stats = await prisma.stat.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const statWithIdOnly = await prisma.stat.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends StatFindManyArgs>(args?: SelectSubset<T, StatFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Stat.
+     * @param {StatCreateArgs} args - Arguments to create a Stat.
+     * @example
+     * // Create one Stat
+     * const Stat = await prisma.stat.create({
+     *   data: {
+     *     // ... data to create a Stat
+     *   }
+     * })
+     * 
+     */
+    create<T extends StatCreateArgs>(args: SelectSubset<T, StatCreateArgs<ExtArgs>>): Prisma__StatClient<$Result.GetResult<Prisma.$StatPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Stats.
+     * @param {StatCreateManyArgs} args - Arguments to create many Stats.
+     * @example
+     * // Create many Stats
+     * const stat = await prisma.stat.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends StatCreateManyArgs>(args?: SelectSubset<T, StatCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Stats and returns the data saved in the database.
+     * @param {StatCreateManyAndReturnArgs} args - Arguments to create many Stats.
+     * @example
+     * // Create many Stats
+     * const stat = await prisma.stat.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Stats and only return the `id`
+     * const statWithIdOnly = await prisma.stat.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends StatCreateManyAndReturnArgs>(args?: SelectSubset<T, StatCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StatPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Stat.
+     * @param {StatDeleteArgs} args - Arguments to delete one Stat.
+     * @example
+     * // Delete one Stat
+     * const Stat = await prisma.stat.delete({
+     *   where: {
+     *     // ... filter to delete one Stat
+     *   }
+     * })
+     * 
+     */
+    delete<T extends StatDeleteArgs>(args: SelectSubset<T, StatDeleteArgs<ExtArgs>>): Prisma__StatClient<$Result.GetResult<Prisma.$StatPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Stat.
+     * @param {StatUpdateArgs} args - Arguments to update one Stat.
+     * @example
+     * // Update one Stat
+     * const stat = await prisma.stat.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends StatUpdateArgs>(args: SelectSubset<T, StatUpdateArgs<ExtArgs>>): Prisma__StatClient<$Result.GetResult<Prisma.$StatPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Stats.
+     * @param {StatDeleteManyArgs} args - Arguments to filter Stats to delete.
+     * @example
+     * // Delete a few Stats
+     * const { count } = await prisma.stat.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends StatDeleteManyArgs>(args?: SelectSubset<T, StatDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Stats.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StatUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Stats
+     * const stat = await prisma.stat.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends StatUpdateManyArgs>(args: SelectSubset<T, StatUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Stats and returns the data updated in the database.
+     * @param {StatUpdateManyAndReturnArgs} args - Arguments to update many Stats.
+     * @example
+     * // Update many Stats
+     * const stat = await prisma.stat.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Stats and only return the `id`
+     * const statWithIdOnly = await prisma.stat.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends StatUpdateManyAndReturnArgs>(args: SelectSubset<T, StatUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StatPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Stat.
+     * @param {StatUpsertArgs} args - Arguments to update or create a Stat.
+     * @example
+     * // Update or create a Stat
+     * const stat = await prisma.stat.upsert({
+     *   create: {
+     *     // ... data to create a Stat
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Stat we want to update
+     *   }
+     * })
+     */
+    upsert<T extends StatUpsertArgs>(args: SelectSubset<T, StatUpsertArgs<ExtArgs>>): Prisma__StatClient<$Result.GetResult<Prisma.$StatPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Stats.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StatCountArgs} args - Arguments to filter Stats to count.
+     * @example
+     * // Count the number of Stats
+     * const count = await prisma.stat.count({
+     *   where: {
+     *     // ... the filter for the Stats we want to count
+     *   }
+     * })
+    **/
+    count<T extends StatCountArgs>(
+      args?: Subset<T, StatCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], StatCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Stat.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StatAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends StatAggregateArgs>(args: Subset<T, StatAggregateArgs>): Prisma.PrismaPromise<GetStatAggregateType<T>>
+
+    /**
+     * Group by Stat.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StatGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends StatGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: StatGroupByArgs['orderBy'] }
+        : { orderBy?: StatGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, StatGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetStatGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Stat model
+   */
+  readonly fields: StatFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Stat.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__StatClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Stat model
+   */
+  interface StatFieldRefs {
+    readonly id: FieldRef<"Stat", 'String'>
+    readonly registeredCustomers: FieldRef<"Stat", 'Float'>
+    readonly shops: FieldRef<"Stat", 'Float'>
+    readonly councilors: FieldRef<"Stat", 'Float'>
+    readonly cooperatives: FieldRef<"Stat", 'Float'>
+    readonly createdAt: FieldRef<"Stat", 'DateTime'>
+    readonly updatedAt: FieldRef<"Stat", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Stat findUnique
+   */
+  export type StatFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stat
+     */
+    select?: StatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stat
+     */
+    omit?: StatOmit<ExtArgs> | null
+    /**
+     * Filter, which Stat to fetch.
+     */
+    where: StatWhereUniqueInput
+  }
+
+  /**
+   * Stat findUniqueOrThrow
+   */
+  export type StatFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stat
+     */
+    select?: StatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stat
+     */
+    omit?: StatOmit<ExtArgs> | null
+    /**
+     * Filter, which Stat to fetch.
+     */
+    where: StatWhereUniqueInput
+  }
+
+  /**
+   * Stat findFirst
+   */
+  export type StatFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stat
+     */
+    select?: StatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stat
+     */
+    omit?: StatOmit<ExtArgs> | null
+    /**
+     * Filter, which Stat to fetch.
+     */
+    where?: StatWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Stats to fetch.
+     */
+    orderBy?: StatOrderByWithRelationInput | StatOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Stats.
+     */
+    cursor?: StatWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Stats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Stats.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Stats.
+     */
+    distinct?: StatScalarFieldEnum | StatScalarFieldEnum[]
+  }
+
+  /**
+   * Stat findFirstOrThrow
+   */
+  export type StatFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stat
+     */
+    select?: StatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stat
+     */
+    omit?: StatOmit<ExtArgs> | null
+    /**
+     * Filter, which Stat to fetch.
+     */
+    where?: StatWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Stats to fetch.
+     */
+    orderBy?: StatOrderByWithRelationInput | StatOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Stats.
+     */
+    cursor?: StatWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Stats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Stats.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Stats.
+     */
+    distinct?: StatScalarFieldEnum | StatScalarFieldEnum[]
+  }
+
+  /**
+   * Stat findMany
+   */
+  export type StatFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stat
+     */
+    select?: StatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stat
+     */
+    omit?: StatOmit<ExtArgs> | null
+    /**
+     * Filter, which Stats to fetch.
+     */
+    where?: StatWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Stats to fetch.
+     */
+    orderBy?: StatOrderByWithRelationInput | StatOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Stats.
+     */
+    cursor?: StatWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Stats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Stats.
+     */
+    skip?: number
+    distinct?: StatScalarFieldEnum | StatScalarFieldEnum[]
+  }
+
+  /**
+   * Stat create
+   */
+  export type StatCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stat
+     */
+    select?: StatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stat
+     */
+    omit?: StatOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Stat.
+     */
+    data: XOR<StatCreateInput, StatUncheckedCreateInput>
+  }
+
+  /**
+   * Stat createMany
+   */
+  export type StatCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Stats.
+     */
+    data: StatCreateManyInput | StatCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Stat createManyAndReturn
+   */
+  export type StatCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stat
+     */
+    select?: StatSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stat
+     */
+    omit?: StatOmit<ExtArgs> | null
+    /**
+     * The data used to create many Stats.
+     */
+    data: StatCreateManyInput | StatCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Stat update
+   */
+  export type StatUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stat
+     */
+    select?: StatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stat
+     */
+    omit?: StatOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Stat.
+     */
+    data: XOR<StatUpdateInput, StatUncheckedUpdateInput>
+    /**
+     * Choose, which Stat to update.
+     */
+    where: StatWhereUniqueInput
+  }
+
+  /**
+   * Stat updateMany
+   */
+  export type StatUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Stats.
+     */
+    data: XOR<StatUpdateManyMutationInput, StatUncheckedUpdateManyInput>
+    /**
+     * Filter which Stats to update
+     */
+    where?: StatWhereInput
+    /**
+     * Limit how many Stats to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Stat updateManyAndReturn
+   */
+  export type StatUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stat
+     */
+    select?: StatSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stat
+     */
+    omit?: StatOmit<ExtArgs> | null
+    /**
+     * The data used to update Stats.
+     */
+    data: XOR<StatUpdateManyMutationInput, StatUncheckedUpdateManyInput>
+    /**
+     * Filter which Stats to update
+     */
+    where?: StatWhereInput
+    /**
+     * Limit how many Stats to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Stat upsert
+   */
+  export type StatUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stat
+     */
+    select?: StatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stat
+     */
+    omit?: StatOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Stat to update in case it exists.
+     */
+    where: StatWhereUniqueInput
+    /**
+     * In case the Stat found by the `where` argument doesn't exist, create a new Stat with this data.
+     */
+    create: XOR<StatCreateInput, StatUncheckedCreateInput>
+    /**
+     * In case the Stat was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<StatUpdateInput, StatUncheckedUpdateInput>
+  }
+
+  /**
+   * Stat delete
+   */
+  export type StatDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stat
+     */
+    select?: StatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stat
+     */
+    omit?: StatOmit<ExtArgs> | null
+    /**
+     * Filter which Stat to delete.
+     */
+    where: StatWhereUniqueInput
+  }
+
+  /**
+   * Stat deleteMany
+   */
+  export type StatDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Stats to delete
+     */
+    where?: StatWhereInput
+    /**
+     * Limit how many Stats to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Stat without action
+   */
+  export type StatDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stat
+     */
+    select?: StatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stat
+     */
+    omit?: StatOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model News
    */
 
@@ -8739,7 +10840,7 @@ export namespace Prisma {
     id: string
     demarcation: string
     councilArea: string
-    imageUrl: string
+    imageUrl: string | null
     council: string
     firstAlternateCouncillor: string
     secondAlternateCouncillor: string
@@ -8821,7 +10922,7 @@ export namespace Prisma {
       id: string
       demarcation: string
       councilArea: string
-      imageUrl: string
+      imageUrl: string | null
       council: string
       firstAlternateCouncillor: string
       secondAlternateCouncillor: string
@@ -14796,2107 +16897,6 @@ export namespace Prisma {
 
 
   /**
-   * Model Team
-   */
-
-  export type AggregateTeam = {
-    _count: TeamCountAggregateOutputType | null
-    _min: TeamMinAggregateOutputType | null
-    _max: TeamMaxAggregateOutputType | null
-  }
-
-  export type TeamMinAggregateOutputType = {
-    id: string | null
-    name: string | null
-    position: string | null
-    imageUrl: string | null
-    facebookUrl: string | null
-    linkedInProfile: string | null
-    twitterUrl: string | null
-    description: string | null
-  }
-
-  export type TeamMaxAggregateOutputType = {
-    id: string | null
-    name: string | null
-    position: string | null
-    imageUrl: string | null
-    facebookUrl: string | null
-    linkedInProfile: string | null
-    twitterUrl: string | null
-    description: string | null
-  }
-
-  export type TeamCountAggregateOutputType = {
-    id: number
-    name: number
-    position: number
-    imageUrl: number
-    facebookUrl: number
-    linkedInProfile: number
-    twitterUrl: number
-    description: number
-    _all: number
-  }
-
-
-  export type TeamMinAggregateInputType = {
-    id?: true
-    name?: true
-    position?: true
-    imageUrl?: true
-    facebookUrl?: true
-    linkedInProfile?: true
-    twitterUrl?: true
-    description?: true
-  }
-
-  export type TeamMaxAggregateInputType = {
-    id?: true
-    name?: true
-    position?: true
-    imageUrl?: true
-    facebookUrl?: true
-    linkedInProfile?: true
-    twitterUrl?: true
-    description?: true
-  }
-
-  export type TeamCountAggregateInputType = {
-    id?: true
-    name?: true
-    position?: true
-    imageUrl?: true
-    facebookUrl?: true
-    linkedInProfile?: true
-    twitterUrl?: true
-    description?: true
-    _all?: true
-  }
-
-  export type TeamAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Team to aggregate.
-     */
-    where?: TeamWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Teams to fetch.
-     */
-    orderBy?: TeamOrderByWithRelationInput | TeamOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: TeamWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Teams from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Teams.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Teams
-    **/
-    _count?: true | TeamCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: TeamMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: TeamMaxAggregateInputType
-  }
-
-  export type GetTeamAggregateType<T extends TeamAggregateArgs> = {
-        [P in keyof T & keyof AggregateTeam]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateTeam[P]>
-      : GetScalarType<T[P], AggregateTeam[P]>
-  }
-
-
-
-
-  export type TeamGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TeamWhereInput
-    orderBy?: TeamOrderByWithAggregationInput | TeamOrderByWithAggregationInput[]
-    by: TeamScalarFieldEnum[] | TeamScalarFieldEnum
-    having?: TeamScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: TeamCountAggregateInputType | true
-    _min?: TeamMinAggregateInputType
-    _max?: TeamMaxAggregateInputType
-  }
-
-  export type TeamGroupByOutputType = {
-    id: string
-    name: string
-    position: string
-    imageUrl: string
-    facebookUrl: string | null
-    linkedInProfile: string | null
-    twitterUrl: string | null
-    description: string
-    _count: TeamCountAggregateOutputType | null
-    _min: TeamMinAggregateOutputType | null
-    _max: TeamMaxAggregateOutputType | null
-  }
-
-  type GetTeamGroupByPayload<T extends TeamGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<TeamGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof TeamGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], TeamGroupByOutputType[P]>
-            : GetScalarType<T[P], TeamGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type TeamSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    position?: boolean
-    imageUrl?: boolean
-    facebookUrl?: boolean
-    linkedInProfile?: boolean
-    twitterUrl?: boolean
-    description?: boolean
-  }, ExtArgs["result"]["team"]>
-
-  export type TeamSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    position?: boolean
-    imageUrl?: boolean
-    facebookUrl?: boolean
-    linkedInProfile?: boolean
-    twitterUrl?: boolean
-    description?: boolean
-  }, ExtArgs["result"]["team"]>
-
-  export type TeamSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    position?: boolean
-    imageUrl?: boolean
-    facebookUrl?: boolean
-    linkedInProfile?: boolean
-    twitterUrl?: boolean
-    description?: boolean
-  }, ExtArgs["result"]["team"]>
-
-  export type TeamSelectScalar = {
-    id?: boolean
-    name?: boolean
-    position?: boolean
-    imageUrl?: boolean
-    facebookUrl?: boolean
-    linkedInProfile?: boolean
-    twitterUrl?: boolean
-    description?: boolean
-  }
-
-  export type TeamOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "position" | "imageUrl" | "facebookUrl" | "linkedInProfile" | "twitterUrl" | "description", ExtArgs["result"]["team"]>
-
-  export type $TeamPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Team"
-    objects: {}
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      name: string
-      position: string
-      imageUrl: string
-      facebookUrl: string | null
-      linkedInProfile: string | null
-      twitterUrl: string | null
-      description: string
-    }, ExtArgs["result"]["team"]>
-    composites: {}
-  }
-
-  type TeamGetPayload<S extends boolean | null | undefined | TeamDefaultArgs> = $Result.GetResult<Prisma.$TeamPayload, S>
-
-  type TeamCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<TeamFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: TeamCountAggregateInputType | true
-    }
-
-  export interface TeamDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Team'], meta: { name: 'Team' } }
-    /**
-     * Find zero or one Team that matches the filter.
-     * @param {TeamFindUniqueArgs} args - Arguments to find a Team
-     * @example
-     * // Get one Team
-     * const team = await prisma.team.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends TeamFindUniqueArgs>(args: SelectSubset<T, TeamFindUniqueArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Team that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {TeamFindUniqueOrThrowArgs} args - Arguments to find a Team
-     * @example
-     * // Get one Team
-     * const team = await prisma.team.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends TeamFindUniqueOrThrowArgs>(args: SelectSubset<T, TeamFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Team that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {TeamFindFirstArgs} args - Arguments to find a Team
-     * @example
-     * // Get one Team
-     * const team = await prisma.team.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends TeamFindFirstArgs>(args?: SelectSubset<T, TeamFindFirstArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Team that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {TeamFindFirstOrThrowArgs} args - Arguments to find a Team
-     * @example
-     * // Get one Team
-     * const team = await prisma.team.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends TeamFindFirstOrThrowArgs>(args?: SelectSubset<T, TeamFindFirstOrThrowArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Teams that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {TeamFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Teams
-     * const teams = await prisma.team.findMany()
-     * 
-     * // Get first 10 Teams
-     * const teams = await prisma.team.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const teamWithIdOnly = await prisma.team.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends TeamFindManyArgs>(args?: SelectSubset<T, TeamFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Team.
-     * @param {TeamCreateArgs} args - Arguments to create a Team.
-     * @example
-     * // Create one Team
-     * const Team = await prisma.team.create({
-     *   data: {
-     *     // ... data to create a Team
-     *   }
-     * })
-     * 
-     */
-    create<T extends TeamCreateArgs>(args: SelectSubset<T, TeamCreateArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Teams.
-     * @param {TeamCreateManyArgs} args - Arguments to create many Teams.
-     * @example
-     * // Create many Teams
-     * const team = await prisma.team.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends TeamCreateManyArgs>(args?: SelectSubset<T, TeamCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Teams and returns the data saved in the database.
-     * @param {TeamCreateManyAndReturnArgs} args - Arguments to create many Teams.
-     * @example
-     * // Create many Teams
-     * const team = await prisma.team.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Teams and only return the `id`
-     * const teamWithIdOnly = await prisma.team.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends TeamCreateManyAndReturnArgs>(args?: SelectSubset<T, TeamCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Team.
-     * @param {TeamDeleteArgs} args - Arguments to delete one Team.
-     * @example
-     * // Delete one Team
-     * const Team = await prisma.team.delete({
-     *   where: {
-     *     // ... filter to delete one Team
-     *   }
-     * })
-     * 
-     */
-    delete<T extends TeamDeleteArgs>(args: SelectSubset<T, TeamDeleteArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Team.
-     * @param {TeamUpdateArgs} args - Arguments to update one Team.
-     * @example
-     * // Update one Team
-     * const team = await prisma.team.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends TeamUpdateArgs>(args: SelectSubset<T, TeamUpdateArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Teams.
-     * @param {TeamDeleteManyArgs} args - Arguments to filter Teams to delete.
-     * @example
-     * // Delete a few Teams
-     * const { count } = await prisma.team.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends TeamDeleteManyArgs>(args?: SelectSubset<T, TeamDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Teams.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {TeamUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Teams
-     * const team = await prisma.team.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends TeamUpdateManyArgs>(args: SelectSubset<T, TeamUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Teams and returns the data updated in the database.
-     * @param {TeamUpdateManyAndReturnArgs} args - Arguments to update many Teams.
-     * @example
-     * // Update many Teams
-     * const team = await prisma.team.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Teams and only return the `id`
-     * const teamWithIdOnly = await prisma.team.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends TeamUpdateManyAndReturnArgs>(args: SelectSubset<T, TeamUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Team.
-     * @param {TeamUpsertArgs} args - Arguments to update or create a Team.
-     * @example
-     * // Update or create a Team
-     * const team = await prisma.team.upsert({
-     *   create: {
-     *     // ... data to create a Team
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Team we want to update
-     *   }
-     * })
-     */
-    upsert<T extends TeamUpsertArgs>(args: SelectSubset<T, TeamUpsertArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Teams.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {TeamCountArgs} args - Arguments to filter Teams to count.
-     * @example
-     * // Count the number of Teams
-     * const count = await prisma.team.count({
-     *   where: {
-     *     // ... the filter for the Teams we want to count
-     *   }
-     * })
-    **/
-    count<T extends TeamCountArgs>(
-      args?: Subset<T, TeamCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], TeamCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Team.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {TeamAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends TeamAggregateArgs>(args: Subset<T, TeamAggregateArgs>): Prisma.PrismaPromise<GetTeamAggregateType<T>>
-
-    /**
-     * Group by Team.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {TeamGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends TeamGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: TeamGroupByArgs['orderBy'] }
-        : { orderBy?: TeamGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, TeamGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTeamGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Team model
-   */
-  readonly fields: TeamFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Team.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__TeamClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Team model
-   */
-  interface TeamFieldRefs {
-    readonly id: FieldRef<"Team", 'String'>
-    readonly name: FieldRef<"Team", 'String'>
-    readonly position: FieldRef<"Team", 'String'>
-    readonly imageUrl: FieldRef<"Team", 'String'>
-    readonly facebookUrl: FieldRef<"Team", 'String'>
-    readonly linkedInProfile: FieldRef<"Team", 'String'>
-    readonly twitterUrl: FieldRef<"Team", 'String'>
-    readonly description: FieldRef<"Team", 'String'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Team findUnique
-   */
-  export type TeamFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Team
-     */
-    select?: TeamSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Team
-     */
-    omit?: TeamOmit<ExtArgs> | null
-    /**
-     * Filter, which Team to fetch.
-     */
-    where: TeamWhereUniqueInput
-  }
-
-  /**
-   * Team findUniqueOrThrow
-   */
-  export type TeamFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Team
-     */
-    select?: TeamSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Team
-     */
-    omit?: TeamOmit<ExtArgs> | null
-    /**
-     * Filter, which Team to fetch.
-     */
-    where: TeamWhereUniqueInput
-  }
-
-  /**
-   * Team findFirst
-   */
-  export type TeamFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Team
-     */
-    select?: TeamSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Team
-     */
-    omit?: TeamOmit<ExtArgs> | null
-    /**
-     * Filter, which Team to fetch.
-     */
-    where?: TeamWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Teams to fetch.
-     */
-    orderBy?: TeamOrderByWithRelationInput | TeamOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Teams.
-     */
-    cursor?: TeamWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Teams from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Teams.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Teams.
-     */
-    distinct?: TeamScalarFieldEnum | TeamScalarFieldEnum[]
-  }
-
-  /**
-   * Team findFirstOrThrow
-   */
-  export type TeamFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Team
-     */
-    select?: TeamSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Team
-     */
-    omit?: TeamOmit<ExtArgs> | null
-    /**
-     * Filter, which Team to fetch.
-     */
-    where?: TeamWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Teams to fetch.
-     */
-    orderBy?: TeamOrderByWithRelationInput | TeamOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Teams.
-     */
-    cursor?: TeamWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Teams from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Teams.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Teams.
-     */
-    distinct?: TeamScalarFieldEnum | TeamScalarFieldEnum[]
-  }
-
-  /**
-   * Team findMany
-   */
-  export type TeamFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Team
-     */
-    select?: TeamSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Team
-     */
-    omit?: TeamOmit<ExtArgs> | null
-    /**
-     * Filter, which Teams to fetch.
-     */
-    where?: TeamWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Teams to fetch.
-     */
-    orderBy?: TeamOrderByWithRelationInput | TeamOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Teams.
-     */
-    cursor?: TeamWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Teams from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Teams.
-     */
-    skip?: number
-    distinct?: TeamScalarFieldEnum | TeamScalarFieldEnum[]
-  }
-
-  /**
-   * Team create
-   */
-  export type TeamCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Team
-     */
-    select?: TeamSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Team
-     */
-    omit?: TeamOmit<ExtArgs> | null
-    /**
-     * The data needed to create a Team.
-     */
-    data: XOR<TeamCreateInput, TeamUncheckedCreateInput>
-  }
-
-  /**
-   * Team createMany
-   */
-  export type TeamCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Teams.
-     */
-    data: TeamCreateManyInput | TeamCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Team createManyAndReturn
-   */
-  export type TeamCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Team
-     */
-    select?: TeamSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Team
-     */
-    omit?: TeamOmit<ExtArgs> | null
-    /**
-     * The data used to create many Teams.
-     */
-    data: TeamCreateManyInput | TeamCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Team update
-   */
-  export type TeamUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Team
-     */
-    select?: TeamSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Team
-     */
-    omit?: TeamOmit<ExtArgs> | null
-    /**
-     * The data needed to update a Team.
-     */
-    data: XOR<TeamUpdateInput, TeamUncheckedUpdateInput>
-    /**
-     * Choose, which Team to update.
-     */
-    where: TeamWhereUniqueInput
-  }
-
-  /**
-   * Team updateMany
-   */
-  export type TeamUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Teams.
-     */
-    data: XOR<TeamUpdateManyMutationInput, TeamUncheckedUpdateManyInput>
-    /**
-     * Filter which Teams to update
-     */
-    where?: TeamWhereInput
-    /**
-     * Limit how many Teams to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Team updateManyAndReturn
-   */
-  export type TeamUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Team
-     */
-    select?: TeamSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Team
-     */
-    omit?: TeamOmit<ExtArgs> | null
-    /**
-     * The data used to update Teams.
-     */
-    data: XOR<TeamUpdateManyMutationInput, TeamUncheckedUpdateManyInput>
-    /**
-     * Filter which Teams to update
-     */
-    where?: TeamWhereInput
-    /**
-     * Limit how many Teams to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Team upsert
-   */
-  export type TeamUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Team
-     */
-    select?: TeamSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Team
-     */
-    omit?: TeamOmit<ExtArgs> | null
-    /**
-     * The filter to search for the Team to update in case it exists.
-     */
-    where: TeamWhereUniqueInput
-    /**
-     * In case the Team found by the `where` argument doesn't exist, create a new Team with this data.
-     */
-    create: XOR<TeamCreateInput, TeamUncheckedCreateInput>
-    /**
-     * In case the Team was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<TeamUpdateInput, TeamUncheckedUpdateInput>
-  }
-
-  /**
-   * Team delete
-   */
-  export type TeamDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Team
-     */
-    select?: TeamSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Team
-     */
-    omit?: TeamOmit<ExtArgs> | null
-    /**
-     * Filter which Team to delete.
-     */
-    where: TeamWhereUniqueInput
-  }
-
-  /**
-   * Team deleteMany
-   */
-  export type TeamDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Teams to delete
-     */
-    where?: TeamWhereInput
-    /**
-     * Limit how many Teams to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Team without action
-   */
-  export type TeamDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Team
-     */
-    select?: TeamSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Team
-     */
-    omit?: TeamOmit<ExtArgs> | null
-  }
-
-
-  /**
-   * Model Stat
-   */
-
-  export type AggregateStat = {
-    _count: StatCountAggregateOutputType | null
-    _avg: StatAvgAggregateOutputType | null
-    _sum: StatSumAggregateOutputType | null
-    _min: StatMinAggregateOutputType | null
-    _max: StatMaxAggregateOutputType | null
-  }
-
-  export type StatAvgAggregateOutputType = {
-    registeredCustomers: number | null
-    shops: number | null
-    councilors: number | null
-    cooperatives: number | null
-  }
-
-  export type StatSumAggregateOutputType = {
-    registeredCustomers: number | null
-    shops: number | null
-    councilors: number | null
-    cooperatives: number | null
-  }
-
-  export type StatMinAggregateOutputType = {
-    id: string | null
-    registeredCustomers: number | null
-    shops: number | null
-    councilors: number | null
-    cooperatives: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type StatMaxAggregateOutputType = {
-    id: string | null
-    registeredCustomers: number | null
-    shops: number | null
-    councilors: number | null
-    cooperatives: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type StatCountAggregateOutputType = {
-    id: number
-    registeredCustomers: number
-    shops: number
-    councilors: number
-    cooperatives: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type StatAvgAggregateInputType = {
-    registeredCustomers?: true
-    shops?: true
-    councilors?: true
-    cooperatives?: true
-  }
-
-  export type StatSumAggregateInputType = {
-    registeredCustomers?: true
-    shops?: true
-    councilors?: true
-    cooperatives?: true
-  }
-
-  export type StatMinAggregateInputType = {
-    id?: true
-    registeredCustomers?: true
-    shops?: true
-    councilors?: true
-    cooperatives?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type StatMaxAggregateInputType = {
-    id?: true
-    registeredCustomers?: true
-    shops?: true
-    councilors?: true
-    cooperatives?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type StatCountAggregateInputType = {
-    id?: true
-    registeredCustomers?: true
-    shops?: true
-    councilors?: true
-    cooperatives?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type StatAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Stat to aggregate.
-     */
-    where?: StatWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Stats to fetch.
-     */
-    orderBy?: StatOrderByWithRelationInput | StatOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: StatWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Stats from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Stats.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Stats
-    **/
-    _count?: true | StatCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: StatAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: StatSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: StatMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: StatMaxAggregateInputType
-  }
-
-  export type GetStatAggregateType<T extends StatAggregateArgs> = {
-        [P in keyof T & keyof AggregateStat]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateStat[P]>
-      : GetScalarType<T[P], AggregateStat[P]>
-  }
-
-
-
-
-  export type StatGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: StatWhereInput
-    orderBy?: StatOrderByWithAggregationInput | StatOrderByWithAggregationInput[]
-    by: StatScalarFieldEnum[] | StatScalarFieldEnum
-    having?: StatScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: StatCountAggregateInputType | true
-    _avg?: StatAvgAggregateInputType
-    _sum?: StatSumAggregateInputType
-    _min?: StatMinAggregateInputType
-    _max?: StatMaxAggregateInputType
-  }
-
-  export type StatGroupByOutputType = {
-    id: string
-    registeredCustomers: number
-    shops: number
-    councilors: number
-    cooperatives: number
-    createdAt: Date
-    updatedAt: Date
-    _count: StatCountAggregateOutputType | null
-    _avg: StatAvgAggregateOutputType | null
-    _sum: StatSumAggregateOutputType | null
-    _min: StatMinAggregateOutputType | null
-    _max: StatMaxAggregateOutputType | null
-  }
-
-  type GetStatGroupByPayload<T extends StatGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<StatGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof StatGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], StatGroupByOutputType[P]>
-            : GetScalarType<T[P], StatGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type StatSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    registeredCustomers?: boolean
-    shops?: boolean
-    councilors?: boolean
-    cooperatives?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }, ExtArgs["result"]["stat"]>
-
-  export type StatSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    registeredCustomers?: boolean
-    shops?: boolean
-    councilors?: boolean
-    cooperatives?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }, ExtArgs["result"]["stat"]>
-
-  export type StatSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    registeredCustomers?: boolean
-    shops?: boolean
-    councilors?: boolean
-    cooperatives?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }, ExtArgs["result"]["stat"]>
-
-  export type StatSelectScalar = {
-    id?: boolean
-    registeredCustomers?: boolean
-    shops?: boolean
-    councilors?: boolean
-    cooperatives?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type StatOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "registeredCustomers" | "shops" | "councilors" | "cooperatives" | "createdAt" | "updatedAt", ExtArgs["result"]["stat"]>
-
-  export type $StatPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Stat"
-    objects: {}
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      registeredCustomers: number
-      shops: number
-      councilors: number
-      cooperatives: number
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["stat"]>
-    composites: {}
-  }
-
-  type StatGetPayload<S extends boolean | null | undefined | StatDefaultArgs> = $Result.GetResult<Prisma.$StatPayload, S>
-
-  type StatCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<StatFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: StatCountAggregateInputType | true
-    }
-
-  export interface StatDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Stat'], meta: { name: 'Stat' } }
-    /**
-     * Find zero or one Stat that matches the filter.
-     * @param {StatFindUniqueArgs} args - Arguments to find a Stat
-     * @example
-     * // Get one Stat
-     * const stat = await prisma.stat.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends StatFindUniqueArgs>(args: SelectSubset<T, StatFindUniqueArgs<ExtArgs>>): Prisma__StatClient<$Result.GetResult<Prisma.$StatPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Stat that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {StatFindUniqueOrThrowArgs} args - Arguments to find a Stat
-     * @example
-     * // Get one Stat
-     * const stat = await prisma.stat.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends StatFindUniqueOrThrowArgs>(args: SelectSubset<T, StatFindUniqueOrThrowArgs<ExtArgs>>): Prisma__StatClient<$Result.GetResult<Prisma.$StatPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Stat that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {StatFindFirstArgs} args - Arguments to find a Stat
-     * @example
-     * // Get one Stat
-     * const stat = await prisma.stat.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends StatFindFirstArgs>(args?: SelectSubset<T, StatFindFirstArgs<ExtArgs>>): Prisma__StatClient<$Result.GetResult<Prisma.$StatPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Stat that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {StatFindFirstOrThrowArgs} args - Arguments to find a Stat
-     * @example
-     * // Get one Stat
-     * const stat = await prisma.stat.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends StatFindFirstOrThrowArgs>(args?: SelectSubset<T, StatFindFirstOrThrowArgs<ExtArgs>>): Prisma__StatClient<$Result.GetResult<Prisma.$StatPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Stats that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {StatFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Stats
-     * const stats = await prisma.stat.findMany()
-     * 
-     * // Get first 10 Stats
-     * const stats = await prisma.stat.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const statWithIdOnly = await prisma.stat.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends StatFindManyArgs>(args?: SelectSubset<T, StatFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Stat.
-     * @param {StatCreateArgs} args - Arguments to create a Stat.
-     * @example
-     * // Create one Stat
-     * const Stat = await prisma.stat.create({
-     *   data: {
-     *     // ... data to create a Stat
-     *   }
-     * })
-     * 
-     */
-    create<T extends StatCreateArgs>(args: SelectSubset<T, StatCreateArgs<ExtArgs>>): Prisma__StatClient<$Result.GetResult<Prisma.$StatPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Stats.
-     * @param {StatCreateManyArgs} args - Arguments to create many Stats.
-     * @example
-     * // Create many Stats
-     * const stat = await prisma.stat.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends StatCreateManyArgs>(args?: SelectSubset<T, StatCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Stats and returns the data saved in the database.
-     * @param {StatCreateManyAndReturnArgs} args - Arguments to create many Stats.
-     * @example
-     * // Create many Stats
-     * const stat = await prisma.stat.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Stats and only return the `id`
-     * const statWithIdOnly = await prisma.stat.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends StatCreateManyAndReturnArgs>(args?: SelectSubset<T, StatCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StatPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Stat.
-     * @param {StatDeleteArgs} args - Arguments to delete one Stat.
-     * @example
-     * // Delete one Stat
-     * const Stat = await prisma.stat.delete({
-     *   where: {
-     *     // ... filter to delete one Stat
-     *   }
-     * })
-     * 
-     */
-    delete<T extends StatDeleteArgs>(args: SelectSubset<T, StatDeleteArgs<ExtArgs>>): Prisma__StatClient<$Result.GetResult<Prisma.$StatPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Stat.
-     * @param {StatUpdateArgs} args - Arguments to update one Stat.
-     * @example
-     * // Update one Stat
-     * const stat = await prisma.stat.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends StatUpdateArgs>(args: SelectSubset<T, StatUpdateArgs<ExtArgs>>): Prisma__StatClient<$Result.GetResult<Prisma.$StatPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Stats.
-     * @param {StatDeleteManyArgs} args - Arguments to filter Stats to delete.
-     * @example
-     * // Delete a few Stats
-     * const { count } = await prisma.stat.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends StatDeleteManyArgs>(args?: SelectSubset<T, StatDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Stats.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {StatUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Stats
-     * const stat = await prisma.stat.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends StatUpdateManyArgs>(args: SelectSubset<T, StatUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Stats and returns the data updated in the database.
-     * @param {StatUpdateManyAndReturnArgs} args - Arguments to update many Stats.
-     * @example
-     * // Update many Stats
-     * const stat = await prisma.stat.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Stats and only return the `id`
-     * const statWithIdOnly = await prisma.stat.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends StatUpdateManyAndReturnArgs>(args: SelectSubset<T, StatUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StatPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Stat.
-     * @param {StatUpsertArgs} args - Arguments to update or create a Stat.
-     * @example
-     * // Update or create a Stat
-     * const stat = await prisma.stat.upsert({
-     *   create: {
-     *     // ... data to create a Stat
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Stat we want to update
-     *   }
-     * })
-     */
-    upsert<T extends StatUpsertArgs>(args: SelectSubset<T, StatUpsertArgs<ExtArgs>>): Prisma__StatClient<$Result.GetResult<Prisma.$StatPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Stats.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {StatCountArgs} args - Arguments to filter Stats to count.
-     * @example
-     * // Count the number of Stats
-     * const count = await prisma.stat.count({
-     *   where: {
-     *     // ... the filter for the Stats we want to count
-     *   }
-     * })
-    **/
-    count<T extends StatCountArgs>(
-      args?: Subset<T, StatCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], StatCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Stat.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {StatAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends StatAggregateArgs>(args: Subset<T, StatAggregateArgs>): Prisma.PrismaPromise<GetStatAggregateType<T>>
-
-    /**
-     * Group by Stat.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {StatGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends StatGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: StatGroupByArgs['orderBy'] }
-        : { orderBy?: StatGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, StatGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetStatGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Stat model
-   */
-  readonly fields: StatFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Stat.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__StatClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Stat model
-   */
-  interface StatFieldRefs {
-    readonly id: FieldRef<"Stat", 'String'>
-    readonly registeredCustomers: FieldRef<"Stat", 'Float'>
-    readonly shops: FieldRef<"Stat", 'Float'>
-    readonly councilors: FieldRef<"Stat", 'Float'>
-    readonly cooperatives: FieldRef<"Stat", 'Float'>
-    readonly createdAt: FieldRef<"Stat", 'DateTime'>
-    readonly updatedAt: FieldRef<"Stat", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Stat findUnique
-   */
-  export type StatFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Stat
-     */
-    select?: StatSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Stat
-     */
-    omit?: StatOmit<ExtArgs> | null
-    /**
-     * Filter, which Stat to fetch.
-     */
-    where: StatWhereUniqueInput
-  }
-
-  /**
-   * Stat findUniqueOrThrow
-   */
-  export type StatFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Stat
-     */
-    select?: StatSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Stat
-     */
-    omit?: StatOmit<ExtArgs> | null
-    /**
-     * Filter, which Stat to fetch.
-     */
-    where: StatWhereUniqueInput
-  }
-
-  /**
-   * Stat findFirst
-   */
-  export type StatFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Stat
-     */
-    select?: StatSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Stat
-     */
-    omit?: StatOmit<ExtArgs> | null
-    /**
-     * Filter, which Stat to fetch.
-     */
-    where?: StatWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Stats to fetch.
-     */
-    orderBy?: StatOrderByWithRelationInput | StatOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Stats.
-     */
-    cursor?: StatWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Stats from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Stats.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Stats.
-     */
-    distinct?: StatScalarFieldEnum | StatScalarFieldEnum[]
-  }
-
-  /**
-   * Stat findFirstOrThrow
-   */
-  export type StatFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Stat
-     */
-    select?: StatSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Stat
-     */
-    omit?: StatOmit<ExtArgs> | null
-    /**
-     * Filter, which Stat to fetch.
-     */
-    where?: StatWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Stats to fetch.
-     */
-    orderBy?: StatOrderByWithRelationInput | StatOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Stats.
-     */
-    cursor?: StatWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Stats from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Stats.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Stats.
-     */
-    distinct?: StatScalarFieldEnum | StatScalarFieldEnum[]
-  }
-
-  /**
-   * Stat findMany
-   */
-  export type StatFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Stat
-     */
-    select?: StatSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Stat
-     */
-    omit?: StatOmit<ExtArgs> | null
-    /**
-     * Filter, which Stats to fetch.
-     */
-    where?: StatWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Stats to fetch.
-     */
-    orderBy?: StatOrderByWithRelationInput | StatOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Stats.
-     */
-    cursor?: StatWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Stats from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Stats.
-     */
-    skip?: number
-    distinct?: StatScalarFieldEnum | StatScalarFieldEnum[]
-  }
-
-  /**
-   * Stat create
-   */
-  export type StatCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Stat
-     */
-    select?: StatSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Stat
-     */
-    omit?: StatOmit<ExtArgs> | null
-    /**
-     * The data needed to create a Stat.
-     */
-    data: XOR<StatCreateInput, StatUncheckedCreateInput>
-  }
-
-  /**
-   * Stat createMany
-   */
-  export type StatCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Stats.
-     */
-    data: StatCreateManyInput | StatCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Stat createManyAndReturn
-   */
-  export type StatCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Stat
-     */
-    select?: StatSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Stat
-     */
-    omit?: StatOmit<ExtArgs> | null
-    /**
-     * The data used to create many Stats.
-     */
-    data: StatCreateManyInput | StatCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Stat update
-   */
-  export type StatUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Stat
-     */
-    select?: StatSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Stat
-     */
-    omit?: StatOmit<ExtArgs> | null
-    /**
-     * The data needed to update a Stat.
-     */
-    data: XOR<StatUpdateInput, StatUncheckedUpdateInput>
-    /**
-     * Choose, which Stat to update.
-     */
-    where: StatWhereUniqueInput
-  }
-
-  /**
-   * Stat updateMany
-   */
-  export type StatUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Stats.
-     */
-    data: XOR<StatUpdateManyMutationInput, StatUncheckedUpdateManyInput>
-    /**
-     * Filter which Stats to update
-     */
-    where?: StatWhereInput
-    /**
-     * Limit how many Stats to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Stat updateManyAndReturn
-   */
-  export type StatUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Stat
-     */
-    select?: StatSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Stat
-     */
-    omit?: StatOmit<ExtArgs> | null
-    /**
-     * The data used to update Stats.
-     */
-    data: XOR<StatUpdateManyMutationInput, StatUncheckedUpdateManyInput>
-    /**
-     * Filter which Stats to update
-     */
-    where?: StatWhereInput
-    /**
-     * Limit how many Stats to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Stat upsert
-   */
-  export type StatUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Stat
-     */
-    select?: StatSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Stat
-     */
-    omit?: StatOmit<ExtArgs> | null
-    /**
-     * The filter to search for the Stat to update in case it exists.
-     */
-    where: StatWhereUniqueInput
-    /**
-     * In case the Stat found by the `where` argument doesn't exist, create a new Stat with this data.
-     */
-    create: XOR<StatCreateInput, StatUncheckedCreateInput>
-    /**
-     * In case the Stat was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<StatUpdateInput, StatUncheckedUpdateInput>
-  }
-
-  /**
-   * Stat delete
-   */
-  export type StatDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Stat
-     */
-    select?: StatSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Stat
-     */
-    omit?: StatOmit<ExtArgs> | null
-    /**
-     * Filter which Stat to delete.
-     */
-    where: StatWhereUniqueInput
-  }
-
-  /**
-   * Stat deleteMany
-   */
-  export type StatDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Stats to delete
-     */
-    where?: StatWhereInput
-    /**
-     * Limit how many Stats to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Stat without action
-   */
-  export type StatDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Stat
-     */
-    select?: StatSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Stat
-     */
-    omit?: StatOmit<ExtArgs> | null
-  }
-
-
-  /**
    * Enums
    */
 
@@ -16987,6 +16987,33 @@ export namespace Prisma {
   };
 
   export type BlogScalarFieldEnum = (typeof BlogScalarFieldEnum)[keyof typeof BlogScalarFieldEnum]
+
+
+  export const TeamScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    position: 'position',
+    imageUrl: 'imageUrl',
+    facebookUrl: 'facebookUrl',
+    linkedInProfile: 'linkedInProfile',
+    twitterUrl: 'twitterUrl',
+    description: 'description'
+  };
+
+  export type TeamScalarFieldEnum = (typeof TeamScalarFieldEnum)[keyof typeof TeamScalarFieldEnum]
+
+
+  export const StatScalarFieldEnum: {
+    id: 'id',
+    registeredCustomers: 'registeredCustomers',
+    shops: 'shops',
+    councilors: 'councilors',
+    cooperatives: 'cooperatives',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type StatScalarFieldEnum = (typeof StatScalarFieldEnum)[keyof typeof StatScalarFieldEnum]
 
 
   export const NewsScalarFieldEnum: {
@@ -17087,33 +17114,6 @@ export namespace Prisma {
   };
 
   export type ImageTextScalarFieldEnum = (typeof ImageTextScalarFieldEnum)[keyof typeof ImageTextScalarFieldEnum]
-
-
-  export const TeamScalarFieldEnum: {
-    id: 'id',
-    name: 'name',
-    position: 'position',
-    imageUrl: 'imageUrl',
-    facebookUrl: 'facebookUrl',
-    linkedInProfile: 'linkedInProfile',
-    twitterUrl: 'twitterUrl',
-    description: 'description'
-  };
-
-  export type TeamScalarFieldEnum = (typeof TeamScalarFieldEnum)[keyof typeof TeamScalarFieldEnum]
-
-
-  export const StatScalarFieldEnum: {
-    id: 'id',
-    registeredCustomers: 'registeredCustomers',
-    shops: 'shops',
-    councilors: 'councilors',
-    cooperatives: 'cooperatives',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type StatScalarFieldEnum = (typeof StatScalarFieldEnum)[keyof typeof StatScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -17613,6 +17613,137 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Blog"> | Date | string
   }
 
+  export type TeamWhereInput = {
+    AND?: TeamWhereInput | TeamWhereInput[]
+    OR?: TeamWhereInput[]
+    NOT?: TeamWhereInput | TeamWhereInput[]
+    id?: StringFilter<"Team"> | string
+    name?: StringFilter<"Team"> | string
+    position?: StringFilter<"Team"> | string
+    imageUrl?: StringFilter<"Team"> | string
+    facebookUrl?: StringNullableFilter<"Team"> | string | null
+    linkedInProfile?: StringNullableFilter<"Team"> | string | null
+    twitterUrl?: StringNullableFilter<"Team"> | string | null
+    description?: StringFilter<"Team"> | string
+  }
+
+  export type TeamOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    position?: SortOrder
+    imageUrl?: SortOrder
+    facebookUrl?: SortOrderInput | SortOrder
+    linkedInProfile?: SortOrderInput | SortOrder
+    twitterUrl?: SortOrderInput | SortOrder
+    description?: SortOrder
+  }
+
+  export type TeamWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: TeamWhereInput | TeamWhereInput[]
+    OR?: TeamWhereInput[]
+    NOT?: TeamWhereInput | TeamWhereInput[]
+    name?: StringFilter<"Team"> | string
+    position?: StringFilter<"Team"> | string
+    imageUrl?: StringFilter<"Team"> | string
+    facebookUrl?: StringNullableFilter<"Team"> | string | null
+    linkedInProfile?: StringNullableFilter<"Team"> | string | null
+    twitterUrl?: StringNullableFilter<"Team"> | string | null
+    description?: StringFilter<"Team"> | string
+  }, "id">
+
+  export type TeamOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    position?: SortOrder
+    imageUrl?: SortOrder
+    facebookUrl?: SortOrderInput | SortOrder
+    linkedInProfile?: SortOrderInput | SortOrder
+    twitterUrl?: SortOrderInput | SortOrder
+    description?: SortOrder
+    _count?: TeamCountOrderByAggregateInput
+    _max?: TeamMaxOrderByAggregateInput
+    _min?: TeamMinOrderByAggregateInput
+  }
+
+  export type TeamScalarWhereWithAggregatesInput = {
+    AND?: TeamScalarWhereWithAggregatesInput | TeamScalarWhereWithAggregatesInput[]
+    OR?: TeamScalarWhereWithAggregatesInput[]
+    NOT?: TeamScalarWhereWithAggregatesInput | TeamScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Team"> | string
+    name?: StringWithAggregatesFilter<"Team"> | string
+    position?: StringWithAggregatesFilter<"Team"> | string
+    imageUrl?: StringWithAggregatesFilter<"Team"> | string
+    facebookUrl?: StringNullableWithAggregatesFilter<"Team"> | string | null
+    linkedInProfile?: StringNullableWithAggregatesFilter<"Team"> | string | null
+    twitterUrl?: StringNullableWithAggregatesFilter<"Team"> | string | null
+    description?: StringWithAggregatesFilter<"Team"> | string
+  }
+
+  export type StatWhereInput = {
+    AND?: StatWhereInput | StatWhereInput[]
+    OR?: StatWhereInput[]
+    NOT?: StatWhereInput | StatWhereInput[]
+    id?: StringFilter<"Stat"> | string
+    registeredCustomers?: FloatFilter<"Stat"> | number
+    shops?: FloatFilter<"Stat"> | number
+    councilors?: FloatFilter<"Stat"> | number
+    cooperatives?: FloatFilter<"Stat"> | number
+    createdAt?: DateTimeFilter<"Stat"> | Date | string
+    updatedAt?: DateTimeFilter<"Stat"> | Date | string
+  }
+
+  export type StatOrderByWithRelationInput = {
+    id?: SortOrder
+    registeredCustomers?: SortOrder
+    shops?: SortOrder
+    councilors?: SortOrder
+    cooperatives?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StatWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: StatWhereInput | StatWhereInput[]
+    OR?: StatWhereInput[]
+    NOT?: StatWhereInput | StatWhereInput[]
+    registeredCustomers?: FloatFilter<"Stat"> | number
+    shops?: FloatFilter<"Stat"> | number
+    councilors?: FloatFilter<"Stat"> | number
+    cooperatives?: FloatFilter<"Stat"> | number
+    createdAt?: DateTimeFilter<"Stat"> | Date | string
+    updatedAt?: DateTimeFilter<"Stat"> | Date | string
+  }, "id">
+
+  export type StatOrderByWithAggregationInput = {
+    id?: SortOrder
+    registeredCustomers?: SortOrder
+    shops?: SortOrder
+    councilors?: SortOrder
+    cooperatives?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: StatCountOrderByAggregateInput
+    _avg?: StatAvgOrderByAggregateInput
+    _max?: StatMaxOrderByAggregateInput
+    _min?: StatMinOrderByAggregateInput
+    _sum?: StatSumOrderByAggregateInput
+  }
+
+  export type StatScalarWhereWithAggregatesInput = {
+    AND?: StatScalarWhereWithAggregatesInput | StatScalarWhereWithAggregatesInput[]
+    OR?: StatScalarWhereWithAggregatesInput[]
+    NOT?: StatScalarWhereWithAggregatesInput | StatScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Stat"> | string
+    registeredCustomers?: FloatWithAggregatesFilter<"Stat"> | number
+    shops?: FloatWithAggregatesFilter<"Stat"> | number
+    councilors?: FloatWithAggregatesFilter<"Stat"> | number
+    cooperatives?: FloatWithAggregatesFilter<"Stat"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"Stat"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Stat"> | Date | string
+  }
+
   export type NewsWhereInput = {
     AND?: NewsWhereInput | NewsWhereInput[]
     OR?: NewsWhereInput[]
@@ -17694,7 +17825,7 @@ export namespace Prisma {
     id?: StringFilter<"CouncilList"> | string
     demarcation?: StringFilter<"CouncilList"> | string
     councilArea?: StringFilter<"CouncilList"> | string
-    imageUrl?: StringFilter<"CouncilList"> | string
+    imageUrl?: StringNullableFilter<"CouncilList"> | string | null
     council?: StringFilter<"CouncilList"> | string
     firstAlternateCouncillor?: StringFilter<"CouncilList"> | string
     secondAlternateCouncillor?: StringFilter<"CouncilList"> | string
@@ -17706,7 +17837,7 @@ export namespace Prisma {
     id?: SortOrder
     demarcation?: SortOrder
     councilArea?: SortOrder
-    imageUrl?: SortOrder
+    imageUrl?: SortOrderInput | SortOrder
     council?: SortOrder
     firstAlternateCouncillor?: SortOrder
     secondAlternateCouncillor?: SortOrder
@@ -17721,7 +17852,7 @@ export namespace Prisma {
     NOT?: CouncilListWhereInput | CouncilListWhereInput[]
     demarcation?: StringFilter<"CouncilList"> | string
     councilArea?: StringFilter<"CouncilList"> | string
-    imageUrl?: StringFilter<"CouncilList"> | string
+    imageUrl?: StringNullableFilter<"CouncilList"> | string | null
     council?: StringFilter<"CouncilList"> | string
     firstAlternateCouncillor?: StringFilter<"CouncilList"> | string
     secondAlternateCouncillor?: StringFilter<"CouncilList"> | string
@@ -17733,7 +17864,7 @@ export namespace Prisma {
     id?: SortOrder
     demarcation?: SortOrder
     councilArea?: SortOrder
-    imageUrl?: SortOrder
+    imageUrl?: SortOrderInput | SortOrder
     council?: SortOrder
     firstAlternateCouncillor?: SortOrder
     secondAlternateCouncillor?: SortOrder
@@ -17751,7 +17882,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"CouncilList"> | string
     demarcation?: StringWithAggregatesFilter<"CouncilList"> | string
     councilArea?: StringWithAggregatesFilter<"CouncilList"> | string
-    imageUrl?: StringWithAggregatesFilter<"CouncilList"> | string
+    imageUrl?: StringNullableWithAggregatesFilter<"CouncilList"> | string | null
     council?: StringWithAggregatesFilter<"CouncilList"> | string
     firstAlternateCouncillor?: StringWithAggregatesFilter<"CouncilList"> | string
     secondAlternateCouncillor?: StringWithAggregatesFilter<"CouncilList"> | string
@@ -18092,137 +18223,6 @@ export namespace Prisma {
     imageUrl?: StringWithAggregatesFilter<"ImageText"> | string
     createdAt?: DateTimeWithAggregatesFilter<"ImageText"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ImageText"> | Date | string
-  }
-
-  export type TeamWhereInput = {
-    AND?: TeamWhereInput | TeamWhereInput[]
-    OR?: TeamWhereInput[]
-    NOT?: TeamWhereInput | TeamWhereInput[]
-    id?: StringFilter<"Team"> | string
-    name?: StringFilter<"Team"> | string
-    position?: StringFilter<"Team"> | string
-    imageUrl?: StringFilter<"Team"> | string
-    facebookUrl?: StringNullableFilter<"Team"> | string | null
-    linkedInProfile?: StringNullableFilter<"Team"> | string | null
-    twitterUrl?: StringNullableFilter<"Team"> | string | null
-    description?: StringFilter<"Team"> | string
-  }
-
-  export type TeamOrderByWithRelationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    position?: SortOrder
-    imageUrl?: SortOrder
-    facebookUrl?: SortOrderInput | SortOrder
-    linkedInProfile?: SortOrderInput | SortOrder
-    twitterUrl?: SortOrderInput | SortOrder
-    description?: SortOrder
-  }
-
-  export type TeamWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: TeamWhereInput | TeamWhereInput[]
-    OR?: TeamWhereInput[]
-    NOT?: TeamWhereInput | TeamWhereInput[]
-    name?: StringFilter<"Team"> | string
-    position?: StringFilter<"Team"> | string
-    imageUrl?: StringFilter<"Team"> | string
-    facebookUrl?: StringNullableFilter<"Team"> | string | null
-    linkedInProfile?: StringNullableFilter<"Team"> | string | null
-    twitterUrl?: StringNullableFilter<"Team"> | string | null
-    description?: StringFilter<"Team"> | string
-  }, "id">
-
-  export type TeamOrderByWithAggregationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    position?: SortOrder
-    imageUrl?: SortOrder
-    facebookUrl?: SortOrderInput | SortOrder
-    linkedInProfile?: SortOrderInput | SortOrder
-    twitterUrl?: SortOrderInput | SortOrder
-    description?: SortOrder
-    _count?: TeamCountOrderByAggregateInput
-    _max?: TeamMaxOrderByAggregateInput
-    _min?: TeamMinOrderByAggregateInput
-  }
-
-  export type TeamScalarWhereWithAggregatesInput = {
-    AND?: TeamScalarWhereWithAggregatesInput | TeamScalarWhereWithAggregatesInput[]
-    OR?: TeamScalarWhereWithAggregatesInput[]
-    NOT?: TeamScalarWhereWithAggregatesInput | TeamScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Team"> | string
-    name?: StringWithAggregatesFilter<"Team"> | string
-    position?: StringWithAggregatesFilter<"Team"> | string
-    imageUrl?: StringWithAggregatesFilter<"Team"> | string
-    facebookUrl?: StringNullableWithAggregatesFilter<"Team"> | string | null
-    linkedInProfile?: StringNullableWithAggregatesFilter<"Team"> | string | null
-    twitterUrl?: StringNullableWithAggregatesFilter<"Team"> | string | null
-    description?: StringWithAggregatesFilter<"Team"> | string
-  }
-
-  export type StatWhereInput = {
-    AND?: StatWhereInput | StatWhereInput[]
-    OR?: StatWhereInput[]
-    NOT?: StatWhereInput | StatWhereInput[]
-    id?: StringFilter<"Stat"> | string
-    registeredCustomers?: FloatFilter<"Stat"> | number
-    shops?: FloatFilter<"Stat"> | number
-    councilors?: FloatFilter<"Stat"> | number
-    cooperatives?: FloatFilter<"Stat"> | number
-    createdAt?: DateTimeFilter<"Stat"> | Date | string
-    updatedAt?: DateTimeFilter<"Stat"> | Date | string
-  }
-
-  export type StatOrderByWithRelationInput = {
-    id?: SortOrder
-    registeredCustomers?: SortOrder
-    shops?: SortOrder
-    councilors?: SortOrder
-    cooperatives?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type StatWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: StatWhereInput | StatWhereInput[]
-    OR?: StatWhereInput[]
-    NOT?: StatWhereInput | StatWhereInput[]
-    registeredCustomers?: FloatFilter<"Stat"> | number
-    shops?: FloatFilter<"Stat"> | number
-    councilors?: FloatFilter<"Stat"> | number
-    cooperatives?: FloatFilter<"Stat"> | number
-    createdAt?: DateTimeFilter<"Stat"> | Date | string
-    updatedAt?: DateTimeFilter<"Stat"> | Date | string
-  }, "id">
-
-  export type StatOrderByWithAggregationInput = {
-    id?: SortOrder
-    registeredCustomers?: SortOrder
-    shops?: SortOrder
-    councilors?: SortOrder
-    cooperatives?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: StatCountOrderByAggregateInput
-    _avg?: StatAvgOrderByAggregateInput
-    _max?: StatMaxOrderByAggregateInput
-    _min?: StatMinOrderByAggregateInput
-    _sum?: StatSumOrderByAggregateInput
-  }
-
-  export type StatScalarWhereWithAggregatesInput = {
-    AND?: StatScalarWhereWithAggregatesInput | StatScalarWhereWithAggregatesInput[]
-    OR?: StatScalarWhereWithAggregatesInput[]
-    NOT?: StatScalarWhereWithAggregatesInput | StatScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Stat"> | string
-    registeredCustomers?: FloatWithAggregatesFilter<"Stat"> | number
-    shops?: FloatWithAggregatesFilter<"Stat"> | number
-    councilors?: FloatWithAggregatesFilter<"Stat"> | number
-    cooperatives?: FloatWithAggregatesFilter<"Stat"> | number
-    createdAt?: DateTimeWithAggregatesFilter<"Stat"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Stat"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -18673,6 +18673,153 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TeamCreateInput = {
+    id?: string
+    name: string
+    position: string
+    imageUrl: string
+    facebookUrl?: string | null
+    linkedInProfile?: string | null
+    twitterUrl?: string | null
+    description: string
+  }
+
+  export type TeamUncheckedCreateInput = {
+    id?: string
+    name: string
+    position: string
+    imageUrl: string
+    facebookUrl?: string | null
+    linkedInProfile?: string | null
+    twitterUrl?: string | null
+    description: string
+  }
+
+  export type TeamUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    imageUrl?: StringFieldUpdateOperationsInput | string
+    facebookUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type TeamUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    imageUrl?: StringFieldUpdateOperationsInput | string
+    facebookUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type TeamCreateManyInput = {
+    id?: string
+    name: string
+    position: string
+    imageUrl: string
+    facebookUrl?: string | null
+    linkedInProfile?: string | null
+    twitterUrl?: string | null
+    description: string
+  }
+
+  export type TeamUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    imageUrl?: StringFieldUpdateOperationsInput | string
+    facebookUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type TeamUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    imageUrl?: StringFieldUpdateOperationsInput | string
+    facebookUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
+    twitterUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type StatCreateInput = {
+    id?: string
+    registeredCustomers: number
+    shops: number
+    councilors: number
+    cooperatives: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StatUncheckedCreateInput = {
+    id?: string
+    registeredCustomers: number
+    shops: number
+    councilors: number
+    cooperatives: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StatUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    registeredCustomers?: FloatFieldUpdateOperationsInput | number
+    shops?: FloatFieldUpdateOperationsInput | number
+    councilors?: FloatFieldUpdateOperationsInput | number
+    cooperatives?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StatUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    registeredCustomers?: FloatFieldUpdateOperationsInput | number
+    shops?: FloatFieldUpdateOperationsInput | number
+    councilors?: FloatFieldUpdateOperationsInput | number
+    cooperatives?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StatCreateManyInput = {
+    id?: string
+    registeredCustomers: number
+    shops: number
+    councilors: number
+    cooperatives: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StatUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    registeredCustomers?: FloatFieldUpdateOperationsInput | number
+    shops?: FloatFieldUpdateOperationsInput | number
+    councilors?: FloatFieldUpdateOperationsInput | number
+    cooperatives?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StatUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    registeredCustomers?: FloatFieldUpdateOperationsInput | number
+    shops?: FloatFieldUpdateOperationsInput | number
+    councilors?: FloatFieldUpdateOperationsInput | number
+    cooperatives?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type NewsCreateInput = {
     id?: string
     title: string
@@ -18761,7 +18908,7 @@ export namespace Prisma {
     id?: string
     demarcation: string
     councilArea: string
-    imageUrl: string
+    imageUrl?: string | null
     council: string
     firstAlternateCouncillor: string
     secondAlternateCouncillor: string
@@ -18773,7 +18920,7 @@ export namespace Prisma {
     id?: string
     demarcation: string
     councilArea: string
-    imageUrl: string
+    imageUrl?: string | null
     council: string
     firstAlternateCouncillor: string
     secondAlternateCouncillor: string
@@ -18785,7 +18932,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     demarcation?: StringFieldUpdateOperationsInput | string
     councilArea?: StringFieldUpdateOperationsInput | string
-    imageUrl?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     council?: StringFieldUpdateOperationsInput | string
     firstAlternateCouncillor?: StringFieldUpdateOperationsInput | string
     secondAlternateCouncillor?: StringFieldUpdateOperationsInput | string
@@ -18797,7 +18944,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     demarcation?: StringFieldUpdateOperationsInput | string
     councilArea?: StringFieldUpdateOperationsInput | string
-    imageUrl?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     council?: StringFieldUpdateOperationsInput | string
     firstAlternateCouncillor?: StringFieldUpdateOperationsInput | string
     secondAlternateCouncillor?: StringFieldUpdateOperationsInput | string
@@ -18809,7 +18956,7 @@ export namespace Prisma {
     id?: string
     demarcation: string
     councilArea: string
-    imageUrl: string
+    imageUrl?: string | null
     council: string
     firstAlternateCouncillor: string
     secondAlternateCouncillor: string
@@ -18821,7 +18968,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     demarcation?: StringFieldUpdateOperationsInput | string
     councilArea?: StringFieldUpdateOperationsInput | string
-    imageUrl?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     council?: StringFieldUpdateOperationsInput | string
     firstAlternateCouncillor?: StringFieldUpdateOperationsInput | string
     secondAlternateCouncillor?: StringFieldUpdateOperationsInput | string
@@ -18833,7 +18980,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     demarcation?: StringFieldUpdateOperationsInput | string
     councilArea?: StringFieldUpdateOperationsInput | string
-    imageUrl?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     council?: StringFieldUpdateOperationsInput | string
     firstAlternateCouncillor?: StringFieldUpdateOperationsInput | string
     secondAlternateCouncillor?: StringFieldUpdateOperationsInput | string
@@ -19222,153 +19369,6 @@ export namespace Prisma {
     heading?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     imageUrl?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type TeamCreateInput = {
-    id?: string
-    name: string
-    position: string
-    imageUrl: string
-    facebookUrl?: string | null
-    linkedInProfile?: string | null
-    twitterUrl?: string | null
-    description: string
-  }
-
-  export type TeamUncheckedCreateInput = {
-    id?: string
-    name: string
-    position: string
-    imageUrl: string
-    facebookUrl?: string | null
-    linkedInProfile?: string | null
-    twitterUrl?: string | null
-    description: string
-  }
-
-  export type TeamUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    position?: StringFieldUpdateOperationsInput | string
-    imageUrl?: StringFieldUpdateOperationsInput | string
-    facebookUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
-    twitterUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type TeamUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    position?: StringFieldUpdateOperationsInput | string
-    imageUrl?: StringFieldUpdateOperationsInput | string
-    facebookUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
-    twitterUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type TeamCreateManyInput = {
-    id?: string
-    name: string
-    position: string
-    imageUrl: string
-    facebookUrl?: string | null
-    linkedInProfile?: string | null
-    twitterUrl?: string | null
-    description: string
-  }
-
-  export type TeamUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    position?: StringFieldUpdateOperationsInput | string
-    imageUrl?: StringFieldUpdateOperationsInput | string
-    facebookUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
-    twitterUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type TeamUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    position?: StringFieldUpdateOperationsInput | string
-    imageUrl?: StringFieldUpdateOperationsInput | string
-    facebookUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
-    twitterUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type StatCreateInput = {
-    id?: string
-    registeredCustomers: number
-    shops: number
-    councilors: number
-    cooperatives: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type StatUncheckedCreateInput = {
-    id?: string
-    registeredCustomers: number
-    shops: number
-    councilors: number
-    cooperatives: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type StatUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    registeredCustomers?: FloatFieldUpdateOperationsInput | number
-    shops?: FloatFieldUpdateOperationsInput | number
-    councilors?: FloatFieldUpdateOperationsInput | number
-    cooperatives?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type StatUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    registeredCustomers?: FloatFieldUpdateOperationsInput | number
-    shops?: FloatFieldUpdateOperationsInput | number
-    councilors?: FloatFieldUpdateOperationsInput | number
-    cooperatives?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type StatCreateManyInput = {
-    id?: string
-    registeredCustomers: number
-    shops: number
-    councilors: number
-    cooperatives: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type StatUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    registeredCustomers?: FloatFieldUpdateOperationsInput | number
-    shops?: FloatFieldUpdateOperationsInput | number
-    councilors?: FloatFieldUpdateOperationsInput | number
-    cooperatives?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type StatUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    registeredCustomers?: FloatFieldUpdateOperationsInput | number
-    shops?: FloatFieldUpdateOperationsInput | number
-    councilors?: FloatFieldUpdateOperationsInput | number
-    cooperatives?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -19775,6 +19775,110 @@ export namespace Prisma {
     size?: SortOrder
   }
 
+  export type TeamCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    position?: SortOrder
+    imageUrl?: SortOrder
+    facebookUrl?: SortOrder
+    linkedInProfile?: SortOrder
+    twitterUrl?: SortOrder
+    description?: SortOrder
+  }
+
+  export type TeamMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    position?: SortOrder
+    imageUrl?: SortOrder
+    facebookUrl?: SortOrder
+    linkedInProfile?: SortOrder
+    twitterUrl?: SortOrder
+    description?: SortOrder
+  }
+
+  export type TeamMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    position?: SortOrder
+    imageUrl?: SortOrder
+    facebookUrl?: SortOrder
+    linkedInProfile?: SortOrder
+    twitterUrl?: SortOrder
+    description?: SortOrder
+  }
+
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type StatCountOrderByAggregateInput = {
+    id?: SortOrder
+    registeredCustomers?: SortOrder
+    shops?: SortOrder
+    councilors?: SortOrder
+    cooperatives?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StatAvgOrderByAggregateInput = {
+    registeredCustomers?: SortOrder
+    shops?: SortOrder
+    councilors?: SortOrder
+    cooperatives?: SortOrder
+  }
+
+  export type StatMaxOrderByAggregateInput = {
+    id?: SortOrder
+    registeredCustomers?: SortOrder
+    shops?: SortOrder
+    councilors?: SortOrder
+    cooperatives?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StatMinOrderByAggregateInput = {
+    id?: SortOrder
+    registeredCustomers?: SortOrder
+    shops?: SortOrder
+    councilors?: SortOrder
+    cooperatives?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StatSumOrderByAggregateInput = {
+    registeredCustomers?: SortOrder
+    shops?: SortOrder
+    councilors?: SortOrder
+    cooperatives?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
   export type NewsCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
@@ -20020,110 +20124,6 @@ export namespace Prisma {
     imageUrl?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-  }
-
-  export type TeamCountOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    position?: SortOrder
-    imageUrl?: SortOrder
-    facebookUrl?: SortOrder
-    linkedInProfile?: SortOrder
-    twitterUrl?: SortOrder
-    description?: SortOrder
-  }
-
-  export type TeamMaxOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    position?: SortOrder
-    imageUrl?: SortOrder
-    facebookUrl?: SortOrder
-    linkedInProfile?: SortOrder
-    twitterUrl?: SortOrder
-    description?: SortOrder
-  }
-
-  export type TeamMinOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    position?: SortOrder
-    imageUrl?: SortOrder
-    facebookUrl?: SortOrder
-    linkedInProfile?: SortOrder
-    twitterUrl?: SortOrder
-    description?: SortOrder
-  }
-
-  export type FloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
-  export type StatCountOrderByAggregateInput = {
-    id?: SortOrder
-    registeredCustomers?: SortOrder
-    shops?: SortOrder
-    councilors?: SortOrder
-    cooperatives?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type StatAvgOrderByAggregateInput = {
-    registeredCustomers?: SortOrder
-    shops?: SortOrder
-    councilors?: SortOrder
-    cooperatives?: SortOrder
-  }
-
-  export type StatMaxOrderByAggregateInput = {
-    id?: SortOrder
-    registeredCustomers?: SortOrder
-    shops?: SortOrder
-    councilors?: SortOrder
-    cooperatives?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type StatMinOrderByAggregateInput = {
-    id?: SortOrder
-    registeredCustomers?: SortOrder
-    shops?: SortOrder
-    councilors?: SortOrder
-    cooperatives?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type StatSumOrderByAggregateInput = {
-    registeredCustomers?: SortOrder
-    shops?: SortOrder
-    councilors?: SortOrder
-    cooperatives?: SortOrder
-  }
-
-  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type StringFieldUpdateOperationsInput = {

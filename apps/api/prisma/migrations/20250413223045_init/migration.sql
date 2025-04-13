@@ -81,6 +81,33 @@ CREATE TABLE "Blog" (
 );
 
 -- CreateTable
+CREATE TABLE "Team" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "position" TEXT NOT NULL,
+    "imageUrl" TEXT NOT NULL,
+    "facebookUrl" TEXT,
+    "linkedInProfile" TEXT,
+    "twitterUrl" TEXT,
+    "description" TEXT NOT NULL,
+
+    CONSTRAINT "Team_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Stat" (
+    "id" TEXT NOT NULL,
+    "registeredCustomers" DOUBLE PRECISION NOT NULL,
+    "shops" DOUBLE PRECISION NOT NULL,
+    "councilors" DOUBLE PRECISION NOT NULL,
+    "cooperatives" DOUBLE PRECISION NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Stat_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "News" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
@@ -100,6 +127,7 @@ CREATE TABLE "CouncilList" (
     "id" TEXT NOT NULL,
     "demarcation" TEXT NOT NULL,
     "councilArea" TEXT NOT NULL,
+    "imageUrl" TEXT,
     "council" TEXT NOT NULL,
     "firstAlternateCouncillor" TEXT NOT NULL,
     "secondAlternateCouncillor" TEXT NOT NULL,
@@ -153,6 +181,30 @@ CREATE TABLE "Service" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Service_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Carousel" (
+    "id" TEXT NOT NULL,
+    "coverUrl" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Carousel_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ImageText" (
+    "id" TEXT NOT NULL,
+    "heading" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "imageUrl" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "ImageText_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex

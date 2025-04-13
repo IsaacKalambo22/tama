@@ -25,9 +25,9 @@ export const createStat = async (
 
   try {
     // Check if a stat already exists
-    const existingStat = await prisma.stat.findFirst()
+    const existingStat = await prisma.stat.findMany()
 
-    if (existingStat) {
+    if (existingStat.length > 0) {
       res.status(400).json({
         success: false,
         message: "Stat already exists.",
