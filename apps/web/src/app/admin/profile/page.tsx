@@ -1,13 +1,13 @@
-import Profile from '@/modules/admin/profile';
-import { Metadata } from 'next';
+import Profile from "@/modules/admin/profile"
+import { Metadata } from "next"
 export const metadata: Metadata = {
-  title: 'Profile - TAMA Farmers Trust',
+  title: "Profile - TAMA Farmers Trust",
   description:
-    'Access your account and manage your activities with TAMA Farmers Trust.',
-};
+    "Access your account and manage your activities with TAMA Farmers Trust.",
+}
 
 const ProfilePage = () => {
-  return <Profile />;
-};
+  return <Profile />
+}
 
-export default ProfilePage;
+export default ProfilePage

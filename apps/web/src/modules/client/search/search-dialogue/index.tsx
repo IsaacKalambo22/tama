@@ -1,262 +1,173 @@
-'use client';
+"use client"
 
-import { Input } from '@/components/ui/input';
-import {
-  BlogProps,
-  EventProps,
-  FileProps,
-  ShopProps,
-} from '@/lib/api';
-import { BASE_URL } from '@/lib/utils';
-import CustomError from '@/modules/common/custom-error';
-import CustomLoader from '@/modules/common/custom-loader';
-import { debounce } from 'lodash';
-import {
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import EventCard from '../../event-calendar/event-card';
-import ShopCard from '../../shop/shop-card';
-import SearchBlogCard from '../search-blog-card';
-import SearchFileCard from '../search-file-card';
-import SearchModal from '../search-modal';
+import { Input } from "@/components/ui/input"
+import { BlogProps, EventProps, FileProps, ShopProps } from "@/lib/api"
+import { BASE_URL } from "@/lib/utils"
+import CustomError from "@/modules/common/custom-error"
+import CustomLoader from "@/modules/common/custom-loader"
+import { debounce } from "lodash"
+import { useEffect, useRef, useState } from "react"
+import EventCard from "../../event-calendar/event-card"
+import ShopCard from "../../shop/shop-card"
+import SearchBlogCard from "../search-blog-card"
+import SearchFileCard from "../search-file-card"
+import SearchModal from "../search-modal"
 
 const SearchDialog = ({
   isOpen,
   setIsOpen,
 }: {
-  isOpen: boolean;
-  setIsOpen: () => void;
+  isOpen: boolean
+  setIsOpen: () => void
 }) => {
-  const [searchQuery, setSearchQuery] =
-    useState('');
-  const [searchResults, setSearchResults] =
-    useState<any>(null);
-  const [isLoading, setIsLoading] =
-    useState(false);
-  const [isError, setIsError] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("")
+  const [searchResults, setSearchResults] = useState<any>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isError, setIsError] = useState(false)
 
   const debouncedFetchResults = useRef(
     debounce(async (query) => {
-      if (query.length < 3) return;
+      if (query.length < 3) return
 
-      setIsLoading(true);
-      setIsError(false);
+      setIsLoading(true)
+      setIsError(false)
 
       try {
-        const response = await fetch(
-          `${BASE_URL}/search?query=${query}`
-        );
-        if (!response.ok)
-          throw new Error(
-            'Failed to fetch search results'
-          );
+        const response = await fetch(`${BASE_URL}/search?query=${query}`)
+        if (!response.ok) throw new Error("Failed to fetch search results")
 
-        const data = await response.json();
-        setSearchResults(data.data);
+        const data = await response.json()
+        setSearchResults(data.data)
       } catch (error) {
-        console.error('Search Error:', error);
-        setIsError(true);
+        console.error("Search Error:", error)
+        setIsError(true)
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
     }, 1000)
-  ).current;
-  console.log({ searchResults });
+  ).current
+  console.log({ searchResults })
   // Handle search input change
-  const handleSearch = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const query = event.target.value;
-    setSearchQuery(query);
-    debouncedFetchResults(query); // Call debounced function
-  };
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const query = event.target.value
+    setSearchQuery(query)
+    debouncedFetchResults(query) // Call debounced function
+  }
 
   // Cleanup debounce on unmount
   useEffect(() => {
-    return () => debouncedFetchResults.cancel();
-  }, []);
+    return () => debouncedFetchResults.cancel()
+  }, [])
 
   // Disable scrolling when dialog is open
   useEffect(() => {
-    document.body.style.overflow = isOpen
-      ? 'hidden'
-      : 'auto';
+    document.body.style.overflow = isOpen ? "hidden" : "auto"
     return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [isOpen]);
+      document.body.style.overflow = "auto"
+    }
+  }, [isOpen])
 
   // Handle clicks outside the dialog
-  const dialogRef = useRef<HTMLDivElement | null>(
-    null
-  );
+  const dialogRef = useRef<HTMLDivElement | null>(null)
   const handleOutsideClick = (
-    e: React.MouseEvent<
-      HTMLDivElement,
-      MouseEvent
-    >
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-    if (
-      dialogRef.current &&
-      !dialogRef.current.contains(
-        e.target as Node
-      )
-    ) {
-      setIsOpen();
+    if (dialogRef.current && !dialogRef.current.contains(e.target as Node)) {
+      setIsOpen()
     }
-  };
+  }
 
   return (
-    <div className='max-w-xl sm:px-16 flex flex-col w-full gap-10 sm:gap-16 mb-16 min-h-40 h-full'>
+    <div className="max-w-xl sm:px-16 flex flex-col w-full gap-10 sm:gap-16 mb-16 min-h-40 h-full">
       {isOpen && (
-        <SearchModal
-          name='search'
-          isOpen={isOpen}
-          onClose={setIsOpen}
-        >
+        <SearchModal name="search" isOpen={isOpen} onClose={setIsOpen}>
           <Input
-            type='search'
-            placeholder='What are you looking for?...'
+            type="search"
+            placeholder="What are you looking for?..."
             value={searchQuery}
             onChange={handleSearch}
-            className='w-full h-11 pl-5 pr-4  rounded-lg focus:outline-none'
+            className="w-full h-11 pl-5 pr-4  rounded-lg focus:outline-none"
           />
           {/* 🔎 Search Results Container */}
-          <div className='w-full flex flex-col overflow-y-auto max-h-[70vh]'>
+          <div className="w-full flex flex-col overflow-y-auto max-h-[70vh]">
             {isLoading && <CustomLoader />}
-            {isError && (
-              <CustomError message='Error fetching data' />
-            )}
+            {isError && <CustomError message="Error fetching data" />}
 
-            {!isLoading &&
-              !isError &&
-              searchResults && (
-                <div className='w-full flex flex-col gap-4'>
-                  {/* ✅ Section for Forms */}
-                  {searchResults.forms &&
-                    searchResults.forms.length >
-                      0 && (
-                      <>
-                        <h2 className='text-lg font-semibold mb-4'>
-                          Current Forms
-                        </h2>
-                        <div className='w-full grid grid-cols-1 sm:grid-cols-2 gap-6'>
-                          {searchResults.forms.map(
-                            (form: FileProps) => (
-                              <SearchFileCard
-                                file={form}
-                                key={form.id}
-                              />
-                            )
-                          )}
-                        </div>
-                      </>
-                    )}
-                  {searchResults.publications &&
-                    searchResults.publications
-                      .length > 0 && (
-                      <>
-                        <h2 className='text-lg font-semibold mb-4'>
-                          Publications
-                        </h2>
-                        <div className='w-full grid grid-cols-1 sm:grid-cols-2 gap-6'>
-                          {searchResults.publications.map(
-                            (
-                              publication: FileProps
-                            ) => (
-                              <SearchFileCard
-                                file={publication}
-                                key={
-                                  publication.id
-                                }
-                              />
-                            )
-                          )}
-                        </div>
-                      </>
-                    )}
-                  {searchResults.shops &&
-                    searchResults.shops.length >
-                      0 && (
-                      <>
-                        <h2 className='text-lg font-semibold mb-4'>
-                          Shops
-                        </h2>
-                        <div className='w-full grid grid-cols-1 sm:grid-cols-2 gap-6'>
-                          {searchResults.shops.map(
-                            (shop: ShopProps) => (
-                              <ShopCard
-                                shop={shop}
-                                key={shop.id}
-                              />
-                            )
-                          )}
-                        </div>
-                      </>
-                    )}
-                  {searchResults.blogs &&
-                    searchResults.blogs.length >
-                      0 && (
-                      <>
-                        <h2 className='text-lg font-semibold mb-4'>
-                          Blogs
-                        </h2>
-                        <div className='w-full grid grid-cols-1 sm:grid-cols-2 gap-6'>
-                          {searchResults.blogs.map(
-                            (blog: BlogProps) => (
-                              <SearchBlogCard
-                                blog={blog}
-                                key={blog.id}
-                              />
-                            )
-                          )}
-                        </div>
-                      </>
-                    )}
-                  {searchResults.news &&
-                    searchResults.news.length >
-                      0 && (
-                      <>
-                        <h2 className='text-lg font-semibold mb-4'>
-                          News
-                        </h2>
-                        <div className='w-full grid grid-cols-1 sm:grid-cols-2 gap-6'>
-                          {searchResults.news.map(
-                            (news: BlogProps) => (
-                              <SearchBlogCard
-                                blog={news}
-                                key={news.id}
-                              />
-                            )
-                          )}
-                        </div>
-                      </>
-                    )}
-                  {searchResults.events &&
-                    searchResults.events.length >
-                      0 && (
-                      <>
-                        <h2 className='text-lg font-semibold mb-4'>
-                          Events
-                        </h2>
-                        <div className='w-full grid grid-cols-1 gap-6'>
-                          {searchResults.events.map(
-                            (
-                              event: EventProps
-                            ) => (
-                              <EventCard
-                                event={event}
-                                key={event.id}
-                              />
-                            )
-                          )}
-                        </div>
-                      </>
-                    )}
-                </div>
-              )}
+            {!isLoading && !isError && searchResults && (
+              <div className="w-full flex flex-col gap-4">
+                {/* ✅ Section for Forms */}
+                {searchResults.forms && searchResults.forms.length > 0 && (
+                  <>
+                    <h2 className="text-lg font-semibold mb-4">
+                      Current Forms
+                    </h2>
+                    <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-6">
+                      {searchResults.forms.map((form: FileProps) => (
+                        <SearchFileCard file={form} key={form.id} />
+                      ))}
+                    </div>
+                  </>
+                )}
+                {searchResults.publications &&
+                  searchResults.publications.length > 0 && (
+                    <>
+                      <h2 className="text-lg font-semibold mb-4">
+                        Publications
+                      </h2>
+                      <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        {searchResults.publications.map(
+                          (publication: FileProps) => (
+                            <SearchFileCard
+                              file={publication}
+                              key={publication.id}
+                            />
+                          )
+                        )}
+                      </div>
+                    </>
+                  )}
+                {searchResults.shops && searchResults.shops.length > 0 && (
+                  <>
+                    <h2 className="text-lg font-semibold mb-4">Shops</h2>
+                    <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-6">
+                      {searchResults.shops.map((shop: ShopProps) => (
+                        <ShopCard shop={shop} key={shop.id} />
+                      ))}
+                    </div>
+                  </>
+                )}
+                {searchResults.blogs && searchResults.blogs.length > 0 && (
+                  <>
+                    <h2 className="text-lg font-semibold mb-4">Blogs</h2>
+                    <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-6">
+                      {searchResults.blogs.map((blog: BlogProps) => (
+                        <SearchBlogCard blog={blog} key={blog.id} />
+                      ))}
+                    </div>
+                  </>
+                )}
+                {searchResults.news && searchResults.news.length > 0 && (
+                  <>
+                    <h2 className="text-lg font-semibold mb-4">News</h2>
+                    <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-6">
+                      {searchResults.news.map((news: BlogProps) => (
+                        <SearchBlogCard blog={news} key={news.id} />
+                      ))}
+                    </div>
+                  </>
+                )}
+                {searchResults.events && searchResults.events.length > 0 && (
+                  <>
+                    <h2 className="text-lg font-semibold mb-4">Events</h2>
+                    <div className="w-full grid grid-cols-1 gap-6">
+                      {searchResults.events.map((event: EventProps) => (
+                        <EventCard event={event} key={event.id} />
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
           </div>
         </SearchModal>
         // <div
@@ -293,7 +204,7 @@ const SearchDialog = ({
         // </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default SearchDialog;
+export default SearchDialog

@@ -1,9 +1,9 @@
-'use client';
+"use client"
 
-import { FormFieldType } from '@/modules/common/custom-form-field';
-import { signInWithCredentials } from '../actions';
-import AuthForm, { FormType } from '../auth-form';
-import { signInSchema } from '../validation';
+import { FormFieldType } from "@/modules/common/custom-form-field"
+import { signInWithCredentials } from "../actions"
+import AuthForm, { FormType } from "../auth-form"
+import { signInSchema } from "../validation"
 
 const SignIn = () => {
   return (
@@ -11,8 +11,8 @@ const SignIn = () => {
       type={FormType.SIGN_IN}
       schema={signInSchema}
       defaultValues={{
-        email: '',
-        password: '',
+        email: "",
+        password: "",
       }}
       fieldTypes={{
         email: FormFieldType.INPUT,
@@ -20,7 +20,7 @@ const SignIn = () => {
       }}
       onSubmit={signInWithCredentials}
     />
-  );
-};
+  )
+}
 
-export default SignIn;
+export default SignIn

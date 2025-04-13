@@ -1,9 +1,8 @@
-'use server';
+"use server"
 
-
-import { auth } from '@/auth';
-import { BASE_URL } from '@/lib/utils';
-import { revalidatePath } from 'next/cache';
+import { auth } from "@/auth"
+import { BASE_URL } from "@/lib/utils"
+import { revalidatePath } from "next/cache"
 
 // export async function getImage(src: string) {
 //   const controller = new AbortController();
@@ -34,92 +33,72 @@ import { revalidatePath } from 'next/cache';
 
 export const serverAction = async (
   endpoint: string,
-  method:
-    | 'GET'
-    | 'POST'
-    | 'PATCH'
-    | 'PUT'
-    | 'DELETE',
+  method: "GET" | "POST" | "PATCH" | "PUT" | "DELETE",
   payload: Record<string, any> | null = null,
   revalidatePaths: string[] = [],
   useSession: boolean = true // Default to true
 ) => {
   try {
-    let token: string | undefined = undefined;
+    let token: string | undefined = undefined
 
     if (useSession) {
-      const session = await auth();
+      const session = await auth()
 
       if (!session) {
         return {
           success: false,
-          error: 'Not signed in',
-        };
+          error: "Not signed in",
+        }
       }
 
-      token = session.accessToken;
+      token = session.accessToken
     }
 
     const options: RequestInit = {
       method,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...(token && {
           Authorization: `Bearer ${token}`,
         }), // Include token only if available
       },
-    };
-
-    if (payload) {
-      options.body = JSON.stringify(payload);
     }
 
-    const response = await fetch(
-      `${BASE_URL}/${endpoint}`,
-      options
-    );
-console.log(`${BASE_URL}/${endpoint}`)
-    const result = await response.json();
+    if (payload) {
+      options.body = JSON.stringify(payload)
+    }
+
+    const response = await fetch(`${BASE_URL}/${endpoint}`, options)
+    console.log(`${BASE_URL}/${endpoint}`)
+    const result = await response.json()
 
     if (!response.ok) {
       return {
         success: false,
-        error:
-          result.message ||
-          'Something went wrong',
-      };
+        error: result.message || "Something went wrong",
+      }
     }
 
     // Revalidate specified paths
     for (const path of revalidatePaths) {
-      revalidatePath(path);
+      revalidatePath(path)
     }
 
-    return { success: true };
+    return { success: true }
   } catch (error) {
     // General error handling
-    console.log(error);
+    console.log(error)
     return {
       success: false,
       error:
-        error instanceof Error
-          ? error.message
-          : 'An unexpected error occurred',
-    };
+        error instanceof Error ? error.message : "An unexpected error occurred",
+    }
   }
-};
+}
 
-export const sendContactMessage = async (
-  payload: object
-) => {
-  return await serverAction(
-    'users/contact-email',
-    'POST',
-    payload,
-    [],
-    false
-  );
-};
+export const sendContactMessage = async (payload: object) => {
+  return await serverAction("users/contact-email", "POST", payload, [], false)
+}
 
 // EVENTS SERVER ACTIONS
 export const createEvent = async (
@@ -129,12 +108,12 @@ export const createEvent = async (
   layout: string
 ) => {
   return await serverAction(
-    'events',
-    'POST',
+    "events",
+    "POST",
     payload,
     [fullPath, layout, pathWithoutAdmin] // Revalidate paths
-  );
-};
+  )
+}
 
 export const updateEvent = async (
   payload: object,
@@ -142,13 +121,11 @@ export const updateEvent = async (
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
-  return await serverAction(
-    `events/${eventId}`,
-    'PATCH',
-    payload,
-    [fullPath, pathWithoutAdmin]
-  );
-};
+  return await serverAction(`events/${eventId}`, "PATCH", payload, [
+    fullPath,
+    pathWithoutAdmin,
+  ])
+}
 
 export const deleteEvent = async (
   id: string,
@@ -156,13 +133,12 @@ export const deleteEvent = async (
   pathWithoutAdmin: string,
   layout: string
 ) => {
-  return await serverAction(
-    `events/${id}`,
-    'DELETE',
-    null,
-    [fullPath, pathWithoutAdmin, layout]
-  );
-};
+  return await serverAction(`events/${id}`, "DELETE", null, [
+    fullPath,
+    pathWithoutAdmin,
+    layout,
+  ])
+}
 
 // USERS SERVER ACTIONS
 export const createUser = async (
@@ -171,38 +147,28 @@ export const createUser = async (
   layout: string
 ) => {
   return await serverAction(
-    'auth/register',
-    'POST',
+    "auth/register",
+    "POST",
     payload,
     [fullPath, layout] // Revalidate paths
-  );
-};
+  )
+}
 
 export const updateUser = async (
   payload: object,
   userId: string,
   fullPath: string
 ) => {
-  return await serverAction(
-    `users/${userId}`,
-    'PATCH',
-    payload,
-    [fullPath]
-  );
-};
+  return await serverAction(`users/${userId}`, "PATCH", payload, [fullPath])
+}
 
 export const deleteUser = async (
   id: string,
   fullPath: string,
   layout: string
 ) => {
-  return await serverAction(
-    `users/${id}`,
-    'DELETE',
-    null,
-    [fullPath, layout]
-  );
-};
+  return await serverAction(`users/${id}`, "DELETE", null, [fullPath, layout])
+}
 // COUNCIL LISTS SERVER ACTIONS
 export const createCouncilList = async (
   payload: object,
@@ -211,12 +177,12 @@ export const createCouncilList = async (
   layout: string
 ) => {
   return await serverAction(
-    'council-lists',
-    'POST',
+    "council-lists",
+    "POST",
     payload,
     [fullPath, layout, pathWithoutAdmin] // Revalidate paths
-  );
-};
+  )
+}
 
 export const updateCouncilList = async (
   payload: object,
@@ -226,11 +192,11 @@ export const updateCouncilList = async (
 ) => {
   return await serverAction(
     `council-lists/${councilListId}`,
-    'PATCH',
+    "PATCH",
     payload,
     [fullPath, pathWithoutAdmin]
-  );
-};
+  )
+}
 
 export const deleteCouncilList = async (
   id: string,
@@ -238,13 +204,12 @@ export const deleteCouncilList = async (
   pathWithoutAdmin: string,
   layout: string
 ) => {
-  return await serverAction(
-    `council-lists/${id}`,
-    'DELETE',
-    null,
-    [fullPath, pathWithoutAdmin, layout]
-  );
-};
+  return await serverAction(`council-lists/${id}`, "DELETE", null, [
+    fullPath,
+    pathWithoutAdmin,
+    layout,
+  ])
+}
 
 // SHOPS SERVER ACTIONS
 export const createShop = async (
@@ -254,12 +219,12 @@ export const createShop = async (
   layout: string
 ) => {
   return await serverAction(
-    'shops',
-    'POST',
+    "shops",
+    "POST",
     payload,
     [fullPath, layout, pathWithoutAdmin] // Revalidate paths
-  );
-};
+  )
+}
 
 export const updateShop = async (
   payload: object,
@@ -267,13 +232,11 @@ export const updateShop = async (
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
-  return await serverAction(
-    `shops/${shopId}`,
-    'PATCH',
-    payload,
-    [fullPath, pathWithoutAdmin]
-  );
-};
+  return await serverAction(`shops/${shopId}`, "PATCH", payload, [
+    fullPath,
+    pathWithoutAdmin,
+  ])
+}
 
 export const deleteShop = async (
   id: string,
@@ -281,13 +244,12 @@ export const deleteShop = async (
   pathWithoutAdmin: string,
   layout: string
 ) => {
-  return await serverAction(
-    `shops/${id}`,
-    'DELETE',
-    null,
-    [fullPath, pathWithoutAdmin, layout]
-  );
-};
+  return await serverAction(`shops/${id}`, "DELETE", null, [
+    fullPath,
+    pathWithoutAdmin,
+    layout,
+  ])
+}
 
 // SERVICES SERVER ACTIONS
 export const createService = async (
@@ -297,12 +259,12 @@ export const createService = async (
   layout: string
 ) => {
   return await serverAction(
-    'services',
-    'POST',
+    "services",
+    "POST",
     payload,
     [fullPath, layout, pathWithoutAdmin] // Revalidate paths
-  );
-};
+  )
+}
 
 export const updateService = async (
   payload: object,
@@ -310,13 +272,11 @@ export const updateService = async (
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
-  return await serverAction(
-    `services/${serviceId}`,
-    'PATCH',
-    payload,
-    [fullPath, pathWithoutAdmin]
-  );
-};
+  return await serverAction(`services/${serviceId}`, "PATCH", payload, [
+    fullPath,
+    pathWithoutAdmin,
+  ])
+}
 
 export const deleteService = async (
   id: string,
@@ -324,13 +284,12 @@ export const deleteService = async (
   pathWithoutAdmin: string,
   layout: string
 ) => {
-  return await serverAction(
-    `services/${id}`,
-    'DELETE',
-    null,
-    [fullPath, pathWithoutAdmin, layout]
-  );
-};
+  return await serverAction(`services/${id}`, "DELETE", null, [
+    fullPath,
+    pathWithoutAdmin,
+    layout,
+  ])
+}
 
 // SERVICES SERVER ACTIONS
 export const createHomeCarousel = async (
@@ -340,12 +299,12 @@ export const createHomeCarousel = async (
   layout: string
 ) => {
   return await serverAction(
-    'home/carousel',
-    'POST',
+    "home/carousel",
+    "POST",
     payload,
     [fullPath, layout, pathWithoutAdmin] // Revalidate paths
-  );
-};
+  )
+}
 
 export const updateHomeCarousel = async (
   payload: object,
@@ -353,13 +312,11 @@ export const updateHomeCarousel = async (
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
-  return await serverAction(
-    `home/carousel/${id}`,
-    'PATCH',
-    payload,
-    [fullPath, pathWithoutAdmin]
-  );
-};
+  return await serverAction(`home/carousel/${id}`, "PATCH", payload, [
+    fullPath,
+    pathWithoutAdmin,
+  ])
+}
 
 export const deleteHomeCarousel = async (
   id: string,
@@ -367,13 +324,12 @@ export const deleteHomeCarousel = async (
   pathWithoutAdmin: string,
   layout: string
 ) => {
-  return await serverAction(
-    `home/carousel/${id}`,
-    'DELETE',
-    null,
-    [fullPath, pathWithoutAdmin, layout]
-  );
-};
+  return await serverAction(`home/carousel/${id}`, "DELETE", null, [
+    fullPath,
+    pathWithoutAdmin,
+    layout,
+  ])
+}
 
 // SERVICES SERVER ACTIONS
 export const createHomeImageText = async (
@@ -383,12 +339,12 @@ export const createHomeImageText = async (
   layout: string
 ) => {
   return await serverAction(
-    'home/image-text',
-    'POST',
+    "home/image-text",
+    "POST",
     payload,
     [fullPath, layout, pathWithoutAdmin] // Revalidate paths
-  );
-};
+  )
+}
 
 export const updateHomeImageText = async (
   payload: object,
@@ -396,13 +352,11 @@ export const updateHomeImageText = async (
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
-  return await serverAction(
-    `home/image-text/${id}`,
-    'PATCH',
-    payload,
-    [fullPath, pathWithoutAdmin]
-  );
-};
+  return await serverAction(`home/image-text/${id}`, "PATCH", payload, [
+    fullPath,
+    pathWithoutAdmin,
+  ])
+}
 
 export const deleteHomeImageText = async (
   id: string,
@@ -410,13 +364,12 @@ export const deleteHomeImageText = async (
   pathWithoutAdmin: string,
   layout: string
 ) => {
-  return await serverAction(
-    `home/image-text/${id}`,
-    'DELETE',
-    null,
-    [fullPath, pathWithoutAdmin, layout]
-  );
-};
+  return await serverAction(`home/image-text/${id}`, "DELETE", null, [
+    fullPath,
+    pathWithoutAdmin,
+    layout,
+  ])
+}
 // VACANCIES SERVER ACTIONS
 export const createVacancy = async (
   payload: object,
@@ -425,12 +378,12 @@ export const createVacancy = async (
   layout: string
 ) => {
   return await serverAction(
-    'vacancies',
-    'POST',
+    "vacancies",
+    "POST",
     payload,
     [fullPath, layout, pathWithoutAdmin] // Revalidate paths
-  );
-};
+  )
+}
 
 export const updateVacancy = async (
   payload: object,
@@ -438,13 +391,11 @@ export const updateVacancy = async (
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
-  return await serverAction(
-    `vacancies/${vacancyId}`,
-    'PATCH',
-    payload,
-    [fullPath, pathWithoutAdmin]
-  );
-};
+  return await serverAction(`vacancies/${vacancyId}`, "PATCH", payload, [
+    fullPath,
+    pathWithoutAdmin,
+  ])
+}
 
 export const deleteVacancy = async (
   id: string,
@@ -452,13 +403,12 @@ export const deleteVacancy = async (
   pathWithoutAdmin: string,
   layout: string
 ) => {
-  return await serverAction(
-    `vacancies/${id}`,
-    'DELETE',
-    null,
-    [fullPath, pathWithoutAdmin, layout]
-  );
-};
+  return await serverAction(`vacancies/${id}`, "DELETE", null, [
+    fullPath,
+    pathWithoutAdmin,
+    layout,
+  ])
+}
 
 // FORMS & DOCUMENTS SERVER ACTIONS
 export const createForm = async (
@@ -468,12 +418,12 @@ export const createForm = async (
   layout: string
 ) => {
   return await serverAction(
-    'forms',
-    'POST',
+    "forms",
+    "POST",
     payload,
     [fullPath, layout, pathWithoutAdmin] // Revalidate paths
-  );
-};
+  )
+}
 
 export const updateForm = async (
   payload: object,
@@ -481,13 +431,11 @@ export const updateForm = async (
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
-  return await serverAction(
-    `forms/${formId}`,
-    'PATCH',
-    payload,
-    [fullPath, pathWithoutAdmin]
-  );
-};
+  return await serverAction(`forms/${formId}`, "PATCH", payload, [
+    fullPath,
+    pathWithoutAdmin,
+  ])
+}
 
 export const deleteForm = async (
   id: string,
@@ -495,13 +443,12 @@ export const deleteForm = async (
   pathWithoutAdmin: string,
   layout: string
 ) => {
-  return await serverAction(
-    `forms/${id}`,
-    'DELETE',
-    null,
-    [fullPath, pathWithoutAdmin, layout]
-  );
-};
+  return await serverAction(`forms/${id}`, "DELETE", null, [
+    fullPath,
+    pathWithoutAdmin,
+    layout,
+  ])
+}
 
 // REPORTS & PUBLICATIONS SERVER ACTIONS
 export const createReportAndPublication = async (
@@ -511,12 +458,12 @@ export const createReportAndPublication = async (
   layout: string
 ) => {
   return await serverAction(
-    'reports-publications',
-    'POST',
+    "reports-publications",
+    "POST",
     payload,
     [fullPath, layout, pathWithoutAdmin] // Revalidate paths
-  );
-};
+  )
+}
 
 export const updateReportAndPublication = async (
   payload: object,
@@ -526,11 +473,11 @@ export const updateReportAndPublication = async (
 ) => {
   return await serverAction(
     `reports-publications/${reportId}`,
-    'PATCH',
+    "PATCH",
     payload,
     [fullPath, pathWithoutAdmin]
-  );
-};
+  )
+}
 
 export const deleteReportAndPublication = async (
   id: string,
@@ -538,13 +485,12 @@ export const deleteReportAndPublication = async (
   pathWithoutAdmin: string,
   layout: string
 ) => {
-  return await serverAction(
-    `reports-publications/${id}`,
-    'DELETE',
-    null,
-    [fullPath, pathWithoutAdmin, layout]
-  );
-};
+  return await serverAction(`reports-publications/${id}`, "DELETE", null, [
+    fullPath,
+    pathWithoutAdmin,
+    layout,
+  ])
+}
 
 // NEWS SERVER ACTIONS
 export const createNews = async (
@@ -554,12 +500,12 @@ export const createNews = async (
   layout: string
 ) => {
   return await serverAction(
-    'news',
-    'POST',
+    "news",
+    "POST",
     payload,
     [fullPath, layout, pathWithoutAdmin] // Revalidate paths
-  );
-};
+  )
+}
 
 export const updateNews = async (
   payload: object,
@@ -567,13 +513,11 @@ export const updateNews = async (
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
-  return await serverAction(
-    `news/${newsId}`,
-    'PATCH',
-    payload,
-    [fullPath, pathWithoutAdmin]
-  );
-};
+  return await serverAction(`news/${newsId}`, "PATCH", payload, [
+    fullPath,
+    pathWithoutAdmin,
+  ])
+}
 
 export const deleteNews = async (
   id: string,
@@ -581,13 +525,12 @@ export const deleteNews = async (
   pathWithoutAdmin: string,
   layout: string
 ) => {
-  return await serverAction(
-    `news/${id}`,
-    'DELETE',
-    null,
-    [fullPath, pathWithoutAdmin, layout]
-  );
-};
+  return await serverAction(`news/${id}`, "DELETE", null, [
+    fullPath,
+    pathWithoutAdmin,
+    layout,
+  ])
+}
 
 // BLOGS SERVER ACTIONS
 export const createBlog = async (
@@ -597,12 +540,12 @@ export const createBlog = async (
   layout: string
 ) => {
   return await serverAction(
-    'blogs',
-    'POST',
+    "blogs",
+    "POST",
     payload,
     [fullPath, layout, pathWithoutAdmin] // Revalidate paths
-  );
-};
+  )
+}
 
 export const updateBlog = async (
   payload: object,
@@ -610,13 +553,11 @@ export const updateBlog = async (
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
-  return await serverAction(
-    `blogs/${blogsId}`,
-    'PATCH',
-    payload,
-    [fullPath, pathWithoutAdmin]
-  );
-};
+  return await serverAction(`blogs/${blogsId}`, "PATCH", payload, [
+    fullPath,
+    pathWithoutAdmin,
+  ])
+}
 
 export const deleteBlog = async (
   id: string,
@@ -624,13 +565,12 @@ export const deleteBlog = async (
   pathWithoutAdmin: string,
   layout: string
 ) => {
-  return await serverAction(
-    `blogs/${id}`,
-    'DELETE',
-    null,
-    [fullPath, pathWithoutAdmin, layout]
-  );
-};
+  return await serverAction(`blogs/${id}`, "DELETE", null, [
+    fullPath,
+    pathWithoutAdmin,
+    layout,
+  ])
+}
 
 // SERVICES SERVER ACTIONS FOR TEAMS
 export const createTeam = async (
@@ -640,12 +580,12 @@ export const createTeam = async (
   layout: string
 ) => {
   return await serverAction(
-    'team',
-    'POST',
+    "team",
+    "POST",
     payload,
     [fullPath, layout, pathWithoutAdmin] // Revalidate paths
-  );
-};
+  )
+}
 
 export const updateTeam = async (
   payload: object,
@@ -653,13 +593,11 @@ export const updateTeam = async (
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
-  return await serverAction(
-    `team/${id}`,
-    'PATCH',
-    payload,
-    [fullPath, pathWithoutAdmin]
-  );
-};
+  return await serverAction(`team/${id}`, "PATCH", payload, [
+    fullPath,
+    pathWithoutAdmin,
+  ])
+}
 
 export const deleteTeam = async (
   id: string,
@@ -667,14 +605,12 @@ export const deleteTeam = async (
   pathWithoutAdmin: string,
   layout: string
 ) => {
-  return await serverAction(
-    `team/${id}`,
-    'DELETE',
-    null,
-    [fullPath, pathWithoutAdmin, layout]
-  );
-};
-
+  return await serverAction(`team/${id}`, "DELETE", null, [
+    fullPath,
+    pathWithoutAdmin,
+    layout,
+  ])
+}
 
 // SERVICES SERVER ACTIONS FOR STAT
 export const createStat = async (
@@ -684,12 +620,12 @@ export const createStat = async (
   layout: string
 ) => {
   return await serverAction(
-    'stats',
-    'POST',
+    "stats",
+    "POST",
     payload,
     [fullPath, layout, pathWithoutAdmin] // Revalidate paths
-  );
-};
+  )
+}
 
 export const updateStat = async (
   payload: object,
@@ -697,13 +633,11 @@ export const updateStat = async (
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
-  return await serverAction(
-    `stats/${id}`,
-    'PATCH',
-    payload,
-    [fullPath, pathWithoutAdmin]
-  );
-};
+  return await serverAction(`stats/${id}`, "PATCH", payload, [
+    fullPath,
+    pathWithoutAdmin,
+  ])
+}
 
 export const deleteStat = async (
   id: string,
@@ -711,10 +645,9 @@ export const deleteStat = async (
   pathWithoutAdmin: string,
   layout: string
 ) => {
-  return await serverAction(
-    `stats/${id}`,
-    'DELETE',
-    null,
-    [fullPath, pathWithoutAdmin, layout]
-  );
-};
+  return await serverAction(`stats/${id}`, "DELETE", null, [
+    fullPath,
+    pathWithoutAdmin,
+    layout,
+  ])
+}

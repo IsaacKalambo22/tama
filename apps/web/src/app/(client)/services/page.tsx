@@ -1,14 +1,14 @@
-import Services from '@/modules/client/services';
-import { Metadata } from 'next';
+import Services from "@/modules/client/services"
+import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: 'Services - TAMA Farmers Trust',
+  title: "Services - TAMA Farmers Trust",
   description:
-    'Explore the wide range of services offered by TAMA Farmers Trust to support and empower farmers.',
-};
+    "Explore the wide range of services offered by TAMA Farmers Trust to support and empower farmers.",
+}
 
 const ServicesPage = () => {
-  return <Services />;
-};
+  return <Services />
+}
 
-export default ServicesPage;
+export default ServicesPage

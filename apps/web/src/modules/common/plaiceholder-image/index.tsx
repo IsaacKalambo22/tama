@@ -1,6 +1,6 @@
-import { cn } from '@/lib/utils';
-import { getImage } from '@/modules/admin/actions';
-import Image from 'next/image';
+import { cn } from "@/lib/utils"
+import { getImage } from "@/modules/admin/actions"
+import Image from "next/image"
 
 const PlaiceholderImage = async ({
   src,
@@ -10,20 +10,20 @@ const PlaiceholderImage = async ({
   height,
   fill,
 }: {
-  src: string;
-  alt: string;
-  className?: string;
-  width?: number;
-  height?: number;
-  fill?: boolean;
+  src: string
+  alt: string
+  className?: string
+  width?: number
+  height?: number
+  fill?: boolean
 }) => {
-  const { base64, img } = await getImage(src);
-  console.log({ src });
+  const { base64, img } = await getImage(src)
+  console.log({ src })
   return (
     <Image
       src={img.src}
       alt={alt}
-      placeholder='blur'
+      placeholder="blur"
       blurDataURL={base64}
       unoptimized
       {
@@ -36,7 +36,7 @@ const PlaiceholderImage = async ({
       }
       className={cn(className)}
     />
-  );
-};
+  )
+}
 
-export default PlaiceholderImage;
+export default PlaiceholderImage

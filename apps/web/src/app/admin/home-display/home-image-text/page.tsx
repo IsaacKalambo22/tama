@@ -1,7 +1,7 @@
-import HomeImageText from '@/modules/admin/home-image-text';
+import HomeImageText from "@/modules/admin/home-image-text"
 
 const HomeImageTextPage = () => {
-  return <HomeImageText />;
-};
+  return <HomeImageText />
+}
 
-export default HomeImageTextPage;
+export default HomeImageTextPage

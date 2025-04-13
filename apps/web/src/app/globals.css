@@ -33,13 +33,9 @@ body,
 }
 
 .main:before {
-  background: radial-gradient(
-    circle,
-    rgba(2, 0, 36, 0) 0,
-    #fafafa 100%
-  );
+  background: radial-gradient(circle, rgba(2, 0, 36, 0) 0, #fafafa 100%);
   position: absolute;
-  content: '';
+  content: "";
   z-index: 2;
   width: 100%;
   height: 100%;
@@ -47,8 +43,8 @@ body,
 }
 
 .main:after {
-  content: '';
-  background-image: url('/assets/images/grid.svg');
+  content: "";
+  background-image: url("/assets/images/grid.svg");
   z-index: 1;
   position: absolute;
   width: 100%;
@@ -63,43 +59,16 @@ body,
   z-index: 5;
   width: 100%;
   max-width: 1024px;
-  background-image: radial-gradient(
-      at 27% 37%,
-      rgb(141, 182, 0) 0px,
-      transparent 0%
-    ),
-    radial-gradient(
-      at 97% 21%,
-      rgb(141, 182, 0) 0px,
-      transparent 50%
-    ),
-    radial-gradient(
-      at 52% 99%,
-      rgb(141, 182, 0) 0px,
-      transparent 50%
-    ),
-    radial-gradient(
-      at 10% 29%,
-      rgb(245, 158, 11) 0px,
-      transparent 50%
-    ),
-    radial-gradient(
-      at 97% 96%,
-      rgb(245, 158, 11) 0px,
-      transparent 50%
-    ),
-    radial-gradient(
-      at 33% 50%,
-      rgb(245, 158, 11) 0px,
-      transparent 50%
-    ),
-    radial-gradient(
-      at 79% 53%,
-      rgb(245, 158, 11) 0px,
-      transparent 50%
-    );
+  background-image:
+    radial-gradient(at 27% 37%, rgb(141, 182, 0) 0px, transparent 0%),
+    radial-gradient(at 97% 21%, rgb(141, 182, 0) 0px, transparent 50%),
+    radial-gradient(at 52% 99%, rgb(141, 182, 0) 0px, transparent 50%),
+    radial-gradient(at 10% 29%, rgb(245, 158, 11) 0px, transparent 50%),
+    radial-gradient(at 97% 96%, rgb(245, 158, 11) 0px, transparent 50%),
+    radial-gradient(at 33% 50%, rgb(245, 158, 11) 0px, transparent 50%),
+    radial-gradient(at 79% 53%, rgb(245, 158, 11) 0px, transparent 50%);
   position: absolute;
-  content: '';
+  content: "";
   width: 100%;
   height: 100%;
   filter: blur(100px) saturate(150%);
@@ -115,27 +84,27 @@ body,
 
 @layer utilities {
   .subtitle-1 {
-    @apply text-[16px] leading-[24px] font-medium;
+    @apply text-[16px] font-medium leading-[24px];
   }
   .subtitle-2 {
-    @apply text-[14px] leading-[20px] font-semibold;
+    @apply text-[14px] font-semibold leading-[20px];
   }
 }
 
 .home-text {
-  @apply text-center font-bold green_gradient text-3xl sm:text-4xl;
+  @apply green_gradient text-center text-3xl font-bold sm:text-4xl;
 }
 
 .green_gradient {
-  @apply bg-gradient-to-r from-green-600 to-amber-500 bg-clip-text text-transparent leading-snug capitalize;
+  @apply bg-gradient-to-r from-green-600 to-amber-500 bg-clip-text capitalize leading-snug text-transparent;
 }
 
 .green_subtitle {
-  @apply bg-gradient-to-r from-green-600 to-amber-500 bg-clip-text text-transparent text-[1.3rem] sm:text-[1.7rem] leading-snug capitalize;
+  @apply bg-gradient-to-r from-green-600 to-amber-500 bg-clip-text text-[1.3rem] capitalize leading-snug text-transparent sm:text-[1.7rem];
 }
 
 .desc {
-  @apply mt-5 text-lg text-gray-600 sm:text-xl max-w-2xl;
+  @apply mt-5 max-w-2xl text-lg text-gray-600 sm:text-xl;
 }
 
 .thumbnail {
@@ -146,7 +115,7 @@ body,
 }
 
 .heading {
-  @apply font-bold text-4xl md:text-5xl text-center;
+  @apply text-center text-4xl font-bold md:text-5xl;
 }
 
 /* Card */
@@ -157,14 +126,14 @@ body,
   @apply flex flex-col !important;
 }
 .shad-input {
-  @apply placeholder:text-gray-600 border-green-500 h-9  !important;
+  @apply h-9 border-green-500 placeholder:text-gray-600 !important;
 }
 .shad-textArea {
-  @apply placeholder:text-gray-600 border-green-500 h-9  !important;
+  @apply h-9 border-green-500 placeholder:text-gray-600 !important;
 }
 
 .file-upload {
-  @apply flex cursor-pointer  flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed border-gray-200 bg-white p-8;
+  @apply flex cursor-pointer flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed border-gray-200 bg-white p-8;
 }
 
 .file-upload_label {
@@ -172,7 +141,7 @@ body,
 }
 
 .uploader-preview-list {
-  @apply fixed  z-50 flex size-full h-fit  flex-col gap-3 rounded-[20px] bg-white p-2 !important;
+  @apply fixed z-50 flex size-full h-fit flex-col gap-3 rounded-[20px] bg-white p-2 !important;
 }
 .uploader-preview-item {
   @apply flex items-center justify-between gap-3 rounded-xl p-3 !important;
@@ -183,12 +152,12 @@ body,
 
 /* =====  REACT PHONE NUMBER INPUT OVERRIDES */
 .input-phone {
-  @apply mt-2 h-9 rounded-md px-3 text-sm border bg-white placeholder:text-gray-600 border-gray-300 focus:border-green-500 active:border-green-500;
+  @apply mt-2 h-9 rounded-md border border-gray-300 bg-white px-3 text-sm placeholder:text-gray-600 focus:border-green-500 active:border-green-500;
 }
 
 /* =====  REACT DATE PICKER OVERRIDES */
 .date-picker {
-  @apply overflow-hidden border-transparent w-full placeholder:text-gray-600  h-11 rounded-md px-3 outline-none !important;
+  @apply h-11 w-full overflow-hidden rounded-md border-transparent px-3 outline-none placeholder:text-gray-600 !important;
 }
 /* =====  REACT-DATEPICKER OVERRIDES */
 .react-datepicker-wrapper.date-picker {

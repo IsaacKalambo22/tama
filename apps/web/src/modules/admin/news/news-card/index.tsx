@@ -1,31 +1,19 @@
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@/components/ui/avatar';
-import { Card } from '@/components/ui/card';
-import { NewsProps } from '@/lib/api';
-import { formatDateTime } from '@/lib/utils';
-import Image from 'next/image';
-import NewsActionDropdown from '../news-action-dropdown';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Card } from "@/components/ui/card"
+import { NewsProps } from "@/lib/api"
+import { formatDateTime } from "@/lib/utils"
+import Image from "next/image"
+import NewsActionDropdown from "../news-action-dropdown"
 interface Props {
-  newsItem: NewsProps;
+  newsItem: NewsProps
 }
 const NewsCard = ({ newsItem }: Props) => {
-  const {
-    author,
-    imageUrl,
-    title,
-    content,
-    createdAt,
-  } = newsItem;
-  const authorInitial = author
-    .charAt(0)
-    .toUpperCase(); // Get the first letter of the author's name
+  const { author, imageUrl, title, content, createdAt } = newsItem
+  const authorInitial = author.charAt(0).toUpperCase() // Get the first letter of the author's name
 
   return (
-    <Card className='p-6 shadow-none rounded-3xl hover:shadow-lg cursor-pointer transition-shadow relative'>
-      <div className='absolute top-5 right-5'>
+    <Card className="p-6 shadow-none rounded-3xl hover:shadow-lg cursor-pointer transition-shadow relative">
+      <div className="absolute top-5 right-5">
         <NewsActionDropdown news={newsItem} />
       </div>
       <Image
@@ -34,29 +22,23 @@ const NewsCard = ({ newsItem }: Props) => {
         alt={title}
         width={200}
         height={150}
-        className='rounded-2xl w-full mb-4 h-[12rem]'
+        className="rounded-2xl w-full mb-4 h-[12rem]"
       />
-      <div className='flex flex-col w-full h-full'>
-        <div className='flex w-full gap-2 items-center'>
+      <div className="flex flex-col w-full h-full">
+        <div className="flex w-full gap-2 items-center">
           <Avatar>
-            <AvatarImage src='' />
-            <AvatarFallback>
-              {authorInitial}
-            </AvatarFallback>
+            <AvatarImage src="" />
+            <AvatarFallback>{authorInitial}</AvatarFallback>
           </Avatar>
-          <p className='text-sm text-gray-500'>
+          <p className="text-sm text-gray-500">
             {author} | {formatDateTime(createdAt)}
           </p>
         </div>
-        <h2 className='text-[1rem] font-semibold mt-2 line-clamp-1'>
-          {title}
-        </h2>
-        <p className='text-gray-700 mt-2 line-clamp-3'>
-          {content}
-        </p>
+        <h2 className="text-[1rem] font-semibold mt-2 line-clamp-1">{title}</h2>
+        <p className="text-gray-700 mt-2 line-clamp-3">{content}</p>
       </div>
     </Card>
-  );
-};
+  )
+}
 
-export default NewsCard;
+export default NewsCard

@@ -1,6 +1,6 @@
-'use client';
+"use client"
 
-import { Dialog } from '@/components/ui/dialog';
+import { Dialog } from "@/components/ui/dialog"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,100 +8,85 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu"
 
-import { ShopProps } from '@/lib/api';
-import Image from 'next/image';
-import { useState } from 'react';
-import { shopActionsDropdownItems } from '../../constants';
-import ModalViewShop from '../modal-view-shop';
+import { ShopProps } from "@/lib/api"
+import Image from "next/image"
+import { useState } from "react"
+import { shopActionsDropdownItems } from "../../constants"
+import ModalViewShop from "../modal-view-shop"
 type Props = {
-  shop: ShopProps;
-};
+  shop: ShopProps
+}
 const ShopActionDropdown = ({ shop }: Props) => {
-  const [isModalOpen, setIsModalOpen] =
-    useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] =
-    useState(false);
-  const [action, setAction] =
-    useState<ActionType | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [action, setAction] = useState<ActionType | null>(null)
 
   const renderDialogContent = () => {
-    if (!action) return null;
+    if (!action) return null
 
-    const { value } = action;
+    const { value } = action
 
-    if (value === 'details') {
+    if (value === "details") {
       return (
         <ModalViewShop
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           shop={shop}
         />
-      );
+      )
     }
-  };
+  }
 
   return (
-    <Dialog
-      open={isModalOpen}
-      onOpenChange={setIsModalOpen}
-    >
-      <DropdownMenu
-        open={isDropdownOpen}
-        onOpenChange={setIsDropdownOpen}
-      >
-        <DropdownMenuTrigger className='shad-no-focus'>
-          <div className='rounded-full bg-white/80 hover:bg-white/90 backdrop-blur-md shadow-md p-2'>
+    <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+      <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
+        <DropdownMenuTrigger className="shad-no-focus">
+          <div className="rounded-full bg-white/80 hover:bg-white/90 backdrop-blur-md shadow-md p-2">
             <Image
-              src='/assets/icons/dots.svg'
-              alt='dots'
+              src="/assets/icons/dots.svg"
+              alt="dots"
               width={18}
               height={18}
             />
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuLabel className='max-w-[200px] truncate'>
+          <DropdownMenuLabel className="max-w-[200px] truncate">
             {shop.name}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {shopActionsDropdownItems.map(
-            (actionItem) => (
-              <DropdownMenuItem
-                key={actionItem.value}
-                className='shad-dropdown-item'
-                onClick={() => {
-                  setAction(actionItem);
+          {shopActionsDropdownItems.map((actionItem) => (
+            <DropdownMenuItem
+              key={actionItem.value}
+              className="shad-dropdown-item"
+              onClick={() => {
+                setAction(actionItem)
 
-                  if (
-                    ['details'].includes(
-                      actionItem.value
-                    )
-                  ) {
-                    setIsModalOpen(true);
-                  }
-                }}
-              >
-                {actionItem.value && (
-                  <div className='flex items-center gap-2'>
-                    <Image
-                      src={actionItem.icon}
-                      alt={actionItem.label}
-                      width={30}
-                      height={30}
-                    />
-                    {actionItem.label}
-                  </div>
-                )}
-              </DropdownMenuItem>
-            )
-          )}
+                if (["details"].includes(actionItem.value)) {
+                  setIsModalOpen(true)
+                }
+              }}
+            >
+              {actionItem.value && (
+                <div className="flex items-center gap-2">
+                  <Image
+                    src={actionItem.icon}
+                    alt={actionItem.label}
+                    width={30}
+                    height={30}
+                  />
+                  {actionItem.label}
+                </div>
+              )}
+            </DropdownMenuItem>
+          ))}
         </DropdownMenuContent>
       </DropdownMenu>
 
       {renderDialogContent()}
     </Dialog>
-  );
-};
-export default ShopActionDropdown;
+  )
+}
+export default ShopActionDropdown

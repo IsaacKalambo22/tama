@@ -1,9 +1,9 @@
-'use client';
+"use client"
 
-import { FormFieldType } from '@/modules/common/custom-form-field';
-import { forgotPassword } from '../actions';
-import AuthForm, { FormType } from '../auth-form';
-import { forgotPasswordSchema } from '../validation';
+import { FormFieldType } from "@/modules/common/custom-form-field"
+import { forgotPassword } from "../actions"
+import AuthForm, { FormType } from "../auth-form"
+import { forgotPasswordSchema } from "../validation"
 
 const ForgotPassword = () => {
   return (
@@ -11,14 +11,14 @@ const ForgotPassword = () => {
       type={FormType.FORGOT_PASSWORD}
       schema={forgotPasswordSchema}
       defaultValues={{
-        email: '',
+        email: "",
       }}
       fieldTypes={{
         email: FormFieldType.INPUT,
       }}
       onSubmit={forgotPassword}
     />
-  );
-};
+  )
+}
 
-export default ForgotPassword;
+export default ForgotPassword

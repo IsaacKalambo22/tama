@@ -1,8 +1,7 @@
-
-import Stat from '@/modules/admin/status';
+import Stat from "@/modules/admin/status"
 
 const StatPage = () => {
-  return <Stat />;
-};
+  return <Stat />
+}
 
-export default StatPage;
+export default StatPage

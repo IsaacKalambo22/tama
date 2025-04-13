@@ -1,5 +1,5 @@
-import withPlaiceholder from '@plaiceholder/next';
-import type { NextConfig } from 'next';
+import withPlaiceholder from "@plaiceholder/next"
+import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
   // TypeScript settings
@@ -15,33 +15,30 @@ const nextConfig: NextConfig = {
   // Experimental features
   experimental: {
     serverActions: {
-      bodySizeLimit: '100MB', // Increase body size limit for server actions
+      bodySizeLimit: "100MB", // Increase body size limit for server actions
     },
   },
 
   // Image optimization settings
   images: {
-
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname:
-          'madzalo-s3.s3.eu-north-1.amazonaws.com',
+        protocol: "https",
+        hostname: "madzalo-s3.s3.eu-north-1.amazonaws.com",
       },
       {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '8000',
-        pathname: '/**',
+        protocol: "http",
+        hostname: "localhost",
+        port: "8000",
+        pathname: "/**",
       },
       {
-        protocol: 'https',
-        hostname:
-          'z-p3-scontent.fblz1-1.fna.fbcdn.net',
+        protocol: "https",
+        hostname: "z-p3-scontent.fblz1-1.fna.fbcdn.net",
       },
       {
-        protocol: 'https',
-        hostname: 'd2qzsd8jf2durk.cloudfront.net',
+        protocol: "https",
+        hostname: "d2qzsd8jf2durk.cloudfront.net",
       },
     ],
   },
@@ -49,6 +46,6 @@ const nextConfig: NextConfig = {
   // Other potential customizations (uncomment if needed)
   // reactStrictMode: true,
   // outputFileTracing: false,
-};
+}
 
-export default withPlaiceholder(nextConfig);
+export default withPlaiceholder(nextConfig)

@@ -1,14 +1,14 @@
-import EventCalendar from '@/modules/client/event-calendar';
-import { Metadata } from 'next';
+import EventCalendar from "@/modules/client/event-calendar"
+import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: 'Event Calendar - TAMA Farmers Trust',
+  title: "Event Calendar - TAMA Farmers Trust",
   description:
-    'Stay updated with the latest events and activities at TAMA Farmers Trust.',
-};
+    "Stay updated with the latest events and activities at TAMA Farmers Trust.",
+}
 
 const EventCalendarPage = () => {
-  return <EventCalendar />;
-};
+  return <EventCalendar />
+}
 
-export default EventCalendarPage;
+export default EventCalendarPage

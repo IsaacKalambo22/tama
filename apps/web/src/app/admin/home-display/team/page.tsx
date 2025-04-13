@@ -1,7 +1,7 @@
-import Team from '@/modules/admin/team';
+import Team from "@/modules/admin/team"
 
 const TeamPage = () => {
-  return <Team />;
-};
+  return <Team />
+}
 
-export default TeamPage;
+export default TeamPage

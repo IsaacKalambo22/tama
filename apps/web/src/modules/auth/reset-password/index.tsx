@@ -1,22 +1,22 @@
-'use client';
+"use client"
 
-import { FormFieldType } from '@/modules/common/custom-form-field';
-import { resetPassword } from '../actions';
-import AuthForm, { FormType } from '../auth-form';
-import { resetPasswordSchema } from '../validation';
+import { FormFieldType } from "@/modules/common/custom-form-field"
+import { resetPassword } from "../actions"
+import AuthForm, { FormType } from "../auth-form"
+import { resetPasswordSchema } from "../validation"
 
 const ResetPassword = ({
   verificationToken,
 }: {
-  verificationToken: string;
+  verificationToken: string
 }) => {
   return (
     <AuthForm
       type={FormType.RESET_PASSWORD}
       schema={resetPasswordSchema}
       defaultValues={{
-        password: '',
-        confirmPassword: '',
+        password: "",
+        confirmPassword: "",
       }}
       fieldTypes={{
         password: FormFieldType.PASSWORD,
@@ -25,7 +25,7 @@ const ResetPassword = ({
       verificationToken={verificationToken}
       onSubmit={resetPassword}
     />
-  );
-};
+  )
+}
 
-export default ResetPassword;
+export default ResetPassword

@@ -1,96 +1,74 @@
-'use client';
+"use client"
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button"
 
-import { Icon } from '@iconify/react/dist/iconify.js';
-import {
-  motion,
-  SVGMotionProps,
-  useCycle,
-} from 'framer-motion';
-import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import React, {
-  ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import {
-  NavItem,
-  navItems,
-} from '../../constants/nav-items';
+import { Icon } from "@iconify/react/dist/iconify.js"
+import { motion, SVGMotionProps, useCycle } from "framer-motion"
+import Image from "next/image"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import React, { ReactNode, useEffect, useRef, useState } from "react"
+import { NavItem, navItems } from "../../constants/nav-items"
 
 const Mobile: React.FC = () => {
-  const useDimensions = (
-    ref: React.RefObject<HTMLDivElement>
-  ) => {
+  const useDimensions = (ref: React.RefObject<HTMLDivElement>) => {
     const dimensions = useRef({
       width: 0,
       height: 0,
-    });
+    })
 
     useEffect(() => {
       if (ref.current) {
-        dimensions.current.width =
-          ref.current.offsetWidth;
-        dimensions.current.height =
-          ref.current.offsetHeight;
+        dimensions.current.width = ref.current.offsetWidth
+        dimensions.current.height = ref.current.offsetHeight
       }
-    }, [ref]);
+    }, [ref])
 
-    return dimensions.current;
-  };
+    return dimensions.current
+  }
 
   const sidebar = {
     open: (height = 1000) => ({
-      clipPath: `circle(${
-        height * 2 + 200
-      }px at 100% 0)`,
+      clipPath: `circle(${height * 2 + 200}px at 100% 0)`,
       transition: {
-        type: 'spring',
+        type: "spring",
         stiffness: 20,
         restDelta: 2,
       },
     }),
     closed: {
-      clipPath: 'circle(0px at 100% 0)',
+      clipPath: "circle(0px at 100% 0)",
       transition: {
-        type: 'spring',
+        type: "spring",
         stiffness: 400,
         damping: 40,
       },
     },
-  };
+  }
 
   type MenuItemWithSubMenuProps = {
-    item: NavItem;
-    toggleOpen: () => void;
-  };
+    item: NavItem
+    toggleOpen: () => void
+  }
 
   const MenuToggle: React.FC<{
-    toggle: () => void;
+    toggle: () => void
   }> = ({ toggle }) => (
     <Button
-      size='icon'
-      variant='ghost'
+      size="icon"
+      variant="ghost"
       onClick={toggle}
-      className='pointer-events-auto absolute right-4 top-[11px] z-30'
+      className="pointer-events-auto absolute right-4 top-[11px] z-30"
     >
-      <svg
-        width='23'
-        height='23'
-        viewBox='0 0 23 23'
-      >
+      <svg width="23" height="23" viewBox="0 0 23 23">
         <Path
           variants={{
-            closed: { d: 'M 2 2.5 L 20 2.5' },
-            open: { d: 'M 3 16.5 L 17 2.5' },
+            closed: { d: "M 2 2.5 L 20 2.5" },
+            open: { d: "M 3 16.5 L 17 2.5" },
           }}
         />
         <Path
-          d='M 2 9.423 L 20 9.423'
+          d="M 2 9.423 L 20 9.423"
           variants={{
             closed: { opacity: 1 },
             open: { opacity: 0 },
@@ -100,30 +78,28 @@ const Mobile: React.FC = () => {
         <Path
           variants={{
             closed: {
-              d: 'M 2 16.346 L 20 16.346',
+              d: "M 2 16.346 L 20 16.346",
             },
-            open: { d: 'M 3 2.5 L 17 16.346' },
+            open: { d: "M 3 2.5 L 17 16.346" },
           }}
         />
       </svg>
     </Button>
-  );
+  )
 
-  const Path: React.FC<
-    SVGMotionProps<SVGPathElement>
-  > = (props) => (
+  const Path: React.FC<SVGMotionProps<SVGPathElement>> = (props) => (
     <motion.path
-      fill='transparent'
-      strokeWidth='2'
-      stroke='hsl(0, 0%, 18%)'
-      strokeLinecap='round'
+      fill="transparent"
+      strokeWidth="2"
+      stroke="hsl(0, 0%, 18%)"
+      strokeLinecap="round"
       {...props}
     />
-  );
+  )
 
   const MenuItem: React.FC<{
-    className?: string;
-    children?: ReactNode;
+    className?: string
+    children?: ReactNode
   }> = ({ className, children }) => (
     <motion.li
       variants={MenuItemVariants}
@@ -131,81 +107,68 @@ const Mobile: React.FC = () => {
     >
       {children}
     </motion.li>
-  );
+  )
 
-  const MenuItemWithSubMenu: React.FC<
-    MenuItemWithSubMenuProps
-  > = ({ item, toggleOpen }) => {
-    const pathname = usePathname();
-    const [subMenuOpen, setSubMenuOpen] =
-      useState(false);
+  const MenuItemWithSubMenu: React.FC<MenuItemWithSubMenuProps> = ({
+    item,
+    toggleOpen,
+  }) => {
+    const pathname = usePathname()
+    const [subMenuOpen, setSubMenuOpen] = useState(false)
 
     return (
       <>
         <MenuItem>
           <button
-            className='flex w-full text-sm font-medium text-gray-700'
-            onClick={() =>
-              setSubMenuOpen(!subMenuOpen)
-            }
+            className="flex w-full text-sm font-medium text-gray-700"
+            onClick={() => setSubMenuOpen(!subMenuOpen)}
           >
-            <div className='flex flex-row justify-between w-full items-center'>
+            <div className="flex flex-row justify-between w-full items-center">
               <span
                 className={`${
                   pathname.includes(item.href)
-                    ? 'font-bold text-green-500'
-                    : 'text-gray-700'
+                    ? "font-bold text-green-500"
+                    : "text-gray-700"
                 }`}
               >
                 {item.title}
               </span>
               <div
                 className={`transition-transform duration-300 ${
-                  subMenuOpen ? 'rotate-180' : ''
+                  subMenuOpen ? "rotate-180" : ""
                 }`}
               >
                 <Icon
-                  icon='lucide:chevron-down'
-                  width='24'
-                  height='24'
-                  className='text-gray-600'
+                  icon="lucide:chevron-down"
+                  width="24"
+                  height="24"
+                  className="text-gray-600"
                 />
               </div>
             </div>
           </button>
         </MenuItem>
-        <div
-          className={`flex flex-col ${
-            !subMenuOpen ? 'hidden' : ''
-          }`}
-        >
-          {item.subMenuItems?.map(
-            (subItem, subIdx) => (
-              <MenuItem
-                key={subIdx}
-                className='bg-transparent'
+        <div className={`flex flex-col ${!subMenuOpen ? "hidden" : ""}`}>
+          {item.subMenuItems?.map((subItem, subIdx) => (
+            <MenuItem key={subIdx} className="bg-transparent">
+              <Link
+                href={subItem.href}
+                onClick={() => toggleOpen()}
+                className={`block px-4 text-sm text-gray-700 hover:text-green-600 ${
+                  subItem.href === pathname ? "font-bold text-green-500" : ""
+                }`}
               >
-                <Link
-                  href={subItem.href}
-                  onClick={() => toggleOpen()}
-                  className={`block px-4 text-sm text-gray-700 hover:text-green-600 ${
-                    subItem.href === pathname
-                      ? 'font-bold text-green-500'
-                      : ''
-                  }`}
-                >
-                  <span className='flex items-center gap-2'>
-                    {subItem.icon}
-                    {subItem.title}
-                  </span>
-                </Link>
-              </MenuItem>
-            )
-          )}
+                <span className="flex items-center gap-2">
+                  {subItem.icon}
+                  {subItem.title}
+                </span>
+              </Link>
+            </MenuItem>
+          ))}
         </div>
       </>
-    );
-  };
+    )
+  }
 
   const MenuItemVariants = {
     open: {
@@ -223,7 +186,7 @@ const Mobile: React.FC = () => {
         duration: 0.02,
       },
     },
-  };
+  }
 
   const variants = {
     open: {
@@ -238,57 +201,47 @@ const Mobile: React.FC = () => {
         staggerDirection: -1,
       },
     },
-  };
+  }
 
-  const pathname = usePathname();
-  const containerRef =
-    useRef<HTMLDivElement>(null);
-  const { height } = useDimensions(containerRef);
-  const [isOpen, toggleOpen] = useCycle(
-    false,
-    true
-  );
-  const user = false;
+  const pathname = usePathname()
+  const containerRef = useRef<HTMLDivElement>(null)
+  const { height } = useDimensions(containerRef)
+  const [isOpen, toggleOpen] = useCycle(false, true)
+  const user = false
 
   return (
     <div>
       <motion.nav
         initial={false}
-        animate={isOpen ? 'open' : 'closed'}
+        animate={isOpen ? "open" : "closed"}
         custom={height}
         className={`fixed inset-0 z-50 w-full lg:hidden ${
-          isOpen ? '' : 'pointer-events-none'
+          isOpen ? "" : "pointer-events-none"
         }`}
         ref={containerRef}
       >
         <motion.div
-          className='absolute inset-0 right-0 w-full bg-white shadow-lg'
+          className="absolute inset-0 right-0 w-full bg-white shadow-lg"
           variants={sidebar}
         />
         <motion.ul
           variants={variants}
-          className='absolute grid w-full gap-2 px-4 py-16 max-h-screen overflow-y-auto'
+          className="absolute grid w-full gap-2 px-4 py-16 max-h-screen overflow-y-auto"
         >
           {navItems.map((item, idx) => {
-            const isLastItem =
-              idx === navItems.length - 1;
+            const isLastItem = idx === navItems.length - 1
 
             return (
               <div key={idx}>
                 {item.submenu ? (
-                  <MenuItemWithSubMenu
-                    item={item}
-                    toggleOpen={toggleOpen}
-                  />
+                  <MenuItemWithSubMenu item={item} toggleOpen={toggleOpen} />
                 ) : (
                   <MenuItem>
                     <Link
                       href={item.href}
                       onClick={() => toggleOpen()}
                       className={`flex w-full text-sm font-medium text-gray-700 ${
-                        item.href === pathname
-                          ? 'font-bold text-green-500'
-                          : ''
+                        item.href === pathname ? "font-bold text-green-500" : ""
                       }`}
                     >
                       {item.title}
@@ -297,31 +250,27 @@ const Mobile: React.FC = () => {
                 )}
 
                 {isOpen && !isLastItem && (
-                  <div className='h-px w-full bg-gray-300' />
+                  <div className="h-px w-full bg-gray-300" />
                 )}
               </div>
-            );
+            )
           })}
           {isOpen && (
             <>
               {user ? (
-                <Link href='/'>
-                  <Button className='h-9 font-bold w-full'>
-                    out{' '}
-                  </Button>
+                <Link href="/">
+                  <Button className="h-9 font-bold w-full">out </Button>
                 </Link>
               ) : (
-                <Link href='/login'>
-                  <Button className='h-9 font-bold w-full'>
-                    Sign in
-                  </Button>
+                <Link href="/login">
+                  <Button className="h-9 font-bold w-full">Sign in</Button>
                 </Link>
               )}
             </>
           )}
         </motion.ul>
-        <div className='flex mr-14 items-center justify-between pt-1 z-50'>
-          <div className='flex-1 gap-2 text-right mt-3 pointer-events-auto'>
+        <div className="flex mr-14 items-center justify-between pt-1 z-50">
+          <div className="flex-1 gap-2 text-right mt-3 pointer-events-auto">
             {/* <Button
               className='w-8 h-7'
               variant='ghost'
@@ -334,29 +283,26 @@ const Mobile: React.FC = () => {
           <MenuToggle toggle={toggleOpen} />
         </div>
 
-        <div className='absolute top-2 left-4 flex items-center gap-2 pointer-events-auto'>
-          <Link
-            href='/'
-            className='flex items-center gap-2'
-          >
+        <div className="absolute top-2 left-4 flex items-center gap-2 pointer-events-auto">
+          <Link href="/" className="flex items-center gap-2">
             <Image
-              src='/assets/images/logo.png'
+              src="/assets/images/logo.png"
               width={40}
               height={40}
-              alt='logo'
-              className='ml-2'
+              alt="logo"
+              className="ml-2"
             />
           </Link>
           <Link
-            href='/'
-            className=' bg-gradient-to-r from-green-600 to-amber-500 bg-clip-text text-transparent text-[1rem] leading-snug capitalize max-sm:text-[0.9rem]'
+            href="/"
+            className=" bg-gradient-to-r from-green-600 to-amber-500 bg-clip-text text-transparent text-[1rem] leading-snug capitalize max-sm:text-[0.9rem]"
           >
             TAMA Farmers Trust
           </Link>
         </div>
       </motion.nav>
     </div>
-  );
-};
+  )
+}
 
-export default Mobile;
+export default Mobile

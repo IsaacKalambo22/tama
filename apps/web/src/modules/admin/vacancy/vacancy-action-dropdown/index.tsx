@@ -1,6 +1,6 @@
-'use client';
+"use client"
 
-import { Dialog } from '@/components/ui/dialog';
+import { Dialog } from "@/components/ui/dialog"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,125 +8,106 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu"
 
-import { VacancyProps } from '@/lib/api';
-import Image from 'next/image';
-import { useState } from 'react';
-import { adminActionsDropdownItems } from '../../constants';
-import ModalDeleteVacancy from '../modal-delete-vacancy';
-import ModalEditVacancy from '../modal-edit-vacancy';
-import ModalViewVacancy from '../modal-view-vacancy';
+import { VacancyProps } from "@/lib/api"
+import Image from "next/image"
+import { useState } from "react"
+import { adminActionsDropdownItems } from "../../constants"
+import ModalDeleteVacancy from "../modal-delete-vacancy"
+import ModalEditVacancy from "../modal-edit-vacancy"
+import ModalViewVacancy from "../modal-view-vacancy"
 type Props = {
-  vacancy: VacancyProps;
-};
-const VacancyActionDropdown = ({
-  vacancy,
-}: Props) => {
-  const [isModalOpen, setIsModalOpen] =
-    useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] =
-    useState(false);
-  const [action, setAction] =
-    useState<ActionType | null>(null);
+  vacancy: VacancyProps
+}
+const VacancyActionDropdown = ({ vacancy }: Props) => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [action, setAction] = useState<ActionType | null>(null)
 
   const renderDialogContent = () => {
-    if (!action) return null;
+    if (!action) return null
 
-    const { value } = action;
+    const { value } = action
 
-    if (value === 'edit') {
+    if (value === "edit") {
       return (
         <ModalEditVacancy
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           vacancy={vacancy}
         />
-      );
+      )
     }
-    if (value === 'details') {
+    if (value === "details") {
       return (
         <ModalViewVacancy
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           vacancy={vacancy}
         />
-      );
+      )
     }
-    if (value === 'delete') {
-      console.log('Want to delete?');
+    if (value === "delete") {
+      console.log("Want to delete?")
       return (
         <ModalDeleteVacancy
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           vacancy={vacancy}
         />
-      );
+      )
     }
-  };
+  }
 
   return (
-    <Dialog
-      open={isModalOpen}
-      onOpenChange={setIsModalOpen}
-    >
-      <DropdownMenu
-        open={isDropdownOpen}
-        onOpenChange={setIsDropdownOpen}
-      >
-        <DropdownMenuTrigger className='shad-no-focus'>
-          <div className='rounded-full bg-white/80 hover:bg-white/90 backdrop-blur-md shadow-md p-2'>
+    <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+      <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
+        <DropdownMenuTrigger className="shad-no-focus">
+          <div className="rounded-full bg-white/80 hover:bg-white/90 backdrop-blur-md shadow-md p-2">
             <Image
-              src='/assets/icons/dots.svg'
-              alt='dots'
+              src="/assets/icons/dots.svg"
+              alt="dots"
               width={18}
               height={18}
             />
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuLabel className='max-w-[200px] truncate'>
+          <DropdownMenuLabel className="max-w-[200px] truncate">
             {vacancy.title}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {adminActionsDropdownItems.map(
-            (actionItem) => (
-              <DropdownMenuItem
-                key={actionItem.value}
-                className='shad-dropdown-item'
-                onClick={() => {
-                  setAction(actionItem);
+          {adminActionsDropdownItems.map((actionItem) => (
+            <DropdownMenuItem
+              key={actionItem.value}
+              className="shad-dropdown-item"
+              onClick={() => {
+                setAction(actionItem)
 
-                  if (
-                    [
-                      'edit',
-                      'delete',
-                      'details',
-                    ].includes(actionItem.value)
-                  ) {
-                    setIsModalOpen(true);
-                  }
-                }}
-              >
-                {actionItem.value && (
-                  <div className='flex items-center gap-2'>
-                    <Image
-                      src={actionItem.icon}
-                      alt={actionItem.label}
-                      width={30}
-                      height={30}
-                    />
-                    {actionItem.label}
-                  </div>
-                )}
-              </DropdownMenuItem>
-            )
-          )}
+                if (["edit", "delete", "details"].includes(actionItem.value)) {
+                  setIsModalOpen(true)
+                }
+              }}
+            >
+              {actionItem.value && (
+                <div className="flex items-center gap-2">
+                  <Image
+                    src={actionItem.icon}
+                    alt={actionItem.label}
+                    width={30}
+                    height={30}
+                  />
+                  {actionItem.label}
+                </div>
+              )}
+            </DropdownMenuItem>
+          ))}
         </DropdownMenuContent>
       </DropdownMenu>
 
       {renderDialogContent()}
     </Dialog>
-  );
-};
-export default VacancyActionDropdown;
+  )
+}
+export default VacancyActionDropdown

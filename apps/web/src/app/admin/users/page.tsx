@@ -1,7 +1,7 @@
-import UserDataTable from '@/modules/admin/user/user-data-table';
+import UserDataTable from "@/modules/admin/user/user-data-table"
 
 const AdminUsersPage = () => {
-  return <UserDataTable />;
-};
+  return <UserDataTable />
+}
 
-export default AdminUsersPage;
+export default AdminUsersPage

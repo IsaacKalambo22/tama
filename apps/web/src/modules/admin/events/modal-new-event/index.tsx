@@ -1,70 +1,60 @@
-'use client';
+"use client"
 
-import { Form } from '@/components/ui/form';
-import useCustomPath from '@/hooks/use-custom-path';
+import { Form } from "@/components/ui/form"
+import useCustomPath from "@/hooks/use-custom-path"
 import CustomFormField, {
   FormFieldType,
-} from '@/modules/common/custom-form-field';
-import SubmitButton from '@/modules/common/submit-button';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { usePathname } from 'next/navigation';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import * as zod from 'zod';
-import { createEvent } from '../../actions';
-import Modal from '../../modal';
+} from "@/modules/common/custom-form-field"
+import SubmitButton from "@/modules/common/submit-button"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { usePathname } from "next/navigation"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+import * as zod from "zod"
+import { createEvent } from "../../actions"
+import Modal from "../../modal"
 
 type Props = {
-  isOpen: boolean;
-  onClose: () => void;
-  id?: string | null;
-};
+  isOpen: boolean
+  onClose: () => void
+  id?: string | null
+}
 
-const ModalNewEvent = ({
-  isOpen,
-  onClose,
-}: Props) => {
-  const [isLoading, setIsLoading] =
-    useState(false);
-  const path = usePathname();
-  const { fullPath } = useCustomPath(path);
+const ModalNewEvent = ({ isOpen, onClose }: Props) => {
+  const [isLoading, setIsLoading] = useState(false)
+  const path = usePathname()
+  const { fullPath } = useCustomPath(path)
 
   // Define the schema for event data
   const formSchema = zod.object({
     title: zod.string().min(2, {
-      message:
-        'Title must be at least 2 characters.',
+      message: "Title must be at least 2 characters.",
     }),
     description: zod.string().min(10, {
-      message:
-        'Description must be at least 10 characters.',
+      message: "Description must be at least 10 characters.",
     }),
     startDate: zod.date(),
     time: zod.date().optional(),
     endDate: zod.date().optional(),
     location: zod.string().optional(),
-  });
+  })
 
-  const form = useForm<
-    zod.infer<typeof formSchema>
-  >({
+  const form = useForm<zod.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    mode: 'all',
+    mode: "all",
     defaultValues: {
-      title: '',
-      description: '',
+      title: "",
+      description: "",
       startDate: undefined,
       time: undefined,
       endDate: undefined,
-      location: '',
+      location: "",
     },
-  });
+  })
 
-  const onSubmit = async (
-    values: zod.infer<typeof formSchema>
-  ) => {
-    setIsLoading(true);
+  const onSubmit = async (values: zod.infer<typeof formSchema>) => {
+    setIsLoading(true)
     const payload = {
       title: values.title,
       description: values.description,
@@ -72,100 +62,92 @@ const ModalNewEvent = ({
       time: values.time || null,
       endDate: values.endDate || null,
       location: values.location,
-    };
+    }
 
     const result = await createEvent(
       payload,
       fullPath,
       `/tobacco-business/event-calendar`,
-      '/admin'
-    );
+      "/admin"
+    )
 
-    onClose();
+    onClose()
     if (result.success) {
-      toast.success('Event created successfully');
+      toast.success("Event created successfully")
     } else {
-      toast.error(
-        result.error ?? 'An error occurred.'
-      );
+      toast.error(result.error ?? "An error occurred.")
     }
-    setIsLoading(false);
-  };
+    setIsLoading(false)
+  }
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      name='Add New Event'
-    >
+    <Modal isOpen={isOpen} onClose={onClose} name="Add New Event">
       <Form {...form}>
         <form
-          className='flex flex-col gap-5 w-full'
+          className="flex flex-col gap-5 w-full"
           onSubmit={form.handleSubmit(onSubmit)}
         >
           <CustomFormField
             fieldType={FormFieldType.INPUT}
-            name='title'
-            label='Event Title'
+            name="title"
+            label="Event Title"
             control={form.control}
-            placeholder='Enter event title'
+            placeholder="Enter event title"
           />
           <CustomFormField
             fieldType={FormFieldType.TEXTAREA}
-            name='description'
-            label='Description'
+            name="description"
+            label="Description"
             control={form.control}
-            placeholder='Enter event description'
+            placeholder="Enter event description"
           />
           <CustomFormField
             fieldType={FormFieldType.DATE_PICKER}
-            name='startDate'
-            label='Start Date'
+            name="startDate"
+            label="Start Date"
             control={form.control}
-            placeholder='Select a start date'
-            dateFormat='dd/MM/yyyy'
+            placeholder="Select a start date"
+            dateFormat="dd/MM/yyyy"
             showTimeSelect={false}
           />
 
           <CustomFormField
             fieldType={FormFieldType.TIME_PICKER}
-            name='time'
-            label='Time'
+            name="time"
+            label="Time"
             control={form.control}
-            placeholder='Select event time'
-            dateFormat='h:mm aa'
+            placeholder="Select event time"
+            dateFormat="h:mm aa"
             showTimeSelect
           />
 
           <CustomFormField
             fieldType={FormFieldType.DATE_PICKER}
-            name='endDate'
-            placeholder='Select a end date'
+            name="endDate"
+            placeholder="Select a end date"
             control={form.control}
-            dateFormat='dd/MM/yyyy'
+            dateFormat="dd/MM/yyyy"
             showTimeSelect={false}
           />
           <CustomFormField
             fieldType={FormFieldType.INPUT}
-            name='location'
-            label='Location (optional)'
+            name="location"
+            label="Location (optional)"
             control={form.control}
-            placeholder='Enter location'
+            placeholder="Enter location"
           />
 
           <SubmitButton
-            disabled={
-              isLoading || !form.formState.isValid
-            }
+            disabled={isLoading || !form.formState.isValid}
             isLoading={isLoading}
-            className='w-full h-9'
-            loadingText='Saving...'
+            className="w-full h-9"
+            loadingText="Saving..."
           >
             Save
           </SubmitButton>
         </form>
       </Form>
     </Modal>
-  );
-};
+  )
+}
 
-export default ModalNewEvent;
+export default ModalNewEvent

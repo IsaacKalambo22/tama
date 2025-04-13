@@ -1,7 +1,7 @@
-import Services from '@/modules/admin/services';
+import Services from "@/modules/admin/services"
 
 const ServicesPage = () => {
-  return <Services />;
-};
+  return <Services />
+}
 
-export default ServicesPage;
+export default ServicesPage

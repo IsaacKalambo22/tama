@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import {
   Dialog,
@@ -6,39 +6,39 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Form } from "@/components/ui/form";
-import useCustomPath from "@/hooks/use-custom-path";
+} from "@/components/ui/dialog"
+import { Form } from "@/components/ui/form"
+import useCustomPath from "@/hooks/use-custom-path"
+import { handleFileUploads, updateFileProgress } from "@/lib/utils"
 import CustomFormField, {
   FormFieldType,
-} from "@/modules/common/custom-form-field";
-import SubmitButton from "@/modules/common/submit-button";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import * as zod from "zod";
-import { updateCouncilList } from "../../actions";
-import { handleFileUploads, updateFileProgress } from "@/lib/utils";
-import { MultiFileDropzone } from "@/modules/common/multiple-file-upload";
+} from "@/modules/common/custom-form-field"
+import { MultiFileDropzone } from "@/modules/common/multiple-file-upload"
+import SubmitButton from "@/modules/common/submit-button"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { usePathname } from "next/navigation"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+import * as zod from "zod"
+import { updateCouncilList } from "../../actions"
 
 type Props = {
-  isOpen: boolean;
-  onClose: () => void;
+  isOpen: boolean
+  onClose: () => void
   councilList: {
-    id: string;
-    demarcation: string;
-    councilArea: string;
-    council: string;
-    firstAlternateCouncillor: string;
-    secondAlternateCouncillor: string;
-  };
-};
+    id: string
+    demarcation: string
+    councilArea: string
+    council: string
+    firstAlternateCouncillor: string
+    secondAlternateCouncillor: string
+  }
+}
 
 const ModalEditCouncilList = ({ isOpen, onClose, councilList }: Props) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [fileStates, setFileStates] = useState<FileState[]>([]);
+  const [isLoading, setIsLoading] = useState(false)
+  const [fileStates, setFileStates] = useState<FileState[]>([])
 
   const formSchema = zod.object({
     demarcation: zod.string().min(2, {
@@ -56,10 +56,10 @@ const ModalEditCouncilList = ({ isOpen, onClose, councilList }: Props) => {
     secondAlternateCouncillor: zod.string().min(2, {
       message: "Second Alternate Councillor must be at least 2 characters.",
     }),
-  });
+  })
 
-  const path = usePathname();
-  const { fullPath } = useCustomPath(path);
+  const path = usePathname()
+  const { fullPath } = useCustomPath(path)
 
   const form = useForm<zod.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -70,14 +70,14 @@ const ModalEditCouncilList = ({ isOpen, onClose, councilList }: Props) => {
       firstAlternateCouncillor: councilList.firstAlternateCouncillor || "",
       secondAlternateCouncillor: councilList.secondAlternateCouncillor || "",
     },
-  });
+  })
 
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
-    setIsLoading(true);
+    setIsLoading(true)
     if (fileStates.length === 0) {
-      toast.error("Please upload at least one image file.");
-      setIsLoading(false); // Stop the loading process
-      return;
+      toast.error("Please upload at least one image file.")
+      setIsLoading(false) // Stop the loading process
+      return
     }
 
     const uploadedImageUrls = await Promise.all(
@@ -86,7 +86,7 @@ const ModalEditCouncilList = ({ isOpen, onClose, councilList }: Props) => {
           updateFileProgress(fileState.key, progress, setFileStates)
         )
       )
-    );
+    )
 
     const payload = {
       demarcation: values.demarcation,
@@ -95,26 +95,26 @@ const ModalEditCouncilList = ({ isOpen, onClose, councilList }: Props) => {
       firstAlternateCouncillor: values.firstAlternateCouncillor,
       secondAlternateCouncillor: values.secondAlternateCouncillor,
       imageUrl: uploadedImageUrls[0],
-    };
-    console.log({ payload });
+    }
+    console.log({ payload })
 
     const result = await updateCouncilList(
       payload,
       councilList.id,
       fullPath,
       "/resources/council-list"
-    );
+    )
 
-    onClose();
+    onClose()
     if (result.success) {
-      toast.success("Council list updated successfully");
+      toast.success("Council list updated successfully")
     } else {
       toast.error(
         result.error ?? "An error occurred while updating council list."
-      );
+      )
     }
-    setIsLoading(false);
-  };
+    setIsLoading(false)
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -186,7 +186,7 @@ const ModalEditCouncilList = ({ isOpen, onClose, councilList }: Props) => {
         <DialogFooter></DialogFooter>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default ModalEditCouncilList;
+export default ModalEditCouncilList

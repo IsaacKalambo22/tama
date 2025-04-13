@@ -1,15 +1,14 @@
-import ReportsAndPublications from '@/modules/admin/reports-publications';
-import { Metadata } from 'next';
+import ReportsAndPublications from "@/modules/admin/reports-publications"
+import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title:
-    'Reports and Publications - TAMA Farmers Trust',
+  title: "Reports and Publications - TAMA Farmers Trust",
   description:
-    'Explore detailed reports and publications provided by TAMA Farmers Trust.',
-};
+    "Explore detailed reports and publications provided by TAMA Farmers Trust.",
+}
 
 const ReportsAndPublicationsPage = () => {
-  return <ReportsAndPublications />;
-};
+  return <ReportsAndPublications />
+}
 
-export default ReportsAndPublicationsPage;
+export default ReportsAndPublicationsPage

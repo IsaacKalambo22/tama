@@ -1,73 +1,51 @@
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@/components/ui/avatar';
-import { Card } from '@/components/ui/card';
-import { fetchNews } from '@/lib/api';
-import { formatDateTime } from '@/lib/utils';
-import AddNewHeader from '@/modules/admin/add-new-header';
-import Image from 'next/image';
-import NewsActionDropdown from './news-action-dropdown';
-import NewsList from './news-list';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Card } from "@/components/ui/card"
+import { fetchNews } from "@/lib/api"
+import { formatDateTime } from "@/lib/utils"
+import AddNewHeader from "@/modules/admin/add-new-header"
+import Image from "next/image"
+import NewsActionDropdown from "./news-action-dropdown"
+import NewsList from "./news-list"
 
 const News = async () => {
-  let news = [];
+  let news = []
   try {
-    const response = await fetchNews();
-    news = Array.isArray(response)
-      ? response
-      : []; // Ensure `news` is an array
+    const response = await fetchNews()
+    news = Array.isArray(response) ? response : [] // Ensure `news` is an array
   } catch (error) {
-    console.error('Failed to fetch news:', error);
+    console.error("Failed to fetch news:", error)
     return (
       <div>
-        <AddNewHeader
-          name='News'
-          buttonName='Add News'
-        />
-        <p className='text-red-500'>
-          Failed to load news and publications.
-        </p>
+        <AddNewHeader name="News" buttonName="Add News" />
+        <p className="text-red-500">Failed to load news and publications.</p>
       </div>
-    );
+    )
   }
 
   if (news.length === 0) {
     return (
       <div>
-        <AddNewHeader
-          name='News'
-          buttonName='Add News'
-        />
-        <p className='text-gray-500 mt-4'>
-          No news or publications available. Add
-          new articles to get started!
+        <AddNewHeader name="News" buttonName="Add News" />
+        <p className="text-gray-500 mt-4">
+          No news or publications available. Add new articles to get started!
         </p>
       </div>
-    );
+    )
   }
 
   // Separate the most recent news item
-  const [mostRecent, ...otherNews] = news;
-  const authorInitial = mostRecent?.author
-    ?.charAt(0)
-    .toUpperCase();
+  const [mostRecent, ...otherNews] = news
+  const authorInitial = mostRecent?.author?.charAt(0).toUpperCase()
 
   return (
-    <div className='w-full space-y-6'>
-      <AddNewHeader
-        name='News'
-        buttonName='Add News'
-      />
-      <div className='space-y-10'>
+    <div className="w-full space-y-6">
+      <AddNewHeader name="News" buttonName="Add News" />
+      <div className="space-y-10">
         {/* Most Recent Story */}
         {mostRecent && (
-          <Card className='shadow-none rounded-lg border-none flex flex-col sm:flex-row items-center h-auto sm:h-[20rem] gap-10 relative'>
-            <div className='absolute top-5 right-5'>
-              <NewsActionDropdown
-                news={mostRecent}
-              />
+          <Card className="shadow-none rounded-lg border-none flex flex-col sm:flex-row items-center h-auto sm:h-[20rem] gap-10 relative">
+            <div className="absolute top-5 right-5">
+              <NewsActionDropdown news={mostRecent} />
             </div>
             <Image
               src={mostRecent.imageUrl}
@@ -75,30 +53,25 @@ const News = async () => {
               alt={mostRecent.title}
               width={400}
               height={350}
-              className='rounded-2xl object-cover h-full w-full sm:w-1/2'
+              className="rounded-2xl object-cover h-full w-full sm:w-1/2"
             />
-            <div className='flex py-8 pr-10 flex-col justify-between w-full md:w-1/2 h-full space-y-4'>
-              <div className='flex gap-2 items-center'>
+            <div className="flex py-8 pr-10 flex-col justify-between w-full md:w-1/2 h-full space-y-4">
+              <div className="flex gap-2 items-center">
                 <Avatar>
-                  <AvatarImage src='' />
-                  <AvatarFallback>
-                    {authorInitial}
-                  </AvatarFallback>
+                  <AvatarImage src="" />
+                  <AvatarFallback>{authorInitial}</AvatarFallback>
                 </Avatar>
-                <p className='text-sm text-gray-500'>
-                  {mostRecent.author} |{' '}
-                  {formatDateTime(
-                    mostRecent.createdAt
-                  )}
+                <p className="text-sm text-gray-500">
+                  {mostRecent.author} | {formatDateTime(mostRecent.createdAt)}
                 </p>
               </div>
-              <h3 className='md:text-3xl text-2xl font-bold'>
+              <h3 className="md:text-3xl text-2xl font-bold">
                 {mostRecent.title}
               </h3>
-              <p className='text-gray-700 mt-2 line-clamp-4'>
+              <p className="text-gray-700 mt-2 line-clamp-4">
                 {mostRecent.content}
               </p>
-              <p className='text-gray-700 mt-2'>
+              <p className="text-gray-700 mt-2">
                 {mostRecent.readingTime} min read
               </p>
             </div>
@@ -108,7 +81,7 @@ const News = async () => {
         <NewsList news={otherNews} />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default News;
+export default News

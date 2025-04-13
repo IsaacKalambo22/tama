@@ -1,49 +1,36 @@
-import { fetchHomeImageText } from '@/lib/api';
-import AddNewHeader from '@/modules/admin/add-new-header';
-import HomeImageTextList from './home-image-text-list';
+import { fetchHomeImageText } from "@/lib/api"
+import AddNewHeader from "@/modules/admin/add-new-header"
+import HomeImageTextList from "./home-image-text-list"
 
 const HomeImageText = async () => {
-  let homeImageText: HomeImageText[];
+  let homeImageText: HomeImageText[]
   try {
-    const response = await fetchHomeImageText();
-    homeImageText = response || [];
+    const response = await fetchHomeImageText()
+    homeImageText = response || []
   } catch (error) {
-    console.error(
-      'Failed to fetch home images:',
-      error
-    );
+    console.error("Failed to fetch home images:", error)
     return (
       <div>
-        <AddNewHeader
-          name='Home Images'
-          buttonName='New Images'
-        />
-        <p className='text-red-500'>
-          Failed to load home images. Please try
-          again later.
+        <AddNewHeader name="Home Images" buttonName="New Images" />
+        <p className="text-red-500">
+          Failed to load home images. Please try again later.
         </p>
       </div>
-    );
+    )
   }
 
   return (
     <div>
-      <AddNewHeader
-        name='Home Images'
-        buttonName='New Images'
-      />
+      <AddNewHeader name="Home Images" buttonName="New Images" />
       {homeImageText.length > 0 ? (
-        <HomeImageTextList
-          homeImageText={homeImageText}
-        />
+        <HomeImageTextList homeImageText={homeImageText} />
       ) : (
-        <p className='text-gray-500 text-lg mt-5'>
-          No home images available. Create a new
-          images to get started!
+        <p className="text-gray-500 text-lg mt-5">
+          No home images available. Create a new images to get started!
         </p>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default HomeImageText;
+export default HomeImageText

@@ -1,155 +1,130 @@
-'use client';
+"use client"
 
-import { Form } from '@/components/ui/form';
-import { SelectItem } from '@/components/ui/select';
-import useCustomPath from '@/hooks/use-custom-path';
-import { Role } from '@/lib/api';
+import { Form } from "@/components/ui/form"
+import { SelectItem } from "@/components/ui/select"
+import useCustomPath from "@/hooks/use-custom-path"
+import { Role } from "@/lib/api"
 import CustomFormField, {
   FormFieldType,
-} from '@/modules/common/custom-form-field';
-import SubmitButton from '@/modules/common/submit-button';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { usePathname } from 'next/navigation';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import * as zod from 'zod';
-import { createUser } from '../../actions';
-import Modal from '../../modal';
+} from "@/modules/common/custom-form-field"
+import SubmitButton from "@/modules/common/submit-button"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { usePathname } from "next/navigation"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+import * as zod from "zod"
+import { createUser } from "../../actions"
+import Modal from "../../modal"
 
 type Props = {
-  isOpen: boolean;
-  onClose: () => void;
-  id?: string | null;
-};
+  isOpen: boolean
+  onClose: () => void
+  id?: string | null
+}
 
-const ModalNewUser = ({
-  isOpen,
-  onClose,
-}: Props) => {
-  const [isLoading, setIsLoading] =
-    useState(false);
-  const path = usePathname();
-  const { fullPath } = useCustomPath(path);
-  const roleOptions = Object.values(Role); // Get the values of the Role enum
-  const [showPassword, setShowPassword] =
-    useState(false);
+const ModalNewUser = ({ isOpen, onClose }: Props) => {
+  const [isLoading, setIsLoading] = useState(false)
+  const path = usePathname()
+  const { fullPath } = useCustomPath(path)
+  const roleOptions = Object.values(Role) // Get the values of the Role enum
+  const [showPassword, setShowPassword] = useState(false)
   const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-  const phoneNumberRegex = /^\+?[1-9]\d{1,14}$/;
+    setShowPassword(!showPassword)
+  }
+  const phoneNumberRegex = /^\+?[1-9]\d{1,14}$/
 
   const formSchema = zod.object({
     firstName: zod.string().min(2, {
-      message:
-        'First name must be at least 2 characters.',
+      message: "First name must be at least 2 characters.",
     }),
     lastName: zod.string().min(2, {
-      message:
-        'Last name must be at least 2 characters.',
+      message: "Last name must be at least 2 characters.",
     }),
     email: zod.string().email({
-      message: 'Invalid email address.',
+      message: "Invalid email address.",
     }),
-    phoneNumber: zod
-      .string()
-      .regex(phoneNumberRegex, {
-        message:
-          'Phone number must be a valid international format (e.g., +123456789).',
-      }),
-    role: zod.string().min(2, {
+    phoneNumber: zod.string().regex(phoneNumberRegex, {
       message:
-        'Role must be at least 2 characters.',
+        "Phone number must be a valid international format (e.g., +123456789).",
     }),
-  });
+    role: zod.string().min(2, {
+      message: "Role must be at least 2 characters.",
+    }),
+  })
 
-  const form = useForm<
-    zod.infer<typeof formSchema>
-  >({
+  const form = useForm<zod.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    mode: 'all',
+    mode: "all",
     defaultValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      phoneNumber: '',
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
     },
-  });
-  const onSubmit = async (
-    values: zod.infer<typeof formSchema>
-  ) => {
-    setIsLoading(true);
-    const name =
-      `${values.firstName} ${values.lastName}`.trim();
-    const email = values.email;
-    const phoneNumber = values.phoneNumber;
-    const role = values.role;
+  })
+  const onSubmit = async (values: zod.infer<typeof formSchema>) => {
+    setIsLoading(true)
+    const name = `${values.firstName} ${values.lastName}`.trim()
+    const email = values.email
+    const phoneNumber = values.phoneNumber
+    const role = values.role
     const payload = {
       name,
       email,
       phoneNumber,
       role,
-    };
-
-    const result = await createUser(
-      payload,
-      fullPath,
-      '/admin'
-    );
-
-    onClose();
-    if (result.success) {
-      toast.success('User created successfully');
-    } else {
-      toast.error(
-        result.error ?? 'An error occurred.'
-      );
     }
-    setIsLoading(false);
-  };
+
+    const result = await createUser(payload, fullPath, "/admin")
+
+    onClose()
+    if (result.success) {
+      toast.success("User created successfully")
+    } else {
+      toast.error(result.error ?? "An error occurred.")
+    }
+    setIsLoading(false)
+  }
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      name='Add New User'
-    >
+    <Modal isOpen={isOpen} onClose={onClose} name="Add New User">
       <Form {...form}>
         <form
-          className='flex flex-col gap-5 w-full'
+          className="flex flex-col gap-5 w-full"
           onSubmit={form.handleSubmit(onSubmit)}
         >
           <CustomFormField
             fieldType={FormFieldType.INPUT}
-            name='firstName'
-            label='First name'
+            name="firstName"
+            label="First name"
             control={form.control}
-            placeholder='John'
+            placeholder="John"
           />
           <CustomFormField
             fieldType={FormFieldType.INPUT}
-            name='lastName'
-            label='Last name'
+            name="lastName"
+            label="Last name"
             control={form.control}
-            placeholder='Doe'
+            placeholder="Doe"
           />
           <CustomFormField
             fieldType={FormFieldType.INPUT}
-            name='email'
-            label='Email'
+            name="email"
+            label="Email"
             control={form.control}
-            placeholder='johndoe@gmail.com'
+            placeholder="johndoe@gmail.com"
           />
           <CustomFormField
             fieldType={FormFieldType.SELECT}
-            name='role'
-            label='Role'
+            name="role"
+            label="Role"
             control={form.control}
-            placeholder='Select a role'
+            placeholder="Select a role"
           >
             {roleOptions.map((role) => (
               <SelectItem key={role} value={role}>
-                <div className='flex cursor-pointer items-center gap-2'>
+                <div className="flex cursor-pointer items-center gap-2">
                   <p>{role}</p>
                 </div>
               </SelectItem>
@@ -157,26 +132,24 @@ const ModalNewUser = ({
           </CustomFormField>
           <CustomFormField
             fieldType={FormFieldType.PHONE_INPUT}
-            name='phoneNumber'
-            label='Phone number'
+            name="phoneNumber"
+            label="Phone number"
             control={form.control}
-            placeholder='Enter phone number'
+            placeholder="Enter phone number"
           />
 
           <SubmitButton
-            disabled={
-              isLoading || !form.formState.isValid
-            }
+            disabled={isLoading || !form.formState.isValid}
             isLoading={isLoading}
-            className='w-full  h-9'
-            loadingText='Saving...'
+            className="w-full  h-9"
+            loadingText="Saving..."
           >
             Save
           </SubmitButton>
         </form>
       </Form>
     </Modal>
-  );
-};
+  )
+}
 
-export default ModalNewUser;
+export default ModalNewUser
