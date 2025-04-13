@@ -37,16 +37,14 @@ export default function OurTeam() {
   return (
     <div className='flex flex-col items-center gap-1'>
       <span className='home-text'>
-        Meet Our Team
+        Meet Our Management Team
       </span>
       <p className='text-gray-600 text-lg text-center'>
         Our passionate and skilled team members
         work tirelessly to achieve our mission and
         vision.
       </p>
-      <span className='text-center font-bold green_gradient text-2xl sm:text-3xl mt-2'>
-        Management Team
-      </span>
+    
       <Team teamMembers={teamMembers} />
     </div>
   );
