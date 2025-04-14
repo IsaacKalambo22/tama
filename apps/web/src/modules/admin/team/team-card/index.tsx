@@ -18,7 +18,7 @@ const TeamCard = ({ team }: TeamCardProps) => {
 
       {/* Profile Image or Fallback Avatar */}
       <div className="flex justify-center">
-        <Avatar className="h-[120px] w-[120px]">
+        <Avatar className="h-[118px] w-[118px]">
           <AvatarImage
             src={team.imageUrl || undefined}
             alt={team.name}
@@ -34,7 +34,6 @@ const TeamCard = ({ team }: TeamCardProps) => {
         </Avatar>
       </div>
 
-      {/* Name & Position */}
       <div>
         <h2 className="text-xl font-semibold line-clamp-1">{team.name}</h2>
         <p className="text-sm text-gray-500">{team.position}</p>
