@@ -65,20 +65,17 @@ const ModalNewCouncilList = ({ isOpen, onClose }: Props) => {
   })
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
-
-    if (fileStates.length === 0) {
-      toast.error("Please upload at least one image file.")
-      setIsLoading(false) // Stop the loading process
-      return
-    }
-
-    const uploadedImageUrls = await Promise.all(
-      fileStates.map(async (fileState) =>
-        handleFileUploads(fileState.file, (progress) =>
-          updateFileProgress(fileState.key, progress, setFileStates)
+    let imageUrl: string | null = ""
+    if (fileStates.length > 0) {
+      const uploadedImageUrls = await Promise.all(
+        fileStates.map(async (fileState) =>
+          handleFileUploads(fileState.file, (progress) =>
+            updateFileProgress(fileState.key, progress, setFileStates)
+          )
         )
       )
-    )
+      imageUrl = uploadedImageUrls[0]
+    }
 
     const payload = {
       demarcation: values.demarcation,
@@ -86,7 +83,7 @@ const ModalNewCouncilList = ({ isOpen, onClose }: Props) => {
       council: values.council,
       firstAlternateCouncillor: values.firstAlternateCouncillor,
       secondAlternateCouncillor: values.secondAlternateCouncillor,
-      imageUrl: uploadedImageUrls[0],
+      imageUrl,
     }
     console.log({ payload })
 
