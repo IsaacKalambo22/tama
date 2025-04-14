@@ -6,14 +6,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { Form, FormControl } from "@/components/ui/form"
+import { Form } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
 import { toast } from "@/hooks/use-toast"
-import { handleFileUpload } from "@/lib/utils"
+import { handleFileUploads, updateFileProgress } from "@/lib/utils"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
-import { FileUploader } from "@/modules/common/file-uploader"
+import { MultiFileDropzone } from "@/modules/common/multiple-file-upload"
 import SubmitButton from "@/modules/common/submit-button"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { usePathname } from "next/navigation"
@@ -29,6 +29,8 @@ type Props = {
 
 const ModalNewTeam = ({ isOpen, onClose }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
+  const [fileStates, setFileStates] = useState<FileState[]>([])
+
   const path = usePathname()
   const { fullPath, pathWithoutAdmin } = useCustomPath(path)
   const formSchema = zod.object({
@@ -44,7 +46,6 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
     facebookUrl: zod.string().optional(),
     linkedInProfile: zod.string().optional(),
     twitterUrl: zod.string().optional(),
-    files: zod.custom<File[]>(),
   })
 
   const form = useForm<zod.infer<typeof formSchema>>({
@@ -56,7 +57,6 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
       facebookUrl: "",
       linkedInProfile: "",
       twitterUrl: "",
-      files: [],
     },
   })
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
@@ -64,8 +64,16 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
     try {
       let fileUrl = ""
 
-      if (values.files.length > 0) {
-        fileUrl = await handleFileUpload(values.files[0])
+      let imageUrl: string | null = ""
+      if (fileStates.length > 0) {
+        const uploadedImageUrls = await Promise.all(
+          fileStates.map(async (fileState) =>
+            handleFileUploads(fileState.file, (progress) =>
+              updateFileProgress(fileState.key, progress, setFileStates)
+            )
+          )
+        )
+        imageUrl = uploadedImageUrls[0]
       }
 
       // Create a JSON object to send
@@ -76,8 +84,7 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
         facebookUrl: values.facebookUrl,
         linkedInProfile: values.linkedInProfile,
         twitterUrl: values.twitterUrl,
-        size: values.files[0].size,
-        imageUrl: fileUrl, // Add the uploaded file URL
+        imageUrl,
       }
 
       await createTeam(payload, fullPath, pathWithoutAdmin, "/admin")
@@ -156,17 +163,15 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
               control={form.control}
               placeholder="Enter team member description"
             />
-            <CustomFormField
-              fieldType={FormFieldType.SKELETON}
-              control={form.control}
-              name="files"
-              label="Team Member Image"
-              renderSkeleton={(field) => (
-                <FormControl>
-                  <FileUploader files={field.value} onChange={field.onChange} />
-                </FormControl>
-              )}
-            />
+            <div className="w-full flex flex-col gap-4">
+              <label className="font-medium text-gray-700">Upload Image</label>
+              <MultiFileDropzone
+                value={fileStates}
+                onChange={setFileStates}
+                fileType="image/*"
+                maxFiles={1}
+              />
+            </div>
 
             <SubmitButton
               disabled={isLoading || !form.formState.isValid}

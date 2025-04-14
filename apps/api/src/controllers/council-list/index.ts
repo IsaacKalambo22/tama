@@ -14,12 +14,10 @@ export const createCouncilList = async (
     firstAlternateCouncillor,
     secondAlternateCouncillor,
   } = req.body
-  // Validate input
   if (
     !demarcation ||
     !councilArea ||
     !council ||
-    !imageUrl ||
     !firstAlternateCouncillor ||
     !secondAlternateCouncillor
   ) {
@@ -33,7 +31,6 @@ export const createCouncilList = async (
   }
 
   try {
-    // Create the new councilList
     const newCouncilList = await prisma.councilList.create({
       data: {
         demarcation,
@@ -63,7 +60,7 @@ export const createCouncilList = async (
 }
 
 export const getAllCouncilLists = async (
-  req: Request,
+  _req: Request,
   res: Response<APIResponse>
 ): Promise<void> => {
   try {
