@@ -10,7 +10,7 @@ import {
 import { Form, FormControl } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
 import { toast } from "@/hooks/use-toast"
-import { getFileType, handleFileUpload } from "@/lib/utils"
+import { handleFileUpload } from "@/lib/utils"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -42,9 +42,9 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
     position: zod.string().min(2, {
       message: "Author must be at least 2 characters.",
     }),
-    facebookUrl: zod.string().url("Must be a valid URL").optional(),
-    linkedInProfile: zod.string().url("Must be a valid URL").optional(),
-    twitterUrl: zod.string().url("Must be a valid URL").optional(),
+    facebookUrl: zod.string().optional(),
+    linkedInProfile: zod.string().optional(),
+    twitterUrl: zod.string().optional(),
     files: zod.custom<File[]>(),
   })
 
@@ -63,10 +63,12 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
     try {
-      const file = values.files[0]
-      const fileUrl = await handleFileUpload(file)
-      const fileProps = getFileType(file.name)
-      console.log({ fileProps })
+      let fileUrl = ""
+
+      if (values.files.length > 0) {
+        fileUrl = await handleFileUpload(values.files[0])
+      }
+
       // Create a JSON object to send
       const payload = {
         name: values.name,
@@ -75,7 +77,7 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
         facebookUrl: values.facebookUrl,
         linkedInProfile: values.linkedInProfile,
         twitterUrl: values.twitterUrl,
-        size: file.size,
+        size: values.files[0].size,
         imageUrl: fileUrl, // Add the uploaded file URL
       }
 
