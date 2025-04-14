@@ -7648,7 +7648,7 @@ export namespace Prisma {
     id: string
     name: string
     position: string
-    imageUrl: string
+    imageUrl: string | null
     facebookUrl: string | null
     linkedInProfile: string | null
     twitterUrl: string | null
@@ -7725,7 +7725,7 @@ export namespace Prisma {
       id: string
       name: string
       position: string
-      imageUrl: string
+      imageUrl: string | null
       facebookUrl: string | null
       linkedInProfile: string | null
       twitterUrl: string | null
@@ -17620,7 +17620,7 @@ export namespace Prisma {
     id?: StringFilter<"Team"> | string
     name?: StringFilter<"Team"> | string
     position?: StringFilter<"Team"> | string
-    imageUrl?: StringFilter<"Team"> | string
+    imageUrl?: StringNullableFilter<"Team"> | string | null
     facebookUrl?: StringNullableFilter<"Team"> | string | null
     linkedInProfile?: StringNullableFilter<"Team"> | string | null
     twitterUrl?: StringNullableFilter<"Team"> | string | null
@@ -17631,7 +17631,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     position?: SortOrder
-    imageUrl?: SortOrder
+    imageUrl?: SortOrderInput | SortOrder
     facebookUrl?: SortOrderInput | SortOrder
     linkedInProfile?: SortOrderInput | SortOrder
     twitterUrl?: SortOrderInput | SortOrder
@@ -17645,7 +17645,7 @@ export namespace Prisma {
     NOT?: TeamWhereInput | TeamWhereInput[]
     name?: StringFilter<"Team"> | string
     position?: StringFilter<"Team"> | string
-    imageUrl?: StringFilter<"Team"> | string
+    imageUrl?: StringNullableFilter<"Team"> | string | null
     facebookUrl?: StringNullableFilter<"Team"> | string | null
     linkedInProfile?: StringNullableFilter<"Team"> | string | null
     twitterUrl?: StringNullableFilter<"Team"> | string | null
@@ -17656,7 +17656,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     position?: SortOrder
-    imageUrl?: SortOrder
+    imageUrl?: SortOrderInput | SortOrder
     facebookUrl?: SortOrderInput | SortOrder
     linkedInProfile?: SortOrderInput | SortOrder
     twitterUrl?: SortOrderInput | SortOrder
@@ -17673,7 +17673,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Team"> | string
     name?: StringWithAggregatesFilter<"Team"> | string
     position?: StringWithAggregatesFilter<"Team"> | string
-    imageUrl?: StringWithAggregatesFilter<"Team"> | string
+    imageUrl?: StringNullableWithAggregatesFilter<"Team"> | string | null
     facebookUrl?: StringNullableWithAggregatesFilter<"Team"> | string | null
     linkedInProfile?: StringNullableWithAggregatesFilter<"Team"> | string | null
     twitterUrl?: StringNullableWithAggregatesFilter<"Team"> | string | null
@@ -18677,7 +18677,7 @@ export namespace Prisma {
     id?: string
     name: string
     position: string
-    imageUrl: string
+    imageUrl?: string | null
     facebookUrl?: string | null
     linkedInProfile?: string | null
     twitterUrl?: string | null
@@ -18688,7 +18688,7 @@ export namespace Prisma {
     id?: string
     name: string
     position: string
-    imageUrl: string
+    imageUrl?: string | null
     facebookUrl?: string | null
     linkedInProfile?: string | null
     twitterUrl?: string | null
@@ -18699,7 +18699,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     position?: StringFieldUpdateOperationsInput | string
-    imageUrl?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     facebookUrl?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     twitterUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18710,7 +18710,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     position?: StringFieldUpdateOperationsInput | string
-    imageUrl?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     facebookUrl?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     twitterUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18721,7 +18721,7 @@ export namespace Prisma {
     id?: string
     name: string
     position: string
-    imageUrl: string
+    imageUrl?: string | null
     facebookUrl?: string | null
     linkedInProfile?: string | null
     twitterUrl?: string | null
@@ -18732,7 +18732,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     position?: StringFieldUpdateOperationsInput | string
-    imageUrl?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     facebookUrl?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     twitterUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18743,7 +18743,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     position?: StringFieldUpdateOperationsInput | string
-    imageUrl?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     facebookUrl?: NullableStringFieldUpdateOperationsInput | string | null
     linkedInProfile?: NullableStringFieldUpdateOperationsInput | string | null
     twitterUrl?: NullableStringFieldUpdateOperationsInput | string | null

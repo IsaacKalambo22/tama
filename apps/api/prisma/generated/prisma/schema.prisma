@@ -88,7 +88,7 @@ model Team {
   id              String  @id @default(uuid())
   name            String
   position        String
-  imageUrl        String
+  imageUrl        String?
   facebookUrl     String?
   linkedInProfile String?
   twitterUrl      String?

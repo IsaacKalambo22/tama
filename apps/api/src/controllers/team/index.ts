@@ -16,10 +16,10 @@ export const createTeam = async (
     description,
   } = req.body
 
-  if (!name || !position || !imageUrl || !description) {
+  if (!name || !position || !description) {
     res.status(400).json({
       success: false,
-      message: "Name, position, imageUrl, and description are required.",
+      message: "Name, position, and description are required.",
       error: "Validation error",
     })
     return
