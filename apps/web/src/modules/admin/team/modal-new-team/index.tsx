@@ -3,7 +3,6 @@
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
@@ -179,7 +178,6 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
             </SubmitButton>
           </form>
         </Form>
-        <DialogFooter></DialogFooter>
       </DialogContent>
     </Dialog>
   )
