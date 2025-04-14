@@ -75,9 +75,7 @@ const TeamCard = ({ team }: TeamCardProps) => {
       </div>
 
       {/* Description */}
-      <p className="text-sm text-gray-700 line-clamp-3 px-4">
-        {team.description}
-      </p>
+      <p className="text-sm text-gray-700 px-4">{team.description}</p>
     </Card>
   )
 }
