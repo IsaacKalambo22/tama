@@ -1,8 +1,8 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card } from "@/components/ui/card"
 
 import { TeamProps } from "@/lib/api"
 import { Facebook, Linkedin, Twitter } from "lucide-react"
-import Image from "next/image"
 
 interface TeamCardProps {
   team: TeamProps
@@ -13,16 +13,22 @@ const TeamCard = ({ team }: TeamCardProps) => {
     <Card className="p-6 rounded-3xl shadow-none hover:shadow-lg transition-shadow cursor-pointer text-center relative space-y-4">
       {/* Action dropdown (positioned inside the padding) */}
 
-      {/* Profile Image */}
+      {/* Profile Image or Fallback Avatar */}
       <div className="flex justify-center">
-        <Image
-          src={team.imageUrl}
-          alt={team.name}
-          width={120}
-          height={120}
-          unoptimized
-          className="rounded-full h-[120px] w-[120px] object-cover"
-        />
+        <Avatar className="h-[120px] w-[120px]">
+          <AvatarImage
+            src={team.imageUrl || undefined}
+            alt={team.name}
+            className="object-cover"
+          />
+          <AvatarFallback className="text-lg font-medium">
+            {team.name
+              .split(" ")
+              .map((n) => n[0])
+              .join("")
+              .toUpperCase()}
+          </AvatarFallback>
+        </Avatar>
       </div>
 
       {/* Name & Position */}
