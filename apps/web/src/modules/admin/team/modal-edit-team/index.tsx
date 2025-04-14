@@ -3,7 +3,7 @@ import { Form, FormControl } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
 import { toast } from "@/hooks/use-toast"
 import { TeamProps } from "@/lib/api"
-import { handleFileUpload } from "@/lib/utils"
+import { handleFileUploads, updateFileProgress } from "@/lib/utils"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -25,6 +25,7 @@ type Props = {
 
 const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
+  const [fileStates, setFileStates] = useState<FileState[]>([])
 
   const formSchema = zod.object({
     name: zod.string().optional(),
@@ -33,7 +34,6 @@ const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
     facebookUrl: zod.string().url("Must be a valid URL").optional(),
     linkedInProfile: zod.string().url("Must be a valid URL").optional(),
     twitterUrl: zod.string().url("Must be a valid URL").optional(),
-    files: zod.custom<File[]>(),
   })
 
   const path = usePathname()
@@ -47,19 +47,21 @@ const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
       facebookUrl: team.facebookUrl ?? "",
       linkedInProfile: team.linkedInProfile ?? "",
       twitterUrl: team.twitterUrl ?? "",
-      files: [],
     },
   })
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
     try {
-      let imageUrl = ""
-      let size = undefined
-
-      if (values.files.length > 0) {
-        const file = values.files[0]
-        imageUrl = await handleFileUpload(file)
-        size = Number(file.size)
+      let imageUrl: string | null = ""
+      if (fileStates.length > 0) {
+        const uploadedImageUrls = await Promise.all(
+          fileStates.map(async (fileState) =>
+            handleFileUploads(fileState.file, (progress) =>
+              updateFileProgress(fileState.key, progress, setFileStates)
+            )
+          )
+        )
+        imageUrl = uploadedImageUrls[0]
       }
 
       const payload = {
@@ -70,15 +72,9 @@ const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
         linkedInProfile: values.linkedInProfile,
         twitterUrl: values.twitterUrl,
         imageUrl,
-        size: size,
       }
 
-      const result = await updateTeam(
-        payload,
-        team.id,
-        fullPath,
-        pathWithoutAdmin
-      )
+      await updateTeam(payload, team.id, fullPath, pathWithoutAdmin)
 
       onClose()
       toast({

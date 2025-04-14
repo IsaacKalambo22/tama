@@ -62,8 +62,6 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
     try {
-      let fileUrl = ""
-
       let imageUrl: string | null = ""
       if (fileStates.length > 0) {
         const uploadedImageUrls = await Promise.all(
