@@ -31,9 +31,9 @@ const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
     name: zod.string().optional(),
     description: zod.string().optional(),
     position: zod.string().optional(),
-    facebookUrl: zod.string().url("Must be a valid URL").optional(),
-    linkedInProfile: zod.string().url("Must be a valid URL").optional(),
-    twitterUrl: zod.string().url("Must be a valid URL").optional(),
+    facebookUrl: zod.string().optional(),
+    linkedInProfile: zod.string().optional(),
+    twitterUrl: zod.string().optional(),
   })
 
   const path = usePathname()
