@@ -73,7 +73,7 @@ const StatActionDropdown = ({ stat }: Props) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuLabel className="max-w-[200px] truncate">
-            {stat.id}
+            "Stat"
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           {adminActionsDropdownItems.map((actionItem) => (

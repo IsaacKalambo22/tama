@@ -93,7 +93,7 @@ const ModalEditStat = ({ isOpen, onClose, stat }: Props) => {
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} name={`Edit Stat${stat.id}`}>
+    <Modal isOpen={isOpen} onClose={onClose} name={`Edit Stat`}>
       <Form {...form}>
         <form
           className="flex flex-col gap-5 w-full"
@@ -102,16 +102,16 @@ const ModalEditStat = ({ isOpen, onClose, stat }: Props) => {
           <CustomFormField
             fieldType={FormFieldType.NUMBER}
             name="registeredCustomers"
-            label="Registered Customers"
+            label="Registered Growers"
             control={form.control}
-            placeholder="Enter number of registered customers"
+            placeholder="Enter number of registered growers"
           />
           <CustomFormField
             fieldType={FormFieldType.NUMBER}
             name="shops"
-            label="Shops"
+            label="Hessian & Tobacco Satellite Depots"
             control={form.control}
-            placeholder="Enter number of shops"
+            placeholder="Enter number of hessian & tobacco satellite depots"
           />
           <CustomFormField
             fieldType={FormFieldType.NUMBER}
@@ -123,9 +123,9 @@ const ModalEditStat = ({ isOpen, onClose, stat }: Props) => {
           <CustomFormField
             fieldType={FormFieldType.NUMBER}
             name="cooperatives"
-            label="Cooperatives"
+            label="Tobacco Grading Centers"
             control={form.control}
-            placeholder="Enter number of cooperatives"
+            placeholder="Enter number of tobacco grading centers"
           />
           <SubmitButton
             disabled={isLoading || !form.formState.isValid}

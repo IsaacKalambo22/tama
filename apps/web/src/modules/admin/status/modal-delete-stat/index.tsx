@@ -40,7 +40,7 @@ const ModalDeleteStat = ({ isOpen, onClose, stat }: Props) => {
       onClose()
       toast({
         title: "Success",
-        description: `${stat.id} has been deleted successfully`,
+        description: `${stat} has been deleted successfully`,
       })
       // Handle the result, such as showing success or error messages
     } catch (error) {

@@ -82,14 +82,14 @@ const ModalNewStat = ({ isOpen, onClose }: Props) => {
           <CustomFormField
             fieldType={FormFieldType.NUMBER}
             name="registeredCustomers"
-            label="Registered Customers"
+            label="Registered Growers"
             control={form.control}
             type="number"
           />
           <CustomFormField
             fieldType={FormFieldType.NUMBER}
             name="shops"
-            label="Shops"
+            label="Hessian & Tobacco Satellite Depots"
             control={form.control}
             type="number"
             placeholder="Enter number of shops"
@@ -105,9 +105,9 @@ const ModalNewStat = ({ isOpen, onClose }: Props) => {
           <CustomFormField
             fieldType={FormFieldType.NUMBER}
             name="cooperatives"
-            label="Cooperatives"
+            label="Tobacco Grading Centers"
             control={form.control}
-            placeholder="Enter number of cooperatives"
+            placeholder="Enter number of tobacco grading centers"
           />
 
           <SubmitButton
