@@ -40,6 +40,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "d2qzsd8jf2durk.cloudfront.net",
       },
+      {
+        protocol: 'https',
+        hostname: 'madzalo-s3.s3.eu-north-1.amazonaws.com',
+      },
     ],
   },
 
