@@ -176,6 +176,7 @@ export const updateNews = async (
       where: { id },
       data: updatedData,
     })
+    console.log({ updatedNews })
 
     // Respond with success
     res.status(200).json({

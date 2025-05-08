@@ -320,6 +320,7 @@ export const handleFileUploads = async (
     )
 
     const cloudFrontUrl = `${config.env.aws.cloudFrontDomain}/${startFrom}`
+    console.log("CloudFront URL:", cloudFrontUrl)
 
     return cloudFrontUrl
   } catch (error) {

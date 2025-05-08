@@ -184,6 +184,7 @@ async function handleFetch<T>(endpoint: string, token?: string): Promise<T> {
     }
   } catch (error) {
     console.log(`Error fetching data from ${endpoint}:`, error)
+    throw error // Ensure the function always returns or throws
   }
 }
 

@@ -72,6 +72,7 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
           )
         )
         imageUrl = uploadedImageUrls[0]
+        console.log({ uploadedImageUrls })
       }
 
       // Create a JSON object to send
@@ -86,6 +87,7 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
       }
 
       await createTeam(payload, fullPath, pathWithoutAdmin, "/admin")
+      console.log({ payload })
 
       onClose()
       toast({

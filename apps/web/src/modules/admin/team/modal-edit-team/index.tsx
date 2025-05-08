@@ -75,6 +75,7 @@ const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
       }
 
       await updateTeam(payload, team.id, fullPath, pathWithoutAdmin)
+      console.log({ payload })
 
       onClose()
       toast({

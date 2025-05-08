@@ -108,17 +108,32 @@ export const updateTeam = async (
       return
     }
 
+    // Update the team member with the provided data
+    // If a field is not provided, keep the existing value
+    const updatedData: any = {
+      name: name?.trim() === "" ? existingTeam.name : name,
+      position: position?.trim() === "" ? existingTeam.position : position,
+      imageUrl: imageUrl?.trim() === "" ? existingTeam.imageUrl : imageUrl,
+      facebookUrl:
+        facebookUrl?.trim() === "" ? existingTeam.facebookUrl : facebookUrl,
+      linkedInProfile:
+        linkedInProfile?.trim() === ""
+          ? existingTeam.linkedInProfile
+          : linkedInProfile,
+      twitterUrl:
+        twitterUrl?.trim() === "" ? existingTeam.twitterUrl : twitterUrl,
+      description:
+        description?.trim() === "" ? existingTeam.description : description,
+    }
+
+    // Add `size` only if it's provided and valid
+    //  if (size !== undefined && size !== "") {
+    //   updatedData.size = Number(size)
+    // }
+
     const updatedTeam = await prisma.team.update({
       where: { id },
-      data: {
-        name: name ?? existingTeam.name,
-        position: position ?? existingTeam.position,
-        imageUrl: imageUrl?.trim() === "" ? existingTeam.imageUrl : imageUrl,
-        facebookUrl: facebookUrl ?? existingTeam.facebookUrl,
-        linkedInProfile: linkedInProfile ?? existingTeam.linkedInProfile,
-        twitterUrl: twitterUrl ?? existingTeam.twitterUrl,
-        description: description ?? existingTeam.description,
-      },
+      data: updatedData,
     })
 
     res.status(200).json({
@@ -126,6 +141,7 @@ export const updateTeam = async (
       message: "Team member updated successfully",
       data: updatedTeam,
     })
+    console.log({ updatedData })
   } catch (error: any) {
     console.error("Error updating team member:", error.message)
     res.status(500).json({
