@@ -17,7 +17,7 @@ const TeamCard = ({ team }: TeamCardProps) => {
       <div className="flex justify-center">
         <Avatar className="h-[120px] w-[120px]">
           <AvatarImage
-            src={team.imageUrl || undefined}
+            src={team.imageUrl}
             alt={team.name}
             className="object-cover"
           />

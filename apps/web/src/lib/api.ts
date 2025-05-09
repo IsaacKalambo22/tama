@@ -252,6 +252,9 @@ export const fetchHomeImageText = async (): Promise<HomeImageText[]> => {
 export const fetchTeam = async (): Promise<TeamProps[]> => {
   return handleFetch<TeamProps[]>(`${BASE_URL}/team`)
 }
+export const fetchTeamById = async (id: string): Promise<TeamProps> => {
+  return handleFetch<TeamProps>(`${BASE_URL}/team/${id}`)
+}
 
 export const fetchStat = async (): Promise<StatProps[]> => {
   return handleFetch<StatProps[]>(`${BASE_URL}/stats`)

@@ -70,12 +70,7 @@ const ModalNewBlog = ({ isOpen, onClose }: Props) => {
         imageUrl: fileUrl, // Add the uploaded file URL
       }
 
-      const result = await createBlog(
-        payload,
-        fullPath,
-        pathWithoutAdmin,
-        "/admin"
-      )
+      await createBlog(payload, fullPath, pathWithoutAdmin, "/admin")
 
       onClose()
       toast({

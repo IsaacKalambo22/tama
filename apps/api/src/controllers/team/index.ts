@@ -73,6 +73,38 @@ export const getTeam = async (
   }
 }
 
+export const getTeamById = async (
+  req: Request,
+  res: Response<APIResponse>
+): Promise<void> => {
+  const { id } = req.params
+
+  try {
+    const teamMember = await prisma.team.findUnique({ where: { id } })
+
+    if (!teamMember) {
+      res.status(404).json({
+        success: false,
+        message: "Team member not found.",
+      })
+      return
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Team member retrieved successfully",
+      data: teamMember,
+    })
+  } catch (error: any) {
+    console.error("Error fetching team member:", error.message)
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while fetching the team member.",
+      error: error.message,
+    })
+  }
+}
+
 export const updateTeam = async (
   req: Request,
   res: Response<APIResponse>
@@ -87,7 +119,7 @@ export const updateTeam = async (
     twitterUrl,
     description,
   } = req.body
-
+  console.log(req.body)
   if (!id) {
     res.status(400).json({
       success: false,

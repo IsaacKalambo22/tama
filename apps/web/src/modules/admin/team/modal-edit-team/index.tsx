@@ -1,9 +1,10 @@
 "use client"
+
 import { Form, FormControl } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
 import { toast } from "@/hooks/use-toast"
 import { TeamProps } from "@/lib/api"
-import { handleFileUploads, updateFileProgress } from "@/lib/utils"
+import { handleFileUpload } from "@/lib/utils"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -25,64 +26,60 @@ type Props = {
 
 const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
-  const [fileStates, setFileStates] = useState<FileState[]>([])
 
   const formSchema = zod.object({
     name: zod.string().optional(),
-    description: zod.string().optional(),
     position: zod.string().optional(),
+    description: zod.string().optional(),
     facebookUrl: zod.string().optional(),
     linkedInProfile: zod.string().optional(),
     twitterUrl: zod.string().optional(),
+    files: zod.custom<File[]>(),
   })
 
   const path = usePathname()
   const { fullPath, pathWithoutAdmin } = useCustomPath(path)
+
   const form = useForm<zod.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: team.name ?? "",
-      description: team.description ?? "",
       position: team.position ?? "",
+      description: team.description ?? "",
       facebookUrl: team.facebookUrl ?? "",
       linkedInProfile: team.linkedInProfile ?? "",
       twitterUrl: team.twitterUrl ?? "",
+      files: [],
     },
   })
+
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
     try {
-      let imageUrl: string | null = ""
-      if (fileStates.length > 0) {
-        const uploadedImageUrls = await Promise.all(
-          fileStates.map(async (fileState) =>
-            handleFileUploads(fileState.file, (progress) =>
-              updateFileProgress(fileState.key, progress, setFileStates)
-            )
-          )
-        )
-        imageUrl = uploadedImageUrls[0]
+      let imageUrl: string | undefined = undefined
+
+      if (values.files.length > 0) {
+        const file = values.files[0]
+        imageUrl = await handleFileUpload(file)
       }
 
       const payload = {
         name: values.name ?? "",
-        description: values.description ?? "",
         position: values.position ?? "",
-        facebookUrl: values.facebookUrl,
-        linkedInProfile: values.linkedInProfile,
-        twitterUrl: values.twitterUrl,
+        description: values.description ?? "",
+        facebookUrl: values.facebookUrl ?? "",
+        linkedInProfile: values.linkedInProfile ?? "",
+        twitterUrl: values.twitterUrl ?? "",
         imageUrl,
       }
 
       await updateTeam(payload, team.id, fullPath, pathWithoutAdmin)
-      console.log({ payload })
 
       onClose()
       toast({
         title: "Success",
         description: `${team.name} has been updated successfully`,
       })
-      // Handle the result, such as showing success or error messages
     } catch (error) {
       toast({
         title: "Error",
@@ -93,6 +90,7 @@ const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
       setIsLoading(false)
     }
   }
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} name={`Edit ${team.name}`}>
       <Form {...form}>
@@ -146,6 +144,7 @@ const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
             control={form.control}
             placeholder="Enter team member description"
           />
+
           <CustomFormField
             fieldType={FormFieldType.SKELETON}
             control={form.control}
@@ -162,9 +161,9 @@ const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
             disabled={isLoading || !form.formState.isValid}
             isLoading={isLoading}
             className="w-full h-9"
-            loadingText="Saving..."
+            loadingText="Updating..."
           >
-            Save
+            Update
           </SubmitButton>
         </form>
       </Form>

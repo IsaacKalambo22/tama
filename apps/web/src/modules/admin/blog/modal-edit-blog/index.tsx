@@ -64,12 +64,7 @@ const ModalEditBlog = ({ isOpen, onClose, blog }: Props) => {
         size: size,
       }
 
-      const result = await updateBlog(
-        payload,
-        blog.id,
-        fullPath,
-        pathWithoutAdmin
-      )
+      await updateBlog(payload, blog.id, fullPath, pathWithoutAdmin)
 
       onClose()
       toast({

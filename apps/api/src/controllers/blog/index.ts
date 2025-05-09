@@ -125,6 +125,7 @@ export const updateBlog = async (
 ): Promise<void> => {
   const { id } = req.params
   const { title, content, imageUrl, author, size } = req.body
+  console.log(req.body)
 
   // Validate input
   if (!id) {
