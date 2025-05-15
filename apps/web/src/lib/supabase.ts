@@ -137,7 +137,8 @@ export const deleteFileFromSupabase = async (
   filePath: string,
 ): Promise<boolean> => {
   try {
-    const bucketName = config.env.supabase.bucketName
+    const bucketName = process.env.NEXT_PUBLIC_SUPABASE_STORAGE_NAME!
+
     console.log("bucketName", bucketName)
     // Extract the file path from the full URL if needed
     const path = filePath.includes("/")

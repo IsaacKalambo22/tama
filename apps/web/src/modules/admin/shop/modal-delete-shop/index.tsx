@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dialog"
 import useCustomPath from "@/hooks/use-custom-path"
 import { ShopProps } from "@/lib/api"
+import { deleteFileFromSupabase } from "@/lib/supabase"
 import CustomButton, { BUTTON_VARIANT } from "@/modules/common/custom-button"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
@@ -27,7 +28,7 @@ const ModalDeleteShop = ({ isOpen, onClose, shop }: Props) => {
 
   const onSubmit = async () => {
     setIsLoading(true)
-
+    await deleteFileFromSupabase(shop.imageUrl)
     const result = await deleteShop(
       shop.id,
       fullPath,
