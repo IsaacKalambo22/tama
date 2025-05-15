@@ -2,6 +2,7 @@
 
 import { Form } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
+import { useFileUpload } from "@/hooks/use-file-upload"
 import { handleFileUploads, updateFileProgress } from "@/lib/utils"
 import CustomFormField, {
   FormFieldType,
@@ -30,6 +31,20 @@ const ModalNewHomeCarousel = ({ isOpen, onClose }: Props) => {
   const path = usePathname()
   const { fullPath } = useCustomPath(path)
   const [fileStates, setFileStates] = useState<FileState[]>([])
+  
+  // Initialize the file upload hook
+  const {
+    uploadFile,
+    status: uploadStatus,
+    progress: uploadProgress,
+    result: uploadResult,
+    error: uploadError,
+  } = useFileUpload({
+    path: "home-carousel",
+  })
+
+  // State to track if we're currently uploading a file
+  const [isUploading, setIsUploading] = useState(false)
 
   const formSchema = zod.object({
     title: zod.string().min(2, {
@@ -50,37 +65,78 @@ const ModalNewHomeCarousel = ({ isOpen, onClose }: Props) => {
   })
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
-    if (fileStates.length === 0) {
-      toast.error("Please upload at least one image file.")
-      setIsLoading(false) // Stop the loading process
-      return
-    }
+    let loadingToast: string | undefined
 
-    const uploadedImageUrls = await Promise.all(
-      fileStates.map(async (fileState) =>
-        handleFileUploads(fileState.file, (progress) =>
-          updateFileProgress(fileState.key, progress, setFileStates)
+    try {
+      if (fileStates.length === 0) {
+        toast.error("Please upload at least one image file.")
+        setIsLoading(false) // Stop the loading process
+        return
+      }
+
+      // Set uploading state to true to show progress bar
+      setIsUploading(true)
+
+      // Show toast notification when starting upload
+      const file = fileStates[0].file
+      loadingToast = toast.loading(`Uploading ${file.name}...`)
+
+      // Upload all files using the existing MultiFileDropzone component's approach
+      const uploadedImageUrls = await Promise.all(
+        fileStates.map(async (fileState) =>
+          handleFileUploads(fileState.file, (progress) =>
+            updateFileProgress(fileState.key, progress, setFileStates)
+          )
         )
       )
-    )
 
-    // Create a JSON object to send
-    const payload = {
-      title: values.title,
-      description: values.description,
-      coverUrl: uploadedImageUrls[0],
-    }
-    console.log({ payload })
+      // Set uploading state to false after upload completes
+      setIsUploading(false)
 
-    const result = await createHomeCarousel(payload, fullPath, "/admin", "/")
+      // Dismiss the loading toast if it exists
+      if (loadingToast) {
+        toast.dismiss(loadingToast)
+      }
 
-    if (result.success) {
-      toast.success("New homeCarousel created successfully")
+      // Show success toast when upload completes
+      toast.success(`Files uploaded successfully`)
+
+      // Create a JSON object to send
+      const payload = {
+        title: values.title,
+        description: values.description,
+        coverUrl: uploadedImageUrls[0],
+      }
+      console.log({ payload })
+
+      const result = await createHomeCarousel(payload, fullPath, "/admin", "/")
+
       onClose()
-    } else {
-      toast.error(result.error ?? "An error occurred.")
+      if (result.success) {
+        toast.success("New home carousel created successfully")
+      } else {
+        toast.error(result.error ?? "An error occurred.")
+      }
+    } catch (error) {
+      console.error("Error creating home carousel:", error)
+
+      // Dismiss the loading toast if it exists
+      if (loadingToast) {
+        toast.dismiss(loadingToast)
+      }
+
+      // Reset upload state
+      setIsUploading(false)
+
+      // Show detailed error message
+      toast.error("Failed to process your request", {
+        description:
+          error instanceof Error ? error.message : "Unknown error occurred",
+        duration: 5000,
+      })
+    } finally {
+      setIsLoading(false)
     }
-    setIsLoading(false)
   }
 
   return (

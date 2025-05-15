@@ -6,7 +6,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import useCustomPath from "@/hooks/use-custom-path"
-import { removeFromS3 } from "@/lib/aws"
+import { deleteFileFromSupabase } from "@/lib/supabase"
 import CustomButton, { BUTTON_VARIANT } from "@/modules/common/custom-button"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
@@ -28,15 +28,30 @@ const ModalDeleteService = ({ isOpen, onClose, service }: Props) => {
   const onSubmit = async () => {
     setIsLoading(true)
 
-    const result = await deleteService(service.id, fullPath, "/admin", "/")
-    if (result.success) {
-      await removeFromS3(service.imageUrl)
-      toast.success("Service deleted successfully")
+    try {
+      // If there's an image associated with the service, delete it first
+      if (service.imageUrl) {
+        console.log("Deleting file:", service.imageUrl)
+        await deleteFileFromSupabase(service.imageUrl)
+      }
+
+      const result = await deleteService(service.id, fullPath, "/admin", "/")
+
       onClose()
-    } else {
-      toast.error(result.error ?? "An error occurred.")
+      if (result.success) {
+        toast.success("Service deleted successfully")
+      } else {
+        toast.error(result.error ?? "An error occurred.")
+      }
+    } catch (error) {
+      console.error("Error deleting service:", error)
+      toast.error("Failed to delete service", {
+        description: error instanceof Error ? error.message : "Unknown error occurred",
+        duration: 5000,
+      })
+    } finally {
+      setIsLoading(false)
     }
-    setIsLoading(false)
   }
 
   return (

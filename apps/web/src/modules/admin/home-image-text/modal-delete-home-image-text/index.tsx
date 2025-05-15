@@ -6,7 +6,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import useCustomPath from "@/hooks/use-custom-path"
-import { removeFromS3 } from "@/lib/aws"
+import { deleteFileFromSupabase } from "@/lib/supabase-storage"
 import CustomButton, { BUTTON_VARIANT } from "@/modules/common/custom-button"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
@@ -31,21 +31,34 @@ const ModalDeleteHomeImageText = ({
 
   const onSubmit = async () => {
     setIsLoading(true)
+    try {
+      // If there's an image associated with the home image text, delete it first from Supabase
+      if (homeImageText.imageUrl) {
+        await deleteFileFromSupabase(homeImageText.imageUrl)
+      }
 
-    const result = await deleteHomeImageText(
-      homeImageText.id,
-      fullPath,
-      "/admin",
-      "/"
-    )
-    if (result.success) {
-      await removeFromS3(homeImageText.imageUrl)
-      toast.success("HomeImageText deleted successfully")
+      const result = await deleteHomeImageText(
+        homeImageText.id,
+        fullPath,
+        "/admin",
+        "/"
+      )
+      
       onClose()
-    } else {
-      toast.error(result.error ?? "An error occurred.")
+      if (result.success) {
+        toast.success("Home image text deleted successfully")
+      } else {
+        toast.error(result.error ?? "An error occurred.")
+      }
+    } catch (error) {
+      console.error("Error deleting home image text:", error)
+      toast.error("Failed to delete home image text", {
+        description: error instanceof Error ? error.message : "Unknown error occurred",
+        duration: 5000,
+      })
+    } finally {
+      setIsLoading(false)
     }
-    setIsLoading(false)
   }
 
   return (

@@ -1,7 +1,8 @@
 "use client"
 import { Form } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
-import { removeFromS3 } from "@/lib/aws"
+import { useFileUpload } from "@/hooks/use-file-upload"
+import { deleteFileFromSupabase } from "@/lib/supabase-storage"
 import { handleFileUploads, updateFileProgress } from "@/lib/utils"
 import CustomFormField, {
   FormFieldType,
@@ -31,6 +32,20 @@ const ModalEditHomeCarousel = ({ isOpen, onClose, homeCarousel }: Props) => {
   const path = usePathname()
   const { fullPath } = useCustomPath(path)
   const [fileStates, setFileStates] = useState<FileState[]>([])
+  
+  // Initialize the file upload hook
+  const {
+    uploadFile,
+    status: uploadStatus,
+    progress: uploadProgress,
+    result: uploadResult,
+    error: uploadError,
+  } = useFileUpload({
+    path: "home-carousel",
+  })
+
+  // State to track if we're currently uploading a file
+  const [isUploading, setIsUploading] = useState(false)
 
   const formSchema = zod.object({
     title: zod
@@ -60,44 +75,87 @@ const ModalEditHomeCarousel = ({ isOpen, onClose, homeCarousel }: Props) => {
 
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
+    let loadingToast: string | undefined
 
-    let coverUrl: string | null = ""
+    try {
+      let coverUrl = homeCarousel.coverUrl || ""
 
-    if (fileStates.length > 0) {
-      const imageUrls = await Promise.all(
-        fileStates.map(async (fileState) =>
-          handleFileUploads(fileState.file, (progress) =>
-            updateFileProgress(fileState.key, progress, setFileStates)
+      // Check if a new file is being uploaded
+      if (fileStates.length > 0) {
+        // Set uploading state to true to show progress bar
+        setIsUploading(true)
+
+        // Show toast notification when starting upload
+        const file = fileStates[0].file
+        loadingToast = toast.loading(`Uploading ${file.name}...`)
+
+        // If there's an existing image, delete it first from Supabase
+        if (homeCarousel.coverUrl) {
+          await deleteFileFromSupabase(homeCarousel.coverUrl)
+        }
+
+        // Upload all files using the existing MultiFileDropzone component's approach
+        const imageUrls = await Promise.all(
+          fileStates.map(async (fileState) =>
+            handleFileUploads(fileState.file, (progress) =>
+              updateFileProgress(fileState.key, progress, setFileStates)
+            )
           )
         )
+        coverUrl = imageUrls[0]
+
+        // Set uploading state to false after upload completes
+        setIsUploading(false)
+
+        // Dismiss the loading toast if it exists
+        if (loadingToast) {
+          toast.dismiss(loadingToast)
+        }
+
+        // Show success toast when upload completes
+        toast.success(`Files uploaded successfully`)
+      }
+
+      // Create a JSON object to send
+      const payload = {
+        title: values.title,
+        description: values.description,
+        coverUrl,
+      }
+
+      const result = await updateHomeCarousel(
+        payload,
+        homeCarousel.id,
+        fullPath,
+        "/admin"
       )
-      coverUrl = imageUrls[0]
-    }
-    if (coverUrl && homeCarousel.coverUrl) {
-      await removeFromS3(homeCarousel.coverUrl)
-    }
 
-    // Create a JSON object to send
-    const payload = {
-      title: values.title,
-      description: values.description,
-      coverUrl,
-    }
-
-    const result = await updateHomeCarousel(
-      payload,
-      homeCarousel.id,
-      fullPath,
-      "/admin"
-    )
-
-    if (result.success) {
-      toast.success("HomeCarousel updated successfully")
       onClose()
-    } else {
-      toast.error(result.error ?? "An error occurred.")
+      if (result.success) {
+        toast.success("Home carousel updated successfully")
+      } else {
+        toast.error(result.error ?? "An error occurred.")
+      }
+    } catch (error) {
+      console.error("Error updating home carousel:", error)
+
+      // Dismiss the loading toast if it exists
+      if (loadingToast) {
+        toast.dismiss(loadingToast)
+      }
+
+      // Reset upload state
+      setIsUploading(false)
+
+      // Show detailed error message
+      toast.error("Failed to process your request", {
+        description:
+          error instanceof Error ? error.message : "Unknown error occurred",
+        duration: 5000,
+      })
+    } finally {
+      setIsLoading(false)
     }
-    setIsLoading(false)
   }
 
   return (

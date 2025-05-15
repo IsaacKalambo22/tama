@@ -2,8 +2,10 @@
 
 import { Form, FormControl } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
+import { useFileUpload } from "@/hooks/use-file-upload"
 import { toast } from "@/hooks/use-toast"
 import { TeamProps } from "@/lib/api"
+import { deleteFileFromSupabase } from "@/lib/supabase-storage"
 import { handleFileUpload } from "@/lib/utils"
 import CustomFormField, {
   FormFieldType,
@@ -26,6 +28,20 @@ type Props = {
 
 const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
+  
+  // Initialize the file upload hook
+  const {
+    uploadFile,
+    status: uploadStatus,
+    progress: uploadProgress,
+    result: uploadResult,
+    error: uploadError,
+  } = useFileUpload({
+    path: "team",
+  })
+
+  // State to track if we're currently uploading a file
+  const [isUploading, setIsUploading] = useState(false)
 
   const formSchema = zod.object({
     name: zod.string().optional(),
@@ -55,12 +71,47 @@ const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
 
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
-    try {
-      let imageUrl: string | undefined = undefined
+    let loadingToast: string | undefined
 
+    try {
+      let imageUrl = team.imageUrl || ""
+
+      // Check if a new file is being uploaded
       if (values.files.length > 0) {
+        // Set uploading state to true to show progress bar
+        setIsUploading(true)
+
+        // Show toast notification when starting upload
         const file = values.files[0]
-        imageUrl = await handleFileUpload(file)
+        loadingToast = toast({
+          title: "Uploading",
+          description: `Uploading ${file.name}...`,
+          variant: "default",
+        }).id
+
+        // If there's an existing image, delete it first from Supabase
+        if (team.imageUrl) {
+          await deleteFileFromSupabase(team.imageUrl)
+        }
+
+        // Upload the new file
+        const uploadResult = await uploadFile(file)
+        imageUrl = uploadResult.url
+
+        // Set uploading state to false after upload completes
+        setIsUploading(false)
+
+        // Dismiss the loading toast if it exists
+        if (loadingToast) {
+          toast.dismiss(loadingToast)
+        }
+
+        // Show success toast when upload completes
+        toast({
+          title: "Success",
+          description: `File uploaded successfully`,
+          variant: "default",
+        })
       }
 
       const payload = {
@@ -81,9 +132,19 @@ const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
         description: `${team.name} has been updated successfully`,
       })
     } catch (error) {
+      console.error("Error updating team member:", error)
+
+      // Dismiss the loading toast if it exists
+      if (loadingToast) {
+        toast.dismiss(loadingToast)
+      }
+
+      // Reset upload state
+      setIsUploading(false)
+
       toast({
         title: "Error",
-        description: "An unexpected error has occurred",
+        description: error instanceof Error ? error.message : "An unexpected error has occurred",
         variant: "destructive",
       })
     } finally {

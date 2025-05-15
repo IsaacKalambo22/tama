@@ -8,6 +8,7 @@ import {
 import useCustomPath from "@/hooks/use-custom-path"
 import { toast } from "@/hooks/use-toast"
 import { TeamProps } from "@/lib/api"
+import { deleteFileFromSupabase } from "@/lib/supabase-storage"
 import CustomButton, { BUTTON_VARIANT } from "@/modules/common/custom-button"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
@@ -29,6 +30,11 @@ const ModalDeleteTeam = ({ isOpen, onClose, team }: Props) => {
     setIsLoading(true)
 
     try {
+      // If there's an image associated with the team member, delete it first from Supabase
+      if (team.imageUrl) {
+        await deleteFileFromSupabase(team.imageUrl)
+      }
+      
       const result = await deleteTeam(
         team.id,
         fullPath,
@@ -41,11 +47,11 @@ const ModalDeleteTeam = ({ isOpen, onClose, team }: Props) => {
         title: "Success",
         description: `${team.name} has been deleted successfully`,
       })
-      // Handle the result, such as showing success or error messages
     } catch (error) {
+      console.error("Error deleting team member:", error)
       toast({
         title: "Error",
-        description: "An unexpected error has occurred",
+        description: error instanceof Error ? error.message : "An unexpected error has occurred",
         variant: "destructive",
       })
     } finally {

@@ -8,12 +8,13 @@ import {
 } from "@/components/ui/dialog"
 import { Form } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
+import { useFileUpload } from "@/hooks/use-file-upload"
 import { toast } from "@/hooks/use-toast"
 import { handleFileUploads, updateFileProgress } from "@/lib/utils"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
-import { MultiFileDropzone } from "@/modules/common/multiple-file-upload"
+import { FileState, MultiFileDropzone } from "@/modules/common/multiple-file-upload"
 import SubmitButton from "@/modules/common/submit-button"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { usePathname } from "next/navigation"
@@ -33,6 +34,20 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
 
   const path = usePathname()
   const { fullPath, pathWithoutAdmin } = useCustomPath(path)
+  
+  // Initialize the file upload hook
+  const {
+    uploadFile,
+    status: uploadStatus,
+    progress: uploadProgress,
+    result: uploadResult,
+    error: uploadError,
+  } = useFileUpload({
+    path: "team",
+  })
+
+  // State to track if we're currently uploading a file
+  const [isUploading, setIsUploading] = useState(false)
   const formSchema = zod.object({
     name: zod.string().min(2, {
       message: "Title must be at least 2 characters.",
@@ -61,19 +76,55 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
   })
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
+    let loadingToast: string | undefined
+
     try {
-      let imageUrl: string | null = ""
-      if (fileStates.length > 0) {
-        const uploadedImageUrls = await Promise.all(
-          fileStates.map(async (fileState) =>
-            handleFileUploads(fileState.file, (progress) =>
-              updateFileProgress(fileState.key, progress, setFileStates)
-            )
+      if (fileStates.length === 0) {
+        toast({
+          title: "Error",
+          description: "Please upload an image for the team member",
+          variant: "destructive",
+        })
+        setIsLoading(false)
+        return
+      }
+
+      // Set uploading state to true to show progress bar
+      setIsUploading(true)
+
+      // Show toast notification when starting upload
+      const file = fileStates[0].file
+      loadingToast = toast({
+        title: "Uploading",
+        description: `Uploading ${file.name}...`,
+        variant: "default",
+      }).id
+
+      // Upload all files using the existing MultiFileDropzone component's approach
+      const uploadedImageUrls = await Promise.all(
+        fileStates.map(async (fileState) =>
+          handleFileUploads(fileState.file, (progress) =>
+            updateFileProgress(fileState.key, progress, setFileStates)
           )
         )
-        imageUrl = uploadedImageUrls[0]
-        console.log({ uploadedImageUrls })
+      )
+
+      // Set uploading state to false after upload completes
+      setIsUploading(false)
+
+      // Dismiss the loading toast if it exists
+      if (loadingToast) {
+        toast.dismiss(loadingToast)
       }
+
+      // Show success toast when upload completes
+      toast({
+        title: "Success",
+        description: `Files uploaded successfully`,
+        variant: "default",
+      })
+
+      const imageUrl = uploadedImageUrls[0]
 
       // Create a JSON object to send
       const payload = {
@@ -87,18 +138,26 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
       }
 
       await createTeam(payload, fullPath, pathWithoutAdmin, "/admin")
-      console.log({ payload })
 
       onClose()
       toast({
         title: "Success",
-        description: "New form or document has been created successfully",
+        description: "New team member has been created successfully",
       })
-      // Handle the result, such as showing success or error messages
     } catch (error) {
+      console.error("Error creating team member:", error)
+
+      // Dismiss the loading toast if it exists
+      if (loadingToast) {
+        toast.dismiss(loadingToast)
+      }
+
+      // Reset upload state
+      setIsUploading(false)
+
       toast({
         title: "Error",
-        description: "An unexpected error has occurred",
+        description: error instanceof Error ? error.message : "An unexpected error has occurred",
         variant: "destructive",
       })
     } finally {
