@@ -67,26 +67,44 @@ const ModalNewShop = ({ isOpen, onClose }: Props) => {
 
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
+    let loadingToast: string | undefined
+    
     try {
+      // Validate file exists
+      if (!values.files || values.files.length === 0) {
+        throw new Error("Please select a file to upload")
+      }
+      
       const file = values.files[0]
-
+      console.log("Starting upload for file:", file.name, "size:", file.size, "type:", file.type)
+      
       // Set uploading state to true to show progress bar
       setIsUploading(true)
 
       // Show toast notification when starting upload
-      const loadingToast = toast.loading(`Uploading ${file.name}...`)
+      loadingToast = toast.loading(`Uploading ${file.name}...`)
 
+      // Log Supabase bucket information
+      console.log("Using Supabase bucket:", config.env.supabase.bucketName)
+      
       // Upload file to Supabase Storage using our hook
-      const uploadResult = await uploadFile(file)
+      console.log("Calling uploadFile...")
+      const uploadResult = await uploadFile(file).catch(error => {
+        console.error("Error during file upload:", error)
+        throw new Error(`Upload failed: ${error.message || 'Unknown error'}`)
+      })
+      console.log("Upload completed, result:", uploadResult)
 
       // Set uploading state to false after upload completes
       setIsUploading(false)
 
-      // Dismiss the loading toast
-      toast.dismiss(loadingToast)
+      // Dismiss the loading toast if it exists
+      if (loadingToast) {
+        toast.dismiss(loadingToast)
+      }
 
       if (!uploadResult) {
-        throw new Error("File upload failed")
+        throw new Error("File upload failed - no result returned")
       }
 
       // Show success toast when upload completes
@@ -121,7 +139,20 @@ const ModalNewShop = ({ isOpen, onClose }: Props) => {
       }
     } catch (error) {
       console.error("Error creating shop:", error)
-      toast.error("Failed to upload image or create shop. Please try again.")
+      
+      // Dismiss the loading toast if it exists
+      if (loadingToast) {
+        toast.dismiss(loadingToast)
+      }
+      
+      // Reset upload state
+      setIsUploading(false)
+      
+      // Show detailed error message
+      toast.error("Failed to process your request", {
+        description: error instanceof Error ? error.message : "Unknown error occurred",
+        duration: 5000,
+      })
     } finally {
       setIsLoading(false)
     }
@@ -169,7 +200,9 @@ const ModalNewShop = ({ isOpen, onClose }: Props) => {
                     field.onChange(files)
                     // Show toast when file is selected
                     if (files.length > 0) {
-                      toast.info(`Selected file: ${files[0].name}`)
+                      toast.info("File selected", {
+                        description: `${files[0].name} (${(files[0].size / 1024 / 1024).toFixed(2)} MB)`,
+                      })
                     }
                   }}
                   uploadProgress={uploadProgress}
@@ -179,7 +212,6 @@ const ModalNewShop = ({ isOpen, onClose }: Props) => {
               </FormControl>
             )}
           />
-
           <SubmitButton
             disabled={isLoading || !form.formState.isValid}
             isLoading={isLoading}

@@ -47,30 +47,44 @@ export function useFileUpload(options: UseFileUploadOptions = {}) {
 
   const uploadFile = async (file: File): Promise<UploadResult | null> => {
     try {
+      console.log("useFileUpload: Starting upload process for", file.name)
       setStatus("uploading")
       setProgress({ progress: 0, loaded: 0, total: file.size })
       setError(null)
 
       // Create a unique file name if path is not provided
+      const timestamp = Date.now()
+      const safeFileName = file.name.replace(/\s+/g, "_")
       const filePath = path
-        ? `${path}/${file.name.replace(/\s+/g, "_")}`
-        : `${Date.now()}_${file.name.replace(/\s+/g, "_")}`
+        ? `${path}/${timestamp}_${safeFileName}`
+        : `${timestamp}_${safeFileName}`
+      
+      console.log("useFileUpload: Generated file path:", filePath)
 
       // For progress tracking, we need to use XMLHttpRequest
       // since the Supabase client doesn't support progress tracking directly
       return new Promise((resolve, reject) => {
+        console.log("useFileUpload: Requesting signed URL from Supabase bucket:", bucketName)
+        
         // First, get a signed URL for the file upload
         supabase.storage
           .from(bucketName)
           .createSignedUploadUrl(filePath)
           .then(({ data, error }) => {
             if (error) {
-              throw error
+              console.error("useFileUpload: Error creating signed URL:", error)
+              reject(error)
+              return
             }
 
             if (!data) {
-              throw new Error("Failed to create signed URL")
+              const noDataError = new Error("Failed to create signed URL - no data returned")
+              console.error("useFileUpload:", noDataError)
+              reject(noDataError)
+              return
             }
+            
+            console.log("useFileUpload: Successfully obtained signed URL")
 
             const { signedUrl, path } = data
 
@@ -84,22 +98,34 @@ export function useFileUpload(options: UseFileUploadOptions = {}) {
                   loaded: event.loaded,
                   total: event.total,
                 }
+                console.log(`useFileUpload: Upload progress - ${Math.round(progressData.progress)}%`)
                 setProgress(progressData)
               }
             })
 
             xhr.addEventListener("load", async () => {
               if (xhr.status >= 200 && xhr.status < 300) {
+                console.log("useFileUpload: Upload successful, getting public URL")
                 // Get public URL for the uploaded file
                 const { data: publicUrlData } = supabase.storage
                   .from(bucketName)
-                  .getPublicUrl(path)
+                  .getPublicUrl(filePath) // Use filePath instead of path
+
+                if (!publicUrlData) {
+                  const noUrlError = new Error("Failed to get public URL after upload")
+                  console.error("useFileUpload:", noUrlError)
+                  setStatus("error")
+                  setError(noUrlError)
+                  reject(noUrlError)
+                  return
+                }
 
                 const result = {
-                  path,
+                  path: filePath, // Use filePath instead of path
                   url: publicUrlData.publicUrl,
                 }
 
+                console.log("useFileUpload: Upload complete, URL:", result.url)
                 setStatus("success")
                 setResult(result)
                 resolve(result)
@@ -107,14 +133,16 @@ export function useFileUpload(options: UseFileUploadOptions = {}) {
                 const error = new Error(
                   `Upload failed with status ${xhr.status}`
                 )
+                console.error("useFileUpload: HTTP error during upload:", error)
                 setStatus("error")
                 setError(error)
                 reject(error)
               }
             })
 
-            xhr.addEventListener("error", () => {
+            xhr.addEventListener("error", (event) => {
               const error = new Error("Network error during upload")
+              console.error("useFileUpload: Network error during upload:", event)
               setStatus("error")
               setError(error)
               reject(error)
@@ -122,16 +150,23 @@ export function useFileUpload(options: UseFileUploadOptions = {}) {
 
             xhr.addEventListener("abort", () => {
               const error = new Error("Upload aborted")
+              console.warn("useFileUpload: Upload aborted")
               setStatus("error")
               setError(error)
               reject(error)
             })
 
             // Open and send the request
-            xhr.open("PUT", signedUrl)
-            xhr.setRequestHeader("Content-Type", file.type)
-            xhr.setRequestHeader("Cache-Control", cacheControl)
-            xhr.send(file)
+            try {
+              console.log("useFileUpload: Sending file to signed URL")
+              xhr.open("PUT", signedUrlData.signedUrl)
+              xhr.setRequestHeader("Content-Type", file.type)
+              xhr.setRequestHeader("Cache-Control", cacheControl)
+              xhr.send(file)
+            } catch (xhrError) {
+              console.error("useFileUpload: Error setting up XHR request:", xhrError)
+              reject(xhrError instanceof Error ? xhrError : new Error(String(xhrError)))
+            }
           })
           .catch((error) => {
             setStatus("error")
@@ -141,9 +176,10 @@ export function useFileUpload(options: UseFileUploadOptions = {}) {
           })
       })
     } catch (error) {
+      console.error("useFileUpload: Caught error in uploadFile:", error)
       setStatus("error")
       setError(error instanceof Error ? error : new Error(String(error)))
-      return null
+      throw error // Re-throw to allow for better error handling in the component
     }
   }
 
