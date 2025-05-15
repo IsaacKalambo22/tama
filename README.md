@@ -1,6 +1,72 @@
-# Turborepo Docker starter
+# TAMA Farmers Trust Platform
 
-This is a community-maintained example. If you experience a problem, please submit a pull request with a fix. GitHub Issues will be closed.
+A comprehensive web platform for the Tobacco Association of Malawi (TAMA) Farmers Trust, designed to support tobacco farmers with information, resources, and services.
+
+## Project Overview
+
+TAMA Farmers Trust platform provides a centralized hub for tobacco farmers in Malawi, offering:
+
+- **Information Sharing**: News, blogs, and publications relevant to tobacco farming
+- **Event Management**: Calendar of upcoming events and activities
+- **Council Representation**: Information about council representatives
+- **Job Opportunities**: Vacancy listings and application processes
+- **Administrative Tools**: Content management and user administration
+
+The platform is built using modern web technologies in a monorepo structure powered by Turborepo.
+
+## Technology Stack
+
+### Frontend
+- **Framework**: Next.js with App Router
+- **UI**: React 19 with TypeScript
+- **Styling**: Tailwind CSS with Shadcn UI components
+- **State Management**: Redux Toolkit, Zustand, and React Context
+- **Form Handling**: React Hook Form with Zod validation
+- **Data Fetching**: TanStack Query (react-query)
+
+### Backend
+- **Framework**: Express.js with TypeScript
+- **Database**: PostgreSQL with Prisma ORM
+- **Authentication**: JWT and NextAuth.js
+- **File Storage**: AWS S3
+- **Communication**: Nodemailer for emails, Twilio for SMS
+
+### Infrastructure
+- **Containerization**: Docker with multi-stage builds
+- **Package Management**: pnpm
+- **Development**: Docker Compose for local development
+- **Deployment**: Docker Compose for production
+
+## Project Structure
+
+The project follows a modular architecture with clear separation of concerns:
+
+```
+├── apps/
+│   ├── api/            # Express.js backend
+│   │   ├── prisma/     # Database schema and migrations
+│   │   └── src/        # API source code
+│   └── web/            # Next.js frontend
+│       ├── public/     # Static assets
+│       └── src/        # Frontend source code
+│           ├── app/    # Next.js App Router pages
+│           ├── components/ # Shared UI components
+│           └── modules/ # Feature modules
+│               ├── admin/  # Admin dashboard
+│               ├── auth/   # Authentication
+│               ├── client/ # Public-facing features
+│               └── common/ # Shared module utilities
+└── packages/        # Shared packages (UI, configs, etc.)
+```
+
+## Development Workflow
+
+### Getting Started
+
+1. Clone the repository
+2. Install dependencies with `pnpm install`
+3. Set up environment variables (copy `.env.example` files)
+4. Start the development environment with `pnpm dev`
 
 ## Using this example
 
@@ -73,3 +139,71 @@ This Turborepo has some additional tools already setup for you:
 - [ESLint](https://eslint.org/) for code linting
 - [Jest](https://jestjs.io) test runner for all things JavaScript
 - [Prettier](https://prettier.io) for code formatting
+
+## Deployment
+
+### Production Deployment
+
+The application is configured for Docker-based deployment:
+
+```bash
+# Build production images
+COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -f docker-compose-prod.yml build
+
+# Start production services
+docker-compose -f docker-compose-prod.yml up -d
+```
+
+### Environment Variables
+
+Both the frontend and backend require environment variables to be properly configured:
+
+- **API**: Copy `apps/api/env.example` to `apps/api/.env` and configure database connection, JWT secrets, etc.
+- **Web**: Copy `apps/web/env.example` to `apps/web/.env` and configure API URL, authentication settings, etc.
+
+## Database Management
+
+### Prisma Commands
+
+```bash
+# Generate Prisma client
+pnpm -F api generate
+
+# Run database migrations
+pnpm -F api db:migrate
+
+# Open Prisma Studio
+pnpm -F api studio
+```
+
+## Contributing
+
+Contributions to the TAMA Farmers Trust platform are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Code Style
+
+This project uses ESLint and Prettier for code formatting. Before submitting a PR, please ensure your code follows the style guidelines:
+
+```bash
+# Check code style
+pnpm lint
+
+# Format code
+pnpm format
+```
+
+## Additional Resources
+
+- [Project Planning](./planning.md) - Detailed project planning document
+- [Tasks](./tasks.md) - Current project tasks and status
+- [Next.js Documentation](https://nextjs.org/docs) - Learn about Next.js features
+- [Express.js Documentation](https://expressjs.com/) - Learn about Express.js
+- [Prisma Documentation](https://www.prisma.io/docs/) - Learn about Prisma ORM
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs) - Learn about Tailwind CSS
+- [Shadcn UI Documentation](https://ui.shadcn.com/docs) - Learn about Shadcn UI components

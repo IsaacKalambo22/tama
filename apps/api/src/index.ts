@@ -39,7 +39,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cors())
 
 /* ROUTES */
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
   res.send("<html><body><h1>Welcome to the Home Route</h1></body></html>")
 })
 
