@@ -2,7 +2,7 @@
 import { Form, FormControl } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
 import { ShopProps } from "@/lib/api"
-import { handleFileUpload } from "@/lib/utils"
+import { handleSupabaseFileUpload } from "@/lib/utils-supabase"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -46,37 +46,55 @@ const ModalEditShop = ({ isOpen, onClose, shop }: Props) => {
   })
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
-    let imageUrl = ""
-    let size = undefined
+    try {
+      let imageUrl = ""
+      let size = undefined
 
-    if (values.files.length > 0) {
-      const file = values.files[0]
-      imageUrl = await handleFileUpload(file)
-      size = Number(file.size)
+      if (values.files.length > 0) {
+        const file = values.files[0]
+
+        // Upload file to Supabase Storage
+        imageUrl = await handleSupabaseFileUpload(
+          file,
+          "shops", // Bucket name
+          "images", // Folder path
+          (progress) => {
+            // Optional: Handle upload progress
+            console.log(`Upload progress: ${progress}%`)
+          }
+        )
+        size = Number(file.size)
+
+        console.log("File uploaded to Supabase. URL:", imageUrl)
+      }
+
+      const payload = {
+        name: values.name ?? "",
+        openHours: values.openHours ?? "",
+        address: values.address ?? "",
+        imageUrl,
+        size: size,
+      }
+
+      const result = await updateShop(
+        payload,
+        shop.id,
+        fullPath,
+        `/tobacco-business/shops`
+      )
+
+      onClose()
+      if (result.success) {
+        toast.success("Shop updated successfully")
+      } else {
+        toast.error(result.error ?? "An error occurred.")
+      }
+    } catch (error) {
+      console.error("Error updating shop:", error)
+      toast.error("Failed to upload image or update shop. Please try again.")
+    } finally {
+      setIsLoading(false)
     }
-
-    const payload = {
-      name: values.name ?? "",
-      openHours: values.openHours ?? "",
-      address: values.address ?? "",
-      imageUrl,
-      size: size,
-    }
-
-    const result = await updateShop(
-      payload,
-      shop.id,
-      fullPath,
-      `/tobacco-business/shops`
-    )
-
-    onClose()
-    if (result.success) {
-      toast.success("Shop updated successfully")
-    } else {
-      toast.error(result.error ?? "An error occurred.")
-    }
-    setIsLoading(false)
   }
 
   return (

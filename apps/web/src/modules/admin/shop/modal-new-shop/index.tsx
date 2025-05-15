@@ -2,7 +2,7 @@
 
 import { Form, FormControl } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
-import { handleFileUpload } from "@/lib/utils"
+import { handleSupabaseFileUpload } from "@/lib/utils-supabase"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -50,34 +50,50 @@ const ModalNewShop = ({ isOpen, onClose }: Props) => {
   })
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
-    const file = values.files[0]
-    const fileUrl = await handleFileUpload(file)
+    try {
+      const file = values.files[0]
 
-    console.log("File uploaded. URL:", fileUrl)
+      // Upload file to Supabase Storage
+      const fileUrl = await handleSupabaseFileUpload(
+        file,
+        "shops", // Bucket name
+        "images", // Folder path
+        (progress) => {
+          // Optional: Handle upload progress
+          console.log(`Upload progress: ${progress}%`)
+        }
+      )
 
-    // Create a JSON object to send
-    const payload = {
-      name: values.name,
-      openHours: values.openHours,
-      address: values.address,
-      imageUrl: fileUrl, // Add the uploaded file URL
-      size: file.size, // Add the uploaded file URL
+      console.log("File uploaded to Supabase. URL:", fileUrl)
+
+      // Create a JSON object to send
+      const payload = {
+        name: values.name,
+        openHours: values.openHours,
+        address: values.address,
+        imageUrl: fileUrl, // Add the uploaded file URL
+        size: file.size, // Add the file size
+      }
+
+      const result = await createShop(
+        payload,
+        fullPath,
+        `/tobacco-business/shops`,
+        "/admin"
+      )
+
+      onClose()
+      if (result.success) {
+        toast.success("Shop created successfully")
+      } else {
+        toast.error(result.error ?? "An error occurred.")
+      }
+    } catch (error) {
+      console.error("Error creating shop:", error)
+      toast.error("Failed to upload image or create shop. Please try again.")
+    } finally {
+      setIsLoading(false)
     }
-
-    const result = await createShop(
-      payload,
-      fullPath,
-      `/tobacco-business/shops`,
-      "/admin"
-    )
-
-    onClose()
-    if (result.success) {
-      toast.success("Shop created successfully")
-    } else {
-      toast.error(result.error ?? "An error occurred.")
-    }
-    setIsLoading(false)
   }
 
   return (
