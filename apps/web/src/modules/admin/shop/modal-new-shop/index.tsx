@@ -2,8 +2,8 @@
 
 import { Form, FormControl } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
+import { useFileUpload } from "@/hooks/use-file-upload"
 import config from "@/lib/config"
-import { handleSupabaseFileUpload } from "@/lib/utils-supabase"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -25,7 +25,6 @@ type Props = {
 
 const ModalNewShop = ({ isOpen, onClose }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
-  const [uploadProgress, setUploadProgress] = useState(0)
   const path = usePathname()
   const { fullPath } = useCustomPath(path)
   const formSchema = zod.object({
@@ -50,41 +49,42 @@ const ModalNewShop = ({ isOpen, onClose }: Props) => {
       files: [],
     },
   })
+
+  // Initialize the file upload hook
+  const {
+    uploadFile,
+    status: uploadStatus,
+    progress: uploadProgress,
+    result: uploadResult,
+    error: uploadError,
+  } = useFileUpload({
+    bucketName: config.env.supabase.bucketName,
+    path: "shops",
+  })
+
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
     try {
       const file = values.files[0]
 
       // Show toast notification when starting upload
-      toast.info(`Uploading ${file.name}...`, {
-        id: "file-upload",
-        duration: Infinity,
-      })
+      const loadingToast = toast.loading(`Uploading ${file.name}...`)
 
-      // Upload file to Supabase Storage
-      // Reset upload progress before starting
-      setUploadProgress(0)
+      // Upload file to Supabase Storage using our hook
+      const result = await uploadFile(file)
 
-      const fileUrl = await handleSupabaseFileUpload(
-        file,
-        config.env.supabase.bucketName,
-        "shops", // Folder path
-        (progress) => {
-          // Update upload progress state to display in UI
-          setUploadProgress(progress)
+      // Dismiss the loading toast
+      toast.dismiss(loadingToast)
 
-          // Update toast with progress
-          toast.info(`Uploading ${file.name}... ${progress.toFixed(0)}%`, {
-            id: "file-upload",
-            duration: Infinity,
-          })
-        }
-      )
+      if (!result) {
+        throw new Error("File upload failed")
+      }
 
       // Show success toast when upload completes
-      toast.success(`${file.name} uploaded successfully`, {
-        id: "file-upload",
-      })
+      toast.success(`${file.name} uploaded successfully`)
+
+      // Get the file URL from the result
+      const fileUrl = result.url
 
       console.log("File uploaded to Supabase. URL:", fileUrl)
 
