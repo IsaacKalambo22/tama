@@ -4,6 +4,7 @@ import dotenv from "dotenv"
 import express from "express"
 import helmet from "helmet"
 import morgan from "morgan"
+import { bootstrapAdmin } from "./utils/bootstrap-admin"
 
 /* ROUTE IMPORTS */
 import auth from "./routes/auth"
@@ -61,6 +62,9 @@ app.use("/tama/reports-publications", reportsPublications)
 
 /* SERVER */
 const PORT = Number(process.env.PORT) || 8000
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Server Listening on port ${PORT}`)
+
+  // Bootstrap admin user if none exists
+  await bootstrapAdmin()
 })
