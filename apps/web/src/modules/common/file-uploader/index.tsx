@@ -5,13 +5,15 @@ import { Progress } from "@/components/ui/progress"
 import { useCallback, useRef, useState } from "react"
 import { toast } from "sonner"
 
+import { UploadProgress } from "@/hooks/use-file-upload"
+
 interface FileUploaderProps {
   files: File[] | undefined
   onChange: (files: File[]) => void
   maxSizeMB?: number
   allowedTypes?: string[]
   bucketName?: string
-  uploadProgress?: number
+  uploadProgress?: UploadProgress
   uploadStatus?: string
   isUploading?: boolean
 }
@@ -22,7 +24,7 @@ export const FileUploader = ({
   maxSizeMB = 10,
   allowedTypes = ["image/jpeg", "image/png", "image/gif", "application/pdf"],
   bucketName = "uploads",
-  uploadProgress = 0,
+  uploadProgress = { progress: 0, loaded: 0, total: 0 },
   uploadStatus = "",
   isUploading = false,
 }: FileUploaderProps) => {
@@ -220,9 +222,9 @@ export const FileUploader = ({
               <div className="space-y-2">
                 <div className="flex justify-between text-xs text-muted-foreground">
                   <span>Uploading file...</span>
-                  <span>{uploadProgress ? `${Math.round(uploadProgress)}%` : '0%'}</span>
+                  <span>{uploadProgress?.progress ? `${Math.round(uploadProgress.progress)}%` : '0%'}</span>
                 </div>
-                <Progress value={uploadProgress} className="h-1.5" />
+                <Progress value={uploadProgress?.progress} className="h-1.5" />
                 {uploadStatus && <p className="text-xs text-muted-foreground mt-1">{uploadStatus}</p>}
               </div>
             )}
