@@ -1,8 +1,10 @@
 "use client"
 import { Form, FormControl } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
+import { useFileUpload } from "@/hooks/use-file-upload"
 import { ShopProps } from "@/lib/api"
-import { handleSupabaseFileUpload } from "@/lib/utils-supabase"
+import config from "@/lib/config"
+import { deleteFileFromSupabase } from "@/lib/supabase"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -44,26 +46,96 @@ const ModalEditShop = ({ isOpen, onClose, shop }: Props) => {
       files: [],
     },
   })
+
+  // Initialize the file upload hook
+  const {
+    uploadFile,
+    status: uploadStatus,
+    progress: uploadProgress,
+    result: uploadResult,
+    error: uploadError,
+  } = useFileUpload({
+    path: "shops",
+  })
+
+  // State to track if we're currently uploading a file
+  const [isUploading, setIsUploading] = useState(false)
+
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
+    let loadingToast: string | undefined
+
     try {
-      let imageUrl = ""
-      let size = undefined
+      let imageUrl = shop.imageUrl || ""
+      let size = shop.size
 
-      if (values.files.length > 0) {
+      // Check if a new file is being uploaded
+      if (values.files && values.files.length > 0) {
         const file = values.files[0]
-
-        // Upload file to Supabase Storage
-        imageUrl = await handleSupabaseFileUpload(
-          file,
-          "shops", // Bucket name
-          "images", // Folder path
-          (progress) => {
-            // Optional: Handle upload progress
-            console.log(`Upload progress: ${progress}%`)
-          }
+        console.log(
+          "Starting upload for file:",
+          file.name,
+          "size:",
+          file.size,
+          "type:",
+          file.type
         )
-        size = Number(file.size)
+
+        // If there's an existing image, delete it first
+        if (shop.imageUrl) {
+          console.log("Deleting existing file:", shop.imageUrl)
+          loadingToast = toast.loading("Deleting previous image...")
+
+          const deleteResult = await deleteFileFromSupabase(shop.imageUrl)
+
+          if (loadingToast) {
+            toast.dismiss(loadingToast)
+          }
+
+          if (!deleteResult) {
+            console.warn(
+              "Failed to delete previous image, continuing with upload"
+            )
+          } else {
+            console.log("Previous image deleted successfully")
+          }
+        }
+
+        // Set uploading state to true to show progress bar
+        setIsUploading(true)
+
+        // Show toast notification when starting upload
+        loadingToast = toast.loading(`Uploading ${file.name}...`)
+
+        // Log Supabase bucket information
+        console.log("Using Supabase bucket:", config.env.supabase.bucketName)
+
+        // Upload file to Supabase Storage using our hook
+        console.log("Calling uploadFile...")
+        const uploadResult = await uploadFile(file).catch((error) => {
+          console.error("Error during file upload:", error)
+          throw new Error(`Upload failed: ${error.message || "Unknown error"}`)
+        })
+        console.log("Upload completed, result:", uploadResult)
+
+        // Set uploading state to false after upload completes
+        setIsUploading(false)
+
+        // Dismiss the loading toast if it exists
+        if (loadingToast) {
+          toast.dismiss(loadingToast)
+        }
+
+        if (!uploadResult) {
+          throw new Error("File upload failed - no result returned")
+        }
+
+        // Show success toast when upload completes
+        toast.success(`${file.name} uploaded successfully`)
+
+        // Get the file URL from the uploadResult
+        imageUrl = uploadResult.url
+        size = file.size
 
         console.log("File uploaded to Supabase. URL:", imageUrl)
       }
@@ -73,7 +145,7 @@ const ModalEditShop = ({ isOpen, onClose, shop }: Props) => {
         openHours: values.openHours ?? "",
         address: values.address ?? "",
         imageUrl,
-        size: size,
+        size,
       }
 
       const result = await updateShop(
@@ -91,7 +163,21 @@ const ModalEditShop = ({ isOpen, onClose, shop }: Props) => {
       }
     } catch (error) {
       console.error("Error updating shop:", error)
-      toast.error("Failed to upload image or update shop. Please try again.")
+
+      // Dismiss the loading toast if it exists
+      if (loadingToast) {
+        toast.dismiss(loadingToast)
+      }
+
+      // Reset upload state
+      setIsUploading(false)
+
+      // Show detailed error message
+      toast.error("Failed to process your request", {
+        description:
+          error instanceof Error ? error.message : "Unknown error occurred",
+        duration: 5000,
+      })
     } finally {
       setIsLoading(false)
     }
@@ -132,9 +218,32 @@ const ModalEditShop = ({ isOpen, onClose, shop }: Props) => {
             name="files"
             label="Image"
             renderSkeleton={(field) => (
-              <FormControl>
-                <FileUploader files={field.value} onChange={field.onChange} />
-              </FormControl>
+              <div>
+                <FormControl>
+                  <FileUploader
+                    files={field.value}
+                    onChange={(files) => {
+                      field.onChange(files)
+                    }}
+                    uploadProgress={uploadProgress}
+                    uploadStatus={uploadStatus}
+                    isUploading={isUploading}
+                  />
+                </FormControl>
+                {shop.imageUrl && !field.value?.length && (
+                  <div className="mt-2 text-sm">
+                    <p>
+                      Current image:{" "}
+                      <span className="font-medium">
+                        {shop.imageUrl.split("/").pop()}
+                      </span>
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Upload a new image to replace the current one
+                    </p>
+                  </div>
+                )}
+              </div>
             )}
           />
 

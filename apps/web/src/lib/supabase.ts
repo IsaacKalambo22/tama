@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js"
+import { createClient } from "@supabase/supabase-js";
 
 // Create a single supabase client for interacting with your database
 export const supabase = createClient(
@@ -135,9 +135,10 @@ export const uploadFileToSupabase = async (
  */
 export const deleteFileFromSupabase = async (
   filePath: string,
-  bucketName: string = "uploads"
 ): Promise<boolean> => {
   try {
+    const bucketName = config.env.supabase.bucketName
+    console.log("bucketName", bucketName)
     // Extract the file path from the full URL if needed
     const path = filePath.includes("/")
       ? filePath.split(`${bucketName}/`)[1]
