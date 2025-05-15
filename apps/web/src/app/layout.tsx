@@ -61,48 +61,6 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
   return (
     <SessionProvider session={session}>
       <html lang="en">
-        <head>
-          {/* Geography Meta Tags */}
-          <meta name="geo.region" content="MW-LI" />
-          <meta name="geo.placename" content="Lilongwe" />
-          <meta name="geo.position" content="-13.9626;33.7741" />
-          <meta name="ICBM" content="-13.9626, 33.7741" />
-          {/* Canonical URL */}
-          <link rel="canonical" href="https://tamalawi.com" />
-          <link rel="icon" href="/favicon.ico" />
-          {/* Open Graph Meta Tags for Facebook */}
-          <meta
-            property="og:title"
-            content="TAMA Farmers Trust | Leading farmers to prosperity"
-          />
-          <meta
-            property="og:description"
-            content="Discover how TAMA Farmers Trust supports farmers in Malawi with agricultural resources, financial trust services, and a commitment to sustainability."
-          />
-          <meta property="og:url" content="https://tamalawi.com" />
-          <meta
-            property="og:image"
-            content="https://tamalawi.com/assets/images/logo.png"
-          />
-          <meta property="og:type" content="website" />
-          <meta property="og:site_name" content="TAMA Farmers Trust" />
-          {/* Twitter Card Meta Tags */}
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta
-            name="twitter:title"
-            content="TAMA Farmers Trust | Leading farmers to prosperity"
-          />
-          <meta
-            name="twitter:description"
-            content="Leading farmers in Malawi to prosperity with innovative solutions in agriculture and trust management."
-          />
-          <meta
-            name="twitter:image"
-            content="https://tamalawi.com/assets/images/logo.png"
-          />
-          <meta name="twitter:site" content="@TamaTrust" />
-          <meta name="twitter:creator" content="@TamaTrust" />
-        </head>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
@@ -110,7 +68,7 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
             <div className="gradient" />
           </div>
           <main className="z-50">{children}</main>
-          <Toaster />
+          <Toaster position="top-right" richColors closeButton />
         </body>
       </html>
     </SessionProvider>

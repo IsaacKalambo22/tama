@@ -8,22 +8,46 @@ import { toast } from "sonner"
 import { UploadProgress } from "@/hooks/use-file-upload"
 
 interface FileUploaderProps {
+  /**
+   * Currently selected files
+   */
   files: File[] | undefined
+  /**
+   * Callback when files change
+   */
   onChange: (files: File[]) => void
+  /**
+   * Maximum file size in MB (default: 5)
+   */
   maxSizeMB?: number
+  /**
+   * Allowed file types (MIME types)
+   * Default: ["image/jpeg", "image/png", "image/gif"]
+   * Examples: ["application/pdf"] for PDFs, ["text/csv"] for CSV files
+   */
   allowedTypes?: string[]
-  bucketName?: string
+  /**
+   * Storage bucket name
+   */
+  /**
+   * Upload progress information
+   */
   uploadProgress?: UploadProgress
+  /**
+   * Current upload status message
+   */
   uploadStatus?: string
+  /**
+   * Whether a file is currently being uploaded
+   */
   isUploading?: boolean
 }
 
 export const FileUploader = ({
   files,
   onChange,
-  maxSizeMB = 10,
-  allowedTypes = ["image/jpeg", "image/png", "image/gif", "application/pdf"],
-  bucketName = "uploads",
+  maxSizeMB = 5,
+  allowedTypes = ["image/**"],
   uploadProgress = { progress: 0, loaded: 0, total: 0 },
   uploadStatus = "",
   isUploading = false,
@@ -138,7 +162,7 @@ export const FileUploader = ({
   return (
     <div className="w-full max-h-[15rem] space-y-2">
       <div
-        className={`flex flex-col items-center justify-center p-6 border-2 border-dashed ${isDragging ? "border-primary bg-primary/5" : "border-gray-300 bg-gray-50 dark:bg-gray-800 dark:border-gray-700"} rounded-lg transition-colors duration-200`}
+        className={`flex flex-col items-center justify-center p-4 border-2 border-dashed ${isDragging ? "border-primary bg-primary/5" : "border-gray-300 bg-gray-50 dark:bg-gray-800 dark:border-gray-700"} rounded-lg transition-colors duration-200`}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
@@ -153,8 +177,8 @@ export const FileUploader = ({
         />
 
         {!selectedFile ? (
-          <div 
-            className="text-center cursor-pointer w-full h-full flex flex-col items-center justify-center" 
+          <div
+            className="text-center cursor-pointer w-full h-full flex flex-col items-center justify-center"
             onClick={handleSelectFile}
           >
             <svg
