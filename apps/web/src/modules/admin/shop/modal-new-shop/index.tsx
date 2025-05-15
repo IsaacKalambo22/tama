@@ -9,6 +9,7 @@ import CustomFormField, {
 } from "@/modules/common/custom-form-field"
 import { FileUploader } from "@/modules/common/file-uploader"
 import SubmitButton from "@/modules/common/submit-button"
+import { Progress } from "@/components/ui/progress"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
@@ -64,16 +65,25 @@ const ModalNewShop = ({ isOpen, onClose }: Props) => {
     path: "shops",
   })
 
+  // State to track if we're currently uploading a file
+  const [isUploading, setIsUploading] = useState(false)
+
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
     try {
       const file = values.files[0]
+
+      // Set uploading state to true to show progress bar
+      setIsUploading(true)
 
       // Show toast notification when starting upload
       const loadingToast = toast.loading(`Uploading ${file.name}...`)
 
       // Upload file to Supabase Storage using our hook
       const uploadResult = await uploadFile(file)
+
+      // Set uploading state to false after upload completes
+      setIsUploading(false)
 
       // Dismiss the loading toast
       toast.dismiss(loadingToast)
@@ -169,6 +179,18 @@ const ModalNewShop = ({ isOpen, onClose }: Props) => {
               </FormControl>
             )}
           />
+
+          {/* Upload progress indicator */}
+          {isUploading && (
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>Uploading file...</span>
+                <span>{uploadProgress ? `${Math.round(uploadProgress)}%` : '0%'}</span>
+              </div>
+              <Progress value={uploadProgress} className="h-2" />
+              {uploadStatus && <p className="text-xs text-muted-foreground">{uploadStatus}</p>}
+            </div>
+          )}
 
           <SubmitButton
             disabled={isLoading || !form.formState.isValid}
