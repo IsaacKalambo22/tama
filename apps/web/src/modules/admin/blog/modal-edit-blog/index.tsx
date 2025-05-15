@@ -1,9 +1,9 @@
 "use client"
 import { Form, FormControl } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
-import { toast } from "@/hooks/use-toast"
+import { useFileUpload } from "@/hooks/use-file-upload"
 import { BlogProps } from "@/lib/api"
-import { handleFileUpload } from "@/lib/utils"
+import { deleteFileFromSupabase } from "@/lib/supabase"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 import * as zod from "zod"
 import { updateBlog } from "../../actions"
 import Modal from "../../modal"
@@ -44,16 +45,92 @@ const ModalEditBlog = ({ isOpen, onClose, blog }: Props) => {
       files: [],
     },
   })
+  
+  // Initialize the file upload hook
+  const {
+    uploadFile,
+    status: uploadStatus,
+    progress: uploadProgress,
+    result: uploadResult,
+    error: uploadError,
+  } = useFileUpload({
+    path: "blogs",
+  })
+
+  // State to track if we're currently uploading a file
+  const [isUploading, setIsUploading] = useState(false)
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
-    try {
-      let imageUrl = ""
-      let size = undefined
+    let loadingToast: string | undefined
 
-      if (values.files.length > 0) {
+    try {
+      let imageUrl = blog.imageUrl || ""
+      let size = blog.size
+
+      // Check if a new file is being uploaded
+      if (values.files && values.files.length > 0) {
         const file = values.files[0]
-        imageUrl = await handleFileUpload(file)
-        size = Number(file.size)
+        console.log(
+          "Starting upload for file:",
+          file.name,
+          "size:",
+          file.size,
+          "type:",
+          file.type
+        )
+
+        // If there's an existing image, delete it first
+        if (blog.imageUrl) {
+          console.log("Deleting existing file:", blog.imageUrl)
+          loadingToast = toast.loading("Deleting previous image...")
+          
+          const deleteResult = await deleteFileFromSupabase(blog.imageUrl)
+          
+          if (loadingToast) {
+            toast.dismiss(loadingToast)
+          }
+          
+          if (!deleteResult) {
+            console.warn("Failed to delete previous image, continuing with upload")
+          } else {
+            console.log("Previous image deleted successfully")
+          }
+        }
+
+        // Set uploading state to true to show progress bar
+        setIsUploading(true)
+
+        // Show toast notification when starting upload
+        loadingToast = toast.loading(`Uploading ${file.name}...`)
+
+        // Upload file to Supabase Storage using our hook
+        console.log("Calling uploadFile...")
+        const uploadResult = await uploadFile(file).catch((error) => {
+          console.error("Error during file upload:", error)
+          throw new Error(`Upload failed: ${error.message || "Unknown error"}`)
+        })
+        console.log("Upload completed, result:", uploadResult)
+
+        // Set uploading state to false after upload completes
+        setIsUploading(false)
+
+        // Dismiss the loading toast if it exists
+        if (loadingToast) {
+          toast.dismiss(loadingToast)
+        }
+
+        if (!uploadResult) {
+          throw new Error("File upload failed - no result returned")
+        }
+
+        // Show success toast when upload completes
+        toast.success(`${file.name} uploaded successfully`)
+
+        // Get the file URL from the uploadResult
+        imageUrl = uploadResult.url
+        size = file.size
+
+        console.log("File uploaded to Supabase. URL:", imageUrl)
       }
 
       const payload = {
@@ -61,22 +138,33 @@ const ModalEditBlog = ({ isOpen, onClose, blog }: Props) => {
         content: values.content ?? "",
         author: values.author ?? "",
         imageUrl,
-        size: size,
+        size,
       }
 
-      await updateBlog(payload, blog.id, fullPath, pathWithoutAdmin)
+      const result = await updateBlog(payload, blog.id, fullPath, pathWithoutAdmin)
 
       onClose()
-      toast({
-        title: "Success",
-        description: `${blog.title} has been updated successfully`,
-      })
-      // Handle the result, such as showing success or error messages
+      if (result.success) {
+        toast.success(`${blog.title} has been updated successfully`)
+      } else {
+        toast.error(result.error ?? "An error occurred.")
+      }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "An unexpected error has occurred",
-        variant: "destructive",
+      console.error("Error updating blog:", error)
+      
+      // Dismiss the loading toast if it exists
+      if (loadingToast) {
+        toast.dismiss(loadingToast)
+      }
+
+      // Reset upload state
+      setIsUploading(false)
+
+      // Show detailed error message
+      toast.error("Failed to process your request", {
+        description:
+          error instanceof Error ? error.message : "Unknown error occurred",
+        duration: 5000,
       })
     } finally {
       setIsLoading(false)
@@ -117,9 +205,32 @@ const ModalEditBlog = ({ isOpen, onClose, blog }: Props) => {
             name="files"
             label="Image"
             renderSkeleton={(field) => (
-              <FormControl>
-                <FileUploader files={field.value} onChange={field.onChange} />
-              </FormControl>
+              <div>
+                <FormControl>
+                  <FileUploader 
+                    files={field.value} 
+                    onChange={(files) => {
+                      field.onChange(files)
+                    }}
+                    uploadProgress={uploadProgress}
+                    uploadStatus={uploadStatus}
+                    isUploading={isUploading}
+                  />
+                </FormControl>
+                {blog.imageUrl && !field.value?.length && (
+                  <div className="mt-2 text-sm">
+                    <p>
+                      Current image:{" "}
+                      <span className="font-medium">
+                        {blog.imageUrl.split("/").pop()}
+                      </span>
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Upload a new image to replace the current one
+                    </p>
+                  </div>
+                )}
+              </div>
             )}
           />
 

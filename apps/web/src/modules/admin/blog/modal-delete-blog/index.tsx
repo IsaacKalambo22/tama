@@ -6,11 +6,12 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import useCustomPath from "@/hooks/use-custom-path"
-import { toast } from "@/hooks/use-toast"
 import { BlogProps } from "@/lib/api"
+import { deleteFileFromSupabase } from "@/lib/supabase"
 import CustomButton, { BUTTON_VARIANT } from "@/modules/common/custom-button"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
+import { toast } from "sonner"
 import { deleteBlog } from "../../actions"
 import Modal from "../../modal"
 
@@ -29,6 +30,12 @@ const ModalDeleteBlog = ({ isOpen, onClose, blog }: Props) => {
     setIsLoading(true)
 
     try {
+      // If there's an image associated with the blog, delete it first
+      if (blog.imageUrl) {
+        console.log("Deleting file:", blog.imageUrl)
+        await deleteFileFromSupabase(blog.imageUrl)
+      }
+
       const result = await deleteBlog(
         blog.id,
         fullPath,
@@ -37,16 +44,16 @@ const ModalDeleteBlog = ({ isOpen, onClose, blog }: Props) => {
       )
 
       onClose()
-      toast({
-        title: "Success",
-        description: `${blog.title} has been deleted successfully`,
-      })
-      // Handle the result, such as showing success or error messages
+      if (result.success) {
+        toast.success(`${blog.title} has been deleted successfully`)
+      } else {
+        toast.error(result.error ?? "An error occurred.")
+      }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "An unexpected error has occurred",
-        variant: "destructive",
+      console.error("Error deleting blog:", error)
+      toast.error("Failed to delete blog", {
+        description: error instanceof Error ? error.message : "Unknown error occurred",
+        duration: 5000,
       })
     } finally {
       setIsLoading(false)

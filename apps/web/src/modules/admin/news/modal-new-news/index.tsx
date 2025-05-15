@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog"
 import { Form, FormControl } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
-import { getFileType, handleFileUpload } from "@/lib/utils"
+import { useFileUpload } from "@/hooks/use-file-upload"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -54,35 +54,117 @@ const ModalNewNews = ({ isOpen, onClose }: Props) => {
       files: [],
     },
   })
+  
+  // Initialize the file upload hook
+  const {
+    uploadFile,
+    status: uploadStatus,
+    progress: uploadProgress,
+    result: uploadResult,
+    error: uploadError,
+  } = useFileUpload({
+    path: "news",
+  })
+
+  // State to track if we're currently uploading a file
+  const [isUploading, setIsUploading] = useState(false)
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
-    const file = values.files[0]
-    const fileUrl = await handleFileUpload(file)
-    const fileProps = getFileType(file.name)
-    console.log({ fileProps })
-    // Create a JSON object to send
-    const payload = {
-      title: values.title,
-      content: values.content,
-      author: values.author,
-      size: file.size,
-      imageUrl: fileUrl, // Add the uploaded file URL
-    }
-    // Call the createForm function to send data to the server
-    const result = await createNews(
-      payload,
-      fullPath,
-      "/news-updates-news",
-      "/admin"
-    )
+    let loadingToast: string | undefined
 
-    onClose()
-    if (result.success) {
-      toast.success("News created successfully")
-    } else {
-      toast.error(result.error ?? "An error occurred.")
+    try {
+      // Validate file exists
+      if (!values.files || values.files.length === 0) {
+        throw new Error("Please select a file to upload")
+      }
+
+      const file = values.files[0]
+      console.log(
+        "Starting upload for file:",
+        file.name,
+        "size:",
+        file.size,
+        "type:",
+        file.type
+      )
+
+      // Set uploading state to true to show progress bar
+      setIsUploading(true)
+
+      // Show toast notification when starting upload
+      loadingToast = toast.loading(`Uploading ${file.name}...`)
+
+      // Upload file to Supabase Storage using our hook
+      console.log("Calling uploadFile...")
+      const uploadResult = await uploadFile(file).catch((error) => {
+        console.error("Error during file upload:", error)
+        throw new Error(`Upload failed: ${error.message || "Unknown error"}`)
+      })
+      console.log("Upload completed, result:", uploadResult)
+
+      // Set uploading state to false after upload completes
+      setIsUploading(false)
+
+      // Dismiss the loading toast if it exists
+      if (loadingToast) {
+        toast.dismiss(loadingToast)
+      }
+
+      if (!uploadResult) {
+        throw new Error("File upload failed - no result returned")
+      }
+
+      // Show success toast when upload completes
+      toast.success(`${file.name} uploaded successfully`)
+
+      // Get the file URL from the uploadResult
+      const fileUrl = uploadResult.url
+
+      console.log("File uploaded to Supabase. URL:", fileUrl)
+
+      // Create a JSON object to send
+      const payload = {
+        title: values.title,
+        content: values.content,
+        author: values.author,
+        size: file.size,
+        imageUrl: fileUrl, // Add the uploaded file URL
+      }
+      
+      // Call the createNews function to send data to the server
+      const result = await createNews(
+        payload,
+        fullPath,
+        "/news-updates-news",
+        "/admin"
+      )
+
+      onClose()
+      if (result.success) {
+        toast.success("News created successfully")
+      } else {
+        toast.error(result.error ?? "An error occurred.")
+      }
+    } catch (error) {
+      console.error("Error creating news:", error)
+
+      // Dismiss the loading toast if it exists
+      if (loadingToast) {
+        toast.dismiss(loadingToast)
+      }
+
+      // Reset upload state
+      setIsUploading(false)
+
+      // Show detailed error message
+      toast.error("Failed to process your request", {
+        description:
+          error instanceof Error ? error.message : "Unknown error occurred",
+        duration: 5000,
+      })
+    } finally {
+      setIsLoading(false)
     }
-    setIsLoading(false)
   }
 
   return (
@@ -125,7 +207,15 @@ const ModalNewNews = ({ isOpen, onClose }: Props) => {
               label="Image"
               renderSkeleton={(field) => (
                 <FormControl>
-                  <FileUploader files={field.value} onChange={field.onChange} />
+                  <FileUploader
+                    files={field.value}
+                    onChange={(files) => {
+                      field.onChange(files)
+                    }}
+                    uploadProgress={uploadProgress}
+                    uploadStatus={uploadStatus}
+                    isUploading={isUploading}
+                  />
                 </FormControl>
               )}
             />

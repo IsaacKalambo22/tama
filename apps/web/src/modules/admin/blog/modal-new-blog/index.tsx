@@ -9,8 +9,8 @@ import {
 } from "@/components/ui/dialog"
 import { Form, FormControl } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
-import { toast } from "@/hooks/use-toast"
-import { getFileType, handleFileUpload } from "@/lib/utils"
+import { useFileUpload } from "@/hooks/use-file-upload"
+import config from "@/lib/config"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -20,6 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 import * as zod from "zod"
 import { createBlog } from "../../actions"
 type Props = {
@@ -54,13 +55,75 @@ const ModalNewBlog = ({ isOpen, onClose }: Props) => {
       files: [],
     },
   })
+
+  // Initialize the file upload hook
+  const {
+    uploadFile,
+    status: uploadStatus,
+    progress: uploadProgress,
+    result: uploadResult,
+    error: uploadError,
+  } = useFileUpload({
+    path: "blogs",
+  })
+
+  // State to track if we're currently uploading a file
+  const [isUploading, setIsUploading] = useState(false)
+
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
+    let loadingToast: string | undefined
+
     try {
+      // Validate file exists
+      if (!values.files || values.files.length === 0) {
+        throw new Error("Please select a file to upload")
+      }
+
       const file = values.files[0]
-      const fileUrl = await handleFileUpload(file)
-      const fileProps = getFileType(file.name)
-      console.log({ fileProps })
+      console.log(
+        "Starting upload for file:",
+        file.name,
+        "size:",
+        file.size,
+        "type:",
+        file.type
+      )
+
+      // Set uploading state to true to show progress bar
+      setIsUploading(true)
+
+      // Show toast notification when starting upload
+      loadingToast = toast.loading(`Uploading ${file.name}...`)
+
+      // Upload file to Supabase Storage using our hook
+      console.log("Calling uploadFile...")
+      const uploadResult = await uploadFile(file).catch((error) => {
+        console.error("Error during file upload:", error)
+        throw new Error(`Upload failed: ${error.message || "Unknown error"}`)
+      })
+      console.log("Upload completed, result:", uploadResult)
+
+      // Set uploading state to false after upload completes
+      setIsUploading(false)
+
+      // Dismiss the loading toast if it exists
+      if (loadingToast) {
+        toast.dismiss(loadingToast)
+      }
+
+      if (!uploadResult) {
+        throw new Error("File upload failed - no result returned")
+      }
+
+      // Show success toast when upload completes
+      toast.success(`${file.name} uploaded successfully`)
+
+      // Get the file URL from the uploadResult
+      const fileUrl = uploadResult.url
+
+      console.log("File uploaded to Supabase. URL:", fileUrl)
+
       // Create a JSON object to send
       const payload = {
         title: values.title,
@@ -70,19 +133,30 @@ const ModalNewBlog = ({ isOpen, onClose }: Props) => {
         imageUrl: fileUrl, // Add the uploaded file URL
       }
 
-      await createBlog(payload, fullPath, pathWithoutAdmin, "/admin")
+      const result = await createBlog(payload, fullPath, pathWithoutAdmin, "/admin")
 
       onClose()
-      toast({
-        title: "Success",
-        description: "New form or document has been created successfully",
-      })
-      // Handle the result, such as showing success or error messages
+      if (result.success) {
+        toast.success("Blog created successfully")
+      } else {
+        toast.error(result.error ?? "An error occurred.")
+      }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "An unexpected error has occurred",
-        variant: "destructive",
+      console.error("Error creating blog:", error)
+
+      // Dismiss the loading toast if it exists
+      if (loadingToast) {
+        toast.dismiss(loadingToast)
+      }
+
+      // Reset upload state
+      setIsUploading(false)
+
+      // Show detailed error message
+      toast.error("Failed to process your request", {
+        description:
+          error instanceof Error ? error.message : "Unknown error occurred",
+        duration: 5000,
       })
     } finally {
       setIsLoading(false)
@@ -129,7 +203,15 @@ const ModalNewBlog = ({ isOpen, onClose }: Props) => {
               label="Image"
               renderSkeleton={(field) => (
                 <FormControl>
-                  <FileUploader files={field.value} onChange={field.onChange} />
+                  <FileUploader
+                    files={field.value}
+                    onChange={(files) => {
+                      field.onChange(files)
+                    }}
+                    uploadProgress={uploadProgress}
+                    uploadStatus={uploadStatus}
+                    isUploading={isUploading}
+                  />
                 </FormControl>
               )}
             />
