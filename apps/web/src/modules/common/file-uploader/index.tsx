@@ -136,7 +136,7 @@ export const FileUploader = ({
   )
 
   return (
-    <div className="w-full space-y-4">
+    <div className="w-full max-h-[15rem] space-y-2">
       <div
         className={`flex flex-col items-center justify-center p-6 border-2 border-dashed ${isDragging ? "border-primary bg-primary/5" : "border-gray-300 bg-gray-50 dark:bg-gray-800 dark:border-gray-700"} rounded-lg transition-colors duration-200`}
         onDragEnter={handleDragEnter}
@@ -153,9 +153,12 @@ export const FileUploader = ({
         />
 
         {!selectedFile ? (
-          <div className="text-center">
+          <div 
+            className="text-center cursor-pointer w-full h-full flex flex-col items-center justify-center" 
+            onClick={handleSelectFile}
+          >
             <svg
-              className="mx-auto h-12 w-12 text-gray-400"
+              className="mx-auto h-8 w-8 text-gray-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -169,22 +172,11 @@ export const FileUploader = ({
               />
             </svg>
             <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-              Drag and drop files here, or click to select
+              Drag and drop files here, or click anywhere to select
             </p>
-            <p className="mt-1 text-xs text-gray-500 dark:text-gray-500">
-              {allowedTypes.map((type) => type.split("/")[1]).join(", ")} up to{" "}
-              {maxSizeMB}MB
-            </p>
-            <Button
-              onClick={handleSelectFile}
-              className="mt-4"
-              variant="outline"
-            >
-              Select File
-            </Button>
           </div>
         ) : (
-          <div className="w-full space-y-4">
+          <div className="w-full space-y-2">
             <div className="flex items-center justify-between">
               <div className="truncate max-w-[200px]">
                 <p className="text-sm font-medium">{selectedFile.name}</p>
@@ -216,16 +208,19 @@ export const FileUploader = ({
                 </svg>
               </Button>
             </div>
-            
+
             {/* Upload progress indicator */}
             {isUploading && (
               <div className="space-y-2">
                 <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>Uploading file...</span>
-                  <span>{uploadProgress?.progress ? `${Math.round(uploadProgress.progress)}%` : '0%'}</span>
+                  <span>Uploading...</span>
+                  <span>
+                    {uploadProgress?.progress
+                      ? `${Math.round(uploadProgress.progress)}%`
+                      : "0%"}
+                  </span>
                 </div>
                 <Progress value={uploadProgress?.progress} className="h-1.5" />
-                {uploadStatus && <p className="text-xs text-muted-foreground mt-1">{uploadStatus}</p>}
               </div>
             )}
           </div>
