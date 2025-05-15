@@ -31,31 +31,96 @@ export const uploadFileToSupabase = async (
       ? `${folderPath}/${uniqueFileName}`
       : uniqueFileName
 
-    // Upload the file to Supabase Storage
-    const { data, error } = await supabase.storage
-      .from(bucketName)
-      .upload(filePath, file, {
-        cacheControl: "3600",
-        upsert: false,
-        onUploadProgress: onProgress
-          ? (progress) => {
-              const percent = (progress.loaded / progress.total) * 100
-              onProgress(percent)
-            }
-          : undefined,
-      })
-
-    if (error) {
-      console.error("Error uploading file to Supabase:", error)
-      throw error
+    // Set up upload options with progress tracking
+    const options = {
+      cacheControl: "3600",
+      upsert: true, // Set to true to overwrite existing files with the same name
     }
 
-    // Get the public URL for the uploaded file
-    const { data: publicUrlData } = supabase.storage
-      .from(bucketName)
-      .getPublicUrl(data.path)
+    // Create a custom upload with progress tracking
+    const uploadWithProgress = async () => {
+      // Create a new XMLHttpRequest to handle the upload with progress
+      return new Promise<string>((resolve, reject) => {
+        // First, get the upload URL from Supabase
+        supabase.storage
+          .from(bucketName)
+          .createSignedUploadUrl(filePath)
+          .then(({ data: signedUrlData, error: signedUrlError }) => {
+            if (signedUrlError) {
+              console.error("Error getting signed URL:", signedUrlError)
+              reject(signedUrlError)
+              return
+            }
 
-    return publicUrlData.publicUrl
+            const xhr = new XMLHttpRequest()
+
+            // Set up progress tracking
+            if (onProgress) {
+              xhr.upload.onprogress = (event) => {
+                if (event.lengthComputable) {
+                  const percentComplete = (event.loaded / event.total) * 100
+                  onProgress(percentComplete)
+                }
+              }
+            }
+
+            // Handle completion
+            xhr.onload = async () => {
+              if (xhr.status >= 200 && xhr.status < 300) {
+                // Get the public URL for the uploaded file
+                const { data: publicUrlData } = supabase.storage
+                  .from(bucketName)
+                  .getPublicUrl(filePath)
+
+                resolve(publicUrlData.publicUrl)
+              } else {
+                reject(new Error(`Upload failed with status ${xhr.status}`))
+              }
+            }
+
+            // Handle errors
+            xhr.onerror = () => {
+              reject(new Error("Network error occurred during upload"))
+            }
+
+            // Set up and send the request
+            xhr.open("PUT", signedUrlData.signedUrl)
+            xhr.setRequestHeader("Content-Type", file.type)
+            xhr.setRequestHeader("x-upsert", "true")
+            xhr.send(file)
+          })
+      })
+    }
+
+    // Try the custom upload with progress first
+    try {
+      return await uploadWithProgress()
+    } catch (uploadError) {
+      console.warn(
+        "Custom upload with progress failed, falling back to standard upload:",
+        uploadError
+      )
+
+      // Fallback to standard upload if the custom method fails
+      const { data, error } = await supabase.storage
+        .from(bucketName)
+        .upload(filePath, file, {
+          cacheControl: "3600",
+          upsert: true,
+        })
+
+      if (error) {
+        console.error("Error uploading file to Supabase:", error)
+        throw error
+      }
+
+      // Get the public URL for the uploaded file
+      const { data: publicUrlData } = supabase.storage
+        .from(bucketName)
+        .getPublicUrl(data.path)
+
+      return publicUrlData.publicUrl
+    }
   } catch (error) {
     console.error("Error in uploadFileToSupabase:", error)
     throw error

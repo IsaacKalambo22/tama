@@ -56,8 +56,8 @@ const ModalNewShop = ({ isOpen, onClose }: Props) => {
       // Upload file to Supabase Storage
       const fileUrl = await handleSupabaseFileUpload(
         file,
-        "shops", // Bucket name
-        "images", // Folder path
+        "uploads", // Bucket name
+        "shops", // Folder path
         (progress) => {
           // Optional: Handle upload progress
           console.log(`Upload progress: ${progress}%`)

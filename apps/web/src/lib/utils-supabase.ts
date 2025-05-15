@@ -15,7 +15,12 @@ export const handleSupabaseFileUpload = async (
   onProgress?: (progress: number) => void
 ): Promise<string> => {
   try {
-    // Upload the file to Supabase Storage
+    // Validate input
+    if (!file) {
+      throw new Error("No file provided for upload")
+    }
+
+    // Upload the file to Supabase Storage with progress tracking
     const fileUrl = await uploadFileToSupabase(
       file,
       bucketName,
