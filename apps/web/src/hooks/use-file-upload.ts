@@ -84,9 +84,10 @@ export function useFileUpload(options: UseFileUploadOptions = {}) {
               return
             }
             
-            console.log("useFileUpload: Successfully obtained signed URL")
+            console.log("useFileUpload: Successfully obtained signed URL", data)
 
-            const { signedUrl, path } = data
+            // Correctly extract the signedUrl from data
+            const { signedUrl } = data
 
             // Use XMLHttpRequest for progress tracking
             const xhr = new XMLHttpRequest()
@@ -159,7 +160,7 @@ export function useFileUpload(options: UseFileUploadOptions = {}) {
             // Open and send the request
             try {
               console.log("useFileUpload: Sending file to signed URL")
-              xhr.open("PUT", signedUrlData.signedUrl)
+              xhr.open("PUT", signedUrl)
               xhr.setRequestHeader("Content-Type", file.type)
               xhr.setRequestHeader("Cache-Control", cacheControl)
               xhr.send(file)
