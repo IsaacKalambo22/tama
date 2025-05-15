@@ -2,6 +2,7 @@
 
 import { Form, FormControl } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
+import config from "@/lib/config"
 import { handleSupabaseFileUpload } from "@/lib/utils-supabase"
 import CustomFormField, {
   FormFieldType,
@@ -24,6 +25,7 @@ type Props = {
 
 const ModalNewShop = ({ isOpen, onClose }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
   const path = usePathname()
   const { fullPath } = useCustomPath(path)
   const formSchema = zod.object({
@@ -53,16 +55,36 @@ const ModalNewShop = ({ isOpen, onClose }: Props) => {
     try {
       const file = values.files[0]
 
+      // Show toast notification when starting upload
+      toast.info(`Uploading ${file.name}...`, {
+        id: "file-upload",
+        duration: Infinity,
+      })
+
       // Upload file to Supabase Storage
+      // Reset upload progress before starting
+      setUploadProgress(0)
+
       const fileUrl = await handleSupabaseFileUpload(
         file,
-        "uploads", // Bucket name
+        config.env.supabase.bucketName,
         "shops", // Folder path
         (progress) => {
-          // Optional: Handle upload progress
-          console.log(`Upload progress: ${progress}%`)
+          // Update upload progress state to display in UI
+          setUploadProgress(progress)
+
+          // Update toast with progress
+          toast.info(`Uploading ${file.name}... ${progress.toFixed(0)}%`, {
+            id: "file-upload",
+            duration: Infinity,
+          })
         }
       )
+
+      // Show success toast when upload completes
+      toast.success(`${file.name} uploaded successfully`, {
+        id: "file-upload",
+      })
 
       console.log("File uploaded to Supabase. URL:", fileUrl)
 
@@ -132,7 +154,16 @@ const ModalNewShop = ({ isOpen, onClose }: Props) => {
             label="Image"
             renderSkeleton={(field) => (
               <FormControl>
-                <FileUploader files={field.value} onChange={field.onChange} />
+                <FileUploader
+                  files={field.value}
+                  onChange={(files) => {
+                    field.onChange(files)
+                    // Show toast when file is selected
+                    if (files.length > 0) {
+                      toast.info(`Selected file: ${files[0].name}`)
+                    }
+                  }}
+                />
               </FormControl>
             )}
           />

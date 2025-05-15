@@ -3,6 +3,9 @@ const config = {
     baseUrl: process.env.NEXT_PUBLIC_API_ENDPOINT!,
     prodApiEndpoint: process.env.NEXT_PUBLIC_PROD_API_ENDPOINT!,
 
+    supabase: {
+      bucketName: process.env.NEXT_PUBLIC_SUPABASE_BUCKET_NAME!,
+    },
     aws: {
       accessKey: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY!,
       secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY!,
