@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { Progress } from "@/components/ui/progress"
 import { useCallback, useRef, useState } from "react"
 import { toast } from "sonner"
 
@@ -10,6 +11,9 @@ interface FileUploaderProps {
   maxSizeMB?: number
   allowedTypes?: string[]
   bucketName?: string
+  uploadProgress?: number
+  uploadStatus?: string
+  isUploading?: boolean
 }
 
 export const FileUploader = ({
@@ -18,6 +22,9 @@ export const FileUploader = ({
   maxSizeMB = 10,
   allowedTypes = ["image/jpeg", "image/png", "image/gif", "application/pdf"],
   bucketName = "uploads",
+  uploadProgress = 0,
+  uploadStatus = "",
+  isUploading = false,
 }: FileUploaderProps) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -189,6 +196,7 @@ export const FileUploader = ({
                 variant="ghost"
                 size="sm"
                 className="h-8 px-2"
+                disabled={isUploading}
               >
                 <svg
                   className="h-4 w-4"
@@ -206,6 +214,18 @@ export const FileUploader = ({
                 </svg>
               </Button>
             </div>
+            
+            {/* Upload progress indicator */}
+            {isUploading && (
+              <div className="space-y-2">
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>Uploading file...</span>
+                  <span>{uploadProgress ? `${Math.round(uploadProgress)}%` : '0%'}</span>
+                </div>
+                <Progress value={uploadProgress} className="h-1.5" />
+                {uploadStatus && <p className="text-xs text-muted-foreground mt-1">{uploadStatus}</p>}
+              </div>
+            )}
           </div>
         )}
       </div>

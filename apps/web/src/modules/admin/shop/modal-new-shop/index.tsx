@@ -9,7 +9,6 @@ import CustomFormField, {
 } from "@/modules/common/custom-form-field"
 import { FileUploader } from "@/modules/common/file-uploader"
 import SubmitButton from "@/modules/common/submit-button"
-import { Progress } from "@/components/ui/progress"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
@@ -38,9 +37,7 @@ const ModalNewShop = ({ isOpen, onClose }: Props) => {
     openHours: zod.string().min(2, {
       message: "OpenHours must be at least 2 characters.",
     }),
-    files: zod.custom<File[]>((val) => Array.isArray(val), {
-      message: "Expected an array of files",
-    }),
+    files: zod.custom<File[]>(),
   })
 
   const form = useForm<zod.infer<typeof formSchema>>({
@@ -175,22 +172,13 @@ const ModalNewShop = ({ isOpen, onClose }: Props) => {
                       toast.info(`Selected file: ${files[0].name}`)
                     }
                   }}
+                  uploadProgress={uploadProgress}
+                  uploadStatus={uploadStatus}
+                  isUploading={isUploading}
                 />
               </FormControl>
             )}
           />
-
-          {/* Upload progress indicator */}
-          {isUploading && (
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm text-muted-foreground">
-                <span>Uploading file...</span>
-                <span>{uploadProgress ? `${Math.round(uploadProgress)}%` : '0%'}</span>
-              </div>
-              <Progress value={uploadProgress} className="h-2" />
-              {uploadStatus && <p className="text-xs text-muted-foreground">{uploadStatus}</p>}
-            </div>
-          )}
 
           <SubmitButton
             disabled={isLoading || !form.formState.isValid}
