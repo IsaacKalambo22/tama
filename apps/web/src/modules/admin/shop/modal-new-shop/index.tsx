@@ -37,7 +37,9 @@ const ModalNewShop = ({ isOpen, onClose }: Props) => {
     openHours: zod.string().min(2, {
       message: "OpenHours must be at least 2 characters.",
     }),
-    files: zod.custom<File[]>(),
+    files: zod.custom<File[]>((val) => Array.isArray(val), {
+      message: "Expected an array of files",
+    }),
   })
 
   const form = useForm<zod.infer<typeof formSchema>>({
@@ -71,20 +73,20 @@ const ModalNewShop = ({ isOpen, onClose }: Props) => {
       const loadingToast = toast.loading(`Uploading ${file.name}...`)
 
       // Upload file to Supabase Storage using our hook
-      const result = await uploadFile(file)
+      const uploadResult = await uploadFile(file)
 
       // Dismiss the loading toast
       toast.dismiss(loadingToast)
 
-      if (!result) {
+      if (!uploadResult) {
         throw new Error("File upload failed")
       }
 
       // Show success toast when upload completes
       toast.success(`${file.name} uploaded successfully`)
 
-      // Get the file URL from the result
-      const fileUrl = result.url
+      // Get the file URL from the uploadResult
+      const fileUrl = uploadResult.url
 
       console.log("File uploaded to Supabase. URL:", fileUrl)
 
