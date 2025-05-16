@@ -10,6 +10,7 @@ import {
 import { Form, FormControl } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
 import { useFileUpload } from "@/hooks/use-file-upload"
+import { CouncilListProps } from "@/lib/api"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -22,6 +23,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import * as zod from "zod"
 import { createCouncilList } from "../../actions"
+
 type Props = {
   isOpen: boolean
   onClose: () => void
@@ -53,13 +55,13 @@ const ModalNewCouncilList = ({ isOpen, onClose }: Props) => {
       message: "Council area must be at least 2 characters.",
     }),
     council: zod.string().min(2, {
-      message: "Councillor  must be at least 2 characters.",
+      message: "Councillor must be at least 2 characters.",
     }),
     firstAlternateCouncillor: zod.string().min(2, {
-      message: "First Alternate Councillor  must be at least 2 characters.",
+      message: "First Alternate Councillor must be at least 2 characters.",
     }),
     secondAlternateCouncillor: zod.string().min(2, {
-      message: "Second Alternate Councillor  must be at least 2 characters.",
+      message: "Second Alternate Councillor must be at least 2 characters.",
     }),
     files: zod.custom<File[]>(),
   })
@@ -78,6 +80,7 @@ const ModalNewCouncilList = ({ isOpen, onClose }: Props) => {
       files: [],
     },
   })
+
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
     let loadingToast: string | undefined
@@ -250,7 +253,7 @@ const ModalNewCouncilList = ({ isOpen, onClose }: Props) => {
             <SubmitButton
               disabled={isLoading || !form.formState.isValid}
               isLoading={isLoading}
-              className="w-full  h-9"
+              className="w-full h-9"
               loadingText="Saving..."
             >
               Save
