@@ -1,7 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { FileProps } from "./api"
-import { getSignedURL } from "./aws"
 import config from "./config"
 
 export function cn(...inputs: ClassValue[]) {
@@ -247,87 +246,7 @@ export const getFileTypesParams = (type: string) => {
   }
 }
 
-export const computeSHA256 = async (file: File) => {
-  const buffer = await file.arrayBuffer()
-  const hashBuffer = await crypto.subtle.digest("SHA-256", buffer)
-  const hashArray = Array.from(new Uint8Array(hashBuffer))
-  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("")
-  return hashHex
-}
-
-export const handleFileUpload = async (file: File) => {
-  const signedURLResult = await getSignedURL({
-    fileSize: file.size,
-    fileType: file.type,
-    checksum: await computeSHA256(file),
-    fileName: file.name,
-  })
-  if (signedURLResult.failure !== undefined) {
-    throw new Error(signedURLResult.failure)
-  }
-  const { url } = signedURLResult.success
-  await fetch(url, {
-    method: "PUT",
-    headers: {
-      "Content-Type": file.type,
-    },
-    body: file,
-  })
-
-  const fileUrl = url.split("?")[0]
-  return fileUrl
-}
-
-export const handleFileUploads = async (
-  file: File,
-  onProgress: (progress: number) => void
-): Promise<string | null> => {
-  console.log({ file })
-  try {
-    const signedURLResult = await getSignedURL({
-      fileSize: file.size,
-      fileType: file.type,
-      checksum: await computeSHA256(file),
-      fileName: file.name,
-    })
-
-    if (signedURLResult.failure !== undefined) {
-      throw new Error(signedURLResult.failure)
-    }
-
-    const { url } = signedURLResult.success
-
-    const xhr = new XMLHttpRequest()
-    xhr.open("PUT", url, true)
-    xhr.setRequestHeader("Content-Type", file.type)
-
-    xhr.upload.onprogress = (event) => {
-      if (event.lengthComputable) {
-        const progress = (event.loaded / event.total) * 100
-        onProgress(progress)
-      }
-    }
-
-    await new Promise<void>((resolve, reject) => {
-      xhr.onload = () => resolve()
-      xhr.onerror = () => reject(new Error("Upload failed."))
-      xhr.send(file)
-    })
-
-    const fileUrl = url.split("?")[0]
-    const startFrom = fileUrl.substring(
-      fileUrl.indexOf(`${config.env.aws.folderPath}`)
-    )
-
-    const cloudFrontUrl = `${config.env.aws.cloudFrontDomain}/${startFrom}`
-    console.log("CloudFront URL:", cloudFrontUrl)
-
-    return cloudFrontUrl
-  } catch (error) {
-    console.error("Upload error:", error)
-    return null
-  }
-}
+// We've removed AWS upload functions as we've migrated to Supabase for file storage
 
 export const updateFileProgress = (
   key: string,
