@@ -9,7 +9,8 @@ import {
 } from "@/components/ui/dialog"
 import { Form, FormControl } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
-import { getFileType, handleFileUpload } from "@/lib/utils"
+import { useFileUpload } from "@/hooks/use-file-upload"
+import { getFileType } from "@/lib/utils"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -30,8 +31,20 @@ type Props = {
 
 const ModalNewPublication = ({ isOpen, onClose }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
+  const [isUploading, setIsUploading] = useState(false)
   const path = usePathname()
   const { fullPath, pathWithoutAdmin } = useCustomPath(path)
+  
+  // Initialize the file upload hook
+  const {
+    uploadFile,
+    status: uploadStatus,
+    progress: uploadProgress,
+    result: uploadResult,
+    error: uploadError,
+  } = useFileUpload({
+    path: "reports-publications",
+  })
   const formSchema = zod.object({
     filename: zod.string().min(2, {
       message: "Filename must be at least 2 characters.",
@@ -48,34 +61,98 @@ const ModalNewPublication = ({ isOpen, onClose }: Props) => {
   })
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
-    const file = values.files[0]
-    const fileUrl = await handleFileUpload(file)
-    const fileProps = getFileType(file.name)
-    console.log({ fileProps })
-    // Create a JSON object to send
-    const payload = {
-      filename: values.filename,
-      size: file.size,
-      extension: fileProps.extension,
-      type: fileProps.type,
-      fileUrl: fileUrl, // Add the uploaded file URL
-    }
+    let loadingToast: string | number | undefined
 
-    // Call the createForm function to send data to the server
-    const result = await createReportAndPublication(
-      payload,
-      fullPath,
-      pathWithoutAdmin,
-      "/admin"
-    )
+    try {
+      if (!values.files.length) {
+        throw new Error("Please select a file to upload")
+      }
+      
+      const file = values.files[0]
+      console.log(
+        "Starting upload for file:",
+        file.name,
+        "size:",
+        file.size,
+        "type:",
+        file.type
+      )
+      
+      // Set uploading state to true to show progress bar
+      setIsUploading(true)
+      
+      // Show toast notification when starting upload
+      loadingToast = toast.loading(`Uploading ${file.name}...`)
+      
+      // Upload file to Supabase Storage using our hook
+      console.log("Calling uploadFile...")
+      const uploadResult = await uploadFile(file).catch((error) => {
+        console.error("Error during file upload:", error)
+        throw new Error(`Upload failed: ${error.message || "Unknown error"}`)
+      })
+      console.log("Upload completed, result:", uploadResult)
+      
+      // Set uploading state to false after upload completes
+      setIsUploading(false)
+      
+      // Dismiss the loading toast if it exists
+      if (loadingToast) {
+        toast.dismiss(loadingToast)
+      }
+      
+      if (!uploadResult) {
+        throw new Error("File upload failed - no result returned")
+      }
+      
+      // Show success toast when upload completes
+      toast.success(`${file.name} uploaded successfully`)
+      
+      const fileProps = getFileType(file.name)
+      console.log({ fileProps })
+      
+      // Create a JSON object to send
+      const payload = {
+        filename: values.filename,
+        size: file.size,
+        extension: fileProps.extension,
+        type: fileProps.type,
+        fileUrl: uploadResult.url,
+      }
 
-    onClose()
-    if (result.success) {
-      toast.success("Publication created successfully")
-    } else {
-      toast.error(result.error ?? "An error occurred.")
+      // Call the createReportAndPublication function to send data to the server
+      const result = await createReportAndPublication(
+        payload,
+        fullPath,
+        pathWithoutAdmin,
+        "/admin"
+      )
+
+      onClose()
+      if (result.success) {
+        toast.success("Publication created successfully")
+      } else {
+        toast.error(result.error ?? "An error occurred.")
+      }
+    } catch (error) {
+      console.error("Error creating publication:", error)
+      
+      // Dismiss the loading toast if it exists
+      if (loadingToast) {
+        toast.dismiss(loadingToast)
+      }
+      
+      // Reset upload state
+      setIsUploading(false)
+      
+      // Show detailed error message
+      toast.error("Failed to create publication", {
+        description:
+          error instanceof Error ? error.message : "Unknown error occurred",
+        duration: 5000,
+      })
+    } finally {
+      setIsLoading(false)
     }
-    setIsLoading(false)
   }
 
   return (
@@ -104,7 +181,13 @@ const ModalNewPublication = ({ isOpen, onClose }: Props) => {
               label="File"
               renderSkeleton={(field) => (
                 <FormControl>
-                  <FileUploader files={field.value} onChange={field.onChange} />
+                  <FileUploader 
+                    files={field.value} 
+                    onChange={field.onChange}
+                    uploadProgress={uploadProgress}
+                    uploadStatus={uploadStatus}
+                    isUploading={isUploading} 
+                  />
                 </FormControl>
               )}
             />
