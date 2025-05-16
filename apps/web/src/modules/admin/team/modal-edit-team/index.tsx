@@ -5,8 +5,7 @@ import useCustomPath from "@/hooks/use-custom-path"
 import { useFileUpload } from "@/hooks/use-file-upload"
 import { toast } from "@/hooks/use-toast"
 import { TeamProps } from "@/lib/api"
-import { deleteFileFromSupabase } from "@/lib/supabase-storage"
-import { handleFileUpload } from "@/lib/utils"
+import { deleteFileFromSupabase } from "@/lib/supabase"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -28,7 +27,7 @@ type Props = {
 
 const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
-  
+
   // Initialize the file upload hook
   const {
     uploadFile,
@@ -144,7 +143,10 @@ const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
 
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "An unexpected error has occurred",
+        description:
+          error instanceof Error
+            ? error.message
+            : "An unexpected error has occurred",
         variant: "destructive",
       })
     } finally {

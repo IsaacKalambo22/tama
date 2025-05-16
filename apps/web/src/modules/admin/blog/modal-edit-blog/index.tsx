@@ -45,7 +45,7 @@ const ModalEditBlog = ({ isOpen, onClose, blog }: Props) => {
       files: [],
     },
   })
-  
+
   // Initialize the file upload hook
   const {
     uploadFile,
@@ -83,15 +83,17 @@ const ModalEditBlog = ({ isOpen, onClose, blog }: Props) => {
         if (blog.imageUrl) {
           console.log("Deleting existing file:", blog.imageUrl)
           loadingToast = toast.loading("Deleting previous image...")
-          
+
           const deleteResult = await deleteFileFromSupabase(blog.imageUrl)
-          
+
           if (loadingToast) {
             toast.dismiss(loadingToast)
           }
-          
+
           if (!deleteResult) {
-            console.warn("Failed to delete previous image, continuing with upload")
+            console.warn(
+              "Failed to delete previous image, continuing with upload"
+            )
           } else {
             console.log("Previous image deleted successfully")
           }
@@ -141,7 +143,12 @@ const ModalEditBlog = ({ isOpen, onClose, blog }: Props) => {
         size,
       }
 
-      const result = await updateBlog(payload, blog.id, fullPath, pathWithoutAdmin)
+      const result = await updateBlog(
+        payload,
+        blog.id,
+        fullPath,
+        pathWithoutAdmin
+      )
 
       onClose()
       if (result.success) {
@@ -151,7 +158,7 @@ const ModalEditBlog = ({ isOpen, onClose, blog }: Props) => {
       }
     } catch (error) {
       console.error("Error updating blog:", error)
-      
+
       // Dismiss the loading toast if it exists
       if (loadingToast) {
         toast.dismiss(loadingToast)
@@ -207,8 +214,8 @@ const ModalEditBlog = ({ isOpen, onClose, blog }: Props) => {
             renderSkeleton={(field) => (
               <div>
                 <FormControl>
-                  <FileUploader 
-                    files={field.value} 
+                  <FileUploader
+                    files={field.value}
                     onChange={(files) => {
                       field.onChange(files)
                     }}

@@ -93,15 +93,17 @@ const ModalEditService = ({ isOpen, onClose, service }: Props) => {
         if (service.imageUrl) {
           console.log("Deleting existing file:", service.imageUrl)
           loadingToast = toast.loading("Deleting previous image...")
-          
+
           const deleteResult = await deleteFileFromSupabase(service.imageUrl)
-          
+
           if (loadingToast) {
             toast.dismiss(loadingToast)
           }
-          
+
           if (!deleteResult) {
-            console.warn("Failed to delete previous image, continuing with upload")
+            console.warn(
+              "Failed to delete previous image, continuing with upload"
+            )
           } else {
             console.log("Previous image deleted successfully")
           }
@@ -147,7 +149,12 @@ const ModalEditService = ({ isOpen, onClose, service }: Props) => {
         imageUrl,
       }
 
-      const result = await updateService(payload, service.id, fullPath, "/admin")
+      const result = await updateService(
+        payload,
+        service.id,
+        fullPath,
+        "/admin"
+      )
 
       onClose()
       if (result.success) {
@@ -157,7 +164,7 @@ const ModalEditService = ({ isOpen, onClose, service }: Props) => {
       }
     } catch (error) {
       console.error("Error updating service:", error)
-      
+
       // Dismiss the loading toast if it exists
       if (loadingToast) {
         toast.dismiss(loadingToast)
@@ -207,8 +214,8 @@ const ModalEditService = ({ isOpen, onClose, service }: Props) => {
             renderSkeleton={(field) => (
               <div>
                 <FormControl>
-                  <FileUploader 
-                    files={field.value} 
+                  <FileUploader
+                    files={field.value}
                     onChange={(files) => {
                       field.onChange(files)
                     }}

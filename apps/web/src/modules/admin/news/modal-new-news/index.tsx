@@ -54,7 +54,7 @@ const ModalNewNews = ({ isOpen, onClose }: Props) => {
       files: [],
     },
   })
-  
+
   // Initialize the file upload hook
   const {
     uploadFile,
@@ -130,7 +130,7 @@ const ModalNewNews = ({ isOpen, onClose }: Props) => {
         size: file.size,
         imageUrl: fileUrl, // Add the uploaded file URL
       }
-      
+
       // Call the createNews function to send data to the server
       const result = await createNews(
         payload,

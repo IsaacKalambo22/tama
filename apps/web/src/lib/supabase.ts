@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js"
 
 // Create a single supabase client for interacting with your database
 export const supabase = createClient(
@@ -134,7 +134,7 @@ export const uploadFileToSupabase = async (
  * @returns Boolean indicating success
  */
 export const deleteFileFromSupabase = async (
-  filePath: string,
+  filePath: string
 ): Promise<boolean> => {
   try {
     const bucketName = process.env.NEXT_PUBLIC_SUPABASE_STORAGE_NAME!

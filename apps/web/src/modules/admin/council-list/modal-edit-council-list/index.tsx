@@ -10,6 +10,7 @@ import {
 import { Form, FormControl } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
 import { useFileUpload } from "@/hooks/use-file-upload"
+import { CouncilListProps } from "@/lib/api"
 import { deleteFileFromSupabase } from "@/lib/supabase"
 import CustomFormField, {
   FormFieldType,
@@ -27,21 +28,14 @@ import { updateCouncilList } from "../../actions"
 type Props = {
   isOpen: boolean
   onClose: () => void
-  councilList: {
-    id: string
-    demarcation: string
-    councilArea: string
-    council: string
-    firstAlternateCouncillor: string
-    secondAlternateCouncillor: string
-  }
+  councilList: CouncilListProps
 }
 
 const ModalEditCouncilList = ({ isOpen, onClose, councilList }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   // State to track if we're currently uploading a file
   const [isUploading, setIsUploading] = useState(false)
-  
+
   // Initialize the file upload hook
   const {
     uploadFile,
@@ -91,7 +85,7 @@ const ModalEditCouncilList = ({ isOpen, onClose, councilList }: Props) => {
     setIsLoading(true)
     let loadingToast: string | undefined
     let imageUrl: string | null = councilList.imageUrl || ""
-    
+
     try {
       // Check if a new file is being uploaded
       if (values.files && values.files.length > 0) {
@@ -109,15 +103,19 @@ const ModalEditCouncilList = ({ isOpen, onClose, councilList }: Props) => {
         if (councilList.imageUrl) {
           console.log("Deleting existing file:", councilList.imageUrl)
           loadingToast = toast.loading("Deleting previous image...")
-          
-          const deleteResult = await deleteFileFromSupabase(councilList.imageUrl)
-          
+
+          const deleteResult = await deleteFileFromSupabase(
+            councilList.imageUrl
+          )
+
           if (loadingToast) {
             toast.dismiss(loadingToast)
           }
-          
+
           if (!deleteResult) {
-            console.warn("Failed to delete previous image, continuing with upload")
+            console.warn(
+              "Failed to delete previous image, continuing with upload"
+            )
           } else {
             console.log("Previous image deleted successfully")
           }
@@ -183,7 +181,7 @@ const ModalEditCouncilList = ({ isOpen, onClose, councilList }: Props) => {
       }
     } catch (error) {
       console.error("Error updating council list:", error)
-      
+
       // Dismiss the loading toast if it exists
       if (loadingToast) {
         toast.dismiss(loadingToast)
@@ -258,8 +256,8 @@ const ModalEditCouncilList = ({ isOpen, onClose, councilList }: Props) => {
               renderSkeleton={(field) => (
                 <div>
                   <FormControl>
-                    <FileUploader 
-                      files={field.value} 
+                    <FileUploader
+                      files={field.value}
                       onChange={(files) => {
                         field.onChange(files)
                       }}
@@ -268,19 +266,6 @@ const ModalEditCouncilList = ({ isOpen, onClose, councilList }: Props) => {
                       isUploading={isUploading}
                     />
                   </FormControl>
-                  {councilList.imageUrl && !field.value?.length && (
-                    <div className="mt-2 text-sm">
-                      <p>
-                        Current image:{" "}
-                        <span className="font-medium">
-                          {councilList.imageUrl.split("/").pop()}
-                        </span>
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Upload a new image to replace the current one
-                      </p>
-                    </div>
-                  )}
                 </div>
               )}
             />

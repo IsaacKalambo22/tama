@@ -52,7 +52,8 @@ const ModalDeleteBlog = ({ isOpen, onClose, blog }: Props) => {
     } catch (error) {
       console.error("Error deleting blog:", error)
       toast.error("Failed to delete blog", {
-        description: error instanceof Error ? error.message : "Unknown error occurred",
+        description:
+          error instanceof Error ? error.message : "Unknown error occurred",
         duration: 5000,
       })
     } finally {

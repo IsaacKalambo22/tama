@@ -1,6 +1,5 @@
-import config from "@/lib/config";
-import { supabase } from "@/lib/supabase";
-import { useState } from "react";
+import { supabase } from "@/lib/supabase"
+import { useState } from "react"
 
 export type UploadStatus = "idle" | "uploading" | "success" | "error"
 
@@ -64,7 +63,10 @@ export function useFileUpload(options: UseFileUploadOptions = {}) {
 
       // For progress tracking, we need to use XMLHttpRequest
       // since the Supabase client doesn't support progress tracking directly
-      console.log("useFileUpload: Requesting signed URL from Supabase bucket:", bucketName)
+      console.log(
+        "useFileUpload: Requesting signed URL from Supabase bucket:",
+        bucketName
+      )
       return new Promise((resolve, reject) => {
         console.log(
           "useFileUpload: Requesting signed URL from Supabase bucket:",

@@ -34,7 +34,7 @@ const ModalNewForm = ({ isOpen, onClose }: Props) => {
   const [isUploading, setIsUploading] = useState(false)
   const path = usePathname()
   const { fullPath, pathWithoutAdmin } = useCustomPath(path)
-  
+
   // Initialize the file upload hook
   const {
     uploadFile,
@@ -83,7 +83,7 @@ const ModalNewForm = ({ isOpen, onClose }: Props) => {
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
     let loadingToast: string | undefined
-    
+
     try {
       const file = values.files[0]
       console.log(
@@ -94,13 +94,13 @@ const ModalNewForm = ({ isOpen, onClose }: Props) => {
         "type:",
         file.type
       )
-      
+
       // Set uploading state to true to show progress bar
       setIsUploading(true)
-      
+
       // Show toast notification when starting upload
       loadingToast = toast.loading(`Uploading ${file.name}...`)
-      
+
       // Upload file to Supabase Storage using our hook
       console.log("Calling uploadFile...")
       const uploadResult = await uploadFile(file).catch((error) => {
@@ -108,25 +108,25 @@ const ModalNewForm = ({ isOpen, onClose }: Props) => {
         throw new Error(`Upload failed: ${error.message || "Unknown error"}`)
       })
       console.log("Upload completed, result:", uploadResult)
-      
+
       // Set uploading state to false after upload completes
       setIsUploading(false)
-      
+
       // Dismiss the loading toast if it exists
       if (loadingToast) {
         toast.dismiss(loadingToast)
       }
-      
+
       if (!uploadResult) {
         throw new Error("File upload failed - no result returned")
       }
-      
+
       // Show success toast when upload completes
       toast.success(`${file.name} uploaded successfully`)
-      
+
       const fileProps = getFileType(file.name)
       console.log({ fileProps })
-      
+
       // Create a JSON object to send
       const payload = {
         filename: values.filename,
@@ -152,15 +152,15 @@ const ModalNewForm = ({ isOpen, onClose }: Props) => {
       }
     } catch (error) {
       console.error("Error creating form:", error)
-      
+
       // Dismiss the loading toast if it exists
       if (loadingToast) {
         toast.dismiss(loadingToast)
       }
-      
+
       // Reset upload state
       setIsUploading(false)
-      
+
       // Show detailed error message
       toast.error("Failed to create form", {
         description:
@@ -199,8 +199,8 @@ const ModalNewForm = ({ isOpen, onClose }: Props) => {
               renderSkeleton={(field) => (
                 <div>
                   <FormControl>
-                    <FileUploader 
-                      files={field.value} 
+                    <FileUploader
+                      files={field.value}
                       onChange={field.onChange}
                       uploadProgress={uploadProgress}
                       uploadStatus={uploadStatus}

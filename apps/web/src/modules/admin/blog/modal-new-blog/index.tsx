@@ -10,7 +10,6 @@ import {
 import { Form, FormControl } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
 import { useFileUpload } from "@/hooks/use-file-upload"
-import config from "@/lib/config"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -133,7 +132,12 @@ const ModalNewBlog = ({ isOpen, onClose }: Props) => {
         imageUrl: fileUrl, // Add the uploaded file URL
       }
 
-      const result = await createBlog(payload, fullPath, pathWithoutAdmin, "/admin")
+      const result = await createBlog(
+        payload,
+        fullPath,
+        pathWithoutAdmin,
+        "/admin"
+      )
 
       onClose()
       if (result.success) {

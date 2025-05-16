@@ -6,7 +6,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import useCustomPath from "@/hooks/use-custom-path"
-import { deleteFileFromSupabase } from "@/lib/supabase-storage"
+import { deleteFileFromSupabase } from "@/lib/supabase"
 import CustomButton, { BUTTON_VARIANT } from "@/modules/common/custom-button"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
@@ -43,7 +43,7 @@ const ModalDeleteHomeImageText = ({
         "/admin",
         "/"
       )
-      
+
       onClose()
       if (result.success) {
         toast.success("Home image text deleted successfully")
@@ -53,7 +53,8 @@ const ModalDeleteHomeImageText = ({
     } catch (error) {
       console.error("Error deleting home image text:", error)
       toast.error("Failed to delete home image text", {
-        description: error instanceof Error ? error.message : "Unknown error occurred",
+        description:
+          error instanceof Error ? error.message : "Unknown error occurred",
         duration: 5000,
       })
     } finally {

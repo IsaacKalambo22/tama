@@ -26,7 +26,7 @@ const ModalNewService = ({ isOpen, onClose }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const path = usePathname()
   const { fullPath } = useCustomPath(path)
-  
+
   // Initialize the file upload hook
   const {
     uploadFile,
@@ -179,8 +179,8 @@ const ModalNewService = ({ isOpen, onClose }: Props) => {
             renderSkeleton={(field) => (
               <div>
                 <FormControl>
-                  <FileUploader 
-                    files={field.value} 
+                  <FileUploader
+                    files={field.value}
                     onChange={(files) => {
                       field.onChange(files)
                     }}

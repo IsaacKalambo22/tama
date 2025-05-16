@@ -2,7 +2,7 @@
 import { Form } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
 import { useFileUpload } from "@/hooks/use-file-upload"
-import { deleteFileFromSupabase } from "@/lib/supabase-storage"
+import { deleteFileFromSupabase } from "@/lib/supabase"
 import { handleFileUploads, updateFileProgress } from "@/lib/utils"
 import CustomFormField, {
   FormFieldType,
@@ -32,7 +32,7 @@ const ModalEditHomeCarousel = ({ isOpen, onClose, homeCarousel }: Props) => {
   const path = usePathname()
   const { fullPath } = useCustomPath(path)
   const [fileStates, setFileStates] = useState<FileState[]>([])
-  
+
   // Initialize the file upload hook
   const {
     uploadFile,

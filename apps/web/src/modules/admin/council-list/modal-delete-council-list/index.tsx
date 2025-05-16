@@ -35,9 +35,9 @@ const ModalDeleteCouncilList = ({ isOpen, onClose, councilList }: Props) => {
       if (councilList.imageUrl) {
         console.log("Deleting file:", councilList.imageUrl)
         loadingToast = toast.loading("Deleting image...")
-        
+
         await deleteFileFromSupabase(councilList.imageUrl)
-        
+
         if (loadingToast) {
           toast.dismiss(loadingToast)
         }
@@ -58,7 +58,7 @@ const ModalDeleteCouncilList = ({ isOpen, onClose, councilList }: Props) => {
       }
     } catch (error) {
       console.error("Error deleting council list:", error)
-      
+
       // Dismiss the loading toast if it exists
       if (loadingToast) {
         toast.dismiss(loadingToast)

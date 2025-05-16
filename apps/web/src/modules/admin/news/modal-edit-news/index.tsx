@@ -44,7 +44,7 @@ const ModalEditNews = ({ isOpen, onClose, news }: Props) => {
       files: [],
     },
   })
-  
+
   // Initialize the file upload hook
   const {
     uploadFile,
@@ -82,15 +82,17 @@ const ModalEditNews = ({ isOpen, onClose, news }: Props) => {
         if (news.imageUrl) {
           console.log("Deleting existing file:", news.imageUrl)
           loadingToast = toast.loading("Deleting previous image...")
-          
+
           const deleteResult = await deleteFileFromSupabase(news.imageUrl)
-          
+
           if (loadingToast) {
             toast.dismiss(loadingToast)
           }
-          
+
           if (!deleteResult) {
-            console.warn("Failed to delete previous image, continuing with upload")
+            console.warn(
+              "Failed to delete previous image, continuing with upload"
+            )
           } else {
             console.log("Previous image deleted successfully")
           }
@@ -155,7 +157,7 @@ const ModalEditNews = ({ isOpen, onClose, news }: Props) => {
       }
     } catch (error) {
       console.error("Error updating news:", error)
-      
+
       // Dismiss the loading toast if it exists
       if (loadingToast) {
         toast.dismiss(loadingToast)
@@ -212,8 +214,8 @@ const ModalEditNews = ({ isOpen, onClose, news }: Props) => {
             renderSkeleton={(field) => (
               <div>
                 <FormControl>
-                  <FileUploader 
-                    files={field.value} 
+                  <FileUploader
+                    files={field.value}
                     onChange={(files) => {
                       field.onChange(files)
                     }}

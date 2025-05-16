@@ -31,7 +31,7 @@ const ModalNewHomeCarousel = ({ isOpen, onClose }: Props) => {
   const path = usePathname()
   const { fullPath } = useCustomPath(path)
   const [fileStates, setFileStates] = useState<FileState[]>([])
-  
+
   // Initialize the file upload hook
   const {
     uploadFile,

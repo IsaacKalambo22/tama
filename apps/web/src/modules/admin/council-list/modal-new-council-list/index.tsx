@@ -10,7 +10,6 @@ import {
 import { Form, FormControl } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
 import { useFileUpload } from "@/hooks/use-file-upload"
-import { CouncilListProps } from "@/lib/api"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -32,10 +31,10 @@ type Props = {
 
 const ModalNewCouncilList = ({ isOpen, onClose }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
-  
+
   // State to track if we're currently uploading a file
   const [isUploading, setIsUploading] = useState(false)
-  
+
   // Initialize the file upload hook
   const {
     uploadFile,
@@ -85,7 +84,7 @@ const ModalNewCouncilList = ({ isOpen, onClose }: Props) => {
     setIsLoading(true)
     let loadingToast: string | undefined
     let imageUrl: string | null = ""
-    
+
     try {
       // Check if a new file is being uploaded
       if (values.files && values.files.length > 0) {
@@ -161,7 +160,7 @@ const ModalNewCouncilList = ({ isOpen, onClose }: Props) => {
       }
     } catch (error) {
       console.error("Error creating council list:", error)
-      
+
       // Dismiss the loading toast if it exists
       if (loadingToast) {
         toast.dismiss(loadingToast)
@@ -236,8 +235,8 @@ const ModalNewCouncilList = ({ isOpen, onClose }: Props) => {
               renderSkeleton={(field) => (
                 <div>
                   <FormControl>
-                    <FileUploader 
-                      files={field.value} 
+                    <FileUploader
+                      files={field.value}
                       onChange={(files) => {
                         field.onChange(files)
                       }}

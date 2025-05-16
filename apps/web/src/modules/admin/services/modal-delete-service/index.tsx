@@ -46,7 +46,8 @@ const ModalDeleteService = ({ isOpen, onClose, service }: Props) => {
     } catch (error) {
       console.error("Error deleting service:", error)
       toast.error("Failed to delete service", {
-        description: error instanceof Error ? error.message : "Unknown error occurred",
+        description:
+          error instanceof Error ? error.message : "Unknown error occurred",
         duration: 5000,
       })
     } finally {

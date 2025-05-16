@@ -14,7 +14,10 @@ import { handleFileUploads, updateFileProgress } from "@/lib/utils"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
-import { FileState, MultiFileDropzone } from "@/modules/common/multiple-file-upload"
+import {
+  FileState,
+  MultiFileDropzone,
+} from "@/modules/common/multiple-file-upload"
 import SubmitButton from "@/modules/common/submit-button"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { usePathname } from "next/navigation"
@@ -34,7 +37,7 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
 
   const path = usePathname()
   const { fullPath, pathWithoutAdmin } = useCustomPath(path)
-  
+
   // Initialize the file upload hook
   const {
     uploadFile,
@@ -157,7 +160,10 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
 
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "An unexpected error has occurred",
+        description:
+          error instanceof Error
+            ? error.message
+            : "An unexpected error has occurred",
         variant: "destructive",
       })
     } finally {

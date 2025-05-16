@@ -34,15 +34,17 @@ const ModalDeleteReports = ({ isOpen, onClose, file }: Props) => {
       if (file.fileUrl) {
         console.log("Deleting file from Supabase:", file.fileUrl)
         loadingToast = toast.loading("Deleting file...")
-        
+
         const deleteResult = await deleteFileFromSupabase(file.fileUrl)
-        
+
         if (loadingToast) {
           toast.dismiss(loadingToast)
         }
-        
+
         if (!deleteResult) {
-          console.warn("Failed to delete file from storage, continuing with publication deletion")
+          console.warn(
+            "Failed to delete file from storage, continuing with publication deletion"
+          )
         } else {
           console.log("File deleted successfully from Supabase storage")
         }
@@ -63,12 +65,12 @@ const ModalDeleteReports = ({ isOpen, onClose, file }: Props) => {
       }
     } catch (error) {
       console.error("Error deleting publication:", error)
-      
+
       // Dismiss the loading toast if it exists
       if (loadingToast) {
         toast.dismiss(loadingToast)
       }
-      
+
       // Show detailed error message
       toast.error("Failed to delete publication", {
         description:

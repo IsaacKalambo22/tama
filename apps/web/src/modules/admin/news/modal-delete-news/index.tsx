@@ -51,7 +51,8 @@ const ModalDeleteNews = ({ isOpen, onClose, news }: Props) => {
     } catch (error) {
       console.error("Error deleting news:", error)
       toast.error("Failed to delete news", {
-        description: error instanceof Error ? error.message : "Unknown error occurred",
+        description:
+          error instanceof Error ? error.message : "Unknown error occurred",
         duration: 5000,
       })
     } finally {
