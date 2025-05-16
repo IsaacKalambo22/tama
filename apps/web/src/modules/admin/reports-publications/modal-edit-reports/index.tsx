@@ -199,7 +199,9 @@ const ModalEditReports = ({ isOpen, onClose, file }: Props) => {
                     onChange={field.onChange}
                     uploadProgress={uploadProgress}
                     uploadStatus={uploadStatus}
-                    isUploading={isUploading} 
+                    isUploading={isUploading}
+                    acceptedFileTypes="application/pdf"
+                    helpText="Only PDF files are allowed (max 10MB)"
                   />
                 </FormControl>
                 {file.fileUrl && !field.value?.length && (
