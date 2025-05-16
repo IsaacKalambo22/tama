@@ -116,7 +116,7 @@ export function CustomFaq() {
             Yes, all growers are encouraged to register with Tobacco Commission
             and endorse TAMA as their Association.
             <br />
-            Members of the association benefit from the association’s services
+            Members of the association benefit from the association's services
             on both local and international fronts.
           </AccordionContent>
         </AccordionItem>

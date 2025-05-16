@@ -3,7 +3,6 @@
 import { Form } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
 import { useFileUpload } from "@/hooks/use-file-upload"
-import { getFileType } from "@/lib/utils"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -86,28 +85,30 @@ const ModalNewHomeImageText = ({ isOpen, onClose }: Props) => {
             // Upload file to Supabase Storage
             console.log("Uploading file:", fileState.file.name)
             const result = await uploadFile(fileState.file)
-            
+
             if (!result) {
               throw new Error("File upload failed - no result returned")
             }
-            
+
             // Update progress in UI
-            setFileStates(currentFileStates => {
-              return currentFileStates.map(fs => {
+            setFileStates((currentFileStates) => {
+              return currentFileStates.map((fs) => {
                 if (fs.key === fileState.key) {
                   return {
                     ...fs,
-                    progress: 100
+                    progress: 100,
                   }
                 }
                 return fs
               })
             })
-            
+
             return result.url
           } catch (error) {
             console.error("Error during file upload:", error)
-            throw new Error(`Upload failed: ${error instanceof Error ? error.message : "Unknown error"}`)
+            throw new Error(
+              `Upload failed: ${error instanceof Error ? error.message : "Unknown error"}`
+            )
           }
         })
       )

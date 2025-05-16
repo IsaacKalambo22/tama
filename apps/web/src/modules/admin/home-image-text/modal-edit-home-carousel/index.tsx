@@ -3,7 +3,6 @@ import { Form } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
 import { useFileUpload } from "@/hooks/use-file-upload"
 import { deleteFileFromSupabase } from "@/lib/supabase"
-import { getFileType } from "@/lib/utils"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -98,10 +97,14 @@ const ModalEditHomeImageText = ({ isOpen, onClose, homeImageText }: Props) => {
         const imageUrls = await Promise.all(
           fileStates.map(async (fileState) => {
             console.log("Uploading file:", fileState.file.name)
-            const uploadResult = await uploadFile(fileState.file).catch((error) => {
-              console.error("Error during file upload:", error)
-              throw new Error(`Upload failed: ${error.message || "Unknown error"}`)
-            })
+            const uploadResult = await uploadFile(fileState.file).catch(
+              (error) => {
+                console.error("Error during file upload:", error)
+                throw new Error(
+                  `Upload failed: ${error.message || "Unknown error"}`
+                )
+              }
+            )
 
             if (!uploadResult) {
               throw new Error("File upload failed - no result returned")

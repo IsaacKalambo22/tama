@@ -3,7 +3,6 @@ import { Form } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
 import { useFileUpload } from "@/hooks/use-file-upload"
 import { deleteFileFromSupabase } from "@/lib/supabase"
-import { getFileType } from "@/lib/utils"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -100,7 +99,9 @@ const ModalEditHomeCarousel = ({ isOpen, onClose, homeCarousel }: Props) => {
             console.log("Uploading file:", fileState.file.name)
             const result = await uploadFile(fileState.file).catch((error) => {
               console.error("Error during file upload:", error)
-              throw new Error(`Upload failed: ${error.message || "Unknown error"}`)
+              throw new Error(
+                `Upload failed: ${error.message || "Unknown error"}`
+              )
             })
 
             if (!result) {
@@ -108,12 +109,12 @@ const ModalEditHomeCarousel = ({ isOpen, onClose, homeCarousel }: Props) => {
             }
 
             // Update progress in UI
-            setFileStates(currentFileStates => {
-              return currentFileStates.map(fs => {
+            setFileStates((currentFileStates) => {
+              return currentFileStates.map((fs) => {
                 if (fs.key === fileState.key) {
                   return {
                     ...fs,
-                    progress: 100
+                    progress: 100,
                   }
                 }
                 return fs

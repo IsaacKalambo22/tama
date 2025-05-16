@@ -1,10 +1,9 @@
 "use client"
 import { Form, FormControl } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
+import { useFileUpload } from "@/hooks/use-file-upload"
 import { toast } from "@/hooks/use-toast"
 import { UserProps } from "@/lib/api"
-import { useFileUpload } from "@/hooks/use-file-upload"
-import { getFileType } from "@/lib/utils"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -33,7 +32,7 @@ const ModalEditProfile = ({ isOpen, onClose, refetch }: Props) => {
   useState<UserProps | null>(null) // State to hold user details
   const [isLoading, setIsLoading] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
-  
+
   // Initialize the file upload hook
   const {
     uploadFile,
@@ -97,24 +96,24 @@ const ModalEditProfile = ({ isOpen, onClose, refetch }: Props) => {
 
       if (values.files.length > 0) {
         const file = values.files[0]
-        
+
         // Set uploading state to true to show progress bar
         setIsUploading(true)
-        
+
         // Upload file to Supabase Storage
         console.log("Uploading profile image:", file.name)
         const result = await uploadFile(file).catch((error) => {
           console.error("Error during file upload:", error)
           throw new Error(`Upload failed: ${error.message || "Unknown error"}`)
         })
-        
+
         // Set uploading state to false after upload completes
         setIsUploading(false)
-        
+
         if (!result) {
           throw new Error("File upload failed - no result returned")
         }
-        
+
         avatar = result.url
       }
 
@@ -203,8 +202,8 @@ const ModalEditProfile = ({ isOpen, onClose, refetch }: Props) => {
             label="Profile image"
             renderSkeleton={(field) => (
               <FormControl>
-                <FileUploader 
-                  files={field.value} 
+                <FileUploader
+                  files={field.value}
                   onChange={field.onChange}
                   uploadProgress={uploadProgress}
                   uploadStatus={uploadStatus}
