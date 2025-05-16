@@ -3,7 +3,7 @@
 import { Form } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
 import { useFileUpload } from "@/hooks/use-file-upload"
-import { handleFileUploads, updateFileProgress } from "@/lib/utils"
+import { getFileType } from "@/lib/utils"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -28,6 +28,7 @@ type Props = {
 
 const ModalNewHomeImageText = ({ isOpen, onClose }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
+  const [isUploading, setIsUploading] = useState(false)
   const path = usePathname()
   const { fullPath } = useCustomPath(path)
   const [fileStates, setFileStates] = useState<FileState[]>([])
@@ -42,9 +43,6 @@ const ModalNewHomeImageText = ({ isOpen, onClose }: Props) => {
   } = useFileUpload({
     path: "home-image-text",
   })
-
-  // State to track if we're currently uploading a file
-  const [isUploading, setIsUploading] = useState(false)
 
   const formSchema = zod.object({
     heading: zod.string().min(2, {
@@ -81,13 +79,37 @@ const ModalNewHomeImageText = ({ isOpen, onClose }: Props) => {
       const file = fileStates[0].file
       loadingToast = toast.loading(`Uploading ${file.name}...`)
 
-      // Upload all files using the existing MultiFileDropzone component's approach
+      // Upload files using Supabase
       const uploadedImageUrls = await Promise.all(
-        fileStates.map(async (fileState) =>
-          handleFileUploads(fileState.file, (progress) =>
-            updateFileProgress(fileState.key, progress, setFileStates)
-          )
-        )
+        fileStates.map(async (fileState) => {
+          try {
+            // Upload file to Supabase Storage
+            console.log("Uploading file:", fileState.file.name)
+            const result = await uploadFile(fileState.file)
+            
+            if (!result) {
+              throw new Error("File upload failed - no result returned")
+            }
+            
+            // Update progress in UI
+            setFileStates(currentFileStates => {
+              return currentFileStates.map(fs => {
+                if (fs.key === fileState.key) {
+                  return {
+                    ...fs,
+                    progress: 100
+                  }
+                }
+                return fs
+              })
+            })
+            
+            return result.url
+          } catch (error) {
+            console.error("Error during file upload:", error)
+            throw new Error(`Upload failed: ${error instanceof Error ? error.message : "Unknown error"}`)
+          }
+        })
       )
 
       // Set uploading state to false after upload completes

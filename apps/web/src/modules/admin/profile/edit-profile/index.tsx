@@ -3,7 +3,8 @@ import { Form, FormControl } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
 import { toast } from "@/hooks/use-toast"
 import { UserProps } from "@/lib/api"
-import { handleFileUpload } from "@/lib/utils"
+import { useFileUpload } from "@/hooks/use-file-upload"
+import { getFileType } from "@/lib/utils"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -31,6 +32,18 @@ const ModalEditProfile = ({ isOpen, onClose, refetch }: Props) => {
   const { fullPath, pathWithoutAdmin } = useCustomPath(path)
   useState<UserProps | null>(null) // State to hold user details
   const [isLoading, setIsLoading] = useState(false)
+  const [isUploading, setIsUploading] = useState(false)
+  
+  // Initialize the file upload hook
+  const {
+    uploadFile,
+    status: uploadStatus,
+    progress: uploadProgress,
+    result: uploadResult,
+    error: uploadError,
+  } = useFileUpload({
+    path: "profile",
+  })
   const router = useRouter()
   const phoneNumberRegex = /^\+?[1-9]\d{1,14}$/
 
@@ -84,7 +97,25 @@ const ModalEditProfile = ({ isOpen, onClose, refetch }: Props) => {
 
       if (values.files.length > 0) {
         const file = values.files[0]
-        avatar = await handleFileUpload(file)
+        
+        // Set uploading state to true to show progress bar
+        setIsUploading(true)
+        
+        // Upload file to Supabase Storage
+        console.log("Uploading profile image:", file.name)
+        const result = await uploadFile(file).catch((error) => {
+          console.error("Error during file upload:", error)
+          throw new Error(`Upload failed: ${error.message || "Unknown error"}`)
+        })
+        
+        // Set uploading state to false after upload completes
+        setIsUploading(false)
+        
+        if (!result) {
+          throw new Error("File upload failed - no result returned")
+        }
+        
+        avatar = result.url
       }
 
       const payload = {
@@ -172,7 +203,15 @@ const ModalEditProfile = ({ isOpen, onClose, refetch }: Props) => {
             label="Profile image"
             renderSkeleton={(field) => (
               <FormControl>
-                <FileUploader files={field.value} onChange={field.onChange} />
+                <FileUploader 
+                  files={field.value} 
+                  onChange={field.onChange}
+                  uploadProgress={uploadProgress}
+                  uploadStatus={uploadStatus}
+                  isUploading={isUploading}
+                  allowedTypes={["image/jpeg", "image/png", "image/jpg"]}
+                  maxSizeMB={5}
+                />
               </FormControl>
             )}
           />

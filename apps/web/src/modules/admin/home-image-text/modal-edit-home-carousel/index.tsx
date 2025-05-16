@@ -3,7 +3,7 @@ import { Form } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
 import { useFileUpload } from "@/hooks/use-file-upload"
 import { deleteFileFromSupabase } from "@/lib/supabase"
-import { handleFileUploads, updateFileProgress } from "@/lib/utils"
+import { getFileType } from "@/lib/utils"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -96,11 +96,32 @@ const ModalEditHomeImageText = ({ isOpen, onClose, homeImageText }: Props) => {
 
         // Upload all files using the existing MultiFileDropzone component's approach
         const imageUrls = await Promise.all(
-          fileStates.map(async (fileState) =>
-            handleFileUploads(fileState.file, (progress) =>
-              updateFileProgress(fileState.key, progress, setFileStates)
-            )
-          )
+          fileStates.map(async (fileState) => {
+            console.log("Uploading file:", fileState.file.name)
+            const uploadResult = await uploadFile(fileState.file).catch((error) => {
+              console.error("Error during file upload:", error)
+              throw new Error(`Upload failed: ${error.message || "Unknown error"}`)
+            })
+
+            if (!uploadResult) {
+              throw new Error("File upload failed - no result returned")
+            }
+
+            // Update progress in UI
+            setFileStates((currentFileStates) => {
+              return currentFileStates.map((fs) => {
+                if (fs.key === fileState.key) {
+                  return {
+                    ...fs,
+                    progress: 100,
+                  }
+                }
+                return fs
+              })
+            })
+
+            return uploadResult.url
+          })
         )
         imageUrl = imageUrls[0]
 

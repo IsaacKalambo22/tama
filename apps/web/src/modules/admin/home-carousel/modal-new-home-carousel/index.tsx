@@ -3,7 +3,7 @@
 import { Form } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
 import { useFileUpload } from "@/hooks/use-file-upload"
-import { handleFileUploads, updateFileProgress } from "@/lib/utils"
+import { getFileType } from "@/lib/utils"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -81,13 +81,35 @@ const ModalNewHomeCarousel = ({ isOpen, onClose }: Props) => {
       const file = fileStates[0].file
       loadingToast = toast.loading(`Uploading ${file.name}...`)
 
-      // Upload all files using the existing MultiFileDropzone component's approach
+      // Upload files using Supabase
       const uploadedImageUrls = await Promise.all(
-        fileStates.map(async (fileState) =>
-          handleFileUploads(fileState.file, (progress) =>
-            updateFileProgress(fileState.key, progress, setFileStates)
-          )
-        )
+        fileStates.map(async (fileState) => {
+          // Upload file to Supabase Storage using our hook
+          console.log("Uploading file:", fileState.file.name)
+          const result = await uploadFile(fileState.file).catch((error) => {
+            console.error("Error during file upload:", error)
+            throw new Error(`Upload failed: ${error.message || "Unknown error"}`)
+          })
+          
+          if (!result) {
+            throw new Error("File upload failed - no result returned")
+          }
+          
+          // Update progress in UI
+          setFileStates(currentFileStates => {
+            return currentFileStates.map(fs => {
+              if (fs.key === fileState.key) {
+                return {
+                  ...fs,
+                  progress: 100
+                }
+              }
+              return fs
+            })
+          })
+          
+          return result.url
+        })
       )
 
       // Set uploading state to false after upload completes
