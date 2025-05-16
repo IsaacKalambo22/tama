@@ -7,13 +7,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { Form } from "@/components/ui/form"
+import { Form, FormControl } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
-import { handleFileUploads, updateFileProgress } from "@/lib/utils"
+import { useFileUpload } from "@/hooks/use-file-upload"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
-import { MultiFileDropzone } from "@/modules/common/multiple-file-upload"
+import { FileUploader } from "@/modules/common/file-uploader"
 import SubmitButton from "@/modules/common/submit-button"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { usePathname } from "next/navigation"
@@ -30,7 +30,20 @@ type Props = {
 
 const ModalNewCouncilList = ({ isOpen, onClose }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
-  const [fileStates, setFileStates] = useState<FileState[]>([])
+  
+  // State to track if we're currently uploading a file
+  const [isUploading, setIsUploading] = useState(false)
+  
+  // Initialize the file upload hook
+  const {
+    uploadFile,
+    status: uploadStatus,
+    progress: uploadProgress,
+    result: uploadResult,
+    error: uploadError,
+  } = useFileUpload({
+    path: "council-list",
+  })
 
   const formSchema = zod.object({
     demarcation: zod.string().min(2, {
@@ -48,6 +61,7 @@ const ModalNewCouncilList = ({ isOpen, onClose }: Props) => {
     secondAlternateCouncillor: zod.string().min(2, {
       message: "Second Alternate Councillor  must be at least 2 characters.",
     }),
+    files: zod.custom<File[]>(),
   })
 
   const path = usePathname()
@@ -61,49 +75,107 @@ const ModalNewCouncilList = ({ isOpen, onClose }: Props) => {
       council: "",
       firstAlternateCouncillor: "",
       secondAlternateCouncillor: "",
+      files: [],
     },
   })
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
+    let loadingToast: string | undefined
     let imageUrl: string | null = ""
-    if (fileStates.length > 0) {
-      const uploadedImageUrls = await Promise.all(
-        fileStates.map(async (fileState) =>
-          handleFileUploads(fileState.file, (progress) =>
-            updateFileProgress(fileState.key, progress, setFileStates)
-          )
+    
+    try {
+      // Check if a new file is being uploaded
+      if (values.files && values.files.length > 0) {
+        // Get the file to upload
+        const file = values.files[0]
+        console.log(
+          "Starting upload for file:",
+          file.name,
+          "size:",
+          file.size,
+          "type:",
+          file.type
         )
+
+        // Set uploading state to true to show progress bar
+        setIsUploading(true)
+
+        // Show toast notification when starting upload
+        loadingToast = toast.loading(`Uploading ${file.name}...`)
+
+        // Upload file to Supabase Storage using our hook
+        console.log("Calling uploadFile...")
+        const uploadResult = await uploadFile(file).catch((error) => {
+          console.error("Error during file upload:", error)
+          throw new Error(`Upload failed: ${error.message || "Unknown error"}`)
+        })
+        console.log("Upload completed, result:", uploadResult)
+
+        // Set uploading state to false after upload completes
+        setIsUploading(false)
+
+        // Dismiss the loading toast if it exists
+        if (loadingToast) {
+          toast.dismiss(loadingToast)
+        }
+
+        if (!uploadResult) {
+          throw new Error("File upload failed - no result returned")
+        }
+
+        // Show success toast when upload completes
+        toast.success(`${file.name} uploaded successfully`)
+
+        // Get the file URL from the uploadResult
+        imageUrl = uploadResult.url
+      }
+
+      const payload = {
+        demarcation: values.demarcation,
+        councilArea: values.councilArea,
+        council: values.council,
+        firstAlternateCouncillor: values.firstAlternateCouncillor,
+        secondAlternateCouncillor: values.secondAlternateCouncillor,
+        imageUrl,
+      }
+      console.log({ payload })
+
+      const result = await createCouncilList(
+        payload,
+        fullPath,
+        "/resources/council-list",
+        "/admin"
       )
-      imageUrl = uploadedImageUrls[0]
+
+      onClose()
+
+      if (result.success) {
+        toast.success("Council list created successfully")
+      } else {
+        toast.error(
+          result.error ?? "An error occurred while creating council list."
+        )
+      }
+    } catch (error) {
+      console.error("Error creating council list:", error)
+      
+      // Dismiss the loading toast if it exists
+      if (loadingToast) {
+        toast.dismiss(loadingToast)
+      }
+
+      // Reset upload state
+      setIsUploading(false)
+
+      // Show detailed error message
+      toast.error("Failed to create council list", {
+        description:
+          error instanceof Error ? error.message : "Unknown error occurred",
+        duration: 5000,
+      })
+    } finally {
+      setIsLoading(false)
     }
-
-    const payload = {
-      demarcation: values.demarcation,
-      councilArea: values.councilArea,
-      council: values.council,
-      firstAlternateCouncillor: values.firstAlternateCouncillor,
-      secondAlternateCouncillor: values.secondAlternateCouncillor,
-      imageUrl,
-    }
-    console.log({ payload })
-
-    const result = await createCouncilList(
-      payload,
-      fullPath,
-      "/resources/council-list",
-      "/admin"
-    )
-
-    onClose()
-
-    if (result.success) {
-      toast.success("Council list created successfully")
-    } else {
-      toast.error(
-        result.error ?? "An error occurred while creating council list."
-      )
-    }
-    setIsLoading(false)
   }
 
   return (
@@ -153,15 +225,27 @@ const ModalNewCouncilList = ({ isOpen, onClose }: Props) => {
               control={form.control}
               placeholder="Enter second alternate council"
             />
-            <div className="w-full flex flex-col gap-4">
-              <label className="font-medium text-gray-700">Upload Image</label>
-              <MultiFileDropzone
-                value={fileStates}
-                onChange={setFileStates}
-                fileType="image/*"
-                maxFiles={1}
-              />
-            </div>
+            <CustomFormField
+              fieldType={FormFieldType.SKELETON}
+              control={form.control}
+              name="files"
+              label="Image"
+              renderSkeleton={(field) => (
+                <div>
+                  <FormControl>
+                    <FileUploader 
+                      files={field.value} 
+                      onChange={(files) => {
+                        field.onChange(files)
+                      }}
+                      uploadProgress={uploadProgress}
+                      uploadStatus={uploadStatus}
+                      isUploading={isUploading}
+                    />
+                  </FormControl>
+                </div>
+              )}
+            />
 
             <SubmitButton
               disabled={isLoading || !form.formState.isValid}
