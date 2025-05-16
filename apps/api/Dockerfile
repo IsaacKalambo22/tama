@@ -47,7 +47,5 @@ WORKDIR /app
 
 COPY --from=installer /app .
 
-EXPOSE 8000
-
 CMD ["sh", "-c", "cd apps/api && pnpm run db:deploy && pnpm run start"]
 
