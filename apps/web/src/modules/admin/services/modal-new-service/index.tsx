@@ -1,16 +1,12 @@
 "use client"
 
-import { Form } from "@/components/ui/form"
+import { Form, FormControl } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
 import { useFileUpload } from "@/hooks/use-file-upload"
-import { handleFileUploads, updateFileProgress } from "@/lib/utils"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
-import {
-  FileState,
-  MultiFileDropzone,
-} from "@/modules/common/multiple-file-upload"
+import { FileUploader } from "@/modules/common/file-uploader"
 import SubmitButton from "@/modules/common/submit-button"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { usePathname } from "next/navigation"
@@ -30,7 +26,6 @@ const ModalNewService = ({ isOpen, onClose }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const path = usePathname()
   const { fullPath } = useCustomPath(path)
-  const [fileStates, setFileStates] = useState<FileState[]>([])
   
   // Initialize the file upload hook
   const {
@@ -53,6 +48,7 @@ const ModalNewService = ({ isOpen, onClose }: Props) => {
     description: zod.string().min(2, {
       message: "Description must be at least 2 characters.",
     }),
+    files: zod.custom<File[]>(),
   })
 
   const form = useForm<zod.infer<typeof formSchema>>({
@@ -61,6 +57,7 @@ const ModalNewService = ({ isOpen, onClose }: Props) => {
     defaultValues: {
       title: "",
       description: "",
+      files: [],
     },
   })
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
@@ -68,27 +65,36 @@ const ModalNewService = ({ isOpen, onClose }: Props) => {
     let loadingToast: string | undefined
 
     try {
-      if (fileStates.length === 0) {
+      if (!values.files || values.files.length === 0) {
         toast.error("Please upload at least one image file.")
         setIsLoading(false) // Stop the loading process
         return
       }
 
+      // Get the file to upload
+      const file = values.files[0]
+      console.log(
+        "Starting upload for file:",
+        file.name,
+        "size:",
+        file.size,
+        "type:",
+        file.type
+      )
+
       // Set uploading state to true to show progress bar
       setIsUploading(true)
 
       // Show toast notification when starting upload
-      const file = fileStates[0].file
       loadingToast = toast.loading(`Uploading ${file.name}...`)
 
-      // Upload all files using the existing MultiFileDropzone component's approach
-      const uploadedImageUrls = await Promise.all(
-        fileStates.map(async (fileState) =>
-          handleFileUploads(fileState.file, (progress) =>
-            updateFileProgress(fileState.key, progress, setFileStates)
-          )
-        )
-      )
+      // Upload file to Supabase Storage using our hook
+      console.log("Calling uploadFile...")
+      const uploadResult = await uploadFile(file).catch((error) => {
+        console.error("Error during file upload:", error)
+        throw new Error(`Upload failed: ${error.message || "Unknown error"}`)
+      })
+      console.log("Upload completed, result:", uploadResult)
 
       // Set uploading state to false after upload completes
       setIsUploading(false)
@@ -98,14 +104,18 @@ const ModalNewService = ({ isOpen, onClose }: Props) => {
         toast.dismiss(loadingToast)
       }
 
+      if (!uploadResult) {
+        throw new Error("File upload failed - no result returned")
+      }
+
       // Show success toast when upload completes
-      toast.success(`Files uploaded successfully`)
+      toast.success(`${file.name} uploaded successfully`)
 
       // Create a JSON object to send
       const payload = {
         title: values.title,
         description: values.description,
-        imageUrl: uploadedImageUrls[0],
+        imageUrl: uploadResult.url,
       }
       console.log({ payload })
 
@@ -161,15 +171,27 @@ const ModalNewService = ({ isOpen, onClose }: Props) => {
             placeholder="Enter description"
           />
 
-          <div className="w-full flex flex-col gap-4">
-            <label className="font-medium text-gray-700">Upload Image</label>
-            <MultiFileDropzone
-              value={fileStates}
-              onChange={setFileStates}
-              fileType="image/*"
-              maxFiles={1}
-            />
-          </div>
+          <CustomFormField
+            fieldType={FormFieldType.SKELETON}
+            control={form.control}
+            name="files"
+            label="Image"
+            renderSkeleton={(field) => (
+              <div>
+                <FormControl>
+                  <FileUploader 
+                    files={field.value} 
+                    onChange={(files) => {
+                      field.onChange(files)
+                    }}
+                    uploadProgress={uploadProgress}
+                    uploadStatus={uploadStatus}
+                    isUploading={isUploading}
+                  />
+                </FormControl>
+              </div>
+            )}
+          />
 
           <SubmitButton
             disabled={isLoading || !form.formState.isValid}

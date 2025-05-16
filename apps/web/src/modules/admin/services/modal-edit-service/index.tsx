@@ -1,16 +1,13 @@
 "use client"
-import { Form } from "@/components/ui/form"
+import { Form, FormControl } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
 import { useFileUpload } from "@/hooks/use-file-upload"
 import { deleteFileFromSupabase } from "@/lib/supabase"
-import { handleFileUploads, updateFileProgress } from "@/lib/utils"
+
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
-import {
-  FileState,
-  MultiFileDropzone,
-} from "@/modules/common/multiple-file-upload"
+import { FileUploader } from "@/modules/common/file-uploader"
 import SubmitButton from "@/modules/common/submit-button"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { usePathname } from "next/navigation"
@@ -31,7 +28,8 @@ const ModalEditService = ({ isOpen, onClose, service }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const path = usePathname()
   const { fullPath } = useCustomPath(path)
-  const [fileStates, setFileStates] = useState<FileState[]>([])
+  // State to track if we're currently uploading a file
+  const [isUploading, setIsUploading] = useState(false)
 
   const formSchema = zod.object({
     title: zod
@@ -47,6 +45,7 @@ const ModalEditService = ({ isOpen, onClose, service }: Props) => {
       })
       .optional()
       .or(zod.literal("")), // Allows empty strings to prevent validation errors
+    files: zod.custom<File[]>(),
   })
 
   // Set initial form default values from the `service` prop
@@ -56,10 +55,11 @@ const ModalEditService = ({ isOpen, onClose, service }: Props) => {
     defaultValues: {
       title: service.title || "",
       description: service.description || "",
+      files: [],
     },
   })
 
-  // Initialize the file upload hook for single file uploads if needed
+  // Initialize the file upload hook for single file uploads
   const {
     uploadFile,
     status: uploadStatus,
@@ -70,9 +70,6 @@ const ModalEditService = ({ isOpen, onClose, service }: Props) => {
     path: "services",
   })
 
-  // State to track if we're currently uploading a file
-  const [isUploading, setIsUploading] = useState(false)
-
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
     let loadingToast: string | undefined
@@ -80,7 +77,18 @@ const ModalEditService = ({ isOpen, onClose, service }: Props) => {
     try {
       let imageUrl = service.imageUrl || ""
 
-      if (fileStates.length > 0) {
+      // Check if a new file is being uploaded
+      if (values.files && values.files.length > 0) {
+        const file = values.files[0]
+        console.log(
+          "Starting upload for file:",
+          file.name,
+          "size:",
+          file.size,
+          "type:",
+          file.type
+        )
+
         // If there's an existing image, delete it first
         if (service.imageUrl) {
           console.log("Deleting existing file:", service.imageUrl)
@@ -102,18 +110,34 @@ const ModalEditService = ({ isOpen, onClose, service }: Props) => {
         // Set uploading state to true to show progress bar
         setIsUploading(true)
 
-        // Upload all files using the existing MultiFileDropzone component's approach
-        const imageUrls = await Promise.all(
-          fileStates.map(async (fileState) =>
-            handleFileUploads(fileState.file, (progress) =>
-              updateFileProgress(fileState.key, progress, setFileStates)
-            )
-          )
-        )
-        imageUrl = imageUrls[0]
-        
+        // Show toast notification when starting upload
+        loadingToast = toast.loading(`Uploading ${file.name}...`)
+
+        // Upload file to Supabase Storage using our hook
+        console.log("Calling uploadFile...")
+        const uploadResult = await uploadFile(file).catch((error) => {
+          console.error("Error during file upload:", error)
+          throw new Error(`Upload failed: ${error.message || "Unknown error"}`)
+        })
+        console.log("Upload completed, result:", uploadResult)
+
         // Set uploading state to false after upload completes
         setIsUploading(false)
+
+        // Dismiss the loading toast if it exists
+        if (loadingToast) {
+          toast.dismiss(loadingToast)
+        }
+
+        if (!uploadResult) {
+          throw new Error("File upload failed - no result returned")
+        }
+
+        // Show success toast when upload completes
+        toast.success(`${file.name} uploaded successfully`)
+
+        // Get the file URL from the uploadResult
+        imageUrl = uploadResult.url
       }
 
       // Create a JSON object to send
@@ -175,15 +199,40 @@ const ModalEditService = ({ isOpen, onClose, service }: Props) => {
             placeholder="Enter description"
           />
 
-          <div className="w-full flex flex-col gap-3">
-            <label className="font-medium text-gray-700">Upload Images</label>
-            <MultiFileDropzone
-              value={fileStates}
-              onChange={setFileStates}
-              fileType="image/*"
-              maxFiles={3}
-            />
-          </div>
+          <CustomFormField
+            fieldType={FormFieldType.SKELETON}
+            control={form.control}
+            name="files"
+            label="Image"
+            renderSkeleton={(field) => (
+              <div>
+                <FormControl>
+                  <FileUploader 
+                    files={field.value} 
+                    onChange={(files) => {
+                      field.onChange(files)
+                    }}
+                    uploadProgress={uploadProgress}
+                    uploadStatus={uploadStatus}
+                    isUploading={isUploading}
+                  />
+                </FormControl>
+                {service.imageUrl && !field.value?.length && (
+                  <div className="mt-2 text-sm">
+                    <p>
+                      Current image:{" "}
+                      <span className="font-medium">
+                        {service.imageUrl.split("/").pop()}
+                      </span>
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Upload a new image to replace the current one
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          />
           <SubmitButton
             disabled={isLoading || !form.formState.isValid}
             isLoading={isLoading}
