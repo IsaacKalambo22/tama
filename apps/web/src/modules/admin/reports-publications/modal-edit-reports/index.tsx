@@ -1,10 +1,10 @@
 "use client"
 import { Form, FormControl } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
-import { FileProps } from "@/lib/api"
 import { useFileUpload } from "@/hooks/use-file-upload"
-import { getFileType } from "@/lib/utils"
+import { FileProps } from "@/lib/api"
 import { deleteFileFromSupabase } from "@/lib/supabase"
+import { getFileType } from "@/lib/utils"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -30,7 +30,7 @@ const ModalEditReports = ({ isOpen, onClose, file }: Props) => {
   const [isUploading, setIsUploading] = useState(false)
   const path = usePathname()
   const { fullPath, pathWithoutAdmin } = useCustomPath(path)
-  
+
   // Initialize the file upload hook
   const {
     uploadFile,
@@ -67,15 +67,17 @@ const ModalEditReports = ({ isOpen, onClose, file }: Props) => {
         if (file.fileUrl) {
           console.log("Deleting existing file:", file.fileUrl)
           loadingToast = toast.loading("Deleting previous file...")
-          
+
           const deleteResult = await deleteFileFromSupabase(file.fileUrl)
-          
+
           if (loadingToast) {
             toast.dismiss(loadingToast)
           }
-          
+
           if (!deleteResult) {
-            console.warn("Failed to delete previous file, continuing with upload")
+            console.warn(
+              "Failed to delete previous file, continuing with upload"
+            )
           } else {
             console.log("Previous file deleted successfully")
           }
@@ -90,13 +92,13 @@ const ModalEditReports = ({ isOpen, onClose, file }: Props) => {
           "type:",
           newFile.type
         )
-        
+
         // Set uploading state to true to show progress bar
         setIsUploading(true)
-        
+
         // Show toast notification when starting upload
         loadingToast = toast.loading(`Uploading ${newFile.name}...`)
-        
+
         // Upload file to Supabase Storage using our hook
         console.log("Calling uploadFile...")
         const uploadResult = await uploadFile(newFile).catch((error) => {
@@ -104,22 +106,22 @@ const ModalEditReports = ({ isOpen, onClose, file }: Props) => {
           throw new Error(`Upload failed: ${error.message || "Unknown error"}`)
         })
         console.log("Upload completed, result:", uploadResult)
-        
+
         // Set uploading state to false after upload completes
         setIsUploading(false)
-        
+
         // Dismiss the loading toast if it exists
         if (loadingToast) {
           toast.dismiss(loadingToast)
         }
-        
+
         if (!uploadResult) {
           throw new Error("File upload failed - no result returned")
         }
-        
+
         // Show success toast when upload completes
         toast.success(`${newFile.name} uploaded successfully`)
-        
+
         // Update file information with the new file data
         fileUrl = uploadResult.url
         size = Number(newFile.size)
@@ -151,15 +153,15 @@ const ModalEditReports = ({ isOpen, onClose, file }: Props) => {
       }
     } catch (error) {
       console.error("Error updating publication:", error)
-      
+
       // Dismiss the loading toast if it exists
       if (loadingToast) {
         toast.dismiss(loadingToast)
       }
-      
+
       // Reset upload state
       setIsUploading(false)
-      
+
       // Show detailed error message
       toast.error("Failed to update publication", {
         description:
@@ -194,16 +196,19 @@ const ModalEditReports = ({ isOpen, onClose, file }: Props) => {
             renderSkeleton={(field) => (
               <div>
                 <FormControl>
-                  <FileUploader 
-                    files={field.value} 
+                  <FileUploader
+                    files={field.value}
                     onChange={field.onChange}
                     uploadProgress={uploadProgress}
                     uploadStatus={uploadStatus}
                     isUploading={isUploading}
-                    acceptedFileTypes="application/pdf"
-                    helpText="Only PDF files are allowed (max 10MB)"
+                    allowedTypes={["application/pdf"]}
+                    maxSizeMB={10}
                   />
                 </FormControl>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Only PDF files are allowed (max 10MB)
+                </p>
                 {file.fileUrl && !field.value?.length && (
                   <div className="mt-2 text-sm">
                     <p>

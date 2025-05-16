@@ -200,10 +200,14 @@ const ModalEditForm = ({ isOpen, onClose, file }: Props) => {
                     uploadProgress={uploadProgress}
                     uploadStatus={uploadStatus}
                     isUploading={isUploading}
-                    acceptedFileTypes="application/pdf"
-                    helpText="Only PDF files are allowed (max 10MB)"
+                    allowedTypes={["application/pdf"]}
+                    maxSizeMB={10}
                   />
                 </FormControl>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Only PDF files are allowed (max 10MB)
+                </p>
+                
                 {file.fileUrl && !field.value?.length && (
                   <div className="mt-2 text-sm">
                     <p>

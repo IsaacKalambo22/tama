@@ -180,17 +180,22 @@ const ModalNewPublication = ({ isOpen, onClose }: Props) => {
               name="files"
               label="File"
               renderSkeleton={(field) => (
-                <FormControl>
-                  <FileUploader 
-                    files={field.value} 
-                    onChange={field.onChange}
-                    uploadProgress={uploadProgress}
-                    uploadStatus={uploadStatus}
-                    isUploading={isUploading}
-                    acceptedFileTypes="application/pdf"
-                    helpText="Only PDF files are allowed (max 10MB)"
-                  />
-                </FormControl>
+                <div>
+                  <FormControl>
+                    <FileUploader 
+                      files={field.value} 
+                      onChange={field.onChange}
+                      uploadProgress={uploadProgress}
+                      uploadStatus={uploadStatus}
+                      isUploading={isUploading}
+                      allowedTypes={["application/pdf"]}
+                      maxSizeMB={10}
+                    />
+                  </FormControl>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Only PDF files are allowed (max 10MB)
+                  </p>
+                </div>
               )}
             />
 
