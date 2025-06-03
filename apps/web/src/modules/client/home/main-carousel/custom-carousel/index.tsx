@@ -37,18 +37,18 @@ export function CustomCarousel({
           <CarouselItem key={index}>
             <div className="p-1 relative">
               <Card className="w-full h-[25rem] sm:h-[35rem] shadow-none rounded-2xl relative overflow-hidden">
-                {/* Image with opacity */}
+                {/* Image with enhanced quality */}
                 <Image
                   src={slide.coverUrl}
                   alt={`Carousel image ${index + 1}`}
                   width={800}
                   height={1600}
-                  className="w-full h-full object-cover rounded-2xl "
+                  className="w-full h-full object-cover rounded-2xl brightness-105 contrast-110 saturate-105"
                   priority={index === 0}
                   unoptimized
                 />
-                {/* Dark overlay */}
-                <div className="absolute inset-0 rounded-2xl"></div>
+                {/* Dark overlay with reduced opacity for better image visibility */}
+                <div className="absolute inset-0 bg-black bg-opacity-30 rounded-2xl"></div>
                 {/* Centered Text */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <h1 className="text-center font-bold flex flex-col leading-snug text-white drop-shadow-md">
