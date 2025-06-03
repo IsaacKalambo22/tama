@@ -47,7 +47,7 @@ export const FileUploader = ({
   files,
   onChange,
   maxSizeMB = 5,
-  allowedTypes = ["image/png", "image/jpeg", "image/jpg"],
+  allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp"],
   uploadProgress = { progress: 0, loaded: 0, total: 0 },
   uploadStatus = "",
   isUploading = false,
