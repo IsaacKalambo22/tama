@@ -47,8 +47,7 @@ export function CustomCarousel({
                   priority={index === 0}
                   unoptimized
                 />
-                {/* Dark overlay with reduced opacity for better image visibility */}
-                <div className="absolute inset-0 bg-black bg-opacity-30 rounded-2xl"></div>
+                {/* No overlay as requested */}
                 {/* Centered Text */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <h1 className="text-center font-bold flex flex-col leading-snug text-white drop-shadow-md">
