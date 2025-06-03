@@ -7,7 +7,7 @@ import { navItems } from "../constants/nav-items"
 
 const Footer = () => {
   return (
-    <Card className="w-full min-w-full bg-[#FFFFFF66] max-w-7xl p-8 sm:p-20 mb-10 shadow-none">
+    <Card className="w-full min-w-full bg-[#FFFFFF66] max-w-7xl p-8 sm:p-20 shadow-none">
       <div className="max-w-7xl mx-auto px-6 sm:px-2 flex gap-10 flex-col  h-full w-full ">
         <div className="flex gap-2 flex-wrap justify-between w-full">
           {/* Column 1 - Logo and Text */}
@@ -139,6 +139,23 @@ const Footer = () => {
               </address>
             </div>
           </div>
+        </div>
+        <div className="mt-12 flex flex-col items-center justify-center space-y-2 border-t pt-6 md:flex-row md:space-y-0 md:space-x-1">
+          <p className="text-sm text-muted-foreground text-center">
+            © {new Date().getFullYear()} TAMA Farmers Trust. All rights
+            reserved.
+          </p>
+          <p className="text-sm text-muted-foreground flex items-center space-x-2 text-center">
+            Powered by
+            <Link
+              href="https://infi-tech.net"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary flex items-center"
+            >
+              <span className="hover:underline px-1"> INFI-TECH INC</span>
+            </Link>
+          </p>
         </div>
       </div>
     </Card>
