@@ -10,7 +10,7 @@ interface TeamCardProps {
 
 const TeamCard = ({ team }: TeamCardProps) => {
   return (
-    <Card className="p-6 rounded-3xl shadow-none hover:shadow-lg transition-shadow cursor-pointer text-center relative space-y-4 text-white bg-primary">
+    <Card className="p-6 rounded-3xl shadow-none hover:shadow-lg transition-shadow cursor-pointer text-center relative space-y-4 text-white bg-inherit">
       {/* Action dropdown (positioned inside the padding) */}
       <div className="absolute right-6 top-6 z-10">
         <TeamActionDropdown team={team} />

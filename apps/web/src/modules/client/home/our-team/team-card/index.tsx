@@ -10,7 +10,7 @@ interface TeamCardProps {
 
 const TeamCard = ({ team }: TeamCardProps) => {
   return (
-    <Card className="p-6 rounded-3xl shadow-none hover:shadow-lg transition-shadow cursor-pointer text-center relative space-y-4">
+    <Card className="p-6 rounded-3xl shadow-none hover:shadow-lg transition-shadow cursor-pointer text-center relative space-y-4 text-white bg-inherit">
       {/* Action dropdown (positioned inside the padding) */}
 
       {/* Profile Image or Fallback Avatar */}
@@ -19,7 +19,7 @@ const TeamCard = ({ team }: TeamCardProps) => {
           <AvatarImage
             src={team.imageUrl}
             alt={team.name}
-            className="object-cover"
+            className="object-cover brightness-100 contrast-105"
           />
           <AvatarFallback className="text-lg font-medium">
             {team.name
@@ -34,18 +34,18 @@ const TeamCard = ({ team }: TeamCardProps) => {
       {/* Name & Position */}
       <div>
         <h2 className="text-xl font-semibold line-clamp-1">{team.name}</h2>
-        <p className="text-sm text-gray-500">{team.position}</p>
+        <p className="text-sm text-white text-opacity-85">{team.position}</p>
       </div>
 
       {/* Social Icons */}
-      <div className="flex justify-center gap-6 text-gray-600 mt-2">
+      <div className="flex justify-center gap-6 text-white mt-2">
         {team.facebookUrl && (
           <a
             href={team.facebookUrl}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Facebook"
-            className="hover:text-blue-600 transition-colors"
+            className="hover:text-blue-200 transition-colors"
           >
             <Facebook className="h-5 w-5" />
           </a>
@@ -56,7 +56,7 @@ const TeamCard = ({ team }: TeamCardProps) => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
-            className="hover:text-blue-700 transition-colors"
+            className="hover:text-blue-200 transition-colors"
           >
             <Linkedin className="h-5 w-5" />
           </a>
@@ -67,7 +67,7 @@ const TeamCard = ({ team }: TeamCardProps) => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Twitter"
-            className="hover:text-sky-500 transition-colors"
+            className="hover:text-sky-200 transition-colors"
           >
             <Twitter className="h-5 w-5" />
           </a>
@@ -75,7 +75,7 @@ const TeamCard = ({ team }: TeamCardProps) => {
       </div>
 
       {/* Description */}
-      <p className="text-sm text-gray-700 px-4">{team.description}</p>
+      <p className="text-sm text-white px-4">{team.description}</p>
     </Card>
   )
 }
