@@ -15,11 +15,11 @@ const TeamCard = ({ team }: TeamCardProps) => {
 
       {/* Profile Image or Fallback Avatar */}
       <div className="flex justify-center">
-        <Avatar className="h-[120px] w-[120px]">
+        <Avatar className="h-[118px] w-[118px] border-2 border-white border-opacity-20">
           <AvatarImage
             src={team.imageUrl}
             alt={team.name}
-            className="object-cover brightness-100 contrast-105"
+            className="object-cover brightness-105 contrast-110 saturate-105"
           />
           <AvatarFallback className="text-lg font-medium">
             {team.name
