@@ -43,12 +43,12 @@ export function CustomCarousel({
                   alt={`Carousel image ${index + 1}`}
                   width={800}
                   height={1600}
-                  className="w-full h-full object-cover rounded-2xl opacity-90"
+                  className="w-full h-full object-cover rounded-2xl "
                   priority={index === 0}
                   unoptimized
                 />
                 {/* Dark overlay */}
-                <div className="absolute inset-0 bg-black bg-opacity-50 rounded-2xl"></div>
+                <div className="absolute inset-0 rounded-2xl"></div>
                 {/* Centered Text */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <h1 className="text-center font-bold flex flex-col leading-snug text-white drop-shadow-md">
