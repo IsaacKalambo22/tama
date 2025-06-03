@@ -15,6 +15,9 @@ export function CustomFaq() {
             How Do I become a TAMA Farmers Trust member?
           </AccordionTrigger>
           <AccordionContent className="text-gray-700 mt-4 text-sm leading-relaxed">
+            Have questions? We&apos;ve got answers to help you understand more
+            about what we do and how we can assist you.
+            <br />
             TAMA Farmers Trust membership is voluntary and renews annually for
             tobacco growers.
             <br />
@@ -31,7 +34,7 @@ export function CustomFaq() {
             (including managers).
             <br />
             Members are also encouraged to diversify their crops, with TAMA
-            assisting in marketing these products both within Malawi and
+            assisting in marketing their crops both within Malawi and
             internationally.
           </AccordionContent>
         </AccordionItem>
