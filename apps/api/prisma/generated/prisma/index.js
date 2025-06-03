@@ -304,7 +304,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/programmer/Desktop/programmer/programmerscode/turborepo/tama-farmers-trust/apps/api/prisma/generated/prisma",
+      "value": "/home/programmer/Desktop/madzalo/tama-farmers-trust/apps/api/prisma/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -318,7 +318,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/programmer/Desktop/programmer/programmerscode/turborepo/tama-farmers-trust/apps/api/prisma/schema.prisma",
+    "sourceFilePath": "/home/programmer/Desktop/madzalo/tama-farmers-trust/apps/api/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -332,12 +332,11 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": null
+        "value": "postgresql://postgres:password@localhost:5432/tama?schema=public"
       }
     }
   },

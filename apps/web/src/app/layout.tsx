@@ -68,7 +68,7 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
             <div className="gradient" />
           </div>
           <main className="z-50">{children}</main>
-          <Toaster position="top-right" richColors closeButton />
+          <Toaster richColors closeButton />
         </body>
       </html>
     </SessionProvider>

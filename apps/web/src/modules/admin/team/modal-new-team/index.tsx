@@ -138,11 +138,6 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
       // Set uploading state to false after upload completes
       setIsUploading(false)
 
-      // Dismiss the loading toast if it exists
-      if (loadingToast) {
-        toast.dismiss(loadingToast)
-      }
-
       // Show success toast when upload completes
       toast({
         title: "Success",
@@ -151,7 +146,7 @@ const ModalNewTeam = ({ isOpen, onClose }: Props) => {
       })
 
       const imageUrl = uploadedImageUrls[0]
-
+      console.log({ imageUrl })
       // Create a JSON object to send
       const payload = {
         name: values.name,
