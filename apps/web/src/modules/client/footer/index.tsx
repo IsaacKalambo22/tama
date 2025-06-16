@@ -46,7 +46,7 @@ const Footer = () => {
               </Link>
             </div>
             <p className="mt-4 text-gray-600 text-[.9rem] font-sans font-normal">
-              © 2025 TAMA Farmers Trust
+              © {new Date().getFullYear()} TAMA Farmers Trust.
             </p>
           </div>
 
