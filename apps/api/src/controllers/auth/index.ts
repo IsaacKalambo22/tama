@@ -13,6 +13,33 @@ import {
 import { APIResponse } from "../../types"
 import { generateTokens } from "../../utils/generate-tokens"
 
+export const bootstrapAdmin = async (
+  email: string,
+  password: string,
+  phoneNumber: string
+): Promise<void> => {
+  const existingAdmin = await prisma.user.findFirst({
+    where: { role: Role.ADMIN },
+  })
+
+  if (!existingAdmin) {
+    const hashedPassword = await bcrypt.hash(password, 10)
+    await prisma.user.create({
+      data: {
+        name: "Admin",
+        email,
+        password: hashedPassword,
+        role: Role.ADMIN,
+        phoneNumber,
+      },
+    })
+
+    console.log("✅ Admin user created automatically.")
+  } else {
+    console.log("🛡️ Admin user already exists.")
+  }
+}
+
 export const registerUser = async (
   req: Request,
   res: Response<APIResponse>

@@ -4,7 +4,7 @@ import dotenv from "dotenv"
 import express from "express"
 import helmet from "helmet"
 import morgan from "morgan"
-import { bootstrapAdmin } from "./utils/bootstrap-admin"
+import { bootstrapAdmin } from "./controllers/auth"
 
 /* ROUTE IMPORTS */
 import auth from "./routes/auth"
@@ -39,6 +39,12 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(cors())
 
+// Bootstrap admin user if none exists
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL!
+const ADMIN_PHONE_NUMBER = process.env.ADMIN_PHONE_NUMBER!
+void bootstrapAdmin(ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_PHONE_NUMBER)
+
 /* ROUTES */
 app.get("/", (_req, res) => {
   res.send("<html><body><h1>Welcome to the Home Route</h1></body></html>")
@@ -64,7 +70,4 @@ app.use("/reports-publications", reportsPublications)
 const PORT = Number(process.env.PORT) || 8000
 app.listen(PORT, async () => {
   console.log(`Server Listening on port ${PORT}`)
-
-  // Bootstrap admin user if none exists
-  await bootstrapAdmin()
 })
