@@ -20,18 +20,13 @@ export function CustomCarousel({
 }) {
   const plugin = React.useRef(
     Autoplay({
-      delay: 2000,
+      delay: 5000,
       stopOnInteraction: true,
     })
   )
 
   return (
-    <Carousel
-      plugins={[plugin.current]}
-      className="w-full"
-      onMouseEnter={plugin.current.stop}
-      onMouseLeave={plugin.current.reset}
-    >
+    <Carousel plugins={[plugin.current]} className="w-full">
       <CarouselContent>
         {homeCarousel?.map((slide, index) => (
           <CarouselItem key={index}>
@@ -49,7 +44,7 @@ export function CustomCarousel({
                 />
                 {/* No overlay as requested */}
                 {/* Centered Text */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <div className="absolute inset-0 flex flex-col items-center justify-end pb-4">
                   <h1 className="text-center font-bold flex flex-col leading-snug text-white drop-shadow-md">
                     <span className="text-3xl sm:text-4xl ">{slide.title}</span>
                     <span className="text-2xl sm:text-2xl capitalize">
