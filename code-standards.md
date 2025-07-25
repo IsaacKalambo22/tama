@@ -224,3 +224,4 @@ const LoginForm = () => {
 - Use TypeScript types as living documentation
 
 By following these standards, we ensure the TAMA Farmers Trust codebase remains maintainable, scalable, and of high quality as the project evolves.
+
