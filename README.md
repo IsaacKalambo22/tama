@@ -198,6 +198,7 @@ pnpm lint
 pnpm format
 ```
 
+
 ## Additional Resources
 
 - [Project Planning](./planning.md) - Detailed project planning document
