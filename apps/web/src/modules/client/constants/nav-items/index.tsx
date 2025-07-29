@@ -25,15 +25,15 @@ export const navItems: NavItem[] = [
     submenu: true,
     subMenuItems: [
       {
-        title: "Event Calendar",
+        title: "Calendar of Events",
         href: "/tobacco-business/event-calendar",
-        description: "Upcoming industry events and important dates.",
+        description: "Stay informed about events and opportunities.",
         icon: <Icon icon="lucide:calendar" width="16" height="16" />,
       },
       {
         title: "Shops",
         href: "/tobacco-business/shops",
-        description: "Local and online shops for tobacco products.",
+        description: "Find our trusted Agre-shops near you.",
         icon: <Icon icon="lucide:shopping-bag" width="16" height="16" />,
       },
     ],

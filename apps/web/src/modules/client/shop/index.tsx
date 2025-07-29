@@ -13,7 +13,7 @@ const Shops = async () => {
       <div className="flex flex-col w-full max-w-7xl mx-auto items-center gap-10 mb-16">
         <HeaderText
           title="Discover Our Locations"
-          subtitle="Find Our Trusted Stores Near You"
+          subtitle="Find our trusted Agre-shops near you"
         />
 
         <p className="text-red-500">Failed to load shops.</p>
@@ -25,7 +25,7 @@ const Shops = async () => {
     <div className="flex w-full flex-col gap-10 mb-16">
       <HeaderText
         title="Discover Our Locations"
-        subtitle="Find Our Trusted Stores Near You"
+        subtitle="Find our trusted Agre-shops near you"
       />
 
       {shops?.length > 0 ? (

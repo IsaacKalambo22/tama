@@ -17,7 +17,7 @@ const News = async () => {
       <div>
         <HeaderText
           title="TAMA News"
-          subtitle="Stay Informed with the Latest Updates and Announcements"
+          subtitle="Stay informed with the latest updates and announcements"
         />
         <p className="text-red-500">Failed to load news.</p>
       </div>
@@ -30,7 +30,7 @@ const News = async () => {
       <div className="w-full text-center mb-16">
         <HeaderText
           title="Our News"
-          subtitle="Stay Informed with the Latest Updates and Announcements"
+          subtitle="Stay informed with the latest updates and announcements"
         />
         <p className="text-gray-500 text-lg mt-5">
           No news are currently available.
@@ -46,7 +46,7 @@ const News = async () => {
     <div className="flex w-full flex-col gap-10 mb-16">
       <HeaderText
         title="TAMA News"
-        subtitle="Stay Informed with the Latest Updates and Announcements"
+        subtitle="Stay informed with the latest updates and announcements"
       />
       <div className="space-y-10 ">
         {/* Most Recent Story */}
