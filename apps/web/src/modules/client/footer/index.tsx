@@ -75,10 +75,10 @@ const Footer = () => {
 
           {/* Column 3 - Resources Links */}
           <div>
-            <h3 className="font-semibold mb-4 text-gray-900">Resources</h3>
+            <h3 className="font-semibold mb-4 text-gray-900">News & Updates</h3>
             <ul className="flex flex-col gap-3">
               {navItems
-                .filter((item) => item.title === "Resources")
+                .filter((item) => item.title === "News & Updates")
                 .map((item) =>
                   item.subMenuItems?.map((subItem) => (
                     <li key={subItem.href}>
