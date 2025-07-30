@@ -39,7 +39,7 @@ const CustomWhoWeAreContent = async () => {
   }
 
   // Limit to 3 cards for who-we-are page
-  const limitedContent = homeImageText?.slice(0, 6)
+  const limitedContent = homeImageText?.slice(0, 20)
 
   return (
     <div className="flex w-full flex-col gap-10 mb-16">
