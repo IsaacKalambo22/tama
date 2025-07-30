@@ -20,7 +20,7 @@ export const navItems: NavItem[] = [
     icon: <Icon icon="lucide:pen-tool" width="16" height="16" />,
   },
   {
-    title: "Who We Are",
+    title: "About Us",
     href: "/who-we-are",
     description:
       "Learn about our mission, vision, and commitment to tobacco farmers.",
@@ -32,16 +32,34 @@ export const navItems: NavItem[] = [
     submenu: true,
     subMenuItems: [
       {
+        title: "Council List",
+        href: "/tobacco-business/council-list",
+        description: "List of council members and representatives.",
+        icon: <Icon icon="lucide:list" width="16" height="16" />,
+      },
+      {
         title: "Calendar of Events",
         href: "/tobacco-business/event-calendar",
         description: "Stay informed about events and opportunities.",
         icon: <Icon icon="lucide:calendar" width="16" height="16" />,
       },
       {
+        title: " Publications",
+        href: "/tobacco-business/reports-publications",
+        description: "Research and publications related to tobacco.",
+        icon: <Icon icon="lucide:book-open" width="16" height="16" />,
+      },
+      {
         title: "Shops",
         href: "/tobacco-business/shops",
         description: "Find our trusted Agre-shops near you.",
         icon: <Icon icon="lucide:shopping-bag" width="16" height="16" />,
+      },
+      {
+        title: "Downloads",
+        href: "/tobacco-business/forms",
+        description: "Download and access important documents",
+        icon: <Icon icon="lucide:file-text" width="16" height="16" />,
       },
     ],
   },
@@ -51,42 +69,54 @@ export const navItems: NavItem[] = [
     description: "Industry insights and articles from experts.",
     icon: <Icon icon="lucide:pen-tool" width="16" height="16" />,
   },
-  {
-    title: "Resources",
-    href: "/resources",
-    submenu: true,
-    subMenuItems: [
-      {
-        title: " Publications",
-        href: "/resources/reports-publications",
-        description: "Research and publications related to tobacco.",
-        icon: <Icon icon="lucide:book-open" width="16" height="16" />,
-      },
-      {
-        title: "Current Forms",
-        href: "/resources/forms",
-        description: "Documents and forms for industry use.",
-        icon: <Icon icon="lucide:file-text" width="16" height="16" />,
-      },
-      {
-        title: "Council List",
-        href: "/resources/council-list",
-        description: "List of council members and representatives.",
-        icon: <Icon icon="lucide:list" width="16" height="16" />,
-      },
-    ],
-  },
+  // {
+  //   title: "Resources",
+  //   href: "/resources",
+  //   submenu: true,
+  //   subMenuItems: [
+  //     {
+  //       title: " Publications",
+  //       href: "/resources/reports-publications",
+  //       description: "Research and publications related to tobacco.",
+  //       icon: <Icon icon="lucide:book-open" width="16" height="16" />,
+  //     },
+  //     {
+  //       title: "Downloads",
+  //       href: "/resources/forms",
+  //       description: "Download and access important documents",
+  //       icon: <Icon icon="lucide:file-text" width="16" height="16" />,
+  //     },
+  //     {
+  //       title: "Council List",
+  //       href: "/resources/council-list",
+  //       description: "List of council members and representatives.",
+  //       icon: <Icon icon="lucide:list" width="16" height="16" />,
+  //     },
+  //   ],
+  // },
   {
     title: "News & Updates",
     href: "/news-updates",
     submenu: true,
     subMenuItems: [
       {
+        title: "Blogs",
+        href: "/news-updates/blogs",
+        description: "Industry insights and articles from experts.",
+        icon: <Icon icon="lucide:pen-tool" width="16" height="16" />,
+      },
+      {
         title: "Current News & Updates",
         href: "/news-updates/current-news-updates",
         description:
           "Various business current-news-updates for the tobacco industry.",
         icon: <Icon icon="lucide:briefcase" width="16" height="16" />,
+      },
+      {
+        title: "Social Media",
+        href: "/news-updates/social-media",
+        description: "Industry insights and articles from experts.",
+        icon: <Icon icon="lucide:pen-tool" width="16" height="16" />,
       },
       {
         title: "Vacancies",
@@ -96,22 +126,9 @@ export const navItems: NavItem[] = [
       },
     ],
   },
-
   {
-    title: "Blogs",
-    href: "/blogs",
-    description: "Industry insights and articles from experts.",
-    icon: <Icon icon="lucide:pen-tool" width="16" height="16" />,
-  },
-  {
-    title: "Contact",
+    title: "Contact Us",
     href: "/contact",
-    description: "Industry insights and articles from experts.",
-    icon: <Icon icon="lucide:pen-tool" width="16" height="16" />,
-  },
-  {
-    title: "Social Media",
-    href: "/social-media",
     description: "Industry insights and articles from experts.",
     icon: <Icon icon="lucide:pen-tool" width="16" height="16" />,
   },
