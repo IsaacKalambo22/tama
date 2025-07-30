@@ -3,7 +3,8 @@ import { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Downloads - TAMA Farmers Trust",
-  description: "Access important downloads provided by TAMA Farmers Trust.",
+  description:
+    "Download and access important documents provided by TAMA Farmers Trust.",
 }
 
 const FormsPage = () => {

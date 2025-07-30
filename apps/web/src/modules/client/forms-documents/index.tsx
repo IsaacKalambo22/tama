@@ -11,11 +11,11 @@ const Forms = async () => {
     return (
       <div className="flex flex-col w-full items-center gap-10 mb-16">
         <HeaderText
-          title="Forms and Documents"
-          subtitle="Access and download important forms for your needs"
+          title="Downloads"
+          subtitle="Download and access important documents"
         />
 
-        <p className="text-red-500">Failed to load forms and documents.</p>
+        <p className="text-red-500">Failed to load downloads.</p>
       </div>
     )
   }
@@ -23,8 +23,8 @@ const Forms = async () => {
   return (
     <div className="flex w-full flex-col gap-10 mb-16">
       <HeaderText
-        title="Forms and Documents"
-        subtitle="Access and download important forms for your needs"
+        title="Downloads"
+        subtitle="Download and access important documents"
       />
 
       {/* Render the files */}
@@ -32,7 +32,7 @@ const Forms = async () => {
         <FormsAndDocumentsList files={forms} />
       ) : (
         <p className="text-gray-500 text-center text-lg mt-5">
-          No forms & documents are currently available.
+          No downloads are currently available.
         </p>
       )}
     </div>

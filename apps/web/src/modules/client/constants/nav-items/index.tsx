@@ -27,6 +27,12 @@ export const navItems: NavItem[] = [
     icon: <Icon icon="lucide:info" width="16" height="16" />,
   },
   {
+    title: "Services",
+    href: "/services",
+    description: "Industry insights and articles from experts.",
+    icon: <Icon icon="lucide:pen-tool" width="16" height="16" />,
+  },
+  {
     title: "Tobacco Business",
     href: "/tobacco-business",
     submenu: true,
@@ -62,12 +68,6 @@ export const navItems: NavItem[] = [
         icon: <Icon icon="lucide:file-text" width="16" height="16" />,
       },
     ],
-  },
-  {
-    title: "Services",
-    href: "/services",
-    description: "Industry insights and articles from experts.",
-    icon: <Icon icon="lucide:pen-tool" width="16" height="16" />,
   },
   // {
   //   title: "Resources",
