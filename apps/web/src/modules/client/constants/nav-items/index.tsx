@@ -20,6 +20,13 @@ export const navItems: NavItem[] = [
     icon: <Icon icon="lucide:pen-tool" width="16" height="16" />,
   },
   {
+    title: "Who We Are",
+    href: "/who-we-are",
+    description:
+      "Learn about our mission, vision, and commitment to tobacco farmers.",
+    icon: <Icon icon="lucide:info" width="16" height="16" />,
+  },
+  {
     title: "Tobacco Business",
     href: "/tobacco-business",
     submenu: true,
@@ -108,17 +115,4 @@ export const navItems: NavItem[] = [
     description: "Industry insights and articles from experts.",
     icon: <Icon icon="lucide:pen-tool" width="16" height="16" />,
   },
-  // {
-  //   title: 'About Us',
-  //   href: '/about-us',
-  //   description:
-  //     'Learn more about our organization and mission.',
-  //   icon: (
-  //     <Icon
-  //       icon='lucide:info'
-  //       width='16'
-  //       height='16'
-  //     />
-  //   ),
-  // },
 ]

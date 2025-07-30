@@ -1,7 +1,14 @@
 import { NextResponse } from "next/server"
 
 import { auth } from "./auth"
-const publicRoutes = ["/", "/services", "/social-media", "/blogs", "/contact"]
+const publicRoutes = [
+  "/",
+  "/services",
+  "/social-media",
+  "/blogs",
+  "/contact",
+  "/who-we-are",
+]
 
 export const authRoutes = ["/sign-in", "/sign-up", "/forgot-password"]
 export const apiAuthPrefix = "/api/auth"
