@@ -9,6 +9,7 @@ export type NavItem = {
   icon?: JSX.Element
   submenu?: boolean
   subMenuItems?: NavItem[]
+  external?: boolean
 }
 
 // Create and export the navigation items object.
@@ -100,12 +101,6 @@ export const navItems: NavItem[] = [
     submenu: true,
     subMenuItems: [
       {
-        title: "Blogs",
-        href: "/news-updates/blogs",
-        description: "Industry insights and articles from experts.",
-        icon: <Icon icon="lucide:pen-tool" width="16" height="16" />,
-      },
-      {
         title: "Current News & Updates",
         href: "/news-updates/current-news-updates",
         description:
@@ -125,6 +120,13 @@ export const navItems: NavItem[] = [
         icon: <Icon icon="lucide:calendar" width="16" height="16" />,
       },
     ],
+  },
+  {
+    title: "Blogs",
+    href: "https://tamafarmertrust.blogspot.com/",
+    description: "Industry insights and articles from experts.",
+    icon: <Icon icon="lucide:pen-tool" width="16" height="16" />,
+    external: true,
   },
   {
     title: "Contact Us",

@@ -92,7 +92,7 @@ export const ADMIN_LINKS: SidebarProps[] = [
   },
   {
     label: "Blogs",
-    href: "/admin/blogs",
+    href: "https://tamafarmertrust.blogspot.com/",
     icon: Book,
   },
   {
