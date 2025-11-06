@@ -29,49 +29,94 @@ export const SidebarLink = ({
 
   const toggleSubmenu = () => setIsSubmenuOpen((prev) => !prev)
 
+  // Check if href is external (starts with http:// or https://)
+  const isExternal = href?.startsWith("http://") || href?.startsWith("https://")
+
   return (
     <div className="relative">
       <div onClick={submenu ? toggleSubmenu : undefined}>
         {href ? (
-          <Link href={href}>
-            <div
-              className={cn(
-                "my-1 flex cursor-pointer items-center justify-start gap-3 py-3 transition-colors hover:bg-green-100 hover:text-green-500",
-                {
-                  "bg-green-100 text-green-500": isActive,
-                  "justify-center py-4": isCollapsed,
-                  "px-8": !isCollapsed,
-                }
-              )}
-            >
-              {isActive && (
-                <div className="absolute left-0 top-0 h-full w-[5px] bg-green-600" />
-              )}
-              <Icon
-                className={cn("h-5 w-5 text-gray-800", {
-                  "text-green-500": isActive,
-                  block: isCollapsed,
-                })}
-              />
-              <span
-                className={cn("font-sans text-sm font-normal text-gray-800", {
-                  hidden: isCollapsed,
-                  "text-green-500": isActive,
-                })}
+          isExternal ? (
+            <a href={href} target="_blank" rel="noopener noreferrer">
+              <div
+                className={cn(
+                  "my-1 flex cursor-pointer items-center justify-start gap-3 py-3 transition-colors hover:bg-green-100 hover:text-green-500",
+                  {
+                    "bg-green-100 text-green-500": isActive,
+                    "justify-center py-4": isCollapsed,
+                    "px-8": !isCollapsed,
+                  }
+                )}
               >
-                {label}
-              </span>
-              {submenu && !isCollapsed && (
-                <span className="ml-auto text-xs">
-                  {isSubmenuOpen ? (
-                    <ChevronUp className="h-4 w-4" />
-                  ) : (
-                    <ChevronDown className="h-4 w-4" />
-                  )}
+                {isActive && (
+                  <div className="absolute left-0 top-0 h-full w-[5px] bg-green-600" />
+                )}
+                <Icon
+                  className={cn("h-5 w-5 text-gray-800", {
+                    "text-green-500": isActive,
+                    block: isCollapsed,
+                  })}
+                />
+                <span
+                  className={cn("font-sans text-sm font-normal text-gray-800", {
+                    hidden: isCollapsed,
+                    "text-green-500": isActive,
+                  })}
+                >
+                  {label}
                 </span>
-              )}
-            </div>
-          </Link>
+                {submenu && !isCollapsed && (
+                  <span className="ml-auto text-xs">
+                    {isSubmenuOpen ? (
+                      <ChevronUp className="h-4 w-4" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4" />
+                    )}
+                  </span>
+                )}
+              </div>
+            </a>
+          ) : (
+            <Link href={href}>
+              <div
+                className={cn(
+                  "my-1 flex cursor-pointer items-center justify-start gap-3 py-3 transition-colors hover:bg-green-100 hover:text-green-500",
+                  {
+                    "bg-green-100 text-green-500": isActive,
+                    "justify-center py-4": isCollapsed,
+                    "px-8": !isCollapsed,
+                  }
+                )}
+              >
+                {isActive && (
+                  <div className="absolute left-0 top-0 h-full w-[5px] bg-green-600" />
+                )}
+                <Icon
+                  className={cn("h-5 w-5 text-gray-800", {
+                    "text-green-500": isActive,
+                    block: isCollapsed,
+                  })}
+                />
+                <span
+                  className={cn("font-sans text-sm font-normal text-gray-800", {
+                    hidden: isCollapsed,
+                    "text-green-500": isActive,
+                  })}
+                >
+                  {label}
+                </span>
+                {submenu && !isCollapsed && (
+                  <span className="ml-auto text-xs">
+                    {isSubmenuOpen ? (
+                      <ChevronUp className="h-4 w-4" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4" />
+                    )}
+                  </span>
+                )}
+              </div>
+            </Link>
+          )
         ) : (
           <div
             className={cn(

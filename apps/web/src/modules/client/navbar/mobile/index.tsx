@@ -237,15 +237,33 @@ const Mobile: React.FC = () => {
                   <MenuItemWithSubMenu item={item} toggleOpen={toggleOpen} />
                 ) : (
                   <MenuItem>
-                    <Link
-                      href={item.href}
-                      onClick={() => toggleOpen()}
-                      className={`flex w-full text-sm font-medium text-gray-700 ${
-                        item.href === pathname ? "font-bold text-green-500" : ""
-                      }`}
-                    >
-                      {item.title}
-                    </Link>
+                    {item.external ? (
+                      <a
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => toggleOpen()}
+                        className={`flex w-full text-sm font-medium text-gray-700 ${
+                          item.href === pathname
+                            ? "font-bold text-green-500"
+                            : ""
+                        }`}
+                      >
+                        {item.title}
+                      </a>
+                    ) : (
+                      <Link
+                        href={item.href}
+                        onClick={() => toggleOpen()}
+                        className={`flex w-full text-sm font-medium text-gray-700 ${
+                          item.href === pathname
+                            ? "font-bold text-green-500"
+                            : ""
+                        }`}
+                      >
+                        {item.title}
+                      </Link>
+                    )}
                   </MenuItem>
                 )}
 
