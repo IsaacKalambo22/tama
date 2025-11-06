@@ -14,6 +14,7 @@ TAMA Farmers Trust platform provides a centralized hub for tobacco farmers in Ma
 
 The platform is built using modern web technologies in a monorepo structure powered by Turborepo.
 
+
 ## Technology Stack
 
 ### Frontend
