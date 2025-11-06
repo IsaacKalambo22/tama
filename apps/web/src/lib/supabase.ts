@@ -139,22 +139,63 @@ export const deleteFileFromSupabase = async (
   try {
     const bucketName = process.env.NEXT_PUBLIC_SUPABASE_STORAGE_NAME!
 
-    console.log("bucketName", bucketName)
-    // Extract the file path from the full URL if needed
-    const path = filePath.includes("/")
-      ? filePath.split(`${bucketName}/`)[1]
-      : filePath
+    console.log("deleteFileFromSupabase: bucketName", bucketName)
+    console.log("deleteFileFromSupabase: original filePath", filePath)
+
+    // Handle different URL formats
+    let path = filePath
+
+    // If it's a full URL, extract the path
+    if (filePath.startsWith("http")) {
+      try {
+        const url = new URL(filePath)
+        // Extract path from URL - remove the domain and bucket name
+        const urlPath = url.pathname
+        // Remove leading slash and bucket name
+        path = urlPath.replace(`/${bucketName}/`, "").replace(/^\//, "")
+        console.log("deleteFileFromSupabase: extracted path from URL", path)
+      } catch (urlError) {
+        console.error("deleteFileFromSupabase: Error parsing URL", urlError)
+        return false
+      }
+    } else if (filePath.includes("/")) {
+      // If it contains slashes but is not a full URL, try to extract path
+      const parts = filePath.split("/")
+      // Find the bucket name in the path and get everything after it
+      const bucketIndex = parts.findIndex((part) => part === bucketName)
+      if (bucketIndex !== -1) {
+        path = parts.slice(bucketIndex + 1).join("/")
+        console.log(
+          "deleteFileFromSupabase: extracted path from path with bucket",
+          path
+        )
+      }
+    }
+
+    console.log("deleteFileFromSupabase: final path to delete", path)
+
+    if (!path || path.trim() === "") {
+      console.error("deleteFileFromSupabase: No valid path found")
+      return false
+    }
 
     const { error } = await supabase.storage.from(bucketName).remove([path])
 
     if (error) {
-      console.error("Error deleting file from Supabase:", error)
+      console.error(
+        "deleteFileFromSupabase: Error deleting file from Supabase:",
+        error
+      )
       return false
     }
 
+    console.log("deleteFileFromSupabase: File deleted successfully")
     return true
   } catch (error) {
-    console.error("Error in deleteFileFromSupabase:", error)
+    console.error(
+      "deleteFileFromSupabase: Error in deleteFileFromSupabase:",
+      error
+    )
     return false
   }
 }

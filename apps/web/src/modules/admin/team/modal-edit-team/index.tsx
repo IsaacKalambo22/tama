@@ -70,7 +70,7 @@ const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
 
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
-    let loadingToast: string | undefined
+    let loadingToast: { id: string; dismiss: () => void } | undefined
 
     try {
       let imageUrl = team.imageUrl || ""
@@ -86,31 +86,55 @@ const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
           title: "Uploading",
           description: `Uploading ${file.name}...`,
           variant: "default",
-        }).id
-
-        // If there's an existing image, delete it first from Supabase
-        if (team.imageUrl) {
-          await deleteFileFromSupabase(team.imageUrl)
-        }
-
-        // Upload the new file
-        const uploadResult = await uploadFile(file)
-        imageUrl = uploadResult.url
-
-        // Set uploading state to false after upload completes
-        setIsUploading(false)
-
-        // Dismiss the loading toast if it exists
-        if (loadingToast) {
-          toast.dismiss(loadingToast)
-        }
-
-        // Show success toast when upload completes
-        toast({
-          title: "Success",
-          description: `File uploaded successfully`,
-          variant: "default",
         })
+
+        try {
+          // If there's an existing image, delete it first from Supabase
+          if (team.imageUrl && team.imageUrl.trim() !== "") {
+            console.log("Deleting existing image:", team.imageUrl)
+            await deleteFileFromSupabase(team.imageUrl)
+          }
+
+          // Upload the new file
+          console.log("Uploading new file:", file.name)
+          const uploadResult = await uploadFile(file)
+
+          if (!uploadResult || !uploadResult.url) {
+            throw new Error("Failed to upload file - no URL returned")
+          }
+
+          imageUrl = uploadResult.url
+          console.log("New image URL:", imageUrl)
+
+          // Set uploading state to false after upload completes
+          setIsUploading(false)
+
+          // Dismiss the loading toast if it exists
+          if (loadingToast) {
+            loadingToast.dismiss()
+          }
+
+          // Show success toast when upload completes
+          toast({
+            title: "Success",
+            description: `File uploaded successfully`,
+            variant: "default",
+          })
+        } catch (uploadError) {
+          console.error("Error during file upload:", uploadError)
+
+          // Dismiss the loading toast if it exists
+          if (loadingToast) {
+            loadingToast.dismiss()
+          }
+
+          // Reset upload state
+          setIsUploading(false)
+
+          throw new Error(
+            `File upload failed: ${uploadError instanceof Error ? uploadError.message : "Unknown error"}`
+          )
+        }
       }
 
       const payload = {
@@ -123,7 +147,17 @@ const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
         imageUrl,
       }
 
-      await updateTeam(payload, team.id, fullPath, pathWithoutAdmin)
+      console.log("Sending update payload:", payload)
+      const result = await updateTeam(
+        payload,
+        team.id,
+        fullPath,
+        pathWithoutAdmin
+      )
+
+      if (!result.success) {
+        throw new Error(result.error || "Failed to update team member")
+      }
 
       onClose()
       toast({
@@ -135,7 +169,7 @@ const ModalEditTeam = ({ isOpen, onClose, team }: Props) => {
 
       // Dismiss the loading toast if it exists
       if (loadingToast) {
-        toast.dismiss(loadingToast)
+        loadingToast.dismiss()
       }
 
       // Reset upload state

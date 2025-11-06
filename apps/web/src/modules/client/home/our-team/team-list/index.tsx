@@ -6,7 +6,7 @@ interface Props {
 const TeamList = ({ team }: Props) => {
   return (
     <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mt-2">
-      {team.map((team) => (
+      {team.slice(0, 3).map((team) => (
         <TeamCard key={team.id} team={team} />
       ))}
     </div>

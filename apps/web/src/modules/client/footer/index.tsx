@@ -134,7 +134,7 @@ const Footer = () => {
                 <br />
               </address>
               <address className="text-gray-600">
-                Mchezi Phone: +265 994 065 062
+                Kanengo Phone: +265 994 065 062
                 <br />
               </address>
             </div>
