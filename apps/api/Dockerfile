@@ -14,7 +14,7 @@ RUN apk add --no-cache
 # Set working directory
 WORKDIR /app
 RUN pnpm install turbo --global
-RUN pnpm install prisma --global
+RUN pnpm install prisma@6 --global
 COPY . .
 RUN turbo prune api --docker
 
