@@ -10,11 +10,12 @@
     "start": "node -r esbuild-register ./src/index.ts",
     "format:check": "prettier --check ./src",
     "format": "prettier --write ./src ",
-    "studio": "npx prisma studio",
-    "db:migrate": "npx prisma migrate dev",
-    "generate": "npx prisma generate",
-    "migrate": "pnpm dlx prisma migrate dev && pnpm dlx prisma generate",
-    "db:deploy": "pnpm dlx prisma migrate deploy && pnpm dlx prisma generate"
+    "studio": "pnpm prisma studio",
+    "db:migrate": "pnpm prisma migrate dev",
+    "generate": "pnpm prisma generate",
+    "migrate": "pnpm prisma migrate dev && pnpm prisma generate",
+    "db:deploy": "pnpm prisma migrate deploy && pnpm prisma generate"
+
   },
   "keywords": [],
   "author": "",
