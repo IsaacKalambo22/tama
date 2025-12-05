@@ -30,14 +30,14 @@ export default async function NewsDetail({ id }: { id: string }) {
       </header>
 
       {/* News Image */}
-      <div className="w-full mb-6">
+      <div className="w-full mb-6 flex items-center justify-center bg-gray-50 rounded-2xl overflow-hidden max-h-[20rem] sm:max-h-[30rem]">
         <Image
           src={news.imageUrl}
           alt={news.title}
           width={900}
           height={600}
           unoptimized
-          className="rounded-2xl object-fill h-auto max-h-[20rem] sm:max-h-[30rem]" // Added responsive max-height for small devices
+          className="rounded-2xl object-contain w-full h-auto max-h-[20rem] sm:max-h-[30rem]"
         />
       </div>
 

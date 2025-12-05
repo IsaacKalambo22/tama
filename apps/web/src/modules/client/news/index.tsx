@@ -52,15 +52,17 @@ const News = async () => {
         {/* Most Recent Story */}
         {mostRecent && (
           <Link href={`/news-updates/news/${mostRecent.id}`}>
-            <Card className="shadow-none rounded-lg border-none flex flex-col sm:flex-row items-center h-auto sm:h-[22rem] gap-10">
-              <Image
-                src={mostRecent.imageUrl}
-                unoptimized
-                alt={mostRecent.title}
-                width={400}
-                height={350}
-                className="rounded-l-2xl object-cover h-full w-full sm:w-1/2"
-              />
+            <Card className="shadow-none rounded-lg border-none flex flex-col sm:flex-row items-center h-auto gap-10">
+              <div className="w-full sm:w-1/2 flex items-center justify-center bg-gray-50 rounded-l-2xl overflow-hidden max-h-[22rem]">
+                <Image
+                  src={mostRecent.imageUrl}
+                  unoptimized
+                  alt={mostRecent.title}
+                  width={800}
+                  height={600}
+                  className="rounded-l-2xl object-contain w-full h-auto max-h-[22rem]"
+                />
+              </div>
               <div className="flex py-8 pr-10 flex-col justify-between w-full md:w-1/2 h-full space-y-4">
                 <div className="flex gap-2 items-center">
                   <Avatar>
@@ -106,14 +108,16 @@ const SmallNewsCard = ({ newsItem }: SmallNewsProps) => {
   return (
     <Link href={`/news-updates/news/${newsItem.id}`}>
       <Card className="p-6 shadow-none cursor-pointer rounded-3xl space-y-4 transition-transform transform hover:scale-105">
-        <Image
-          src={imageUrl}
-          unoptimized
-          alt={title}
-          width={200}
-          height={150}
-          className="rounded-2xl w-full mb-4 h-[12rem]"
-        />
+        <div className="w-full h-[12rem] flex items-center justify-center bg-gray-50 rounded-2xl overflow-hidden">
+          <Image
+            src={imageUrl}
+            unoptimized
+            alt={title}
+            width={400}
+            height={300}
+            className="rounded-2xl object-contain w-full h-full"
+          />
+        </div>
         <div className="flex flex-col w-full h-full">
           <div className="flex w-full gap-2 items-center">
             <Avatar>
