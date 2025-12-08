@@ -89,7 +89,7 @@ const News = async () => {
 
         {/* Other News Stories */}
         <div className="grid mt-5 sm:mt-0 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {otherNews.slice(0, 4).map((item) => (
+          {otherNews.slice(0, 30).map((item) => (
             <SmallNewsCard key={item.id} newsItem={item} />
           ))}
         </div>
