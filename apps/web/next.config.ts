@@ -1,24 +1,22 @@
 import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
-  // TypeScript settings
+  output: "standalone", // ✅ REQUIRED for Docker standalone builds
+
   typescript: {
-    ignoreBuildErrors: true, // Skip type-checking during builds
+    ignoreBuildErrors: true,
   },
 
-  // ESLint settings
   eslint: {
-    ignoreDuringBuilds: true, // Skip ESLint checks during builds
+    ignoreDuringBuilds: true,
   },
 
-  // Experimental features
   experimental: {
     serverActions: {
-      bodySizeLimit: "100MB", // Increase body size limit for server actions
+      bodySizeLimit: "100MB",
     },
   },
 
-  // Image optimization settings
   images: {
     remotePatterns: [
       {
@@ -37,10 +35,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-
-  // Other potential customizations (uncomment if needed)
-  // reactStrictMode: true,
-  // outputFileTracing: false,
 }
 
 export default nextConfig
