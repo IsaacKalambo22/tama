@@ -1,3 +1,6 @@
+
+version: '3'
+
 services:
   tama-web:
     container_name: tama-web
@@ -34,4 +37,4 @@ services:
 # with each other, by using their container name as a hostname
 networks:
   dockploy_network:
-    external: true
+    driver: bridge
