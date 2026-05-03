@@ -5,14 +5,14 @@ services:
       context: .
       dockerfile: ./apps/web/Dockerfile
       args:
-        NEXT_PUBLIC_API_ENDPOINT: http://tama-api:8004
+        NEXT_PUBLIC_API_ENDPOINT: http://tama-api:8003
 
     image: tama-web
     restart: unless-stopped
     ports:
-      - 3004:3004
+      - 3019:3019
     networks:
-      - app_network
+      - dockploy_network
     env_file:
       - ./apps/web/.env.prod
 
@@ -24,14 +24,14 @@ services:
     image: tama-api
     restart: unless-stopped
     ports:
-      - 8004:8004
+      - 8003:8003
     networks:
-      - app_network
+      - dockploy_network
     env_file:
       - ./apps/api/.env.prod
 
 # Define a network, which allows containers to communicate
 # with each other, by using their container name as a hostname
 networks:
-  app_network:
+  dockploy_network:
     external: true

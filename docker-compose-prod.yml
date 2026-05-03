@@ -7,14 +7,14 @@ services:
       context: .
       dockerfile: ./apps/web/Dockerfile
       args:
-        NEXT_PUBLIC_API_ENDPOINT: http://iih-api:8000/identity-impact-hub
+        NEXT_PUBLIC_API_ENDPOINT: http://iih-api:8003/identity-impact-hub
 
     image: iih-web
     restart: unless-stopped
     ports:
-      - 3001:3000
+      - 3019:3019
     networks:
-      - iih_network
+      - dokploy-network
     env_file:
       - ./apps/web/.env.prod
 
@@ -26,9 +26,9 @@ services:
     image: iih-api
     restart: unless-stopped
     ports:
-      - 8001:8000
+      - 8003:8003
     networks:
-      - iih_network
+      - dokploy-network
     env_file:
       - ./apps/api/.env.prod
 
@@ -43,7 +43,7 @@ services:
     ports:
       - '5443:5432'
     networks:
-      - iih_network
+      - dokploy-network
     healthcheck:
       test:
         [
@@ -57,5 +57,5 @@ services:
 # Define a network, which allows containers to communicate
 # with each other, by using their container name as a hostname
 networks:
-  iih_network:
+  dockploy_network:
     external: true
