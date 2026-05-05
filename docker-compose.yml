@@ -60,12 +60,14 @@ services:
 
       # HTTP
       - traefik.http.routers.tama-api.rule=Host(`api.tamalawi.com`)
-      - traefik.http.routers.tama-api.entrypoints=web
+      - traefik.http.routers.tama-api.entrypoints=websecure
+      - traefik.http.routers.tama-api.service=tama-api
 
       # HTTPS
       - traefik.http.routers.tama-apisecure.rule=Host(`api.tamalawi.com`)
       - traefik.http.routers.tama-apisecure.entrypoints=websecure
       - traefik.http.routers.tama-apisecure.tls.certresolver=letsencrypt
+      - traefik.http.routers.tama-apisecure.service=tama-api
 
       # ✅ REQUIRED
       - traefik.http.services.tama-api.loadbalancer.server.port=8003
