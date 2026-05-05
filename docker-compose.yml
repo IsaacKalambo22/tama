@@ -1,4 +1,3 @@
-
 version: '3'
 
 services:
@@ -12,29 +11,66 @@ services:
 
     image: tama-web
     restart: unless-stopped
+
+    # ❌ Remove ports (Traefik handles access)
     ports:
       - 3019:3019
+
     networks:
-      - dockploy_network
+      - dokploy-network
+
     env_file:
       - ./apps/web/.env.prod
+
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=dokploy-network
+
+      # HTTP
+      - traefik.http.routers.tama-web.rule=Host(`tamalawi.com`) || Host(`www.tamalawi.com`)
+      - traefik.http.routers.tama-web.entrypoints=web
+
+      # HTTPS
+      - traefik.http.routers.tama-websecure.rule=Host(`tamalawi.com`) || Host(`www.tamalawi.com`)
+      - traefik.http.routers.tama-websecure.entrypoints=websecure
+      - traefik.http.routers.tama-websecure.tls.certresolver=letsencrypt
+
+      # ✅ REQUIRED
+      - traefik.http.services.tama-web.loadbalancer.server.port=3019
+
 
   tama-api:
     container_name: tama-api
     build:
       context: .
       dockerfile: ./apps/api/Dockerfile
+
     image: tama-api
     restart: unless-stopped
-    ports:
-      - 8003:8003
+
     networks:
-      - dockploy_network
+      - dokploy-network
+
     env_file:
       - ./apps/api/.env.prod
 
-# Define a network, which allows containers to communicate
-# with each other, by using their container name as a hostname
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=dokploy-network
+
+      # HTTP
+      - traefik.http.routers.tama-api.rule=Host(`api.tamalawi.com`)
+      - traefik.http.routers.tama-api.entrypoints=web
+
+      # HTTPS
+      - traefik.http.routers.tama-apisecure.rule=Host(`api.tamalawi.com`)
+      - traefik.http.routers.tama-apisecure.entrypoints=websecure
+      - traefik.http.routers.tama-apisecure.tls.certresolver=letsencrypt
+
+      # ✅ REQUIRED
+      - traefik.http.services.tama-api.loadbalancer.server.port=8003
+
+
 networks:
-  dockploy_network:
-    driver: bridge
+  dokploy-network:
+    external: true
