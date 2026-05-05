@@ -22,23 +22,29 @@ services:
       - traefik.enable=true
       - traefik.docker.network=dokploy-network
 
-      # ----------------------------
+      # =========================
+      # WEB ROUTER PRIORITY (HIGHEST)
+      # =========================
+      - traefik.http.routers.tama-web.priority=1000
+      - traefik.http.routers.tama-websecure.priority=1000
+
+      # =========================
       # HTTP (redirect only)
-      # ----------------------------
+      # =========================
       - traefik.http.routers.tama-web.rule=Host(`tamalawi.com`) || Host(`www.tamalawi.com`)
       - traefik.http.routers.tama-web.entrypoints=web
       - traefik.http.routers.tama-web.middlewares=redirect-to-https@file
 
-      # ----------------------------
-      # HTTPS (single clean router)
-      # ----------------------------
+      # =========================
+      # HTTPS (main web entry)
+      # =========================
       - traefik.http.routers.tama-websecure.rule=Host(`tamalawi.com`) || Host(`www.tamalawi.com`)
       - traefik.http.routers.tama-websecure.entrypoints=websecure
       - traefik.http.routers.tama-websecure.tls.certresolver=letsencrypt
 
-      # ----------------------------
-      # SERVICE (ONLY ONCE)
-      # ----------------------------
+      # =========================
+      # SERVICE
+      # =========================
       - traefik.http.services.tama-web.loadbalancer.server.port=3019
 
 
@@ -61,23 +67,29 @@ services:
       - traefik.enable=true
       - traefik.docker.network=dokploy-network
 
-      # ----------------------------
-      # API HTTP (redirect)
-      # ----------------------------
+      # =========================
+      # API ROUTER PRIORITY
+      # =========================
+      - traefik.http.routers.tama-api.priority=1000
+      - traefik.http.routers.tama-apisecure.priority=1000
+
+      # =========================
+      # HTTP (redirect)
+      # =========================
       - traefik.http.routers.tama-api.rule=Host(`api.tamalawi.com`)
       - traefik.http.routers.tama-api.entrypoints=web
       - traefik.http.routers.tama-api.middlewares=redirect-to-https@file
 
-      # ----------------------------
-      # API HTTPS
-      # ----------------------------
+      # =========================
+      # HTTPS API
+      # =========================
       - traefik.http.routers.tama-apisecure.rule=Host(`api.tamalawi.com`)
       - traefik.http.routers.tama-apisecure.entrypoints=websecure
       - traefik.http.routers.tama-apisecure.tls.certresolver=letsencrypt
 
-      # ----------------------------
-      # SERVICE (ONLY ONCE)
-      # ----------------------------
+      # =========================
+      # SERVICE
+      # =========================
       - traefik.http.services.tama-api.loadbalancer.server.port=8003
 
 
