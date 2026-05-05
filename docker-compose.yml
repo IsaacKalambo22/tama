@@ -12,10 +12,6 @@ services:
     image: tama-web
     restart: unless-stopped
 
-    # ❌ IMPORTANT: remove port exposure when using Traefik
-    # ports:
-    #   - 3019:3019
-
     networks:
       - dokploy-network
 
@@ -26,23 +22,23 @@ services:
       - traefik.enable=true
       - traefik.docker.network=dokploy-network
 
-      # =========================
-      # WEB ROUTING (HTTP)
-      # =========================
+      # ----------------------------
+      # HTTP (redirect only)
+      # ----------------------------
       - traefik.http.routers.tama-web.rule=Host(`tamalawi.com`) || Host(`www.tamalawi.com`)
       - traefik.http.routers.tama-web.entrypoints=web
       - traefik.http.routers.tama-web.middlewares=redirect-to-https@file
 
-      # =========================
-      # WEB ROUTING (HTTPS)
-      # =========================
+      # ----------------------------
+      # HTTPS (single clean router)
+      # ----------------------------
       - traefik.http.routers.tama-websecure.rule=Host(`tamalawi.com`) || Host(`www.tamalawi.com`)
       - traefik.http.routers.tama-websecure.entrypoints=websecure
       - traefik.http.routers.tama-websecure.tls.certresolver=letsencrypt
 
-      # =========================
-      # NEXT.JS INTERNAL PORT
-      # =========================
+      # ----------------------------
+      # SERVICE (ONLY ONCE)
+      # ----------------------------
       - traefik.http.services.tama-web.loadbalancer.server.port=3019
 
 
@@ -65,23 +61,23 @@ services:
       - traefik.enable=true
       - traefik.docker.network=dokploy-network
 
-      # =========================
-      # API ROUTING (HTTP)
-      # =========================
+      # ----------------------------
+      # API HTTP (redirect)
+      # ----------------------------
       - traefik.http.routers.tama-api.rule=Host(`api.tamalawi.com`)
       - traefik.http.routers.tama-api.entrypoints=web
       - traefik.http.routers.tama-api.middlewares=redirect-to-https@file
 
-      # =========================
-      # API ROUTING (HTTPS)
-      # =========================
+      # ----------------------------
+      # API HTTPS
+      # ----------------------------
       - traefik.http.routers.tama-apisecure.rule=Host(`api.tamalawi.com`)
       - traefik.http.routers.tama-apisecure.entrypoints=websecure
       - traefik.http.routers.tama-apisecure.tls.certresolver=letsencrypt
 
-      # =========================
-      # API INTERNAL PORT
-      # =========================
+      # ----------------------------
+      # SERVICE (ONLY ONCE)
+      # ----------------------------
       - traefik.http.services.tama-api.loadbalancer.server.port=8003
 
 
