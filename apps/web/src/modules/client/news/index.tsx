@@ -56,7 +56,7 @@ const News = async () => {
               <div className="w-full sm:w-1/2 flex items-center justify-center bg-gray-50 rounded-l-2xl overflow-hidden max-h-[22rem]">
                 <Image
                   src={mostRecent.imageUrl}
-                  unoptimized
+
                   alt={mostRecent.title}
                   width={800}
                   height={600}
@@ -111,7 +111,7 @@ const SmallNewsCard = ({ newsItem }: SmallNewsProps) => {
         <div className="w-full h-[12rem] flex items-center justify-center bg-gray-50 rounded-2xl overflow-hidden">
           <Image
             src={imageUrl}
-            unoptimized
+
             alt={title}
             width={400}
             height={300}
