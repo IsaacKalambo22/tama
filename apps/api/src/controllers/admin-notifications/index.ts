@@ -215,7 +215,7 @@ export const getNotificationBatches = async (
  * schedule). Once SENT or CANCELLED, a batch is immutable history.
  */
 export const updateNotificationBatch = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const senderId = req.user!.id
@@ -319,7 +319,7 @@ export const updateNotificationBatch = async (
  * Cancels a still-DRAFT/SCHEDULED batch. The sweep skips CANCELLED batches.
  */
 export const cancelNotificationBatch = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const senderId = req.user!.id

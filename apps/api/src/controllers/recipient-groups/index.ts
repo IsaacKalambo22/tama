@@ -33,7 +33,7 @@ export const getRecipientGroups = async (
 
 /** GET /admin/recipient-groups/:id — includes full member list. */
 export const getRecipientGroupById = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -110,7 +110,7 @@ export const createRecipientGroup = async (
 
 /** PATCH /admin/recipient-groups/:id — rename a group. */
 export const updateRecipientGroup = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -147,7 +147,7 @@ export const updateRecipientGroup = async (
 
 /** DELETE /admin/recipient-groups/:id */
 export const deleteRecipientGroup = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -178,7 +178,7 @@ export const deleteRecipientGroup = async (
 
 /** POST /admin/recipient-groups/:id/members — bulk add members. */
 export const addRecipientGroupMembers = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -227,7 +227,7 @@ export const addRecipientGroupMembers = async (
 
 /** DELETE /admin/recipient-groups/:id/members/:userId */
 export const removeRecipientGroupMember = async (
-  req: Request,
+  req: Request<{ id: string; userId: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id, userId } = req.params

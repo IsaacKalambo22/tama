@@ -86,7 +86,7 @@ export const getUnreadCount = async (
  * single request instead of two racing ones.
  */
 export const getNotificationById = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const recipientId = req.user!.id
@@ -128,7 +128,7 @@ export const getNotificationById = async (
 
 /** PATCH /notifications/:id/read */
 export const markNotificationRead = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const recipientId = req.user!.id
