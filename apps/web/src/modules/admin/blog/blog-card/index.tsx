@@ -19,7 +19,7 @@ const BlogCard = ({ blog }: BlogCardProps) => {
         src={imageUrl}
         alt={title}
         width={400}
-        unoptimized
+
         height={250}
         className="rounded-2xl w-full mb-4 h-[12rem]"
       />
