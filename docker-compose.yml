@@ -1,4 +1,26 @@
 services:
+  db:
+    image: postgres:17-alpine3.21
+    container_name: tama-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: tama
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - '5433:5432'
+    networks:
+      - app_network
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'pg_isready -U postgres -d postgres',
+        ]
+      interval: 5s
+      timeout: 2s
+      retries: 20
+
   tama-web:
     container_name: tama-web
     build:
@@ -15,6 +37,9 @@ services:
       - app_network
     env_file:
       - ./apps/web/.env.prod
+    depends_on:
+      db:
+        condition: service_healthy
 
   tama-api:
     container_name: tama-api
@@ -29,6 +54,9 @@ services:
       - app_network
     env_file:
       - ./apps/api/.env.prod
+    depends_on:
+      db:
+        condition: service_healthy
 
 # Define a network, which allows containers to communicate
 # with each other, by using their container name as a hostname

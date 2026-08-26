@@ -2,7 +2,7 @@ FROM node:22-alpine AS base
 
 # Setup pnpm environment
 ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
+ENV PATH="/pnpm:/pnpm/bin:$PATH"
 
 RUN corepack enable
 RUN corepack prepare pnpm@latest --activate

@@ -11,6 +11,16 @@ export const signUpSchema = z.object({
   email: z.string().email({
     message: "Invalid email address.",
   }),
+
+  phoneNumber: z
+    .string()
+    .min(10, {
+      message: "Phone number must be at least 10 characters.",
+    })
+    .optional(),
+
+  councilId: z.string().optional(),
+  districtId: z.string().optional(),
 })
 
 export const signInSchema = z.object({

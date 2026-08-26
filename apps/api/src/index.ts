@@ -9,7 +9,9 @@ import { bootstrapAdmin } from "./controllers/auth"
 /* ROUTE IMPORTS */
 import auth from "./routes/auth"
 import blogs from "./routes/blog"
+import councils from "./routes/council"
 import councilLists from "./routes/council-list"
+import districts from "./routes/district"
 import events from "./routes/events"
 import forms from "./routes/form"
 import home from "./routes/home"
@@ -64,6 +66,8 @@ app.use("/events", events)
 app.use("/vacancies", vacancies)
 app.use("/services", services)
 app.use("/council-lists", councilLists)
+app.use("/councils", councils)
+app.use("/districts", districts)
 app.use("/reports-publications", reportsPublications)
 
 /* SERVER */

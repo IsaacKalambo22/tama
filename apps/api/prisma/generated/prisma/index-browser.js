@@ -121,6 +121,22 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.CouncilScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.DistrictScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  councilId: 'councilId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -131,6 +147,8 @@ exports.Prisma.UserScalarFieldEnum = {
   district: 'district',
   about: 'about',
   role: 'role',
+  councilId: 'councilId',
+  districtId: 'districtId',
   lastLogin: 'lastLogin',
   isVerified: 'isVerified',
   resetPasswordToken: 'resetPasswordToken',
@@ -226,6 +244,7 @@ exports.Prisma.CouncilListScalarFieldEnum = {
   council: 'council',
   firstAlternateCouncillor: 'firstAlternateCouncillor',
   secondAlternateCouncillor: 'secondAlternateCouncillor',
+  councilId: 'councilId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -300,12 +319,15 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 exports.Role = exports.$Enums.Role = {
-  ADMIN: 'ADMIN',
-  MANAGER: 'MANAGER',
-  USER: 'USER'
+  SUPER_ADMIN: 'SUPER_ADMIN',
+  COUNCIL_ADMIN: 'COUNCIL_ADMIN',
+  DISTRICT_ADMIN: 'DISTRICT_ADMIN',
+  FARMER: 'FARMER'
 };
 
 exports.Prisma.ModelName = {
+  Council: 'Council',
+  District: 'District',
   User: 'User',
   Shop: 'Shop',
   ReportAndPublication: 'ReportAndPublication',

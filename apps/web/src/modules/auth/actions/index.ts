@@ -46,10 +46,9 @@ export const signInWithCredentials = async (
 }
 
 export const signUp = async (params: AuthCredentials) => {
-  const { fullName, email } = params
+  const { fullName, email, phoneNumber, councilId, districtId } = params
 
   try {
-    // Step 1: Register the user
     const registrationResponse = await fetch(
       `${config.env.baseUrl}/auth/register`,
       {
@@ -60,11 +59,14 @@ export const signUp = async (params: AuthCredentials) => {
         body: JSON.stringify({
           email,
           name: fullName,
+          phoneNumber: phoneNumber || "",
+          role: "FARMER",
+          councilId: councilId || undefined,
+          districtId: districtId || undefined,
         }),
       }
     )
 
-    // Step 2: Check for errors in the registration response
     if (!registrationResponse.ok) {
       const registrationError = await registrationResponse.json()
       return {
@@ -74,26 +76,8 @@ export const signUp = async (params: AuthCredentials) => {
       }
     }
 
-    // Step 3: Sign in the user with the credentials (after successful registration)
-    // const signInResult =
-    //   await signInWithCredentials({
-    //     email,
-    //     password,
-    //   });
-
-    // if (!signInResult.success) {
-    //   return {
-    //     success: false,
-    //     error:
-    //       signInResult.error ||
-    //       'Sign-in failed. Please check your credentials.',
-    //   };
-    // }
-
-    // If everything is successful
     return { success: true }
   } catch (error) {
-    // General error handling
     console.log(error, "Signup error")
     return {
       success: false,

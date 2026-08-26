@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { UserProps } from "@/lib/api"
 import { formatDateTime } from "@/lib/utils"
+import { ROLE_LABELS } from "@/modules/admin/constants"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, Eye, Pencil, Trash } from "lucide-react"
 import { useSession } from "next-auth/react"
@@ -55,7 +56,27 @@ export const userColumns: ColumnDef<UserProps>[] = [
     ),
     cell: ({ row }) => (
       <div className="flex ml-4 gap-2 items-center max-sm:hidden">
-        {row.getValue("role")}
+        <span className="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
+          {ROLE_LABELS[row.getValue("role") as string] || row.getValue("role")}
+        </span>
+      </div>
+    ),
+  },
+  {
+    accessorKey: "councilName",
+    header: "Council",
+    cell: ({ row }) => (
+      <div className="flex ml-4 gap-2 items-center max-sm:hidden">
+        {row.original.councilName || "-"}
+      </div>
+    ),
+  },
+  {
+    accessorKey: "districtName",
+    header: "District",
+    cell: ({ row }) => (
+      <div className="flex ml-4 gap-2 items-center max-sm:hidden">
+        {row.original.districtName || "-"}
       </div>
     ),
   },
@@ -110,11 +131,10 @@ export const userColumns: ColumnDef<UserProps>[] = [
       const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
       const [isViewModalOpen, setViewModalOpen] = useState(false)
 
-      const { data: session } = useSession() // Get the current session
+      const { data: session } = useSession()
 
-      // Extract the role from the session
-      const role = session?.role // Ensure role is stored in the session
-      console.log({ session })
+      const role = session?.role
+
       const handleOpenEditModal = () => setEditModalOpen(true)
       const handleCloseEditModal = () => setEditModalOpen(false)
 
@@ -134,8 +154,7 @@ export const userColumns: ColumnDef<UserProps>[] = [
             <Eye className="h-4 w-4" />
           </Button>
 
-          {/* Edit button - visible only to ADMIN */}
-          {role === "ADMIN" && (
+          {role === "SUPER_ADMIN" && (
             <Button
               onClick={handleOpenEditModal}
               variant="ghost"
@@ -145,8 +164,7 @@ export const userColumns: ColumnDef<UserProps>[] = [
             </Button>
           )}
 
-          {/* Delete button - visible only to ADMIN */}
-          {role === "ADMIN" && (
+          {role === "SUPER_ADMIN" && (
             <Button
               onClick={handleOpenDeleteModal}
               variant="ghost"

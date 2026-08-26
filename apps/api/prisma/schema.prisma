@@ -15,9 +15,32 @@ datasource db {
 }
 
 enum Role {
-  ADMIN
-  MANAGER
-  USER
+  SUPER_ADMIN
+  COUNCIL_ADMIN
+  DISTRICT_ADMIN
+  FARMER
+}
+
+model Council {
+  id          String     @id @default(uuid())
+  name        String     @unique
+  description String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  districts   District[]
+  users       User[]
+}
+
+model District {
+  id          String   @id @default(uuid())
+  name        String
+  councilId   String
+  council     Council  @relation(fields: [councilId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  users       User[]
+
+  @@unique([name, councilId])
 }
 
 model User {
@@ -29,7 +52,11 @@ model User {
   avatar                     String?
   district                   String?
   about                      String?
-  role                       Role      @default(USER)
+  role                       Role      @default(FARMER)
+  councilId                  String?
+  council                    Council?  @relation(fields: [councilId], references: [id], onDelete: SetNull)
+  districtId                 String?
+  districtRel                District? @relation(fields: [districtId], references: [id], onDelete: SetNull)
   lastLogin                  DateTime  @default(now())
   isVerified                 Boolean   @default(false)
   resetPasswordToken         String?
@@ -125,6 +152,7 @@ model CouncilList {
   council                   String
   firstAlternateCouncillor  String
   secondAlternateCouncillor String
+  councilId                 String?
   createdAt                 DateTime @default(now())
   updatedAt                 DateTime @updatedAt
 }

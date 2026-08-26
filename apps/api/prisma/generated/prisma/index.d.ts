@@ -14,6 +14,16 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
 /**
+ * Model Council
+ * 
+ */
+export type Council = $Result.DefaultSelection<Prisma.$CouncilPayload>
+/**
+ * Model District
+ * 
+ */
+export type District = $Result.DefaultSelection<Prisma.$DistrictPayload>
+/**
  * Model User
  * 
  */
@@ -89,9 +99,10 @@ export type ImageText = $Result.DefaultSelection<Prisma.$ImageTextPayload>
  */
 export namespace $Enums {
   export const Role: {
-  ADMIN: 'ADMIN',
-  MANAGER: 'MANAGER',
-  USER: 'USER'
+  SUPER_ADMIN: 'SUPER_ADMIN',
+  COUNCIL_ADMIN: 'COUNCIL_ADMIN',
+  DISTRICT_ADMIN: 'DISTRICT_ADMIN',
+  FARMER: 'FARMER'
 };
 
 export type Role = (typeof Role)[keyof typeof Role]
@@ -109,8 +120,8 @@ export const Role: typeof $Enums.Role
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Users
- * const users = await prisma.user.findMany()
+ * // Fetch zero or more Councils
+ * const councils = await prisma.council.findMany()
  * ```
  *
  *
@@ -130,8 +141,8 @@ export class PrismaClient<
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Users
-   * const users = await prisma.user.findMany()
+   * // Fetch zero or more Councils
+   * const councils = await prisma.council.findMany()
    * ```
    *
    *
@@ -221,6 +232,26 @@ export class PrismaClient<
   }>>
 
       /**
+   * `prisma.council`: Exposes CRUD operations for the **Council** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Councils
+    * const councils = await prisma.council.findMany()
+    * ```
+    */
+  get council(): Prisma.CouncilDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.district`: Exposes CRUD operations for the **District** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Districts
+    * const districts = await prisma.district.findMany()
+    * ```
+    */
+  get district(): Prisma.DistrictDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
     * Example usage:
     * ```ts
@@ -800,6 +831,8 @@ export namespace Prisma {
 
 
   export const ModelName: {
+    Council: 'Council',
+    District: 'District',
     User: 'User',
     Shop: 'Shop',
     ReportAndPublication: 'ReportAndPublication',
@@ -832,10 +865,158 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "shop" | "reportAndPublication" | "form" | "blog" | "team" | "stat" | "news" | "councilList" | "event" | "vacancy" | "service" | "carousel" | "imageText"
+      modelProps: "council" | "district" | "user" | "shop" | "reportAndPublication" | "form" | "blog" | "team" | "stat" | "news" | "councilList" | "event" | "vacancy" | "service" | "carousel" | "imageText"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
+      Council: {
+        payload: Prisma.$CouncilPayload<ExtArgs>
+        fields: Prisma.CouncilFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CouncilFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CouncilPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CouncilFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CouncilPayload>
+          }
+          findFirst: {
+            args: Prisma.CouncilFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CouncilPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CouncilFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CouncilPayload>
+          }
+          findMany: {
+            args: Prisma.CouncilFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CouncilPayload>[]
+          }
+          create: {
+            args: Prisma.CouncilCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CouncilPayload>
+          }
+          createMany: {
+            args: Prisma.CouncilCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CouncilCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CouncilPayload>[]
+          }
+          delete: {
+            args: Prisma.CouncilDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CouncilPayload>
+          }
+          update: {
+            args: Prisma.CouncilUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CouncilPayload>
+          }
+          deleteMany: {
+            args: Prisma.CouncilDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CouncilUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CouncilUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CouncilPayload>[]
+          }
+          upsert: {
+            args: Prisma.CouncilUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CouncilPayload>
+          }
+          aggregate: {
+            args: Prisma.CouncilAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCouncil>
+          }
+          groupBy: {
+            args: Prisma.CouncilGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CouncilGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CouncilCountArgs<ExtArgs>
+            result: $Utils.Optional<CouncilCountAggregateOutputType> | number
+          }
+        }
+      }
+      District: {
+        payload: Prisma.$DistrictPayload<ExtArgs>
+        fields: Prisma.DistrictFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DistrictFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DistrictPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DistrictFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DistrictPayload>
+          }
+          findFirst: {
+            args: Prisma.DistrictFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DistrictPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DistrictFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DistrictPayload>
+          }
+          findMany: {
+            args: Prisma.DistrictFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DistrictPayload>[]
+          }
+          create: {
+            args: Prisma.DistrictCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DistrictPayload>
+          }
+          createMany: {
+            args: Prisma.DistrictCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DistrictCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DistrictPayload>[]
+          }
+          delete: {
+            args: Prisma.DistrictDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DistrictPayload>
+          }
+          update: {
+            args: Prisma.DistrictUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DistrictPayload>
+          }
+          deleteMany: {
+            args: Prisma.DistrictDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DistrictUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DistrictUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DistrictPayload>[]
+          }
+          upsert: {
+            args: Prisma.DistrictUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DistrictPayload>
+          }
+          aggregate: {
+            args: Prisma.DistrictAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDistrict>
+          }
+          groupBy: {
+            args: Prisma.DistrictGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DistrictGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DistrictCountArgs<ExtArgs>
+            result: $Utils.Optional<DistrictCountAggregateOutputType> | number
+          }
+        }
+      }
       User: {
         payload: Prisma.$UserPayload<ExtArgs>
         fields: Prisma.UserFieldRefs
@@ -1968,6 +2149,8 @@ export namespace Prisma {
     omit?: Prisma.GlobalOmitConfig
   }
   export type GlobalOmitConfig = {
+    council?: CouncilOmit
+    district?: DistrictOmit
     user?: UserOmit
     shop?: ShopOmit
     reportAndPublication?: ReportAndPublicationOmit
@@ -2057,10 +2240,2266 @@ export namespace Prisma {
    */
 
 
+  /**
+   * Count Type CouncilCountOutputType
+   */
+
+  export type CouncilCountOutputType = {
+    districts: number
+    users: number
+  }
+
+  export type CouncilCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    districts?: boolean | CouncilCountOutputTypeCountDistrictsArgs
+    users?: boolean | CouncilCountOutputTypeCountUsersArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CouncilCountOutputType without action
+   */
+  export type CouncilCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CouncilCountOutputType
+     */
+    select?: CouncilCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CouncilCountOutputType without action
+   */
+  export type CouncilCountOutputTypeCountDistrictsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DistrictWhereInput
+  }
+
+  /**
+   * CouncilCountOutputType without action
+   */
+  export type CouncilCountOutputTypeCountUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
+  }
+
+
+  /**
+   * Count Type DistrictCountOutputType
+   */
+
+  export type DistrictCountOutputType = {
+    users: number
+  }
+
+  export type DistrictCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    users?: boolean | DistrictCountOutputTypeCountUsersArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * DistrictCountOutputType without action
+   */
+  export type DistrictCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DistrictCountOutputType
+     */
+    select?: DistrictCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * DistrictCountOutputType without action
+   */
+  export type DistrictCountOutputTypeCountUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
+  }
+
 
   /**
    * Models
    */
+
+  /**
+   * Model Council
+   */
+
+  export type AggregateCouncil = {
+    _count: CouncilCountAggregateOutputType | null
+    _min: CouncilMinAggregateOutputType | null
+    _max: CouncilMaxAggregateOutputType | null
+  }
+
+  export type CouncilMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CouncilMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CouncilCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CouncilMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CouncilMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CouncilCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CouncilAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Council to aggregate.
+     */
+    where?: CouncilWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Councils to fetch.
+     */
+    orderBy?: CouncilOrderByWithRelationInput | CouncilOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CouncilWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Councils from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Councils.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Councils
+    **/
+    _count?: true | CouncilCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CouncilMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CouncilMaxAggregateInputType
+  }
+
+  export type GetCouncilAggregateType<T extends CouncilAggregateArgs> = {
+        [P in keyof T & keyof AggregateCouncil]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCouncil[P]>
+      : GetScalarType<T[P], AggregateCouncil[P]>
+  }
+
+
+
+
+  export type CouncilGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CouncilWhereInput
+    orderBy?: CouncilOrderByWithAggregationInput | CouncilOrderByWithAggregationInput[]
+    by: CouncilScalarFieldEnum[] | CouncilScalarFieldEnum
+    having?: CouncilScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CouncilCountAggregateInputType | true
+    _min?: CouncilMinAggregateInputType
+    _max?: CouncilMaxAggregateInputType
+  }
+
+  export type CouncilGroupByOutputType = {
+    id: string
+    name: string
+    description: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: CouncilCountAggregateOutputType | null
+    _min: CouncilMinAggregateOutputType | null
+    _max: CouncilMaxAggregateOutputType | null
+  }
+
+  type GetCouncilGroupByPayload<T extends CouncilGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CouncilGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CouncilGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CouncilGroupByOutputType[P]>
+            : GetScalarType<T[P], CouncilGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CouncilSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    districts?: boolean | Council$districtsArgs<ExtArgs>
+    users?: boolean | Council$usersArgs<ExtArgs>
+    _count?: boolean | CouncilCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["council"]>
+
+  export type CouncilSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["council"]>
+
+  export type CouncilSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["council"]>
+
+  export type CouncilSelectScalar = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CouncilOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["council"]>
+  export type CouncilInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    districts?: boolean | Council$districtsArgs<ExtArgs>
+    users?: boolean | Council$usersArgs<ExtArgs>
+    _count?: boolean | CouncilCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type CouncilIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type CouncilIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $CouncilPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Council"
+    objects: {
+      districts: Prisma.$DistrictPayload<ExtArgs>[]
+      users: Prisma.$UserPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      description: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["council"]>
+    composites: {}
+  }
+
+  type CouncilGetPayload<S extends boolean | null | undefined | CouncilDefaultArgs> = $Result.GetResult<Prisma.$CouncilPayload, S>
+
+  type CouncilCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CouncilFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CouncilCountAggregateInputType | true
+    }
+
+  export interface CouncilDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Council'], meta: { name: 'Council' } }
+    /**
+     * Find zero or one Council that matches the filter.
+     * @param {CouncilFindUniqueArgs} args - Arguments to find a Council
+     * @example
+     * // Get one Council
+     * const council = await prisma.council.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CouncilFindUniqueArgs>(args: SelectSubset<T, CouncilFindUniqueArgs<ExtArgs>>): Prisma__CouncilClient<$Result.GetResult<Prisma.$CouncilPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Council that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CouncilFindUniqueOrThrowArgs} args - Arguments to find a Council
+     * @example
+     * // Get one Council
+     * const council = await prisma.council.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CouncilFindUniqueOrThrowArgs>(args: SelectSubset<T, CouncilFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CouncilClient<$Result.GetResult<Prisma.$CouncilPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Council that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CouncilFindFirstArgs} args - Arguments to find a Council
+     * @example
+     * // Get one Council
+     * const council = await prisma.council.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CouncilFindFirstArgs>(args?: SelectSubset<T, CouncilFindFirstArgs<ExtArgs>>): Prisma__CouncilClient<$Result.GetResult<Prisma.$CouncilPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Council that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CouncilFindFirstOrThrowArgs} args - Arguments to find a Council
+     * @example
+     * // Get one Council
+     * const council = await prisma.council.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CouncilFindFirstOrThrowArgs>(args?: SelectSubset<T, CouncilFindFirstOrThrowArgs<ExtArgs>>): Prisma__CouncilClient<$Result.GetResult<Prisma.$CouncilPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Councils that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CouncilFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Councils
+     * const councils = await prisma.council.findMany()
+     * 
+     * // Get first 10 Councils
+     * const councils = await prisma.council.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const councilWithIdOnly = await prisma.council.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CouncilFindManyArgs>(args?: SelectSubset<T, CouncilFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CouncilPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Council.
+     * @param {CouncilCreateArgs} args - Arguments to create a Council.
+     * @example
+     * // Create one Council
+     * const Council = await prisma.council.create({
+     *   data: {
+     *     // ... data to create a Council
+     *   }
+     * })
+     * 
+     */
+    create<T extends CouncilCreateArgs>(args: SelectSubset<T, CouncilCreateArgs<ExtArgs>>): Prisma__CouncilClient<$Result.GetResult<Prisma.$CouncilPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Councils.
+     * @param {CouncilCreateManyArgs} args - Arguments to create many Councils.
+     * @example
+     * // Create many Councils
+     * const council = await prisma.council.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CouncilCreateManyArgs>(args?: SelectSubset<T, CouncilCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Councils and returns the data saved in the database.
+     * @param {CouncilCreateManyAndReturnArgs} args - Arguments to create many Councils.
+     * @example
+     * // Create many Councils
+     * const council = await prisma.council.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Councils and only return the `id`
+     * const councilWithIdOnly = await prisma.council.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CouncilCreateManyAndReturnArgs>(args?: SelectSubset<T, CouncilCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CouncilPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Council.
+     * @param {CouncilDeleteArgs} args - Arguments to delete one Council.
+     * @example
+     * // Delete one Council
+     * const Council = await prisma.council.delete({
+     *   where: {
+     *     // ... filter to delete one Council
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CouncilDeleteArgs>(args: SelectSubset<T, CouncilDeleteArgs<ExtArgs>>): Prisma__CouncilClient<$Result.GetResult<Prisma.$CouncilPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Council.
+     * @param {CouncilUpdateArgs} args - Arguments to update one Council.
+     * @example
+     * // Update one Council
+     * const council = await prisma.council.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CouncilUpdateArgs>(args: SelectSubset<T, CouncilUpdateArgs<ExtArgs>>): Prisma__CouncilClient<$Result.GetResult<Prisma.$CouncilPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Councils.
+     * @param {CouncilDeleteManyArgs} args - Arguments to filter Councils to delete.
+     * @example
+     * // Delete a few Councils
+     * const { count } = await prisma.council.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CouncilDeleteManyArgs>(args?: SelectSubset<T, CouncilDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Councils.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CouncilUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Councils
+     * const council = await prisma.council.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CouncilUpdateManyArgs>(args: SelectSubset<T, CouncilUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Councils and returns the data updated in the database.
+     * @param {CouncilUpdateManyAndReturnArgs} args - Arguments to update many Councils.
+     * @example
+     * // Update many Councils
+     * const council = await prisma.council.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Councils and only return the `id`
+     * const councilWithIdOnly = await prisma.council.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CouncilUpdateManyAndReturnArgs>(args: SelectSubset<T, CouncilUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CouncilPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Council.
+     * @param {CouncilUpsertArgs} args - Arguments to update or create a Council.
+     * @example
+     * // Update or create a Council
+     * const council = await prisma.council.upsert({
+     *   create: {
+     *     // ... data to create a Council
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Council we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CouncilUpsertArgs>(args: SelectSubset<T, CouncilUpsertArgs<ExtArgs>>): Prisma__CouncilClient<$Result.GetResult<Prisma.$CouncilPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Councils.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CouncilCountArgs} args - Arguments to filter Councils to count.
+     * @example
+     * // Count the number of Councils
+     * const count = await prisma.council.count({
+     *   where: {
+     *     // ... the filter for the Councils we want to count
+     *   }
+     * })
+    **/
+    count<T extends CouncilCountArgs>(
+      args?: Subset<T, CouncilCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CouncilCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Council.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CouncilAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CouncilAggregateArgs>(args: Subset<T, CouncilAggregateArgs>): Prisma.PrismaPromise<GetCouncilAggregateType<T>>
+
+    /**
+     * Group by Council.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CouncilGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CouncilGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CouncilGroupByArgs['orderBy'] }
+        : { orderBy?: CouncilGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CouncilGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCouncilGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Council model
+   */
+  readonly fields: CouncilFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Council.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CouncilClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    districts<T extends Council$districtsArgs<ExtArgs> = {}>(args?: Subset<T, Council$districtsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DistrictPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    users<T extends Council$usersArgs<ExtArgs> = {}>(args?: Subset<T, Council$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Council model
+   */
+  interface CouncilFieldRefs {
+    readonly id: FieldRef<"Council", 'String'>
+    readonly name: FieldRef<"Council", 'String'>
+    readonly description: FieldRef<"Council", 'String'>
+    readonly createdAt: FieldRef<"Council", 'DateTime'>
+    readonly updatedAt: FieldRef<"Council", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Council findUnique
+   */
+  export type CouncilFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Council
+     */
+    select?: CouncilSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Council
+     */
+    omit?: CouncilOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CouncilInclude<ExtArgs> | null
+    /**
+     * Filter, which Council to fetch.
+     */
+    where: CouncilWhereUniqueInput
+  }
+
+  /**
+   * Council findUniqueOrThrow
+   */
+  export type CouncilFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Council
+     */
+    select?: CouncilSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Council
+     */
+    omit?: CouncilOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CouncilInclude<ExtArgs> | null
+    /**
+     * Filter, which Council to fetch.
+     */
+    where: CouncilWhereUniqueInput
+  }
+
+  /**
+   * Council findFirst
+   */
+  export type CouncilFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Council
+     */
+    select?: CouncilSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Council
+     */
+    omit?: CouncilOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CouncilInclude<ExtArgs> | null
+    /**
+     * Filter, which Council to fetch.
+     */
+    where?: CouncilWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Councils to fetch.
+     */
+    orderBy?: CouncilOrderByWithRelationInput | CouncilOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Councils.
+     */
+    cursor?: CouncilWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Councils from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Councils.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Councils.
+     */
+    distinct?: CouncilScalarFieldEnum | CouncilScalarFieldEnum[]
+  }
+
+  /**
+   * Council findFirstOrThrow
+   */
+  export type CouncilFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Council
+     */
+    select?: CouncilSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Council
+     */
+    omit?: CouncilOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CouncilInclude<ExtArgs> | null
+    /**
+     * Filter, which Council to fetch.
+     */
+    where?: CouncilWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Councils to fetch.
+     */
+    orderBy?: CouncilOrderByWithRelationInput | CouncilOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Councils.
+     */
+    cursor?: CouncilWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Councils from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Councils.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Councils.
+     */
+    distinct?: CouncilScalarFieldEnum | CouncilScalarFieldEnum[]
+  }
+
+  /**
+   * Council findMany
+   */
+  export type CouncilFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Council
+     */
+    select?: CouncilSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Council
+     */
+    omit?: CouncilOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CouncilInclude<ExtArgs> | null
+    /**
+     * Filter, which Councils to fetch.
+     */
+    where?: CouncilWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Councils to fetch.
+     */
+    orderBy?: CouncilOrderByWithRelationInput | CouncilOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Councils.
+     */
+    cursor?: CouncilWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Councils from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Councils.
+     */
+    skip?: number
+    distinct?: CouncilScalarFieldEnum | CouncilScalarFieldEnum[]
+  }
+
+  /**
+   * Council create
+   */
+  export type CouncilCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Council
+     */
+    select?: CouncilSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Council
+     */
+    omit?: CouncilOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CouncilInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Council.
+     */
+    data: XOR<CouncilCreateInput, CouncilUncheckedCreateInput>
+  }
+
+  /**
+   * Council createMany
+   */
+  export type CouncilCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Councils.
+     */
+    data: CouncilCreateManyInput | CouncilCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Council createManyAndReturn
+   */
+  export type CouncilCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Council
+     */
+    select?: CouncilSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Council
+     */
+    omit?: CouncilOmit<ExtArgs> | null
+    /**
+     * The data used to create many Councils.
+     */
+    data: CouncilCreateManyInput | CouncilCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Council update
+   */
+  export type CouncilUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Council
+     */
+    select?: CouncilSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Council
+     */
+    omit?: CouncilOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CouncilInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Council.
+     */
+    data: XOR<CouncilUpdateInput, CouncilUncheckedUpdateInput>
+    /**
+     * Choose, which Council to update.
+     */
+    where: CouncilWhereUniqueInput
+  }
+
+  /**
+   * Council updateMany
+   */
+  export type CouncilUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Councils.
+     */
+    data: XOR<CouncilUpdateManyMutationInput, CouncilUncheckedUpdateManyInput>
+    /**
+     * Filter which Councils to update
+     */
+    where?: CouncilWhereInput
+    /**
+     * Limit how many Councils to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Council updateManyAndReturn
+   */
+  export type CouncilUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Council
+     */
+    select?: CouncilSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Council
+     */
+    omit?: CouncilOmit<ExtArgs> | null
+    /**
+     * The data used to update Councils.
+     */
+    data: XOR<CouncilUpdateManyMutationInput, CouncilUncheckedUpdateManyInput>
+    /**
+     * Filter which Councils to update
+     */
+    where?: CouncilWhereInput
+    /**
+     * Limit how many Councils to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Council upsert
+   */
+  export type CouncilUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Council
+     */
+    select?: CouncilSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Council
+     */
+    omit?: CouncilOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CouncilInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Council to update in case it exists.
+     */
+    where: CouncilWhereUniqueInput
+    /**
+     * In case the Council found by the `where` argument doesn't exist, create a new Council with this data.
+     */
+    create: XOR<CouncilCreateInput, CouncilUncheckedCreateInput>
+    /**
+     * In case the Council was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CouncilUpdateInput, CouncilUncheckedUpdateInput>
+  }
+
+  /**
+   * Council delete
+   */
+  export type CouncilDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Council
+     */
+    select?: CouncilSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Council
+     */
+    omit?: CouncilOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CouncilInclude<ExtArgs> | null
+    /**
+     * Filter which Council to delete.
+     */
+    where: CouncilWhereUniqueInput
+  }
+
+  /**
+   * Council deleteMany
+   */
+  export type CouncilDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Councils to delete
+     */
+    where?: CouncilWhereInput
+    /**
+     * Limit how many Councils to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Council.districts
+   */
+  export type Council$districtsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the District
+     */
+    select?: DistrictSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the District
+     */
+    omit?: DistrictOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DistrictInclude<ExtArgs> | null
+    where?: DistrictWhereInput
+    orderBy?: DistrictOrderByWithRelationInput | DistrictOrderByWithRelationInput[]
+    cursor?: DistrictWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DistrictScalarFieldEnum | DistrictScalarFieldEnum[]
+  }
+
+  /**
+   * Council.users
+   */
+  export type Council$usersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    cursor?: UserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * Council without action
+   */
+  export type CouncilDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Council
+     */
+    select?: CouncilSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Council
+     */
+    omit?: CouncilOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CouncilInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model District
+   */
+
+  export type AggregateDistrict = {
+    _count: DistrictCountAggregateOutputType | null
+    _min: DistrictMinAggregateOutputType | null
+    _max: DistrictMaxAggregateOutputType | null
+  }
+
+  export type DistrictMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    councilId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DistrictMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    councilId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DistrictCountAggregateOutputType = {
+    id: number
+    name: number
+    councilId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DistrictMinAggregateInputType = {
+    id?: true
+    name?: true
+    councilId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DistrictMaxAggregateInputType = {
+    id?: true
+    name?: true
+    councilId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DistrictCountAggregateInputType = {
+    id?: true
+    name?: true
+    councilId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DistrictAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which District to aggregate.
+     */
+    where?: DistrictWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Districts to fetch.
+     */
+    orderBy?: DistrictOrderByWithRelationInput | DistrictOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DistrictWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Districts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Districts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Districts
+    **/
+    _count?: true | DistrictCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DistrictMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DistrictMaxAggregateInputType
+  }
+
+  export type GetDistrictAggregateType<T extends DistrictAggregateArgs> = {
+        [P in keyof T & keyof AggregateDistrict]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDistrict[P]>
+      : GetScalarType<T[P], AggregateDistrict[P]>
+  }
+
+
+
+
+  export type DistrictGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DistrictWhereInput
+    orderBy?: DistrictOrderByWithAggregationInput | DistrictOrderByWithAggregationInput[]
+    by: DistrictScalarFieldEnum[] | DistrictScalarFieldEnum
+    having?: DistrictScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DistrictCountAggregateInputType | true
+    _min?: DistrictMinAggregateInputType
+    _max?: DistrictMaxAggregateInputType
+  }
+
+  export type DistrictGroupByOutputType = {
+    id: string
+    name: string
+    councilId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: DistrictCountAggregateOutputType | null
+    _min: DistrictMinAggregateOutputType | null
+    _max: DistrictMaxAggregateOutputType | null
+  }
+
+  type GetDistrictGroupByPayload<T extends DistrictGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DistrictGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DistrictGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DistrictGroupByOutputType[P]>
+            : GetScalarType<T[P], DistrictGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DistrictSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    councilId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    council?: boolean | CouncilDefaultArgs<ExtArgs>
+    users?: boolean | District$usersArgs<ExtArgs>
+    _count?: boolean | DistrictCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["district"]>
+
+  export type DistrictSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    councilId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    council?: boolean | CouncilDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["district"]>
+
+  export type DistrictSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    councilId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    council?: boolean | CouncilDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["district"]>
+
+  export type DistrictSelectScalar = {
+    id?: boolean
+    name?: boolean
+    councilId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DistrictOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "councilId" | "createdAt" | "updatedAt", ExtArgs["result"]["district"]>
+  export type DistrictInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    council?: boolean | CouncilDefaultArgs<ExtArgs>
+    users?: boolean | District$usersArgs<ExtArgs>
+    _count?: boolean | DistrictCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type DistrictIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    council?: boolean | CouncilDefaultArgs<ExtArgs>
+  }
+  export type DistrictIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    council?: boolean | CouncilDefaultArgs<ExtArgs>
+  }
+
+  export type $DistrictPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "District"
+    objects: {
+      council: Prisma.$CouncilPayload<ExtArgs>
+      users: Prisma.$UserPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      councilId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["district"]>
+    composites: {}
+  }
+
+  type DistrictGetPayload<S extends boolean | null | undefined | DistrictDefaultArgs> = $Result.GetResult<Prisma.$DistrictPayload, S>
+
+  type DistrictCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DistrictFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DistrictCountAggregateInputType | true
+    }
+
+  export interface DistrictDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['District'], meta: { name: 'District' } }
+    /**
+     * Find zero or one District that matches the filter.
+     * @param {DistrictFindUniqueArgs} args - Arguments to find a District
+     * @example
+     * // Get one District
+     * const district = await prisma.district.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DistrictFindUniqueArgs>(args: SelectSubset<T, DistrictFindUniqueArgs<ExtArgs>>): Prisma__DistrictClient<$Result.GetResult<Prisma.$DistrictPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one District that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DistrictFindUniqueOrThrowArgs} args - Arguments to find a District
+     * @example
+     * // Get one District
+     * const district = await prisma.district.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DistrictFindUniqueOrThrowArgs>(args: SelectSubset<T, DistrictFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DistrictClient<$Result.GetResult<Prisma.$DistrictPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first District that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DistrictFindFirstArgs} args - Arguments to find a District
+     * @example
+     * // Get one District
+     * const district = await prisma.district.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DistrictFindFirstArgs>(args?: SelectSubset<T, DistrictFindFirstArgs<ExtArgs>>): Prisma__DistrictClient<$Result.GetResult<Prisma.$DistrictPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first District that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DistrictFindFirstOrThrowArgs} args - Arguments to find a District
+     * @example
+     * // Get one District
+     * const district = await prisma.district.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DistrictFindFirstOrThrowArgs>(args?: SelectSubset<T, DistrictFindFirstOrThrowArgs<ExtArgs>>): Prisma__DistrictClient<$Result.GetResult<Prisma.$DistrictPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Districts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DistrictFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Districts
+     * const districts = await prisma.district.findMany()
+     * 
+     * // Get first 10 Districts
+     * const districts = await prisma.district.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const districtWithIdOnly = await prisma.district.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DistrictFindManyArgs>(args?: SelectSubset<T, DistrictFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DistrictPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a District.
+     * @param {DistrictCreateArgs} args - Arguments to create a District.
+     * @example
+     * // Create one District
+     * const District = await prisma.district.create({
+     *   data: {
+     *     // ... data to create a District
+     *   }
+     * })
+     * 
+     */
+    create<T extends DistrictCreateArgs>(args: SelectSubset<T, DistrictCreateArgs<ExtArgs>>): Prisma__DistrictClient<$Result.GetResult<Prisma.$DistrictPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Districts.
+     * @param {DistrictCreateManyArgs} args - Arguments to create many Districts.
+     * @example
+     * // Create many Districts
+     * const district = await prisma.district.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DistrictCreateManyArgs>(args?: SelectSubset<T, DistrictCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Districts and returns the data saved in the database.
+     * @param {DistrictCreateManyAndReturnArgs} args - Arguments to create many Districts.
+     * @example
+     * // Create many Districts
+     * const district = await prisma.district.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Districts and only return the `id`
+     * const districtWithIdOnly = await prisma.district.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DistrictCreateManyAndReturnArgs>(args?: SelectSubset<T, DistrictCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DistrictPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a District.
+     * @param {DistrictDeleteArgs} args - Arguments to delete one District.
+     * @example
+     * // Delete one District
+     * const District = await prisma.district.delete({
+     *   where: {
+     *     // ... filter to delete one District
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DistrictDeleteArgs>(args: SelectSubset<T, DistrictDeleteArgs<ExtArgs>>): Prisma__DistrictClient<$Result.GetResult<Prisma.$DistrictPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one District.
+     * @param {DistrictUpdateArgs} args - Arguments to update one District.
+     * @example
+     * // Update one District
+     * const district = await prisma.district.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DistrictUpdateArgs>(args: SelectSubset<T, DistrictUpdateArgs<ExtArgs>>): Prisma__DistrictClient<$Result.GetResult<Prisma.$DistrictPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Districts.
+     * @param {DistrictDeleteManyArgs} args - Arguments to filter Districts to delete.
+     * @example
+     * // Delete a few Districts
+     * const { count } = await prisma.district.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DistrictDeleteManyArgs>(args?: SelectSubset<T, DistrictDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Districts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DistrictUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Districts
+     * const district = await prisma.district.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DistrictUpdateManyArgs>(args: SelectSubset<T, DistrictUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Districts and returns the data updated in the database.
+     * @param {DistrictUpdateManyAndReturnArgs} args - Arguments to update many Districts.
+     * @example
+     * // Update many Districts
+     * const district = await prisma.district.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Districts and only return the `id`
+     * const districtWithIdOnly = await prisma.district.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DistrictUpdateManyAndReturnArgs>(args: SelectSubset<T, DistrictUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DistrictPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one District.
+     * @param {DistrictUpsertArgs} args - Arguments to update or create a District.
+     * @example
+     * // Update or create a District
+     * const district = await prisma.district.upsert({
+     *   create: {
+     *     // ... data to create a District
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the District we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DistrictUpsertArgs>(args: SelectSubset<T, DistrictUpsertArgs<ExtArgs>>): Prisma__DistrictClient<$Result.GetResult<Prisma.$DistrictPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Districts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DistrictCountArgs} args - Arguments to filter Districts to count.
+     * @example
+     * // Count the number of Districts
+     * const count = await prisma.district.count({
+     *   where: {
+     *     // ... the filter for the Districts we want to count
+     *   }
+     * })
+    **/
+    count<T extends DistrictCountArgs>(
+      args?: Subset<T, DistrictCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DistrictCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a District.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DistrictAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DistrictAggregateArgs>(args: Subset<T, DistrictAggregateArgs>): Prisma.PrismaPromise<GetDistrictAggregateType<T>>
+
+    /**
+     * Group by District.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DistrictGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DistrictGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DistrictGroupByArgs['orderBy'] }
+        : { orderBy?: DistrictGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DistrictGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDistrictGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the District model
+   */
+  readonly fields: DistrictFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for District.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DistrictClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    council<T extends CouncilDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CouncilDefaultArgs<ExtArgs>>): Prisma__CouncilClient<$Result.GetResult<Prisma.$CouncilPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    users<T extends District$usersArgs<ExtArgs> = {}>(args?: Subset<T, District$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the District model
+   */
+  interface DistrictFieldRefs {
+    readonly id: FieldRef<"District", 'String'>
+    readonly name: FieldRef<"District", 'String'>
+    readonly councilId: FieldRef<"District", 'String'>
+    readonly createdAt: FieldRef<"District", 'DateTime'>
+    readonly updatedAt: FieldRef<"District", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * District findUnique
+   */
+  export type DistrictFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the District
+     */
+    select?: DistrictSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the District
+     */
+    omit?: DistrictOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DistrictInclude<ExtArgs> | null
+    /**
+     * Filter, which District to fetch.
+     */
+    where: DistrictWhereUniqueInput
+  }
+
+  /**
+   * District findUniqueOrThrow
+   */
+  export type DistrictFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the District
+     */
+    select?: DistrictSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the District
+     */
+    omit?: DistrictOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DistrictInclude<ExtArgs> | null
+    /**
+     * Filter, which District to fetch.
+     */
+    where: DistrictWhereUniqueInput
+  }
+
+  /**
+   * District findFirst
+   */
+  export type DistrictFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the District
+     */
+    select?: DistrictSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the District
+     */
+    omit?: DistrictOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DistrictInclude<ExtArgs> | null
+    /**
+     * Filter, which District to fetch.
+     */
+    where?: DistrictWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Districts to fetch.
+     */
+    orderBy?: DistrictOrderByWithRelationInput | DistrictOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Districts.
+     */
+    cursor?: DistrictWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Districts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Districts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Districts.
+     */
+    distinct?: DistrictScalarFieldEnum | DistrictScalarFieldEnum[]
+  }
+
+  /**
+   * District findFirstOrThrow
+   */
+  export type DistrictFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the District
+     */
+    select?: DistrictSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the District
+     */
+    omit?: DistrictOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DistrictInclude<ExtArgs> | null
+    /**
+     * Filter, which District to fetch.
+     */
+    where?: DistrictWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Districts to fetch.
+     */
+    orderBy?: DistrictOrderByWithRelationInput | DistrictOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Districts.
+     */
+    cursor?: DistrictWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Districts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Districts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Districts.
+     */
+    distinct?: DistrictScalarFieldEnum | DistrictScalarFieldEnum[]
+  }
+
+  /**
+   * District findMany
+   */
+  export type DistrictFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the District
+     */
+    select?: DistrictSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the District
+     */
+    omit?: DistrictOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DistrictInclude<ExtArgs> | null
+    /**
+     * Filter, which Districts to fetch.
+     */
+    where?: DistrictWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Districts to fetch.
+     */
+    orderBy?: DistrictOrderByWithRelationInput | DistrictOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Districts.
+     */
+    cursor?: DistrictWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Districts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Districts.
+     */
+    skip?: number
+    distinct?: DistrictScalarFieldEnum | DistrictScalarFieldEnum[]
+  }
+
+  /**
+   * District create
+   */
+  export type DistrictCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the District
+     */
+    select?: DistrictSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the District
+     */
+    omit?: DistrictOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DistrictInclude<ExtArgs> | null
+    /**
+     * The data needed to create a District.
+     */
+    data: XOR<DistrictCreateInput, DistrictUncheckedCreateInput>
+  }
+
+  /**
+   * District createMany
+   */
+  export type DistrictCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Districts.
+     */
+    data: DistrictCreateManyInput | DistrictCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * District createManyAndReturn
+   */
+  export type DistrictCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the District
+     */
+    select?: DistrictSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the District
+     */
+    omit?: DistrictOmit<ExtArgs> | null
+    /**
+     * The data used to create many Districts.
+     */
+    data: DistrictCreateManyInput | DistrictCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DistrictIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * District update
+   */
+  export type DistrictUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the District
+     */
+    select?: DistrictSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the District
+     */
+    omit?: DistrictOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DistrictInclude<ExtArgs> | null
+    /**
+     * The data needed to update a District.
+     */
+    data: XOR<DistrictUpdateInput, DistrictUncheckedUpdateInput>
+    /**
+     * Choose, which District to update.
+     */
+    where: DistrictWhereUniqueInput
+  }
+
+  /**
+   * District updateMany
+   */
+  export type DistrictUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Districts.
+     */
+    data: XOR<DistrictUpdateManyMutationInput, DistrictUncheckedUpdateManyInput>
+    /**
+     * Filter which Districts to update
+     */
+    where?: DistrictWhereInput
+    /**
+     * Limit how many Districts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * District updateManyAndReturn
+   */
+  export type DistrictUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the District
+     */
+    select?: DistrictSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the District
+     */
+    omit?: DistrictOmit<ExtArgs> | null
+    /**
+     * The data used to update Districts.
+     */
+    data: XOR<DistrictUpdateManyMutationInput, DistrictUncheckedUpdateManyInput>
+    /**
+     * Filter which Districts to update
+     */
+    where?: DistrictWhereInput
+    /**
+     * Limit how many Districts to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DistrictIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * District upsert
+   */
+  export type DistrictUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the District
+     */
+    select?: DistrictSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the District
+     */
+    omit?: DistrictOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DistrictInclude<ExtArgs> | null
+    /**
+     * The filter to search for the District to update in case it exists.
+     */
+    where: DistrictWhereUniqueInput
+    /**
+     * In case the District found by the `where` argument doesn't exist, create a new District with this data.
+     */
+    create: XOR<DistrictCreateInput, DistrictUncheckedCreateInput>
+    /**
+     * In case the District was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DistrictUpdateInput, DistrictUncheckedUpdateInput>
+  }
+
+  /**
+   * District delete
+   */
+  export type DistrictDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the District
+     */
+    select?: DistrictSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the District
+     */
+    omit?: DistrictOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DistrictInclude<ExtArgs> | null
+    /**
+     * Filter which District to delete.
+     */
+    where: DistrictWhereUniqueInput
+  }
+
+  /**
+   * District deleteMany
+   */
+  export type DistrictDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Districts to delete
+     */
+    where?: DistrictWhereInput
+    /**
+     * Limit how many Districts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * District.users
+   */
+  export type District$usersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    cursor?: UserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * District without action
+   */
+  export type DistrictDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the District
+     */
+    select?: DistrictSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the District
+     */
+    omit?: DistrictOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DistrictInclude<ExtArgs> | null
+  }
+
 
   /**
    * Model User
@@ -2082,6 +4521,8 @@ export namespace Prisma {
     district: string | null
     about: string | null
     role: $Enums.Role | null
+    councilId: string | null
+    districtId: string | null
     lastLogin: Date | null
     isVerified: boolean | null
     resetPasswordToken: string | null
@@ -2102,6 +4543,8 @@ export namespace Prisma {
     district: string | null
     about: string | null
     role: $Enums.Role | null
+    councilId: string | null
+    districtId: string | null
     lastLogin: Date | null
     isVerified: boolean | null
     resetPasswordToken: string | null
@@ -2122,6 +4565,8 @@ export namespace Prisma {
     district: number
     about: number
     role: number
+    councilId: number
+    districtId: number
     lastLogin: number
     isVerified: number
     resetPasswordToken: number
@@ -2144,6 +4589,8 @@ export namespace Prisma {
     district?: true
     about?: true
     role?: true
+    councilId?: true
+    districtId?: true
     lastLogin?: true
     isVerified?: true
     resetPasswordToken?: true
@@ -2164,6 +4611,8 @@ export namespace Prisma {
     district?: true
     about?: true
     role?: true
+    councilId?: true
+    districtId?: true
     lastLogin?: true
     isVerified?: true
     resetPasswordToken?: true
@@ -2184,6 +4633,8 @@ export namespace Prisma {
     district?: true
     about?: true
     role?: true
+    councilId?: true
+    districtId?: true
     lastLogin?: true
     isVerified?: true
     resetPasswordToken?: true
@@ -2277,6 +4728,8 @@ export namespace Prisma {
     district: string | null
     about: string | null
     role: $Enums.Role
+    councilId: string | null
+    districtId: string | null
     lastLogin: Date
     isVerified: boolean
     resetPasswordToken: string | null
@@ -2314,6 +4767,8 @@ export namespace Prisma {
     district?: boolean
     about?: boolean
     role?: boolean
+    councilId?: boolean
+    districtId?: boolean
     lastLogin?: boolean
     isVerified?: boolean
     resetPasswordToken?: boolean
@@ -2322,6 +4777,8 @@ export namespace Prisma {
     verificationTokenExpiresAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    council?: boolean | User$councilArgs<ExtArgs>
+    districtRel?: boolean | User$districtRelArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2334,6 +4791,8 @@ export namespace Prisma {
     district?: boolean
     about?: boolean
     role?: boolean
+    councilId?: boolean
+    districtId?: boolean
     lastLogin?: boolean
     isVerified?: boolean
     resetPasswordToken?: boolean
@@ -2342,6 +4801,8 @@ export namespace Prisma {
     verificationTokenExpiresAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    council?: boolean | User$councilArgs<ExtArgs>
+    districtRel?: boolean | User$districtRelArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2354,6 +4815,8 @@ export namespace Prisma {
     district?: boolean
     about?: boolean
     role?: boolean
+    councilId?: boolean
+    districtId?: boolean
     lastLogin?: boolean
     isVerified?: boolean
     resetPasswordToken?: boolean
@@ -2362,6 +4825,8 @@ export namespace Prisma {
     verificationTokenExpiresAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    council?: boolean | User$councilArgs<ExtArgs>
+    districtRel?: boolean | User$districtRelArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -2374,6 +4839,8 @@ export namespace Prisma {
     district?: boolean
     about?: boolean
     role?: boolean
+    councilId?: boolean
+    districtId?: boolean
     lastLogin?: boolean
     isVerified?: boolean
     resetPasswordToken?: boolean
@@ -2384,11 +4851,26 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "phoneNumber" | "name" | "avatar" | "district" | "about" | "role" | "lastLogin" | "isVerified" | "resetPasswordToken" | "resetPasswordExpiresAt" | "verificationToken" | "verificationTokenExpiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "phoneNumber" | "name" | "avatar" | "district" | "about" | "role" | "councilId" | "districtId" | "lastLogin" | "isVerified" | "resetPasswordToken" | "resetPasswordExpiresAt" | "verificationToken" | "verificationTokenExpiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    council?: boolean | User$councilArgs<ExtArgs>
+    districtRel?: boolean | User$districtRelArgs<ExtArgs>
+  }
+  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    council?: boolean | User$councilArgs<ExtArgs>
+    districtRel?: boolean | User$districtRelArgs<ExtArgs>
+  }
+  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    council?: boolean | User$councilArgs<ExtArgs>
+    districtRel?: boolean | User$districtRelArgs<ExtArgs>
+  }
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
-    objects: {}
+    objects: {
+      council: Prisma.$CouncilPayload<ExtArgs> | null
+      districtRel: Prisma.$DistrictPayload<ExtArgs> | null
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       email: string
@@ -2399,6 +4881,8 @@ export namespace Prisma {
       district: string | null
       about: string | null
       role: $Enums.Role
+      councilId: string | null
+      districtId: string | null
       lastLogin: Date
       isVerified: boolean
       resetPasswordToken: string | null
@@ -2801,6 +5285,8 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    council<T extends User$councilArgs<ExtArgs> = {}>(args?: Subset<T, User$councilArgs<ExtArgs>>): Prisma__CouncilClient<$Result.GetResult<Prisma.$CouncilPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    districtRel<T extends User$districtRelArgs<ExtArgs> = {}>(args?: Subset<T, User$districtRelArgs<ExtArgs>>): Prisma__DistrictClient<$Result.GetResult<Prisma.$DistrictPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2839,6 +5325,8 @@ export namespace Prisma {
     readonly district: FieldRef<"User", 'String'>
     readonly about: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'Role'>
+    readonly councilId: FieldRef<"User", 'String'>
+    readonly districtId: FieldRef<"User", 'String'>
     readonly lastLogin: FieldRef<"User", 'DateTime'>
     readonly isVerified: FieldRef<"User", 'Boolean'>
     readonly resetPasswordToken: FieldRef<"User", 'String'>
@@ -2864,6 +5352,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * Filter, which User to fetch.
      */
     where: UserWhereUniqueInput
@@ -2882,6 +5374,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * Filter, which User to fetch.
      */
     where: UserWhereUniqueInput
@@ -2899,6 +5395,10 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
     /**
      * Filter, which User to fetch.
      */
@@ -2948,6 +5448,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * Filter, which User to fetch.
      */
     where?: UserWhereInput
@@ -2996,6 +5500,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * Filter, which Users to fetch.
      */
     where?: UserWhereInput
@@ -3039,6 +5547,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * The data needed to create a User.
      */
     data: XOR<UserCreateInput, UserUncheckedCreateInput>
@@ -3072,6 +5584,10 @@ export namespace Prisma {
      */
     data: UserCreateManyInput | UserCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -3086,6 +5602,10 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
     /**
      * The data needed to update a User.
      */
@@ -3138,6 +5658,10 @@ export namespace Prisma {
      * Limit how many Users to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -3152,6 +5676,10 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
     /**
      * The filter to search for the User to update in case it exists.
      */
@@ -3179,6 +5707,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * Filter which User to delete.
      */
     where: UserWhereUniqueInput
@@ -3199,6 +5731,44 @@ export namespace Prisma {
   }
 
   /**
+   * User.council
+   */
+  export type User$councilArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Council
+     */
+    select?: CouncilSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Council
+     */
+    omit?: CouncilOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CouncilInclude<ExtArgs> | null
+    where?: CouncilWhereInput
+  }
+
+  /**
+   * User.districtRel
+   */
+  export type User$districtRelArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the District
+     */
+    select?: DistrictSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the District
+     */
+    omit?: DistrictOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DistrictInclude<ExtArgs> | null
+    where?: DistrictWhereInput
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3210,6 +5780,10 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
   }
 
 
@@ -10689,6 +13263,7 @@ export namespace Prisma {
     council: string | null
     firstAlternateCouncillor: string | null
     secondAlternateCouncillor: string | null
+    councilId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -10701,6 +13276,7 @@ export namespace Prisma {
     council: string | null
     firstAlternateCouncillor: string | null
     secondAlternateCouncillor: string | null
+    councilId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -10713,6 +13289,7 @@ export namespace Prisma {
     council: number
     firstAlternateCouncillor: number
     secondAlternateCouncillor: number
+    councilId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -10727,6 +13304,7 @@ export namespace Prisma {
     council?: true
     firstAlternateCouncillor?: true
     secondAlternateCouncillor?: true
+    councilId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -10739,6 +13317,7 @@ export namespace Prisma {
     council?: true
     firstAlternateCouncillor?: true
     secondAlternateCouncillor?: true
+    councilId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -10751,6 +13330,7 @@ export namespace Prisma {
     council?: true
     firstAlternateCouncillor?: true
     secondAlternateCouncillor?: true
+    councilId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -10836,6 +13416,7 @@ export namespace Prisma {
     council: string
     firstAlternateCouncillor: string
     secondAlternateCouncillor: string
+    councilId: string | null
     createdAt: Date
     updatedAt: Date
     _count: CouncilListCountAggregateOutputType | null
@@ -10865,6 +13446,7 @@ export namespace Prisma {
     council?: boolean
     firstAlternateCouncillor?: boolean
     secondAlternateCouncillor?: boolean
+    councilId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["councilList"]>
@@ -10877,6 +13459,7 @@ export namespace Prisma {
     council?: boolean
     firstAlternateCouncillor?: boolean
     secondAlternateCouncillor?: boolean
+    councilId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["councilList"]>
@@ -10889,6 +13472,7 @@ export namespace Prisma {
     council?: boolean
     firstAlternateCouncillor?: boolean
     secondAlternateCouncillor?: boolean
+    councilId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["councilList"]>
@@ -10901,11 +13485,12 @@ export namespace Prisma {
     council?: boolean
     firstAlternateCouncillor?: boolean
     secondAlternateCouncillor?: boolean
+    councilId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type CouncilListOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "demarcation" | "councilArea" | "imageUrl" | "council" | "firstAlternateCouncillor" | "secondAlternateCouncillor" | "createdAt" | "updatedAt", ExtArgs["result"]["councilList"]>
+  export type CouncilListOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "demarcation" | "councilArea" | "imageUrl" | "council" | "firstAlternateCouncillor" | "secondAlternateCouncillor" | "councilId" | "createdAt" | "updatedAt", ExtArgs["result"]["councilList"]>
 
   export type $CouncilListPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "CouncilList"
@@ -10918,6 +13503,7 @@ export namespace Prisma {
       council: string
       firstAlternateCouncillor: string
       secondAlternateCouncillor: string
+      councilId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["councilList"]>
@@ -11350,6 +13936,7 @@ export namespace Prisma {
     readonly council: FieldRef<"CouncilList", 'String'>
     readonly firstAlternateCouncillor: FieldRef<"CouncilList", 'String'>
     readonly secondAlternateCouncillor: FieldRef<"CouncilList", 'String'>
+    readonly councilId: FieldRef<"CouncilList", 'String'>
     readonly createdAt: FieldRef<"CouncilList", 'DateTime'>
     readonly updatedAt: FieldRef<"CouncilList", 'DateTime'>
   }
@@ -16902,6 +19489,28 @@ export namespace Prisma {
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+  export const CouncilScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CouncilScalarFieldEnum = (typeof CouncilScalarFieldEnum)[keyof typeof CouncilScalarFieldEnum]
+
+
+  export const DistrictScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    councilId: 'councilId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DistrictScalarFieldEnum = (typeof DistrictScalarFieldEnum)[keyof typeof DistrictScalarFieldEnum]
+
+
   export const UserScalarFieldEnum: {
     id: 'id',
     email: 'email',
@@ -16912,6 +19521,8 @@ export namespace Prisma {
     district: 'district',
     about: 'about',
     role: 'role',
+    councilId: 'councilId',
+    districtId: 'districtId',
     lastLogin: 'lastLogin',
     isVerified: 'isVerified',
     resetPasswordToken: 'resetPasswordToken',
@@ -17031,6 +19642,7 @@ export namespace Prisma {
     council: 'council',
     firstAlternateCouncillor: 'firstAlternateCouncillor',
     secondAlternateCouncillor: 'secondAlternateCouncillor',
+    councilId: 'councilId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -17152,20 +19764,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Role'
-   */
-  export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
-    
-
-
-  /**
-   * Reference to a field of type 'Role[]'
-   */
-  export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
-    
-
-
-  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -17176,6 +19774,20 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Role'
+   */
+  export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
+    
+
+
+  /**
+   * Reference to a field of type 'Role[]'
+   */
+  export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
     
 
 
@@ -17217,6 +19829,123 @@ export namespace Prisma {
    */
 
 
+  export type CouncilWhereInput = {
+    AND?: CouncilWhereInput | CouncilWhereInput[]
+    OR?: CouncilWhereInput[]
+    NOT?: CouncilWhereInput | CouncilWhereInput[]
+    id?: StringFilter<"Council"> | string
+    name?: StringFilter<"Council"> | string
+    description?: StringNullableFilter<"Council"> | string | null
+    createdAt?: DateTimeFilter<"Council"> | Date | string
+    updatedAt?: DateTimeFilter<"Council"> | Date | string
+    districts?: DistrictListRelationFilter
+    users?: UserListRelationFilter
+  }
+
+  export type CouncilOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    districts?: DistrictOrderByRelationAggregateInput
+    users?: UserOrderByRelationAggregateInput
+  }
+
+  export type CouncilWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    name?: string
+    AND?: CouncilWhereInput | CouncilWhereInput[]
+    OR?: CouncilWhereInput[]
+    NOT?: CouncilWhereInput | CouncilWhereInput[]
+    description?: StringNullableFilter<"Council"> | string | null
+    createdAt?: DateTimeFilter<"Council"> | Date | string
+    updatedAt?: DateTimeFilter<"Council"> | Date | string
+    districts?: DistrictListRelationFilter
+    users?: UserListRelationFilter
+  }, "id" | "name">
+
+  export type CouncilOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CouncilCountOrderByAggregateInput
+    _max?: CouncilMaxOrderByAggregateInput
+    _min?: CouncilMinOrderByAggregateInput
+  }
+
+  export type CouncilScalarWhereWithAggregatesInput = {
+    AND?: CouncilScalarWhereWithAggregatesInput | CouncilScalarWhereWithAggregatesInput[]
+    OR?: CouncilScalarWhereWithAggregatesInput[]
+    NOT?: CouncilScalarWhereWithAggregatesInput | CouncilScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Council"> | string
+    name?: StringWithAggregatesFilter<"Council"> | string
+    description?: StringNullableWithAggregatesFilter<"Council"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Council"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Council"> | Date | string
+  }
+
+  export type DistrictWhereInput = {
+    AND?: DistrictWhereInput | DistrictWhereInput[]
+    OR?: DistrictWhereInput[]
+    NOT?: DistrictWhereInput | DistrictWhereInput[]
+    id?: StringFilter<"District"> | string
+    name?: StringFilter<"District"> | string
+    councilId?: StringFilter<"District"> | string
+    createdAt?: DateTimeFilter<"District"> | Date | string
+    updatedAt?: DateTimeFilter<"District"> | Date | string
+    council?: XOR<CouncilScalarRelationFilter, CouncilWhereInput>
+    users?: UserListRelationFilter
+  }
+
+  export type DistrictOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    councilId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    council?: CouncilOrderByWithRelationInput
+    users?: UserOrderByRelationAggregateInput
+  }
+
+  export type DistrictWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    name_councilId?: DistrictNameCouncilIdCompoundUniqueInput
+    AND?: DistrictWhereInput | DistrictWhereInput[]
+    OR?: DistrictWhereInput[]
+    NOT?: DistrictWhereInput | DistrictWhereInput[]
+    name?: StringFilter<"District"> | string
+    councilId?: StringFilter<"District"> | string
+    createdAt?: DateTimeFilter<"District"> | Date | string
+    updatedAt?: DateTimeFilter<"District"> | Date | string
+    council?: XOR<CouncilScalarRelationFilter, CouncilWhereInput>
+    users?: UserListRelationFilter
+  }, "id" | "name_councilId">
+
+  export type DistrictOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    councilId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DistrictCountOrderByAggregateInput
+    _max?: DistrictMaxOrderByAggregateInput
+    _min?: DistrictMinOrderByAggregateInput
+  }
+
+  export type DistrictScalarWhereWithAggregatesInput = {
+    AND?: DistrictScalarWhereWithAggregatesInput | DistrictScalarWhereWithAggregatesInput[]
+    OR?: DistrictScalarWhereWithAggregatesInput[]
+    NOT?: DistrictScalarWhereWithAggregatesInput | DistrictScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"District"> | string
+    name?: StringWithAggregatesFilter<"District"> | string
+    councilId?: StringWithAggregatesFilter<"District"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"District"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"District"> | Date | string
+  }
+
   export type UserWhereInput = {
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
@@ -17230,6 +19959,8 @@ export namespace Prisma {
     district?: StringNullableFilter<"User"> | string | null
     about?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
+    councilId?: StringNullableFilter<"User"> | string | null
+    districtId?: StringNullableFilter<"User"> | string | null
     lastLogin?: DateTimeFilter<"User"> | Date | string
     isVerified?: BoolFilter<"User"> | boolean
     resetPasswordToken?: StringNullableFilter<"User"> | string | null
@@ -17238,6 +19969,8 @@ export namespace Prisma {
     verificationTokenExpiresAt?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    council?: XOR<CouncilNullableScalarRelationFilter, CouncilWhereInput> | null
+    districtRel?: XOR<DistrictNullableScalarRelationFilter, DistrictWhereInput> | null
   }
 
   export type UserOrderByWithRelationInput = {
@@ -17250,6 +19983,8 @@ export namespace Prisma {
     district?: SortOrderInput | SortOrder
     about?: SortOrderInput | SortOrder
     role?: SortOrder
+    councilId?: SortOrderInput | SortOrder
+    districtId?: SortOrderInput | SortOrder
     lastLogin?: SortOrder
     isVerified?: SortOrder
     resetPasswordToken?: SortOrderInput | SortOrder
@@ -17258,6 +19993,8 @@ export namespace Prisma {
     verificationTokenExpiresAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    council?: CouncilOrderByWithRelationInput
+    districtRel?: DistrictOrderByWithRelationInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -17273,6 +20010,8 @@ export namespace Prisma {
     district?: StringNullableFilter<"User"> | string | null
     about?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
+    councilId?: StringNullableFilter<"User"> | string | null
+    districtId?: StringNullableFilter<"User"> | string | null
     lastLogin?: DateTimeFilter<"User"> | Date | string
     isVerified?: BoolFilter<"User"> | boolean
     resetPasswordToken?: StringNullableFilter<"User"> | string | null
@@ -17281,6 +20020,8 @@ export namespace Prisma {
     verificationTokenExpiresAt?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    council?: XOR<CouncilNullableScalarRelationFilter, CouncilWhereInput> | null
+    districtRel?: XOR<DistrictNullableScalarRelationFilter, DistrictWhereInput> | null
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -17293,6 +20034,8 @@ export namespace Prisma {
     district?: SortOrderInput | SortOrder
     about?: SortOrderInput | SortOrder
     role?: SortOrder
+    councilId?: SortOrderInput | SortOrder
+    districtId?: SortOrderInput | SortOrder
     lastLogin?: SortOrder
     isVerified?: SortOrder
     resetPasswordToken?: SortOrderInput | SortOrder
@@ -17319,6 +20062,8 @@ export namespace Prisma {
     district?: StringNullableWithAggregatesFilter<"User"> | string | null
     about?: StringNullableWithAggregatesFilter<"User"> | string | null
     role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
+    councilId?: StringNullableWithAggregatesFilter<"User"> | string | null
+    districtId?: StringNullableWithAggregatesFilter<"User"> | string | null
     lastLogin?: DateTimeWithAggregatesFilter<"User"> | Date | string
     isVerified?: BoolWithAggregatesFilter<"User"> | boolean
     resetPasswordToken?: StringNullableWithAggregatesFilter<"User"> | string | null
@@ -17821,6 +20566,7 @@ export namespace Prisma {
     council?: StringFilter<"CouncilList"> | string
     firstAlternateCouncillor?: StringFilter<"CouncilList"> | string
     secondAlternateCouncillor?: StringFilter<"CouncilList"> | string
+    councilId?: StringNullableFilter<"CouncilList"> | string | null
     createdAt?: DateTimeFilter<"CouncilList"> | Date | string
     updatedAt?: DateTimeFilter<"CouncilList"> | Date | string
   }
@@ -17833,6 +20579,7 @@ export namespace Prisma {
     council?: SortOrder
     firstAlternateCouncillor?: SortOrder
     secondAlternateCouncillor?: SortOrder
+    councilId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -17848,6 +20595,7 @@ export namespace Prisma {
     council?: StringFilter<"CouncilList"> | string
     firstAlternateCouncillor?: StringFilter<"CouncilList"> | string
     secondAlternateCouncillor?: StringFilter<"CouncilList"> | string
+    councilId?: StringNullableFilter<"CouncilList"> | string | null
     createdAt?: DateTimeFilter<"CouncilList"> | Date | string
     updatedAt?: DateTimeFilter<"CouncilList"> | Date | string
   }, "id">
@@ -17860,6 +20608,7 @@ export namespace Prisma {
     council?: SortOrder
     firstAlternateCouncillor?: SortOrder
     secondAlternateCouncillor?: SortOrder
+    councilId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: CouncilListCountOrderByAggregateInput
@@ -17878,6 +20627,7 @@ export namespace Prisma {
     council?: StringWithAggregatesFilter<"CouncilList"> | string
     firstAlternateCouncillor?: StringWithAggregatesFilter<"CouncilList"> | string
     secondAlternateCouncillor?: StringWithAggregatesFilter<"CouncilList"> | string
+    councilId?: StringNullableWithAggregatesFilter<"CouncilList"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"CouncilList"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"CouncilList"> | Date | string
   }
@@ -18217,6 +20967,129 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"ImageText"> | Date | string
   }
 
+  export type CouncilCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    districts?: DistrictCreateNestedManyWithoutCouncilInput
+    users?: UserCreateNestedManyWithoutCouncilInput
+  }
+
+  export type CouncilUncheckedCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    districts?: DistrictUncheckedCreateNestedManyWithoutCouncilInput
+    users?: UserUncheckedCreateNestedManyWithoutCouncilInput
+  }
+
+  export type CouncilUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    districts?: DistrictUpdateManyWithoutCouncilNestedInput
+    users?: UserUpdateManyWithoutCouncilNestedInput
+  }
+
+  export type CouncilUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    districts?: DistrictUncheckedUpdateManyWithoutCouncilNestedInput
+    users?: UserUncheckedUpdateManyWithoutCouncilNestedInput
+  }
+
+  export type CouncilCreateManyInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CouncilUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CouncilUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DistrictCreateInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    council: CouncilCreateNestedOneWithoutDistrictsInput
+    users?: UserCreateNestedManyWithoutDistrictRelInput
+  }
+
+  export type DistrictUncheckedCreateInput = {
+    id?: string
+    name: string
+    councilId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutDistrictRelInput
+  }
+
+  export type DistrictUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    council?: CouncilUpdateOneRequiredWithoutDistrictsNestedInput
+    users?: UserUpdateManyWithoutDistrictRelNestedInput
+  }
+
+  export type DistrictUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    councilId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutDistrictRelNestedInput
+  }
+
+  export type DistrictCreateManyInput = {
+    id?: string
+    name: string
+    councilId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DistrictUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DistrictUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    councilId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -18235,6 +21108,8 @@ export namespace Prisma {
     verificationTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    council?: CouncilCreateNestedOneWithoutUsersInput
+    districtRel?: DistrictCreateNestedOneWithoutUsersInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -18247,6 +21122,8 @@ export namespace Prisma {
     district?: string | null
     about?: string | null
     role?: $Enums.Role
+    councilId?: string | null
+    districtId?: string | null
     lastLogin?: Date | string
     isVerified?: boolean
     resetPasswordToken?: string | null
@@ -18275,6 +21152,8 @@ export namespace Prisma {
     verificationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    council?: CouncilUpdateOneWithoutUsersNestedInput
+    districtRel?: DistrictUpdateOneWithoutUsersNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -18287,6 +21166,8 @@ export namespace Prisma {
     district?: NullableStringFieldUpdateOperationsInput | string | null
     about?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    councilId?: NullableStringFieldUpdateOperationsInput | string | null
+    districtId?: NullableStringFieldUpdateOperationsInput | string | null
     lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18307,6 +21188,8 @@ export namespace Prisma {
     district?: string | null
     about?: string | null
     role?: $Enums.Role
+    councilId?: string | null
+    districtId?: string | null
     lastLogin?: Date | string
     isVerified?: boolean
     resetPasswordToken?: string | null
@@ -18347,6 +21230,8 @@ export namespace Prisma {
     district?: NullableStringFieldUpdateOperationsInput | string | null
     about?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    councilId?: NullableStringFieldUpdateOperationsInput | string | null
+    districtId?: NullableStringFieldUpdateOperationsInput | string | null
     lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18904,6 +21789,7 @@ export namespace Prisma {
     council: string
     firstAlternateCouncillor: string
     secondAlternateCouncillor: string
+    councilId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -18916,6 +21802,7 @@ export namespace Prisma {
     council: string
     firstAlternateCouncillor: string
     secondAlternateCouncillor: string
+    councilId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -18928,6 +21815,7 @@ export namespace Prisma {
     council?: StringFieldUpdateOperationsInput | string
     firstAlternateCouncillor?: StringFieldUpdateOperationsInput | string
     secondAlternateCouncillor?: StringFieldUpdateOperationsInput | string
+    councilId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -18940,6 +21828,7 @@ export namespace Prisma {
     council?: StringFieldUpdateOperationsInput | string
     firstAlternateCouncillor?: StringFieldUpdateOperationsInput | string
     secondAlternateCouncillor?: StringFieldUpdateOperationsInput | string
+    councilId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -18952,6 +21841,7 @@ export namespace Prisma {
     council: string
     firstAlternateCouncillor: string
     secondAlternateCouncillor: string
+    councilId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -18964,6 +21854,7 @@ export namespace Prisma {
     council?: StringFieldUpdateOperationsInput | string
     firstAlternateCouncillor?: StringFieldUpdateOperationsInput | string
     secondAlternateCouncillor?: StringFieldUpdateOperationsInput | string
+    councilId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -18976,6 +21867,7 @@ export namespace Prisma {
     council?: StringFieldUpdateOperationsInput | string
     firstAlternateCouncillor?: StringFieldUpdateOperationsInput | string
     secondAlternateCouncillor?: StringFieldUpdateOperationsInput | string
+    councilId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -19395,13 +22287,6 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type EnumRoleFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
-  }
-
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -19413,20 +22298,16 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
+  export type DistrictListRelationFilter = {
+    every?: DistrictWhereInput
+    some?: DistrictWhereInput
+    none?: DistrictWhereInput
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  export type UserListRelationFilter = {
+    every?: UserWhereInput
+    some?: UserWhereInput
+    none?: UserWhereInput
   }
 
   export type SortOrderInput = {
@@ -19434,62 +22315,34 @@ export namespace Prisma {
     nulls?: NullsOrder
   }
 
-  export type UserCountOrderByAggregateInput = {
+  export type DistrictOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CouncilCountOrderByAggregateInput = {
     id?: SortOrder
-    email?: SortOrder
-    password?: SortOrder
-    phoneNumber?: SortOrder
     name?: SortOrder
-    avatar?: SortOrder
-    district?: SortOrder
-    about?: SortOrder
-    role?: SortOrder
-    lastLogin?: SortOrder
-    isVerified?: SortOrder
-    resetPasswordToken?: SortOrder
-    resetPasswordExpiresAt?: SortOrder
-    verificationToken?: SortOrder
-    verificationTokenExpiresAt?: SortOrder
+    description?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type UserMaxOrderByAggregateInput = {
+  export type CouncilMaxOrderByAggregateInput = {
     id?: SortOrder
-    email?: SortOrder
-    password?: SortOrder
-    phoneNumber?: SortOrder
     name?: SortOrder
-    avatar?: SortOrder
-    district?: SortOrder
-    about?: SortOrder
-    role?: SortOrder
-    lastLogin?: SortOrder
-    isVerified?: SortOrder
-    resetPasswordToken?: SortOrder
-    resetPasswordExpiresAt?: SortOrder
-    verificationToken?: SortOrder
-    verificationTokenExpiresAt?: SortOrder
+    description?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type UserMinOrderByAggregateInput = {
+  export type CouncilMinOrderByAggregateInput = {
     id?: SortOrder
-    email?: SortOrder
-    password?: SortOrder
-    phoneNumber?: SortOrder
     name?: SortOrder
-    avatar?: SortOrder
-    district?: SortOrder
-    about?: SortOrder
-    role?: SortOrder
-    lastLogin?: SortOrder
-    isVerified?: SortOrder
-    resetPasswordToken?: SortOrder
-    resetPasswordExpiresAt?: SortOrder
-    verificationToken?: SortOrder
-    verificationTokenExpiresAt?: SortOrder
+    description?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -19530,16 +22383,6 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumRoleFilter<$PrismaModel>
-    _max?: NestedEnumRoleFilter<$PrismaModel>
-  }
-
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -19552,6 +22395,149 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type CouncilScalarRelationFilter = {
+    is?: CouncilWhereInput
+    isNot?: CouncilWhereInput
+  }
+
+  export type DistrictNameCouncilIdCompoundUniqueInput = {
+    name: string
+    councilId: string
+  }
+
+  export type DistrictCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    councilId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DistrictMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    councilId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DistrictMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    councilId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type CouncilNullableScalarRelationFilter = {
+    is?: CouncilWhereInput | null
+    isNot?: CouncilWhereInput | null
+  }
+
+  export type DistrictNullableScalarRelationFilter = {
+    is?: DistrictWhereInput | null
+    isNot?: DistrictWhereInput | null
+  }
+
+  export type UserCountOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    phoneNumber?: SortOrder
+    name?: SortOrder
+    avatar?: SortOrder
+    district?: SortOrder
+    about?: SortOrder
+    role?: SortOrder
+    councilId?: SortOrder
+    districtId?: SortOrder
+    lastLogin?: SortOrder
+    isVerified?: SortOrder
+    resetPasswordToken?: SortOrder
+    resetPasswordExpiresAt?: SortOrder
+    verificationToken?: SortOrder
+    verificationTokenExpiresAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserMaxOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    phoneNumber?: SortOrder
+    name?: SortOrder
+    avatar?: SortOrder
+    district?: SortOrder
+    about?: SortOrder
+    role?: SortOrder
+    councilId?: SortOrder
+    districtId?: SortOrder
+    lastLogin?: SortOrder
+    isVerified?: SortOrder
+    resetPasswordToken?: SortOrder
+    resetPasswordExpiresAt?: SortOrder
+    verificationToken?: SortOrder
+    verificationTokenExpiresAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserMinOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    phoneNumber?: SortOrder
+    name?: SortOrder
+    avatar?: SortOrder
+    district?: SortOrder
+    about?: SortOrder
+    role?: SortOrder
+    councilId?: SortOrder
+    districtId?: SortOrder
+    lastLogin?: SortOrder
+    isVerified?: SortOrder
+    resetPasswordToken?: SortOrder
+    resetPasswordExpiresAt?: SortOrder
+    verificationToken?: SortOrder
+    verificationTokenExpiresAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -19925,6 +22911,7 @@ export namespace Prisma {
     council?: SortOrder
     firstAlternateCouncillor?: SortOrder
     secondAlternateCouncillor?: SortOrder
+    councilId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -19937,6 +22924,7 @@ export namespace Prisma {
     council?: SortOrder
     firstAlternateCouncillor?: SortOrder
     secondAlternateCouncillor?: SortOrder
+    councilId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -19949,6 +22937,7 @@ export namespace Prisma {
     council?: SortOrder
     firstAlternateCouncillor?: SortOrder
     secondAlternateCouncillor?: SortOrder
+    councilId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -20118,6 +23107,34 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type DistrictCreateNestedManyWithoutCouncilInput = {
+    create?: XOR<DistrictCreateWithoutCouncilInput, DistrictUncheckedCreateWithoutCouncilInput> | DistrictCreateWithoutCouncilInput[] | DistrictUncheckedCreateWithoutCouncilInput[]
+    connectOrCreate?: DistrictCreateOrConnectWithoutCouncilInput | DistrictCreateOrConnectWithoutCouncilInput[]
+    createMany?: DistrictCreateManyCouncilInputEnvelope
+    connect?: DistrictWhereUniqueInput | DistrictWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedManyWithoutCouncilInput = {
+    create?: XOR<UserCreateWithoutCouncilInput, UserUncheckedCreateWithoutCouncilInput> | UserCreateWithoutCouncilInput[] | UserUncheckedCreateWithoutCouncilInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutCouncilInput | UserCreateOrConnectWithoutCouncilInput[]
+    createMany?: UserCreateManyCouncilInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type DistrictUncheckedCreateNestedManyWithoutCouncilInput = {
+    create?: XOR<DistrictCreateWithoutCouncilInput, DistrictUncheckedCreateWithoutCouncilInput> | DistrictCreateWithoutCouncilInput[] | DistrictUncheckedCreateWithoutCouncilInput[]
+    connectOrCreate?: DistrictCreateOrConnectWithoutCouncilInput | DistrictCreateOrConnectWithoutCouncilInput[]
+    createMany?: DistrictCreateManyCouncilInputEnvelope
+    connect?: DistrictWhereUniqueInput | DistrictWhereUniqueInput[]
+  }
+
+  export type UserUncheckedCreateNestedManyWithoutCouncilInput = {
+    create?: XOR<UserCreateWithoutCouncilInput, UserUncheckedCreateWithoutCouncilInput> | UserCreateWithoutCouncilInput[] | UserUncheckedCreateWithoutCouncilInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutCouncilInput | UserCreateOrConnectWithoutCouncilInput[]
+    createMany?: UserCreateManyCouncilInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -20126,12 +23143,136 @@ export namespace Prisma {
     set?: string | null
   }
 
-  export type EnumRoleFieldUpdateOperationsInput = {
-    set?: $Enums.Role
-  }
-
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type DistrictUpdateManyWithoutCouncilNestedInput = {
+    create?: XOR<DistrictCreateWithoutCouncilInput, DistrictUncheckedCreateWithoutCouncilInput> | DistrictCreateWithoutCouncilInput[] | DistrictUncheckedCreateWithoutCouncilInput[]
+    connectOrCreate?: DistrictCreateOrConnectWithoutCouncilInput | DistrictCreateOrConnectWithoutCouncilInput[]
+    upsert?: DistrictUpsertWithWhereUniqueWithoutCouncilInput | DistrictUpsertWithWhereUniqueWithoutCouncilInput[]
+    createMany?: DistrictCreateManyCouncilInputEnvelope
+    set?: DistrictWhereUniqueInput | DistrictWhereUniqueInput[]
+    disconnect?: DistrictWhereUniqueInput | DistrictWhereUniqueInput[]
+    delete?: DistrictWhereUniqueInput | DistrictWhereUniqueInput[]
+    connect?: DistrictWhereUniqueInput | DistrictWhereUniqueInput[]
+    update?: DistrictUpdateWithWhereUniqueWithoutCouncilInput | DistrictUpdateWithWhereUniqueWithoutCouncilInput[]
+    updateMany?: DistrictUpdateManyWithWhereWithoutCouncilInput | DistrictUpdateManyWithWhereWithoutCouncilInput[]
+    deleteMany?: DistrictScalarWhereInput | DistrictScalarWhereInput[]
+  }
+
+  export type UserUpdateManyWithoutCouncilNestedInput = {
+    create?: XOR<UserCreateWithoutCouncilInput, UserUncheckedCreateWithoutCouncilInput> | UserCreateWithoutCouncilInput[] | UserUncheckedCreateWithoutCouncilInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutCouncilInput | UserCreateOrConnectWithoutCouncilInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutCouncilInput | UserUpsertWithWhereUniqueWithoutCouncilInput[]
+    createMany?: UserCreateManyCouncilInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutCouncilInput | UserUpdateWithWhereUniqueWithoutCouncilInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutCouncilInput | UserUpdateManyWithWhereWithoutCouncilInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type DistrictUncheckedUpdateManyWithoutCouncilNestedInput = {
+    create?: XOR<DistrictCreateWithoutCouncilInput, DistrictUncheckedCreateWithoutCouncilInput> | DistrictCreateWithoutCouncilInput[] | DistrictUncheckedCreateWithoutCouncilInput[]
+    connectOrCreate?: DistrictCreateOrConnectWithoutCouncilInput | DistrictCreateOrConnectWithoutCouncilInput[]
+    upsert?: DistrictUpsertWithWhereUniqueWithoutCouncilInput | DistrictUpsertWithWhereUniqueWithoutCouncilInput[]
+    createMany?: DistrictCreateManyCouncilInputEnvelope
+    set?: DistrictWhereUniqueInput | DistrictWhereUniqueInput[]
+    disconnect?: DistrictWhereUniqueInput | DistrictWhereUniqueInput[]
+    delete?: DistrictWhereUniqueInput | DistrictWhereUniqueInput[]
+    connect?: DistrictWhereUniqueInput | DistrictWhereUniqueInput[]
+    update?: DistrictUpdateWithWhereUniqueWithoutCouncilInput | DistrictUpdateWithWhereUniqueWithoutCouncilInput[]
+    updateMany?: DistrictUpdateManyWithWhereWithoutCouncilInput | DistrictUpdateManyWithWhereWithoutCouncilInput[]
+    deleteMany?: DistrictScalarWhereInput | DistrictScalarWhereInput[]
+  }
+
+  export type UserUncheckedUpdateManyWithoutCouncilNestedInput = {
+    create?: XOR<UserCreateWithoutCouncilInput, UserUncheckedCreateWithoutCouncilInput> | UserCreateWithoutCouncilInput[] | UserUncheckedCreateWithoutCouncilInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutCouncilInput | UserCreateOrConnectWithoutCouncilInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutCouncilInput | UserUpsertWithWhereUniqueWithoutCouncilInput[]
+    createMany?: UserCreateManyCouncilInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutCouncilInput | UserUpdateWithWhereUniqueWithoutCouncilInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutCouncilInput | UserUpdateManyWithWhereWithoutCouncilInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type CouncilCreateNestedOneWithoutDistrictsInput = {
+    create?: XOR<CouncilCreateWithoutDistrictsInput, CouncilUncheckedCreateWithoutDistrictsInput>
+    connectOrCreate?: CouncilCreateOrConnectWithoutDistrictsInput
+    connect?: CouncilWhereUniqueInput
+  }
+
+  export type UserCreateNestedManyWithoutDistrictRelInput = {
+    create?: XOR<UserCreateWithoutDistrictRelInput, UserUncheckedCreateWithoutDistrictRelInput> | UserCreateWithoutDistrictRelInput[] | UserUncheckedCreateWithoutDistrictRelInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutDistrictRelInput | UserCreateOrConnectWithoutDistrictRelInput[]
+    createMany?: UserCreateManyDistrictRelInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type UserUncheckedCreateNestedManyWithoutDistrictRelInput = {
+    create?: XOR<UserCreateWithoutDistrictRelInput, UserUncheckedCreateWithoutDistrictRelInput> | UserCreateWithoutDistrictRelInput[] | UserUncheckedCreateWithoutDistrictRelInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutDistrictRelInput | UserCreateOrConnectWithoutDistrictRelInput[]
+    createMany?: UserCreateManyDistrictRelInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type CouncilUpdateOneRequiredWithoutDistrictsNestedInput = {
+    create?: XOR<CouncilCreateWithoutDistrictsInput, CouncilUncheckedCreateWithoutDistrictsInput>
+    connectOrCreate?: CouncilCreateOrConnectWithoutDistrictsInput
+    upsert?: CouncilUpsertWithoutDistrictsInput
+    connect?: CouncilWhereUniqueInput
+    update?: XOR<XOR<CouncilUpdateToOneWithWhereWithoutDistrictsInput, CouncilUpdateWithoutDistrictsInput>, CouncilUncheckedUpdateWithoutDistrictsInput>
+  }
+
+  export type UserUpdateManyWithoutDistrictRelNestedInput = {
+    create?: XOR<UserCreateWithoutDistrictRelInput, UserUncheckedCreateWithoutDistrictRelInput> | UserCreateWithoutDistrictRelInput[] | UserUncheckedCreateWithoutDistrictRelInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutDistrictRelInput | UserCreateOrConnectWithoutDistrictRelInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutDistrictRelInput | UserUpsertWithWhereUniqueWithoutDistrictRelInput[]
+    createMany?: UserCreateManyDistrictRelInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutDistrictRelInput | UserUpdateWithWhereUniqueWithoutDistrictRelInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutDistrictRelInput | UserUpdateManyWithWhereWithoutDistrictRelInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type UserUncheckedUpdateManyWithoutDistrictRelNestedInput = {
+    create?: XOR<UserCreateWithoutDistrictRelInput, UserUncheckedCreateWithoutDistrictRelInput> | UserCreateWithoutDistrictRelInput[] | UserUncheckedCreateWithoutDistrictRelInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutDistrictRelInput | UserCreateOrConnectWithoutDistrictRelInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutDistrictRelInput | UserUpsertWithWhereUniqueWithoutDistrictRelInput[]
+    createMany?: UserCreateManyDistrictRelInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutDistrictRelInput | UserUpdateWithWhereUniqueWithoutDistrictRelInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutDistrictRelInput | UserUpdateManyWithWhereWithoutDistrictRelInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type CouncilCreateNestedOneWithoutUsersInput = {
+    create?: XOR<CouncilCreateWithoutUsersInput, CouncilUncheckedCreateWithoutUsersInput>
+    connectOrCreate?: CouncilCreateOrConnectWithoutUsersInput
+    connect?: CouncilWhereUniqueInput
+  }
+
+  export type DistrictCreateNestedOneWithoutUsersInput = {
+    create?: XOR<DistrictCreateWithoutUsersInput, DistrictUncheckedCreateWithoutUsersInput>
+    connectOrCreate?: DistrictCreateOrConnectWithoutUsersInput
+    connect?: DistrictWhereUniqueInput
+  }
+
+  export type EnumRoleFieldUpdateOperationsInput = {
+    set?: $Enums.Role
   }
 
   export type BoolFieldUpdateOperationsInput = {
@@ -20140,6 +23281,26 @@ export namespace Prisma {
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
+  }
+
+  export type CouncilUpdateOneWithoutUsersNestedInput = {
+    create?: XOR<CouncilCreateWithoutUsersInput, CouncilUncheckedCreateWithoutUsersInput>
+    connectOrCreate?: CouncilCreateOrConnectWithoutUsersInput
+    upsert?: CouncilUpsertWithoutUsersInput
+    disconnect?: CouncilWhereInput | boolean
+    delete?: CouncilWhereInput | boolean
+    connect?: CouncilWhereUniqueInput
+    update?: XOR<XOR<CouncilUpdateToOneWithWhereWithoutUsersInput, CouncilUpdateWithoutUsersInput>, CouncilUncheckedUpdateWithoutUsersInput>
+  }
+
+  export type DistrictUpdateOneWithoutUsersNestedInput = {
+    create?: XOR<DistrictCreateWithoutUsersInput, DistrictUncheckedCreateWithoutUsersInput>
+    connectOrCreate?: DistrictCreateOrConnectWithoutUsersInput
+    upsert?: DistrictUpsertWithoutUsersInput
+    disconnect?: DistrictWhereInput | boolean
+    delete?: DistrictWhereInput | boolean
+    connect?: DistrictWhereUniqueInput
+    update?: XOR<XOR<DistrictUpdateToOneWithWhereWithoutUsersInput, DistrictUpdateWithoutUsersInput>, DistrictUncheckedUpdateWithoutUsersInput>
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -20186,13 +23347,6 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type NestedEnumRoleFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
-  }
-
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -20202,22 +23356,6 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
-  }
-
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
@@ -20276,16 +23414,6 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumRoleFilter<$PrismaModel>
-    _max?: NestedEnumRoleFilter<$PrismaModel>
-  }
-
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -20298,6 +23426,39 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -20363,6 +23524,570 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type DistrictCreateWithoutCouncilInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserCreateNestedManyWithoutDistrictRelInput
+  }
+
+  export type DistrictUncheckedCreateWithoutCouncilInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutDistrictRelInput
+  }
+
+  export type DistrictCreateOrConnectWithoutCouncilInput = {
+    where: DistrictWhereUniqueInput
+    create: XOR<DistrictCreateWithoutCouncilInput, DistrictUncheckedCreateWithoutCouncilInput>
+  }
+
+  export type DistrictCreateManyCouncilInputEnvelope = {
+    data: DistrictCreateManyCouncilInput | DistrictCreateManyCouncilInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserCreateWithoutCouncilInput = {
+    id?: string
+    email: string
+    password?: string | null
+    phoneNumber: string
+    name: string
+    avatar?: string | null
+    district?: string | null
+    about?: string | null
+    role?: $Enums.Role
+    lastLogin?: Date | string
+    isVerified?: boolean
+    resetPasswordToken?: string | null
+    resetPasswordExpiresAt?: Date | string | null
+    verificationToken?: string | null
+    verificationTokenExpiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    districtRel?: DistrictCreateNestedOneWithoutUsersInput
+  }
+
+  export type UserUncheckedCreateWithoutCouncilInput = {
+    id?: string
+    email: string
+    password?: string | null
+    phoneNumber: string
+    name: string
+    avatar?: string | null
+    district?: string | null
+    about?: string | null
+    role?: $Enums.Role
+    districtId?: string | null
+    lastLogin?: Date | string
+    isVerified?: boolean
+    resetPasswordToken?: string | null
+    resetPasswordExpiresAt?: Date | string | null
+    verificationToken?: string | null
+    verificationTokenExpiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserCreateOrConnectWithoutCouncilInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCouncilInput, UserUncheckedCreateWithoutCouncilInput>
+  }
+
+  export type UserCreateManyCouncilInputEnvelope = {
+    data: UserCreateManyCouncilInput | UserCreateManyCouncilInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DistrictUpsertWithWhereUniqueWithoutCouncilInput = {
+    where: DistrictWhereUniqueInput
+    update: XOR<DistrictUpdateWithoutCouncilInput, DistrictUncheckedUpdateWithoutCouncilInput>
+    create: XOR<DistrictCreateWithoutCouncilInput, DistrictUncheckedCreateWithoutCouncilInput>
+  }
+
+  export type DistrictUpdateWithWhereUniqueWithoutCouncilInput = {
+    where: DistrictWhereUniqueInput
+    data: XOR<DistrictUpdateWithoutCouncilInput, DistrictUncheckedUpdateWithoutCouncilInput>
+  }
+
+  export type DistrictUpdateManyWithWhereWithoutCouncilInput = {
+    where: DistrictScalarWhereInput
+    data: XOR<DistrictUpdateManyMutationInput, DistrictUncheckedUpdateManyWithoutCouncilInput>
+  }
+
+  export type DistrictScalarWhereInput = {
+    AND?: DistrictScalarWhereInput | DistrictScalarWhereInput[]
+    OR?: DistrictScalarWhereInput[]
+    NOT?: DistrictScalarWhereInput | DistrictScalarWhereInput[]
+    id?: StringFilter<"District"> | string
+    name?: StringFilter<"District"> | string
+    councilId?: StringFilter<"District"> | string
+    createdAt?: DateTimeFilter<"District"> | Date | string
+    updatedAt?: DateTimeFilter<"District"> | Date | string
+  }
+
+  export type UserUpsertWithWhereUniqueWithoutCouncilInput = {
+    where: UserWhereUniqueInput
+    update: XOR<UserUpdateWithoutCouncilInput, UserUncheckedUpdateWithoutCouncilInput>
+    create: XOR<UserCreateWithoutCouncilInput, UserUncheckedCreateWithoutCouncilInput>
+  }
+
+  export type UserUpdateWithWhereUniqueWithoutCouncilInput = {
+    where: UserWhereUniqueInput
+    data: XOR<UserUpdateWithoutCouncilInput, UserUncheckedUpdateWithoutCouncilInput>
+  }
+
+  export type UserUpdateManyWithWhereWithoutCouncilInput = {
+    where: UserScalarWhereInput
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutCouncilInput>
+  }
+
+  export type UserScalarWhereInput = {
+    AND?: UserScalarWhereInput | UserScalarWhereInput[]
+    OR?: UserScalarWhereInput[]
+    NOT?: UserScalarWhereInput | UserScalarWhereInput[]
+    id?: StringFilter<"User"> | string
+    email?: StringFilter<"User"> | string
+    password?: StringNullableFilter<"User"> | string | null
+    phoneNumber?: StringFilter<"User"> | string
+    name?: StringFilter<"User"> | string
+    avatar?: StringNullableFilter<"User"> | string | null
+    district?: StringNullableFilter<"User"> | string | null
+    about?: StringNullableFilter<"User"> | string | null
+    role?: EnumRoleFilter<"User"> | $Enums.Role
+    councilId?: StringNullableFilter<"User"> | string | null
+    districtId?: StringNullableFilter<"User"> | string | null
+    lastLogin?: DateTimeFilter<"User"> | Date | string
+    isVerified?: BoolFilter<"User"> | boolean
+    resetPasswordToken?: StringNullableFilter<"User"> | string | null
+    resetPasswordExpiresAt?: DateTimeNullableFilter<"User"> | Date | string | null
+    verificationToken?: StringNullableFilter<"User"> | string | null
+    verificationTokenExpiresAt?: DateTimeNullableFilter<"User"> | Date | string | null
+    createdAt?: DateTimeFilter<"User"> | Date | string
+    updatedAt?: DateTimeFilter<"User"> | Date | string
+  }
+
+  export type CouncilCreateWithoutDistrictsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserCreateNestedManyWithoutCouncilInput
+  }
+
+  export type CouncilUncheckedCreateWithoutDistrictsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutCouncilInput
+  }
+
+  export type CouncilCreateOrConnectWithoutDistrictsInput = {
+    where: CouncilWhereUniqueInput
+    create: XOR<CouncilCreateWithoutDistrictsInput, CouncilUncheckedCreateWithoutDistrictsInput>
+  }
+
+  export type UserCreateWithoutDistrictRelInput = {
+    id?: string
+    email: string
+    password?: string | null
+    phoneNumber: string
+    name: string
+    avatar?: string | null
+    district?: string | null
+    about?: string | null
+    role?: $Enums.Role
+    lastLogin?: Date | string
+    isVerified?: boolean
+    resetPasswordToken?: string | null
+    resetPasswordExpiresAt?: Date | string | null
+    verificationToken?: string | null
+    verificationTokenExpiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    council?: CouncilCreateNestedOneWithoutUsersInput
+  }
+
+  export type UserUncheckedCreateWithoutDistrictRelInput = {
+    id?: string
+    email: string
+    password?: string | null
+    phoneNumber: string
+    name: string
+    avatar?: string | null
+    district?: string | null
+    about?: string | null
+    role?: $Enums.Role
+    councilId?: string | null
+    lastLogin?: Date | string
+    isVerified?: boolean
+    resetPasswordToken?: string | null
+    resetPasswordExpiresAt?: Date | string | null
+    verificationToken?: string | null
+    verificationTokenExpiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserCreateOrConnectWithoutDistrictRelInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDistrictRelInput, UserUncheckedCreateWithoutDistrictRelInput>
+  }
+
+  export type UserCreateManyDistrictRelInputEnvelope = {
+    data: UserCreateManyDistrictRelInput | UserCreateManyDistrictRelInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CouncilUpsertWithoutDistrictsInput = {
+    update: XOR<CouncilUpdateWithoutDistrictsInput, CouncilUncheckedUpdateWithoutDistrictsInput>
+    create: XOR<CouncilCreateWithoutDistrictsInput, CouncilUncheckedCreateWithoutDistrictsInput>
+    where?: CouncilWhereInput
+  }
+
+  export type CouncilUpdateToOneWithWhereWithoutDistrictsInput = {
+    where?: CouncilWhereInput
+    data: XOR<CouncilUpdateWithoutDistrictsInput, CouncilUncheckedUpdateWithoutDistrictsInput>
+  }
+
+  export type CouncilUpdateWithoutDistrictsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutCouncilNestedInput
+  }
+
+  export type CouncilUncheckedUpdateWithoutDistrictsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutCouncilNestedInput
+  }
+
+  export type UserUpsertWithWhereUniqueWithoutDistrictRelInput = {
+    where: UserWhereUniqueInput
+    update: XOR<UserUpdateWithoutDistrictRelInput, UserUncheckedUpdateWithoutDistrictRelInput>
+    create: XOR<UserCreateWithoutDistrictRelInput, UserUncheckedCreateWithoutDistrictRelInput>
+  }
+
+  export type UserUpdateWithWhereUniqueWithoutDistrictRelInput = {
+    where: UserWhereUniqueInput
+    data: XOR<UserUpdateWithoutDistrictRelInput, UserUncheckedUpdateWithoutDistrictRelInput>
+  }
+
+  export type UserUpdateManyWithWhereWithoutDistrictRelInput = {
+    where: UserScalarWhereInput
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutDistrictRelInput>
+  }
+
+  export type CouncilCreateWithoutUsersInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    districts?: DistrictCreateNestedManyWithoutCouncilInput
+  }
+
+  export type CouncilUncheckedCreateWithoutUsersInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    districts?: DistrictUncheckedCreateNestedManyWithoutCouncilInput
+  }
+
+  export type CouncilCreateOrConnectWithoutUsersInput = {
+    where: CouncilWhereUniqueInput
+    create: XOR<CouncilCreateWithoutUsersInput, CouncilUncheckedCreateWithoutUsersInput>
+  }
+
+  export type DistrictCreateWithoutUsersInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    council: CouncilCreateNestedOneWithoutDistrictsInput
+  }
+
+  export type DistrictUncheckedCreateWithoutUsersInput = {
+    id?: string
+    name: string
+    councilId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DistrictCreateOrConnectWithoutUsersInput = {
+    where: DistrictWhereUniqueInput
+    create: XOR<DistrictCreateWithoutUsersInput, DistrictUncheckedCreateWithoutUsersInput>
+  }
+
+  export type CouncilUpsertWithoutUsersInput = {
+    update: XOR<CouncilUpdateWithoutUsersInput, CouncilUncheckedUpdateWithoutUsersInput>
+    create: XOR<CouncilCreateWithoutUsersInput, CouncilUncheckedCreateWithoutUsersInput>
+    where?: CouncilWhereInput
+  }
+
+  export type CouncilUpdateToOneWithWhereWithoutUsersInput = {
+    where?: CouncilWhereInput
+    data: XOR<CouncilUpdateWithoutUsersInput, CouncilUncheckedUpdateWithoutUsersInput>
+  }
+
+  export type CouncilUpdateWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    districts?: DistrictUpdateManyWithoutCouncilNestedInput
+  }
+
+  export type CouncilUncheckedUpdateWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    districts?: DistrictUncheckedUpdateManyWithoutCouncilNestedInput
+  }
+
+  export type DistrictUpsertWithoutUsersInput = {
+    update: XOR<DistrictUpdateWithoutUsersInput, DistrictUncheckedUpdateWithoutUsersInput>
+    create: XOR<DistrictCreateWithoutUsersInput, DistrictUncheckedCreateWithoutUsersInput>
+    where?: DistrictWhereInput
+  }
+
+  export type DistrictUpdateToOneWithWhereWithoutUsersInput = {
+    where?: DistrictWhereInput
+    data: XOR<DistrictUpdateWithoutUsersInput, DistrictUncheckedUpdateWithoutUsersInput>
+  }
+
+  export type DistrictUpdateWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    council?: CouncilUpdateOneRequiredWithoutDistrictsNestedInput
+  }
+
+  export type DistrictUncheckedUpdateWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    councilId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DistrictCreateManyCouncilInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserCreateManyCouncilInput = {
+    id?: string
+    email: string
+    password?: string | null
+    phoneNumber: string
+    name: string
+    avatar?: string | null
+    district?: string | null
+    about?: string | null
+    role?: $Enums.Role
+    districtId?: string | null
+    lastLogin?: Date | string
+    isVerified?: boolean
+    resetPasswordToken?: string | null
+    resetPasswordExpiresAt?: Date | string | null
+    verificationToken?: string | null
+    verificationTokenExpiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DistrictUpdateWithoutCouncilInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutDistrictRelNestedInput
+  }
+
+  export type DistrictUncheckedUpdateWithoutCouncilInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutDistrictRelNestedInput
+  }
+
+  export type DistrictUncheckedUpdateManyWithoutCouncilInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserUpdateWithoutCouncilInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    about?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    districtRel?: DistrictUpdateOneWithoutUsersNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCouncilInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    about?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    districtId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserUncheckedUpdateManyWithoutCouncilInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    about?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    districtId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserCreateManyDistrictRelInput = {
+    id?: string
+    email: string
+    password?: string | null
+    phoneNumber: string
+    name: string
+    avatar?: string | null
+    district?: string | null
+    about?: string | null
+    role?: $Enums.Role
+    councilId?: string | null
+    lastLogin?: Date | string
+    isVerified?: boolean
+    resetPasswordToken?: string | null
+    resetPasswordExpiresAt?: Date | string | null
+    verificationToken?: string | null
+    verificationTokenExpiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserUpdateWithoutDistrictRelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    about?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    council?: CouncilUpdateOneWithoutUsersNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutDistrictRelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    about?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    councilId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserUncheckedUpdateManyWithoutDistrictRelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    about?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    councilId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

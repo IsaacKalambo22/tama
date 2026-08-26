@@ -3,15 +3,31 @@ import {
   createCouncilList,
   deleteCouncilList,
   getAllCouncilLists,
+  getCouncilListsByScope,
   updateCouncilList,
 } from "../../controllers/council-list"
-import { verifyAdminAndManager } from "../../middlewares/verify-token/index"
+import { verifyScope } from "../../middlewares/verify-scope/index"
+import {
+  verifySuperAdmin,
+  verifyToken,
+} from "../../middlewares/verify-token/index"
 
 const router = Router()
 
-router.post("/", verifyAdminAndManager, createCouncilList)
-router.get("/", getAllCouncilLists)
-router.patch("/:id", verifyAdminAndManager, updateCouncilList)
-router.delete("/:id", verifyAdminAndManager, deleteCouncilList)
+router.get("/", verifyToken, getAllCouncilLists)
+router.get("/scoped", verifyToken, getCouncilListsByScope)
+router.post("/", verifySuperAdmin, createCouncilList)
+router.patch(
+  "/:id",
+  verifyToken,
+  verifyScope({ resourceType: "councilList" }),
+  updateCouncilList
+)
+router.delete(
+  "/:id",
+  verifyToken,
+  verifyScope({ resourceType: "councilList" }),
+  deleteCouncilList
+)
 
 export default router

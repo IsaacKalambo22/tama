@@ -9,31 +9,33 @@ interface TokenResponse {
 export const generateTokens = (
   id: string,
   email: string,
-  role: Role
+  role: Role,
+  councilId?: string | null,
+  districtId?: string | null
 ): TokenResponse => {
+  const payload = {
+    id,
+    email,
+    role,
+    councilId: councilId || undefined,
+    districtId: districtId || undefined,
+  }
+
   const access_token = jwt.sign(
-    {
-      id: id,
-      email: email,
-      role: role,
-    },
+    payload,
     process.env.JWT_ACCESS_SECRET_KEY as string,
     {
       expiresIn: "7d",
-      algorithm: "HS256", // Correct algorithm here
+      algorithm: "HS256",
     }
   )
 
   const refresh_token = jwt.sign(
-    {
-      id: id,
-      email: email,
-      role: role,
-    },
+    payload,
     process.env.JWT_REFRESH_SECRET_KEY as string,
     {
       expiresIn: "1d",
-      algorithm: "HS256", // Correct algorithm here
+      algorithm: "HS256",
     }
   )
 
