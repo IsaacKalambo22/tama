@@ -7,25 +7,33 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { UserProps } from "@/lib/api"
 import { ChevronDown, Download, FileSpreadsheet, FileText } from "lucide-react"
 import { jsPDF } from "jspdf"
 import * as XLSX from "xlsx"
 
-const HEADERS = ["#", "Name", "Email", "Phone Number", "Role", "District"]
-const HEADERS_KEYS = ["name", "email", "phoneNumber", "role", "district"]
-const SAMPLE_ROWS = [
-  ["John Doe", "john@example.com", "+1234567890", "USER", "Central"],
-  ["Jane Smith", "jane@example.com", "+0987654321", "MANAGER", "Northern"],
-]
+const TABLE_HEADERS = ["#", "Name", "Email", "Phone Number", "Role", "District"]
+const EXCEL_HEADERS = ["name", "email", "phoneNumber", "role", "district"]
 
-function downloadExcel() {
-  const ws = XLSX.utils.aoa_to_sheet([HEADERS_KEYS, ...SAMPLE_ROWS])
-  const wb = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(wb, ws, "Template")
-  XLSX.writeFile(wb, "bulk_user_import_template.xlsx")
+interface Props {
+  users: UserProps[]
 }
 
-async function downloadPDF() {
+function downloadExcel(users: UserProps[]) {
+  const rows = users.map((u) => [
+    u.name,
+    u.email,
+    u.phoneNumber,
+    u.role,
+    u.district || "",
+  ])
+  const ws = XLSX.utils.aoa_to_sheet([EXCEL_HEADERS, ...rows])
+  const wb = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(wb, ws, "Users")
+  XLSX.writeFile(wb, "all_system_users.xlsx")
+}
+
+async function downloadPDF(users: UserProps[]) {
   const doc = new jsPDF()
 
   let logoDataUrl: string | null = null
@@ -68,73 +76,110 @@ async function downloadPDF() {
   const colWidths = [10, 35, 50, 35, 25, 30]
   const rowHeight = 9
   const tableWidth = colWidths.reduce((a, b) => a + b, 0)
+  const pageWidth = doc.internal.pageSize.getWidth()
+  const usableWidth = pageWidth - 2 * 14
 
-  doc.setFillColor(34, 139, 34)
-  doc.rect(tableX, currentY, tableWidth, rowHeight, "F")
-  doc.setFont("helvetica", "bold")
-  doc.setFontSize(9)
-  doc.setTextColor(255, 255, 255)
-  let x = tableX
-  HEADERS.forEach((header, i) => {
-    doc.text(header, x + 3, currentY + 6.5)
-    x += colWidths[i]
-  })
-  currentY += rowHeight
+  function drawHeader() {
+    doc.setFillColor(34, 139, 34)
+    doc.rect(tableX, currentY, tableWidth, rowHeight, "F")
+    doc.setFont("helvetica", "bold")
+    doc.setFontSize(9)
+    doc.setTextColor(255, 255, 255)
+    let hx = tableX
+    TABLE_HEADERS.forEach((header, i) => {
+      doc.text(header, hx + 3, currentY + 6.5)
+      hx += colWidths[i]
+    })
+    currentY += rowHeight
+  }
+
+  function checkPageBreak() {
+    if (currentY + rowHeight > doc.internal.pageSize.getHeight() - 20) {
+      doc.addPage()
+      currentY = 20
+      drawHeader()
+    }
+  }
+
+  drawHeader()
 
   doc.setTextColor(0, 0, 0)
   doc.setFont("helvetica", "normal")
   doc.setFontSize(8)
 
-  SAMPLE_ROWS.forEach((row, rowIdx) => {
+  users.forEach((user, rowIdx) => {
+    checkPageBreak()
+
     if (rowIdx % 2 === 0) {
       doc.setFillColor(245, 247, 250)
       doc.rect(tableX, currentY, tableWidth, rowHeight, "F")
     }
 
+    const rowData = [
+      String(rowIdx + 1),
+      user.name || "",
+      user.email || "",
+      user.phoneNumber || "",
+      user.role || "",
+      user.district || "",
+    ]
+
     let cx = tableX
-    const rowData = [String(rowIdx + 1), ...row]
     rowData.forEach((cell, colIdx) => {
-      doc.text(cell, cx + 3, currentY + 6.5)
+      const maxChars = Math.floor(colWidths[colIdx] / 2)
+      const truncated =
+        cell.length > maxChars ? cell.slice(0, maxChars - 2) + ".." : cell
+      doc.text(truncated, cx + 3, currentY + 6.5)
       cx += colWidths[colIdx]
     })
 
     doc.setDrawColor(220, 220, 220)
-    doc.line(tableX, currentY + rowHeight, tableX + tableWidth, currentY + rowHeight)
+    doc.line(
+      tableX,
+      currentY + rowHeight,
+      tableX + tableWidth,
+      currentY + rowHeight
+    )
     currentY += rowHeight
   })
 
   doc.setDrawColor(34, 139, 34)
   doc.setLineWidth(0.5)
-  doc.rect(tableX, currentY - rowHeight * SAMPLE_ROWS.length - rowHeight, tableWidth, rowHeight * (SAMPLE_ROWS.length + 1))
+  doc.rect(
+    tableX,
+    currentY - rowHeight * users.length - rowHeight,
+    tableWidth,
+    rowHeight * (users.length + 1)
+  )
 
   const pageHeight = doc.internal.pageSize.getHeight()
   doc.setFontSize(8)
   doc.setTextColor(150, 150, 150)
   doc.text(
-    `Generated on ${new Date().toLocaleDateString()}`,
+    `Total: ${users.length} users | Generated on ${new Date().toLocaleDateString()}`,
     14,
     pageHeight - 10
   )
 
-  doc.save("all_system_users_template.pdf")
+  doc.save("all_system_users.pdf")
 }
 
-export default function DownloadTemplateDropdown() {
+export default function DownloadTemplateDropdown({ users }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline">
           <Download className="mr-2 h-4 w-4" />
-          Download Template
+          Download Users
           <ChevronDown className="ml-2 h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={downloadExcel}>
+        <DropdownMenuItem onClick={() => downloadExcel(users)}>
           <FileSpreadsheet className="mr-2 h-4 w-4" />
           Download as Excel
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={downloadPDF}>
+        <DropdownMenuItem onClick={() => downloadPDF(users)}>
           <FileText className="mr-2 h-4 w-4" />
           Download as PDF
         </DropdownMenuItem>

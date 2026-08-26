@@ -12,7 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { bulkImportUsers } from "@/modules/admin/actions"
-import { parsePhoneNumberFromString } from "libphonenumber-js"
+import { isValidMalawiPhone, normalizeMalawiPhone } from "@/lib/phone-validation"
 import {
   ArrowLeft,
   CheckCircle,
@@ -23,7 +23,7 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import Papa from "papaparse"
-import { useCallback, useRef, useState } from "react"
+import { useRef, useState, useCallback } from "react"
 import { useDropzone } from "react-dropzone"
 import { toast } from "sonner"
 import * as XLSX from "xlsx"
@@ -62,17 +62,44 @@ type Step = "upload" | "preview" | "processing" | "results"
 
 const VALID_ROLES = ["ADMIN", "MANAGER", "USER"]
 
+const EXPECTED_FIELDS = ["name", "email", "phoneNumber", "role", "district"]
+const PHONE_ALIASES = ["phone", "phone_number", "phone number", "phonenumber"]
+
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
 
-function isValidE164Phone(phone: string): boolean {
-  try {
-    const parsed = parsePhoneNumberFromString(phone)
-    return parsed ? parsed.isValid() && parsed.number === phone : false
-  } catch {
-    return false
+function isValidPhone(phone: string): boolean {
+  return isValidMalawiPhone(phone)
+}
+
+function validateHeaders(headers: string[]): string[] {
+  const normalizedHeaders = headers.map((h) => h.trim().toLowerCase())
+  const errors: string[] = []
+
+  const mappedFields = normalizedHeaders.map((h) => {
+    if (PHONE_ALIASES.includes(h)) return "phoneNumber"
+    if (EXPECTED_FIELDS.includes(h)) return h
+    return null
+  })
+
+  const missingFields = EXPECTED_FIELDS.filter(
+    (f) => !mappedFields.includes(f)
+  )
+  if (missingFields.length > 0) {
+    errors.push(`Missing required columns: ${missingFields.join(", ")}`)
   }
+
+  const unknownFields = normalizedHeaders.filter(
+    (h, i) => mappedFields[i] === null
+  )
+  if (unknownFields.length > 0) {
+    errors.push(
+      `Unrecognized columns (will be ignored): ${unknownFields.join(", ")}`
+    )
+  }
+
+  return errors
 }
 
 function validateRow(row: ParsedRow, rowIndex: number): ValidatedRow {
@@ -84,9 +111,9 @@ function validateRow(row: ParsedRow, rowIndex: number): ValidatedRow {
   if (!row.email || !isValidEmail(row.email.trim())) {
     errors.push("A valid email address is required")
   }
-  if (!row.phoneNumber || !isValidE164Phone(row.phoneNumber.trim())) {
+  if (!row.phoneNumber || !isValidPhone(row.phoneNumber.trim())) {
     errors.push(
-      "A valid phone number in E.164 format is required (e.g., +1234567890)"
+      "A valid TNM or Airtel phone number is required (e.g., +2659XXXXXXXX or 09XXXXXXXX)"
     )
   }
   const role = row.role?.trim().toUpperCase() || "USER"
@@ -123,7 +150,7 @@ function checkDuplicates(rows: ValidatedRow[]): ValidatedRow[] {
       }
     }
 
-    if (phone && isValidE164Phone(phone)) {
+    if (phone && isValidPhone(phone)) {
       if (seenPhones.has(phone)) {
         newErrors.push(
           `Duplicate phone number (first seen in row ${seenPhones.get(phone)! + 1})`
@@ -149,10 +176,55 @@ export default function BulkUserImportPage() {
   const [isProcessing, setIsProcessing] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    const file = acceptedFiles[0]
-    if (!file) return
+  function processParsedData(
+    data: Record<string, unknown>[],
+    headers?: string[]
+  ) {
+    if (headers) {
+      const headerErrors = validateHeaders(headers)
+      if (headerErrors.length > 0) {
+        toast.error(headerErrors.join(". "))
+        return
+      }
+    }
 
+    const normalized = data.map((row) => ({
+      name: ((row.name as string) || "").trim(),
+      email: ((row.email as string) || "").trim(),
+      phoneNumber: (
+        (row.phoneNumber as string) ||
+        (row.phone as string) ||
+        (row.Phone as string) ||
+        (row["Phone Number"] as string) ||
+        (row.phone_number as string) ||
+        ""
+      ).trim(),
+      role: ((row.role as string) || "USER").trim(),
+      district: ((row.district as string) || "").trim(),
+    }))
+
+    const validated = normalized.map((row, i) => validateRow(row, i))
+    const withDupCheck = checkDuplicates(validated)
+    setParsedRows(withDupCheck)
+    setStep("preview")
+  }
+
+  const updateCell = useCallback(
+    (rowIndex: number, field: keyof ParsedRow, value: string) => {
+      setParsedRows((prev) => {
+        const updated = prev.map((row) => {
+          if (row.rowIndex !== rowIndex) return row
+          const updatedRow = { ...row, [field]: value }
+          const validated = validateRow(updatedRow, rowIndex)
+          return { ...validated, errors: validated.errors }
+        })
+        return checkDuplicates(updated)
+      })
+    },
+    []
+  )
+
+  async function handleFile(file: File) {
     const ext = file.name.split(".").pop()?.toLowerCase()
     if (ext !== "csv" && ext !== "xlsx") {
       toast.error("Only .csv and .xlsx files are accepted")
@@ -171,54 +243,46 @@ export default function BulkUserImportPage() {
         header: true,
         skipEmptyLines: true,
         complete: (results) => {
-          processParsedData(results.data as ParsedRow[])
+          const headers = results.meta.fields || []
+          processParsedData(results.data as Record<string, unknown>[], headers)
         },
         error: () => {
           toast.error("Failed to parse CSV file")
         },
       })
     } else {
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        try {
-          const data = new Uint8Array(e.target?.result as ArrayBuffer)
-          const workbook = XLSX.read(data, { type: "array" })
-          const sheetName = workbook.SheetNames[0]
-          const worksheet = workbook.Sheets[sheetName]
-          const jsonData = XLSX.utils.sheet_to_json<ParsedRow>(worksheet)
-          processParsedData(jsonData)
-        } catch {
-          toast.error("Failed to parse Excel file")
-        }
+      try {
+        const arrayBuffer = await file.arrayBuffer()
+        const data = new Uint8Array(arrayBuffer)
+        const workbook = XLSX.read(data, { type: "array" })
+        const sheetName = workbook.SheetNames[0]
+        const worksheet = workbook.Sheets[sheetName]
+        const headers = XLSX.utils.sheet_to_json<string[]>(worksheet, {
+          header: 1,
+        })[0] as string[]
+        const jsonData = XLSX.utils.sheet_to_json(worksheet) as Record<
+          string,
+          unknown
+        >[]
+        processParsedData(jsonData, headers)
+      } catch {
+        toast.error("Failed to parse Excel file")
       }
-      reader.readAsArrayBuffer(file)
     }
-  }, [])
+  }
 
   function handleBrowseChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
-    onDrop([file])
+    handleFile(file)
     e.target.value = ""
   }
 
-  function processParsedData(data: ParsedRow[]) {
-    const normalized = data.map((row) => ({
-      name: (row.name || "").trim(),
-      email: (row.email || "").trim(),
-      phoneNumber: (row.phoneNumber || "").trim(),
-      role: (row.role || "USER").trim(),
-      district: (row.district || "").trim(),
-    }))
-
-    const validated = normalized.map((row, i) => validateRow(row, i))
-    const withDupCheck = checkDuplicates(validated)
-    setParsedRows(withDupCheck)
-    setStep("preview")
-  }
-
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
+    onDrop: (acceptedFiles: File[]) => {
+      const file = acceptedFiles[0]
+      if (file) handleFile(file)
+    },
     accept: {
       "text/csv": [".csv"],
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
@@ -244,7 +308,7 @@ export default function BulkUserImportPage() {
         users: validRows.map((r) => ({
           name: r.name,
           email: r.email,
-          phoneNumber: r.phoneNumber,
+          phoneNumber: normalizeMalawiPhone(r.phoneNumber),
           role: (r.role?.toUpperCase() || "USER") as string,
           district: r.district || undefined,
         })),
@@ -348,12 +412,12 @@ export default function BulkUserImportPage() {
           <div className="rounded-lg border p-4 bg-muted/50">
             <h3 className="font-medium mb-2">Template Format</h3>
             <p className="text-sm text-muted-foreground mb-2">
-              Your file should have the following columns:
+              Your file must have exactly these 5 columns (case-insensitive):
             </p>
             <code className="block text-xs bg-background p-2 rounded">
-              name,email,phoneNumber,role,district
+              name, email, phoneNumber, role, district
               <br />
-              John Doe,john@example.com,+1234567890,USER,Central
+              John Doe, john@example.com, +265912345678, USER, Central
             </code>
             <ul className="mt-2 text-xs text-muted-foreground list-disc list-inside space-y-1">
               <li>
@@ -363,8 +427,8 @@ export default function BulkUserImportPage() {
                 <strong>email</strong> - Required (valid email format)
               </li>
               <li>
-                <strong>phoneNumber</strong> - Required (E.164 format, e.g.,
-                +1234567890)
+                <strong>phoneNumber</strong> - Required (TNM or Airtel format,
+                e.g., +2659XXXXXXXX or 09XXXXXXXX)
               </li>
               <li>
                 <strong>role</strong> - Optional (ADMIN, MANAGER, or USER.
@@ -456,17 +520,68 @@ export default function BulkUserImportPage() {
                         <TableCell className="font-mono text-sm">
                           {row.rowIndex + 1}
                         </TableCell>
-                        <TableCell>{row.name}</TableCell>
-                        <TableCell>{row.email}</TableCell>
-                        <TableCell className="font-mono text-sm">
-                          {row.phoneNumber}
+                        <TableCell>
+                          <input
+                            type="text"
+                            value={row.name}
+                            onChange={(e) =>
+                              updateCell(row.rowIndex, "name", e.target.value)
+                            }
+                            className="w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-blue-500 focus:outline-none px-1 py-0.5 text-sm"
+                          />
                         </TableCell>
                         <TableCell>
-                          <Badge variant="outline">
-                            {row.role?.toUpperCase() || "USER"}
-                          </Badge>
+                          <input
+                            type="email"
+                            value={row.email}
+                            onChange={(e) =>
+                              updateCell(row.rowIndex, "email", e.target.value)
+                            }
+                            className="w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-blue-500 focus:outline-none px-1 py-0.5 text-sm"
+                          />
                         </TableCell>
-                        <TableCell>{row.district || "—"}</TableCell>
+                        <TableCell>
+                          <input
+                            type="text"
+                            value={row.phoneNumber}
+                            onChange={(e) =>
+                              updateCell(
+                                row.rowIndex,
+                                "phoneNumber",
+                                e.target.value
+                              )
+                            }
+                            placeholder="e.g., +2659XXXXXXXX or 09XXXXXXXX"
+                            className="w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-blue-500 focus:outline-none px-1 py-0.5 text-sm font-mono"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <select
+                            value={row.role?.toUpperCase() || "USER"}
+                            onChange={(e) =>
+                              updateCell(row.rowIndex, "role", e.target.value)
+                            }
+                            className="w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-blue-500 focus:outline-none px-1 py-0.5 text-sm"
+                          >
+                            <option value="USER">USER</option>
+                            <option value="MANAGER">MANAGER</option>
+                            <option value="ADMIN">ADMIN</option>
+                          </select>
+                        </TableCell>
+                        <TableCell>
+                          <input
+                            type="text"
+                            value={row.district}
+                            onChange={(e) =>
+                              updateCell(
+                                row.rowIndex,
+                                "district",
+                                e.target.value
+                              )
+                            }
+                            className="w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-blue-500 focus:outline-none px-1 py-0.5 text-sm"
+                          />
+                        </TableCell>
                         <TableCell>
                           {row.isValid ? (
                             <Badge className="bg-green-100 text-green-800">
