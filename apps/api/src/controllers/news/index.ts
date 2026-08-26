@@ -83,7 +83,7 @@ export const getAllNews = async (
 }
 
 export const getNewsById = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -129,7 +129,7 @@ export const getNewsById = async (
 }
 
 export const updateNews = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -196,7 +196,7 @@ export const updateNews = async (
 }
 
 export const deleteNews = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
