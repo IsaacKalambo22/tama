@@ -73,7 +73,7 @@ export const getAllBlogs = async (
   }
 }
 export const getBlogById = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -120,7 +120,7 @@ export const getBlogById = async (
 }
 
 export const updateBlog = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -188,7 +188,7 @@ export const updateBlog = async (
 }
 
 export const deleteBlog = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
