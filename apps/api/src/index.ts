@@ -1,4 +1,4 @@
-import bodyParser from "body-parser"
+import compression from "compression"
 import cors from "cors"
 import dotenv from "dotenv"
 import express from "express"
@@ -26,18 +26,34 @@ import vacancies from "./routes/vacancy"
 /* CONFIGURATIONS */
 dotenv.config()
 const app = express()
-app.use(express.json())
+
+// Security & performance middleware
 app.use(helmet())
 app.use(
   helmet.crossOriginResourcePolicy({
     policy: "cross-origin",
   })
 )
-app.use(morgan("common"))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
-
+app.use(compression())
 app.use(cors())
+app.use(morgan("common"))
+
+// Body parsing (express.json is built-in, body-parser is redundant)
+app.use(express.json({ limit: "10mb" }))
+app.use(express.urlencoded({ extended: false }))
+
+// Cache static assets
+app.use(express.static("public", { maxAge: "1y", immutable: true }))
+
+// Caching headers for API responses
+app.use((req, res, next) => {
+  if (req.method === "GET") {
+    res.setHeader("Cache-Control", "public, max-age=60, s-maxage=120")
+  } else {
+    res.setHeader("Cache-Control", "no-store")
+  }
+  next()
+})
 
 // Bootstrap admin user if none exists
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!
