@@ -22,7 +22,7 @@ const ServiceCard = ({ service }: Props) => {
             objectFit="cover" // Keeps the image filling the space
             objectPosition="center"
             className="rounded-xl"
-            unoptimized
+
             loading="lazy"
           />
         </div>

@@ -14,7 +14,6 @@ const ShopCard = ({ shop }: Props) => {
         <ShopActionDropdown shop={shop} />
       </div>
       <Image
-        unoptimized
         src={`${shop.imageUrl}`}
         alt={shop.name}
         width={200}
