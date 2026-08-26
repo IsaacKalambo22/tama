@@ -16,14 +16,14 @@ import { parsePhoneNumberFromString } from "libphonenumber-js"
 import {
   ArrowLeft,
   CheckCircle,
-  Download,
   FileText,
+  FolderOpen,
   Upload,
   XCircle,
 } from "lucide-react"
 import Link from "next/link"
 import Papa from "papaparse"
-import { useCallback, useState } from "react"
+import { useCallback, useRef, useState } from "react"
 import { useDropzone } from "react-dropzone"
 import { toast } from "sonner"
 import * as XLSX from "xlsx"
@@ -147,6 +147,7 @@ export default function BulkUserImportPage() {
   const [parsedRows, setParsedRows] = useState<ValidatedRow[]>([])
   const [importResult, setImportResult] = useState<ImportSummary | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0]
@@ -194,6 +195,13 @@ export default function BulkUserImportPage() {
     }
   }, [])
 
+  function handleBrowseChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    onDrop([file])
+    e.target.value = ""
+  }
+
   function processParsedData(data: ParsedRow[]) {
     const normalized = data.map((row) => ({
       name: (row.name || "").trim(),
@@ -220,24 +228,6 @@ export default function BulkUserImportPage() {
     maxFiles: 1,
     multiple: false,
   })
-
-  function downloadTemplate() {
-    const headers = ["name", "email", "phoneNumber", "role", "district"]
-    const sampleRows = [
-      ["John Doe", "john@example.com", "+1234567890", "USER", "Central"],
-      ["Jane Smith", "jane@example.com", "+0987654321", "MANAGER", "Northern"],
-    ]
-    const csv = [headers.join(","), ...sampleRows.map((r) => r.join(","))].join(
-      "\n"
-    )
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement("a")
-    link.href = url
-    link.download = "bulk_user_import_template.csv"
-    link.click()
-    URL.revokeObjectURL(url)
-  }
 
   async function handleImport() {
     const validRows = parsedRows.filter((r) => r.isValid)
@@ -337,9 +327,19 @@ export default function BulkUserImportPage() {
               </div>
 
               <div className="flex justify-center">
-                <Button variant="outline" onClick={downloadTemplate}>
-                  <Download className="mr-2 h-4 w-4" />
-                  Download Template
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".csv,.xlsx"
+                  className="hidden"
+                  onChange={handleBrowseChange}
+                />
+                <Button
+                  variant="outline"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <FolderOpen className="mr-2 h-4 w-4" />
+                  Browse Files
                 </Button>
               </div>
             </CardContent>

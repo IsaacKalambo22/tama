@@ -1,6 +1,12 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import ModalNewBlog from "@/modules/admin/blog/modal-new-blog"
 import ModalNewCouncilList from "@/modules/admin/council-list/modal-new-council-list"
 import ModalNewEvent from "@/modules/admin/events/modal-new-event"
@@ -10,7 +16,8 @@ import ModalNewPublication from "@/modules/admin/reports-publications/modal-new-
 import ModalNewShop from "@/modules/admin/shop/modal-new-shop"
 import ModalNewUser from "@/modules/admin/user/modal-new-user"
 import ModalNewVacancy from "@/modules/admin/vacancy/modal-new-vacancy"
-import { PlusSquare } from "lucide-react"
+import { ChevronDown, PlusSquare, Upload, UserPlus } from "lucide-react"
+import { useRouter } from "next/navigation"
 import { ReactElement, useState } from "react"
 import ModalNewHomeCarousel from "../home-carousel/modal-new-home-carousel"
 import ModalNewHomeImageText from "../home-image-text/modal-new-home-image-text"
@@ -36,32 +43,57 @@ export enum AddNewType {
 }
 
 interface HeaderProps {
-  name: string // Dynamic header title
-  buttonName?: string // Use the enum for button name
+  name: string
+  buttonName?: string
+  extraActions?: ReactElement
 }
 
-const AddNewHeader = ({ name, buttonName }: HeaderProps): ReactElement => {
+const AddNewHeader = ({ name, buttonName, extraActions }: HeaderProps): ReactElement => {
   const [isOpen, setIsOpen] = useState(false)
+  const router = useRouter()
 
   const handleButtonClick = () => {
-    setIsOpen((prev) => !prev) // Toggle isOpen state
+    setIsOpen((prev) => !prev)
   }
 
   const handleClose = () => {
-    setIsOpen(false) // Close modal
+    setIsOpen(false)
   }
 
   return (
     <div className="mb-5 flex w-full items-center justify-between">
       <h1 className="text-lg font-semibold dark:text-white">{name}</h1>
-      {buttonName && (
-        <>
-          <Button onClick={handleButtonClick}>
-            <PlusSquare className="h-4 w-4" />
-            {buttonName} {/* Display button name */}
-          </Button>
-        </>
-      )}
+      <div className="flex items-center gap-2">
+        {extraActions}
+        {buttonName && buttonName === AddNewType.ADD_USER ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button>
+                <PlusSquare className="h-4 w-4" />
+                {buttonName}
+                <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={handleButtonClick}>
+                <UserPlus className="mr-2 h-4 w-4" />
+                Add Single User
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push("/admin/users/import")}>
+                <Upload className="mr-2 h-4 w-4" />
+                Bulk Import
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          buttonName && (
+            <Button onClick={handleButtonClick}>
+              <PlusSquare className="h-4 w-4" />
+              {buttonName}
+            </Button>
+          )
+        )}
+      </div>
 
       {isOpen && buttonName === AddNewType.NEW_FORM && (
         <ModalNewForm isOpen={isOpen} onClose={handleClose} />
