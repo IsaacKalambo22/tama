@@ -88,6 +88,26 @@ export type ImageText = $Result.DefaultSelection<Prisma.$ImageTextPayload>
  * 
  */
 export type EmailNotification = $Result.DefaultSelection<Prisma.$EmailNotificationPayload>
+/**
+ * Model InAppNotification
+ * 
+ */
+export type InAppNotification = $Result.DefaultSelection<Prisma.$InAppNotificationPayload>
+/**
+ * Model NotificationBatch
+ * 
+ */
+export type NotificationBatch = $Result.DefaultSelection<Prisma.$NotificationBatchPayload>
+/**
+ * Model RecipientGroup
+ * 
+ */
+export type RecipientGroup = $Result.DefaultSelection<Prisma.$RecipientGroupPayload>
+/**
+ * Model RecipientGroupMember
+ * 
+ */
+export type RecipientGroupMember = $Result.DefaultSelection<Prisma.$RecipientGroupMemberPayload>
 
 /**
  * Enums
@@ -113,6 +133,26 @@ export const EmailNotificationStatus: {
 
 export type EmailNotificationStatus = (typeof EmailNotificationStatus)[keyof typeof EmailNotificationStatus]
 
+
+export const NotificationTargetType: {
+  INDIVIDUALS: 'INDIVIDUALS',
+  GROUP: 'GROUP',
+  DISTRICT: 'DISTRICT',
+  COUNCIL: 'COUNCIL'
+};
+
+export type NotificationTargetType = (typeof NotificationTargetType)[keyof typeof NotificationTargetType]
+
+
+export const NotificationBatchStatus: {
+  DRAFT: 'DRAFT',
+  SCHEDULED: 'SCHEDULED',
+  SENT: 'SENT',
+  CANCELLED: 'CANCELLED'
+};
+
+export type NotificationBatchStatus = (typeof NotificationBatchStatus)[keyof typeof NotificationBatchStatus]
+
 }
 
 export type Role = $Enums.Role
@@ -122,6 +162,14 @@ export const Role: typeof $Enums.Role
 export type EmailNotificationStatus = $Enums.EmailNotificationStatus
 
 export const EmailNotificationStatus: typeof $Enums.EmailNotificationStatus
+
+export type NotificationTargetType = $Enums.NotificationTargetType
+
+export const NotificationTargetType: typeof $Enums.NotificationTargetType
+
+export type NotificationBatchStatus = $Enums.NotificationBatchStatus
+
+export const NotificationBatchStatus: typeof $Enums.NotificationBatchStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -390,6 +438,46 @@ export class PrismaClient<
     * ```
     */
   get emailNotification(): Prisma.EmailNotificationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.inAppNotification`: Exposes CRUD operations for the **InAppNotification** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more InAppNotifications
+    * const inAppNotifications = await prisma.inAppNotification.findMany()
+    * ```
+    */
+  get inAppNotification(): Prisma.InAppNotificationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.notificationBatch`: Exposes CRUD operations for the **NotificationBatch** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more NotificationBatches
+    * const notificationBatches = await prisma.notificationBatch.findMany()
+    * ```
+    */
+  get notificationBatch(): Prisma.NotificationBatchDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.recipientGroup`: Exposes CRUD operations for the **RecipientGroup** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RecipientGroups
+    * const recipientGroups = await prisma.recipientGroup.findMany()
+    * ```
+    */
+  get recipientGroup(): Prisma.RecipientGroupDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.recipientGroupMember`: Exposes CRUD operations for the **RecipientGroupMember** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RecipientGroupMembers
+    * const recipientGroupMembers = await prisma.recipientGroupMember.findMany()
+    * ```
+    */
+  get recipientGroupMember(): Prisma.RecipientGroupMemberDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -845,7 +933,11 @@ export namespace Prisma {
     Service: 'Service',
     Carousel: 'Carousel',
     ImageText: 'ImageText',
-    EmailNotification: 'EmailNotification'
+    EmailNotification: 'EmailNotification',
+    InAppNotification: 'InAppNotification',
+    NotificationBatch: 'NotificationBatch',
+    RecipientGroup: 'RecipientGroup',
+    RecipientGroupMember: 'RecipientGroupMember'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -864,7 +956,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "shop" | "reportAndPublication" | "form" | "blog" | "team" | "stat" | "news" | "councilList" | "event" | "vacancy" | "service" | "carousel" | "imageText" | "emailNotification"
+      modelProps: "user" | "shop" | "reportAndPublication" | "form" | "blog" | "team" | "stat" | "news" | "councilList" | "event" | "vacancy" | "service" | "carousel" | "imageText" | "emailNotification" | "inAppNotification" | "notificationBatch" | "recipientGroup" | "recipientGroupMember"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1978,6 +2070,302 @@ export namespace Prisma {
           }
         }
       }
+      InAppNotification: {
+        payload: Prisma.$InAppNotificationPayload<ExtArgs>
+        fields: Prisma.InAppNotificationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.InAppNotificationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InAppNotificationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.InAppNotificationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InAppNotificationPayload>
+          }
+          findFirst: {
+            args: Prisma.InAppNotificationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InAppNotificationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.InAppNotificationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InAppNotificationPayload>
+          }
+          findMany: {
+            args: Prisma.InAppNotificationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InAppNotificationPayload>[]
+          }
+          create: {
+            args: Prisma.InAppNotificationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InAppNotificationPayload>
+          }
+          createMany: {
+            args: Prisma.InAppNotificationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.InAppNotificationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InAppNotificationPayload>[]
+          }
+          delete: {
+            args: Prisma.InAppNotificationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InAppNotificationPayload>
+          }
+          update: {
+            args: Prisma.InAppNotificationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InAppNotificationPayload>
+          }
+          deleteMany: {
+            args: Prisma.InAppNotificationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.InAppNotificationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.InAppNotificationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InAppNotificationPayload>[]
+          }
+          upsert: {
+            args: Prisma.InAppNotificationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InAppNotificationPayload>
+          }
+          aggregate: {
+            args: Prisma.InAppNotificationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateInAppNotification>
+          }
+          groupBy: {
+            args: Prisma.InAppNotificationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<InAppNotificationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.InAppNotificationCountArgs<ExtArgs>
+            result: $Utils.Optional<InAppNotificationCountAggregateOutputType> | number
+          }
+        }
+      }
+      NotificationBatch: {
+        payload: Prisma.$NotificationBatchPayload<ExtArgs>
+        fields: Prisma.NotificationBatchFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.NotificationBatchFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationBatchPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.NotificationBatchFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationBatchPayload>
+          }
+          findFirst: {
+            args: Prisma.NotificationBatchFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationBatchPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.NotificationBatchFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationBatchPayload>
+          }
+          findMany: {
+            args: Prisma.NotificationBatchFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationBatchPayload>[]
+          }
+          create: {
+            args: Prisma.NotificationBatchCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationBatchPayload>
+          }
+          createMany: {
+            args: Prisma.NotificationBatchCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.NotificationBatchCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationBatchPayload>[]
+          }
+          delete: {
+            args: Prisma.NotificationBatchDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationBatchPayload>
+          }
+          update: {
+            args: Prisma.NotificationBatchUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationBatchPayload>
+          }
+          deleteMany: {
+            args: Prisma.NotificationBatchDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.NotificationBatchUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.NotificationBatchUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationBatchPayload>[]
+          }
+          upsert: {
+            args: Prisma.NotificationBatchUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationBatchPayload>
+          }
+          aggregate: {
+            args: Prisma.NotificationBatchAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateNotificationBatch>
+          }
+          groupBy: {
+            args: Prisma.NotificationBatchGroupByArgs<ExtArgs>
+            result: $Utils.Optional<NotificationBatchGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.NotificationBatchCountArgs<ExtArgs>
+            result: $Utils.Optional<NotificationBatchCountAggregateOutputType> | number
+          }
+        }
+      }
+      RecipientGroup: {
+        payload: Prisma.$RecipientGroupPayload<ExtArgs>
+        fields: Prisma.RecipientGroupFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RecipientGroupFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipientGroupPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RecipientGroupFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipientGroupPayload>
+          }
+          findFirst: {
+            args: Prisma.RecipientGroupFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipientGroupPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RecipientGroupFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipientGroupPayload>
+          }
+          findMany: {
+            args: Prisma.RecipientGroupFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipientGroupPayload>[]
+          }
+          create: {
+            args: Prisma.RecipientGroupCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipientGroupPayload>
+          }
+          createMany: {
+            args: Prisma.RecipientGroupCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RecipientGroupCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipientGroupPayload>[]
+          }
+          delete: {
+            args: Prisma.RecipientGroupDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipientGroupPayload>
+          }
+          update: {
+            args: Prisma.RecipientGroupUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipientGroupPayload>
+          }
+          deleteMany: {
+            args: Prisma.RecipientGroupDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RecipientGroupUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RecipientGroupUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipientGroupPayload>[]
+          }
+          upsert: {
+            args: Prisma.RecipientGroupUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipientGroupPayload>
+          }
+          aggregate: {
+            args: Prisma.RecipientGroupAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRecipientGroup>
+          }
+          groupBy: {
+            args: Prisma.RecipientGroupGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RecipientGroupGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RecipientGroupCountArgs<ExtArgs>
+            result: $Utils.Optional<RecipientGroupCountAggregateOutputType> | number
+          }
+        }
+      }
+      RecipientGroupMember: {
+        payload: Prisma.$RecipientGroupMemberPayload<ExtArgs>
+        fields: Prisma.RecipientGroupMemberFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RecipientGroupMemberFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipientGroupMemberPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RecipientGroupMemberFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipientGroupMemberPayload>
+          }
+          findFirst: {
+            args: Prisma.RecipientGroupMemberFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipientGroupMemberPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RecipientGroupMemberFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipientGroupMemberPayload>
+          }
+          findMany: {
+            args: Prisma.RecipientGroupMemberFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipientGroupMemberPayload>[]
+          }
+          create: {
+            args: Prisma.RecipientGroupMemberCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipientGroupMemberPayload>
+          }
+          createMany: {
+            args: Prisma.RecipientGroupMemberCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RecipientGroupMemberCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipientGroupMemberPayload>[]
+          }
+          delete: {
+            args: Prisma.RecipientGroupMemberDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipientGroupMemberPayload>
+          }
+          update: {
+            args: Prisma.RecipientGroupMemberUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipientGroupMemberPayload>
+          }
+          deleteMany: {
+            args: Prisma.RecipientGroupMemberDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RecipientGroupMemberUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RecipientGroupMemberUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipientGroupMemberPayload>[]
+          }
+          upsert: {
+            args: Prisma.RecipientGroupMemberUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipientGroupMemberPayload>
+          }
+          aggregate: {
+            args: Prisma.RecipientGroupMemberAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRecipientGroupMember>
+          }
+          groupBy: {
+            args: Prisma.RecipientGroupMemberGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RecipientGroupMemberGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RecipientGroupMemberCountArgs<ExtArgs>
+            result: $Utils.Optional<RecipientGroupMemberCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2089,6 +2477,10 @@ export namespace Prisma {
     carousel?: CarouselOmit
     imageText?: ImageTextOmit
     emailNotification?: EmailNotificationOmit
+    inAppNotification?: InAppNotificationOmit
+    notificationBatch?: NotificationBatchOmit
+    recipientGroup?: RecipientGroupOmit
+    recipientGroupMember?: RecipientGroupMemberOmit
   }
 
   /* Types for Logging */
@@ -2163,6 +2555,134 @@ export namespace Prisma {
    * Count Types
    */
 
+
+  /**
+   * Count Type UserCountOutputType
+   */
+
+  export type UserCountOutputType = {
+    sentNotifications: number
+    receivedNotifications: number
+    notificationBatches: number
+    recipientGroupsCreated: number
+    recipientGroupMemberships: number
+  }
+
+  export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sentNotifications?: boolean | UserCountOutputTypeCountSentNotificationsArgs
+    receivedNotifications?: boolean | UserCountOutputTypeCountReceivedNotificationsArgs
+    notificationBatches?: boolean | UserCountOutputTypeCountNotificationBatchesArgs
+    recipientGroupsCreated?: boolean | UserCountOutputTypeCountRecipientGroupsCreatedArgs
+    recipientGroupMemberships?: boolean | UserCountOutputTypeCountRecipientGroupMembershipsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserCountOutputType
+     */
+    select?: UserCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSentNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InAppNotificationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountReceivedNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InAppNotificationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountNotificationBatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationBatchWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountRecipientGroupsCreatedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RecipientGroupWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountRecipientGroupMembershipsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RecipientGroupMemberWhereInput
+  }
+
+
+  /**
+   * Count Type NotificationBatchCountOutputType
+   */
+
+  export type NotificationBatchCountOutputType = {
+    notifications: number
+  }
+
+  export type NotificationBatchCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    notifications?: boolean | NotificationBatchCountOutputTypeCountNotificationsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * NotificationBatchCountOutputType without action
+   */
+  export type NotificationBatchCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationBatchCountOutputType
+     */
+    select?: NotificationBatchCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * NotificationBatchCountOutputType without action
+   */
+  export type NotificationBatchCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InAppNotificationWhereInput
+  }
+
+
+  /**
+   * Count Type RecipientGroupCountOutputType
+   */
+
+  export type RecipientGroupCountOutputType = {
+    members: number
+  }
+
+  export type RecipientGroupCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    members?: boolean | RecipientGroupCountOutputTypeCountMembersArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * RecipientGroupCountOutputType without action
+   */
+  export type RecipientGroupCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroupCountOutputType
+     */
+    select?: RecipientGroupCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * RecipientGroupCountOutputType without action
+   */
+  export type RecipientGroupCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RecipientGroupMemberWhereInput
+  }
 
 
   /**
@@ -2429,6 +2949,12 @@ export namespace Prisma {
     verificationTokenExpiresAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    sentNotifications?: boolean | User$sentNotificationsArgs<ExtArgs>
+    receivedNotifications?: boolean | User$receivedNotificationsArgs<ExtArgs>
+    notificationBatches?: boolean | User$notificationBatchesArgs<ExtArgs>
+    recipientGroupsCreated?: boolean | User$recipientGroupsCreatedArgs<ExtArgs>
+    recipientGroupMemberships?: boolean | User$recipientGroupMembershipsArgs<ExtArgs>
+    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2492,10 +3018,26 @@ export namespace Prisma {
   }
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "phoneNumber" | "name" | "avatar" | "district" | "about" | "role" | "lastLogin" | "isVerified" | "resetPasswordToken" | "resetPasswordExpiresAt" | "verificationToken" | "verificationTokenExpiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sentNotifications?: boolean | User$sentNotificationsArgs<ExtArgs>
+    receivedNotifications?: boolean | User$receivedNotificationsArgs<ExtArgs>
+    notificationBatches?: boolean | User$notificationBatchesArgs<ExtArgs>
+    recipientGroupsCreated?: boolean | User$recipientGroupsCreatedArgs<ExtArgs>
+    recipientGroupMemberships?: boolean | User$recipientGroupMembershipsArgs<ExtArgs>
+    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
-    objects: {}
+    objects: {
+      sentNotifications: Prisma.$InAppNotificationPayload<ExtArgs>[]
+      receivedNotifications: Prisma.$InAppNotificationPayload<ExtArgs>[]
+      notificationBatches: Prisma.$NotificationBatchPayload<ExtArgs>[]
+      recipientGroupsCreated: Prisma.$RecipientGroupPayload<ExtArgs>[]
+      recipientGroupMemberships: Prisma.$RecipientGroupMemberPayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       email: string
@@ -2908,6 +3450,11 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    sentNotifications<T extends User$sentNotificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$sentNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InAppNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    receivedNotifications<T extends User$receivedNotificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$receivedNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InAppNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    notificationBatches<T extends User$notificationBatchesArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationBatchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationBatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    recipientGroupsCreated<T extends User$recipientGroupsCreatedArgs<ExtArgs> = {}>(args?: Subset<T, User$recipientGroupsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RecipientGroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    recipientGroupMemberships<T extends User$recipientGroupMembershipsArgs<ExtArgs> = {}>(args?: Subset<T, User$recipientGroupMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RecipientGroupMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2971,6 +3518,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * Filter, which User to fetch.
      */
     where: UserWhereUniqueInput
@@ -2989,6 +3540,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * Filter, which User to fetch.
      */
     where: UserWhereUniqueInput
@@ -3006,6 +3561,10 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
     /**
      * Filter, which User to fetch.
      */
@@ -3055,6 +3614,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * Filter, which User to fetch.
      */
     where?: UserWhereInput
@@ -3103,6 +3666,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * Filter, which Users to fetch.
      */
     where?: UserWhereInput
@@ -3145,6 +3712,10 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
     /**
      * The data needed to create a User.
      */
@@ -3193,6 +3764,10 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
     /**
      * The data needed to update a User.
      */
@@ -3260,6 +3835,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * The filter to search for the User to update in case it exists.
      */
     where: UserWhereUniqueInput
@@ -3286,6 +3865,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * Filter which User to delete.
      */
     where: UserWhereUniqueInput
@@ -3306,6 +3889,126 @@ export namespace Prisma {
   }
 
   /**
+   * User.sentNotifications
+   */
+  export type User$sentNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InAppNotification
+     */
+    select?: InAppNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InAppNotification
+     */
+    omit?: InAppNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InAppNotificationInclude<ExtArgs> | null
+    where?: InAppNotificationWhereInput
+    orderBy?: InAppNotificationOrderByWithRelationInput | InAppNotificationOrderByWithRelationInput[]
+    cursor?: InAppNotificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InAppNotificationScalarFieldEnum | InAppNotificationScalarFieldEnum[]
+  }
+
+  /**
+   * User.receivedNotifications
+   */
+  export type User$receivedNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InAppNotification
+     */
+    select?: InAppNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InAppNotification
+     */
+    omit?: InAppNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InAppNotificationInclude<ExtArgs> | null
+    where?: InAppNotificationWhereInput
+    orderBy?: InAppNotificationOrderByWithRelationInput | InAppNotificationOrderByWithRelationInput[]
+    cursor?: InAppNotificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InAppNotificationScalarFieldEnum | InAppNotificationScalarFieldEnum[]
+  }
+
+  /**
+   * User.notificationBatches
+   */
+  export type User$notificationBatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationBatch
+     */
+    select?: NotificationBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationBatch
+     */
+    omit?: NotificationBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationBatchInclude<ExtArgs> | null
+    where?: NotificationBatchWhereInput
+    orderBy?: NotificationBatchOrderByWithRelationInput | NotificationBatchOrderByWithRelationInput[]
+    cursor?: NotificationBatchWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotificationBatchScalarFieldEnum | NotificationBatchScalarFieldEnum[]
+  }
+
+  /**
+   * User.recipientGroupsCreated
+   */
+  export type User$recipientGroupsCreatedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroup
+     */
+    select?: RecipientGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroup
+     */
+    omit?: RecipientGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupInclude<ExtArgs> | null
+    where?: RecipientGroupWhereInput
+    orderBy?: RecipientGroupOrderByWithRelationInput | RecipientGroupOrderByWithRelationInput[]
+    cursor?: RecipientGroupWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RecipientGroupScalarFieldEnum | RecipientGroupScalarFieldEnum[]
+  }
+
+  /**
+   * User.recipientGroupMemberships
+   */
+  export type User$recipientGroupMembershipsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroupMember
+     */
+    select?: RecipientGroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroupMember
+     */
+    omit?: RecipientGroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupMemberInclude<ExtArgs> | null
+    where?: RecipientGroupMemberWhereInput
+    orderBy?: RecipientGroupMemberOrderByWithRelationInput | RecipientGroupMemberOrderByWithRelationInput[]
+    cursor?: RecipientGroupMemberWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RecipientGroupMemberScalarFieldEnum | RecipientGroupMemberScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3317,6 +4020,10 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
   }
 
 
@@ -18095,6 +18802,4512 @@ export namespace Prisma {
 
 
   /**
+   * Model InAppNotification
+   */
+
+  export type AggregateInAppNotification = {
+    _count: InAppNotificationCountAggregateOutputType | null
+    _min: InAppNotificationMinAggregateOutputType | null
+    _max: InAppNotificationMaxAggregateOutputType | null
+  }
+
+  export type InAppNotificationMinAggregateOutputType = {
+    id: string | null
+    batchId: string | null
+    senderId: string | null
+    recipientId: string | null
+    title: string | null
+    body: string | null
+    link: string | null
+    read: boolean | null
+    readAt: Date | null
+    event: string | null
+    createdAt: Date | null
+  }
+
+  export type InAppNotificationMaxAggregateOutputType = {
+    id: string | null
+    batchId: string | null
+    senderId: string | null
+    recipientId: string | null
+    title: string | null
+    body: string | null
+    link: string | null
+    read: boolean | null
+    readAt: Date | null
+    event: string | null
+    createdAt: Date | null
+  }
+
+  export type InAppNotificationCountAggregateOutputType = {
+    id: number
+    batchId: number
+    senderId: number
+    recipientId: number
+    title: number
+    body: number
+    link: number
+    read: number
+    readAt: number
+    event: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type InAppNotificationMinAggregateInputType = {
+    id?: true
+    batchId?: true
+    senderId?: true
+    recipientId?: true
+    title?: true
+    body?: true
+    link?: true
+    read?: true
+    readAt?: true
+    event?: true
+    createdAt?: true
+  }
+
+  export type InAppNotificationMaxAggregateInputType = {
+    id?: true
+    batchId?: true
+    senderId?: true
+    recipientId?: true
+    title?: true
+    body?: true
+    link?: true
+    read?: true
+    readAt?: true
+    event?: true
+    createdAt?: true
+  }
+
+  export type InAppNotificationCountAggregateInputType = {
+    id?: true
+    batchId?: true
+    senderId?: true
+    recipientId?: true
+    title?: true
+    body?: true
+    link?: true
+    read?: true
+    readAt?: true
+    event?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type InAppNotificationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which InAppNotification to aggregate.
+     */
+    where?: InAppNotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InAppNotifications to fetch.
+     */
+    orderBy?: InAppNotificationOrderByWithRelationInput | InAppNotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: InAppNotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InAppNotifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InAppNotifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned InAppNotifications
+    **/
+    _count?: true | InAppNotificationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: InAppNotificationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: InAppNotificationMaxAggregateInputType
+  }
+
+  export type GetInAppNotificationAggregateType<T extends InAppNotificationAggregateArgs> = {
+        [P in keyof T & keyof AggregateInAppNotification]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateInAppNotification[P]>
+      : GetScalarType<T[P], AggregateInAppNotification[P]>
+  }
+
+
+
+
+  export type InAppNotificationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InAppNotificationWhereInput
+    orderBy?: InAppNotificationOrderByWithAggregationInput | InAppNotificationOrderByWithAggregationInput[]
+    by: InAppNotificationScalarFieldEnum[] | InAppNotificationScalarFieldEnum
+    having?: InAppNotificationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: InAppNotificationCountAggregateInputType | true
+    _min?: InAppNotificationMinAggregateInputType
+    _max?: InAppNotificationMaxAggregateInputType
+  }
+
+  export type InAppNotificationGroupByOutputType = {
+    id: string
+    batchId: string | null
+    senderId: string | null
+    recipientId: string
+    title: string
+    body: string
+    link: string | null
+    read: boolean
+    readAt: Date | null
+    event: string | null
+    createdAt: Date
+    _count: InAppNotificationCountAggregateOutputType | null
+    _min: InAppNotificationMinAggregateOutputType | null
+    _max: InAppNotificationMaxAggregateOutputType | null
+  }
+
+  type GetInAppNotificationGroupByPayload<T extends InAppNotificationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<InAppNotificationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof InAppNotificationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], InAppNotificationGroupByOutputType[P]>
+            : GetScalarType<T[P], InAppNotificationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type InAppNotificationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    batchId?: boolean
+    senderId?: boolean
+    recipientId?: boolean
+    title?: boolean
+    body?: boolean
+    link?: boolean
+    read?: boolean
+    readAt?: boolean
+    event?: boolean
+    createdAt?: boolean
+    batch?: boolean | InAppNotification$batchArgs<ExtArgs>
+    sender?: boolean | InAppNotification$senderArgs<ExtArgs>
+    recipient?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["inAppNotification"]>
+
+  export type InAppNotificationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    batchId?: boolean
+    senderId?: boolean
+    recipientId?: boolean
+    title?: boolean
+    body?: boolean
+    link?: boolean
+    read?: boolean
+    readAt?: boolean
+    event?: boolean
+    createdAt?: boolean
+    batch?: boolean | InAppNotification$batchArgs<ExtArgs>
+    sender?: boolean | InAppNotification$senderArgs<ExtArgs>
+    recipient?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["inAppNotification"]>
+
+  export type InAppNotificationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    batchId?: boolean
+    senderId?: boolean
+    recipientId?: boolean
+    title?: boolean
+    body?: boolean
+    link?: boolean
+    read?: boolean
+    readAt?: boolean
+    event?: boolean
+    createdAt?: boolean
+    batch?: boolean | InAppNotification$batchArgs<ExtArgs>
+    sender?: boolean | InAppNotification$senderArgs<ExtArgs>
+    recipient?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["inAppNotification"]>
+
+  export type InAppNotificationSelectScalar = {
+    id?: boolean
+    batchId?: boolean
+    senderId?: boolean
+    recipientId?: boolean
+    title?: boolean
+    body?: boolean
+    link?: boolean
+    read?: boolean
+    readAt?: boolean
+    event?: boolean
+    createdAt?: boolean
+  }
+
+  export type InAppNotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "batchId" | "senderId" | "recipientId" | "title" | "body" | "link" | "read" | "readAt" | "event" | "createdAt", ExtArgs["result"]["inAppNotification"]>
+  export type InAppNotificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    batch?: boolean | InAppNotification$batchArgs<ExtArgs>
+    sender?: boolean | InAppNotification$senderArgs<ExtArgs>
+    recipient?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type InAppNotificationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    batch?: boolean | InAppNotification$batchArgs<ExtArgs>
+    sender?: boolean | InAppNotification$senderArgs<ExtArgs>
+    recipient?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type InAppNotificationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    batch?: boolean | InAppNotification$batchArgs<ExtArgs>
+    sender?: boolean | InAppNotification$senderArgs<ExtArgs>
+    recipient?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $InAppNotificationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "InAppNotification"
+    objects: {
+      batch: Prisma.$NotificationBatchPayload<ExtArgs> | null
+      sender: Prisma.$UserPayload<ExtArgs> | null
+      recipient: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      batchId: string | null
+      senderId: string | null
+      recipientId: string
+      title: string
+      body: string
+      link: string | null
+      read: boolean
+      readAt: Date | null
+      event: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["inAppNotification"]>
+    composites: {}
+  }
+
+  type InAppNotificationGetPayload<S extends boolean | null | undefined | InAppNotificationDefaultArgs> = $Result.GetResult<Prisma.$InAppNotificationPayload, S>
+
+  type InAppNotificationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<InAppNotificationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: InAppNotificationCountAggregateInputType | true
+    }
+
+  export interface InAppNotificationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['InAppNotification'], meta: { name: 'InAppNotification' } }
+    /**
+     * Find zero or one InAppNotification that matches the filter.
+     * @param {InAppNotificationFindUniqueArgs} args - Arguments to find a InAppNotification
+     * @example
+     * // Get one InAppNotification
+     * const inAppNotification = await prisma.inAppNotification.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends InAppNotificationFindUniqueArgs>(args: SelectSubset<T, InAppNotificationFindUniqueArgs<ExtArgs>>): Prisma__InAppNotificationClient<$Result.GetResult<Prisma.$InAppNotificationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one InAppNotification that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {InAppNotificationFindUniqueOrThrowArgs} args - Arguments to find a InAppNotification
+     * @example
+     * // Get one InAppNotification
+     * const inAppNotification = await prisma.inAppNotification.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends InAppNotificationFindUniqueOrThrowArgs>(args: SelectSubset<T, InAppNotificationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__InAppNotificationClient<$Result.GetResult<Prisma.$InAppNotificationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first InAppNotification that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InAppNotificationFindFirstArgs} args - Arguments to find a InAppNotification
+     * @example
+     * // Get one InAppNotification
+     * const inAppNotification = await prisma.inAppNotification.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends InAppNotificationFindFirstArgs>(args?: SelectSubset<T, InAppNotificationFindFirstArgs<ExtArgs>>): Prisma__InAppNotificationClient<$Result.GetResult<Prisma.$InAppNotificationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first InAppNotification that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InAppNotificationFindFirstOrThrowArgs} args - Arguments to find a InAppNotification
+     * @example
+     * // Get one InAppNotification
+     * const inAppNotification = await prisma.inAppNotification.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends InAppNotificationFindFirstOrThrowArgs>(args?: SelectSubset<T, InAppNotificationFindFirstOrThrowArgs<ExtArgs>>): Prisma__InAppNotificationClient<$Result.GetResult<Prisma.$InAppNotificationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more InAppNotifications that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InAppNotificationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all InAppNotifications
+     * const inAppNotifications = await prisma.inAppNotification.findMany()
+     * 
+     * // Get first 10 InAppNotifications
+     * const inAppNotifications = await prisma.inAppNotification.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const inAppNotificationWithIdOnly = await prisma.inAppNotification.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends InAppNotificationFindManyArgs>(args?: SelectSubset<T, InAppNotificationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InAppNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a InAppNotification.
+     * @param {InAppNotificationCreateArgs} args - Arguments to create a InAppNotification.
+     * @example
+     * // Create one InAppNotification
+     * const InAppNotification = await prisma.inAppNotification.create({
+     *   data: {
+     *     // ... data to create a InAppNotification
+     *   }
+     * })
+     * 
+     */
+    create<T extends InAppNotificationCreateArgs>(args: SelectSubset<T, InAppNotificationCreateArgs<ExtArgs>>): Prisma__InAppNotificationClient<$Result.GetResult<Prisma.$InAppNotificationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many InAppNotifications.
+     * @param {InAppNotificationCreateManyArgs} args - Arguments to create many InAppNotifications.
+     * @example
+     * // Create many InAppNotifications
+     * const inAppNotification = await prisma.inAppNotification.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends InAppNotificationCreateManyArgs>(args?: SelectSubset<T, InAppNotificationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many InAppNotifications and returns the data saved in the database.
+     * @param {InAppNotificationCreateManyAndReturnArgs} args - Arguments to create many InAppNotifications.
+     * @example
+     * // Create many InAppNotifications
+     * const inAppNotification = await prisma.inAppNotification.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many InAppNotifications and only return the `id`
+     * const inAppNotificationWithIdOnly = await prisma.inAppNotification.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends InAppNotificationCreateManyAndReturnArgs>(args?: SelectSubset<T, InAppNotificationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InAppNotificationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a InAppNotification.
+     * @param {InAppNotificationDeleteArgs} args - Arguments to delete one InAppNotification.
+     * @example
+     * // Delete one InAppNotification
+     * const InAppNotification = await prisma.inAppNotification.delete({
+     *   where: {
+     *     // ... filter to delete one InAppNotification
+     *   }
+     * })
+     * 
+     */
+    delete<T extends InAppNotificationDeleteArgs>(args: SelectSubset<T, InAppNotificationDeleteArgs<ExtArgs>>): Prisma__InAppNotificationClient<$Result.GetResult<Prisma.$InAppNotificationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one InAppNotification.
+     * @param {InAppNotificationUpdateArgs} args - Arguments to update one InAppNotification.
+     * @example
+     * // Update one InAppNotification
+     * const inAppNotification = await prisma.inAppNotification.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends InAppNotificationUpdateArgs>(args: SelectSubset<T, InAppNotificationUpdateArgs<ExtArgs>>): Prisma__InAppNotificationClient<$Result.GetResult<Prisma.$InAppNotificationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more InAppNotifications.
+     * @param {InAppNotificationDeleteManyArgs} args - Arguments to filter InAppNotifications to delete.
+     * @example
+     * // Delete a few InAppNotifications
+     * const { count } = await prisma.inAppNotification.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends InAppNotificationDeleteManyArgs>(args?: SelectSubset<T, InAppNotificationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more InAppNotifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InAppNotificationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many InAppNotifications
+     * const inAppNotification = await prisma.inAppNotification.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends InAppNotificationUpdateManyArgs>(args: SelectSubset<T, InAppNotificationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more InAppNotifications and returns the data updated in the database.
+     * @param {InAppNotificationUpdateManyAndReturnArgs} args - Arguments to update many InAppNotifications.
+     * @example
+     * // Update many InAppNotifications
+     * const inAppNotification = await prisma.inAppNotification.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more InAppNotifications and only return the `id`
+     * const inAppNotificationWithIdOnly = await prisma.inAppNotification.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends InAppNotificationUpdateManyAndReturnArgs>(args: SelectSubset<T, InAppNotificationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InAppNotificationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one InAppNotification.
+     * @param {InAppNotificationUpsertArgs} args - Arguments to update or create a InAppNotification.
+     * @example
+     * // Update or create a InAppNotification
+     * const inAppNotification = await prisma.inAppNotification.upsert({
+     *   create: {
+     *     // ... data to create a InAppNotification
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the InAppNotification we want to update
+     *   }
+     * })
+     */
+    upsert<T extends InAppNotificationUpsertArgs>(args: SelectSubset<T, InAppNotificationUpsertArgs<ExtArgs>>): Prisma__InAppNotificationClient<$Result.GetResult<Prisma.$InAppNotificationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of InAppNotifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InAppNotificationCountArgs} args - Arguments to filter InAppNotifications to count.
+     * @example
+     * // Count the number of InAppNotifications
+     * const count = await prisma.inAppNotification.count({
+     *   where: {
+     *     // ... the filter for the InAppNotifications we want to count
+     *   }
+     * })
+    **/
+    count<T extends InAppNotificationCountArgs>(
+      args?: Subset<T, InAppNotificationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], InAppNotificationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a InAppNotification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InAppNotificationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends InAppNotificationAggregateArgs>(args: Subset<T, InAppNotificationAggregateArgs>): Prisma.PrismaPromise<GetInAppNotificationAggregateType<T>>
+
+    /**
+     * Group by InAppNotification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InAppNotificationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends InAppNotificationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: InAppNotificationGroupByArgs['orderBy'] }
+        : { orderBy?: InAppNotificationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, InAppNotificationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInAppNotificationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the InAppNotification model
+   */
+  readonly fields: InAppNotificationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for InAppNotification.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__InAppNotificationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    batch<T extends InAppNotification$batchArgs<ExtArgs> = {}>(args?: Subset<T, InAppNotification$batchArgs<ExtArgs>>): Prisma__NotificationBatchClient<$Result.GetResult<Prisma.$NotificationBatchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    sender<T extends InAppNotification$senderArgs<ExtArgs> = {}>(args?: Subset<T, InAppNotification$senderArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    recipient<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the InAppNotification model
+   */
+  interface InAppNotificationFieldRefs {
+    readonly id: FieldRef<"InAppNotification", 'String'>
+    readonly batchId: FieldRef<"InAppNotification", 'String'>
+    readonly senderId: FieldRef<"InAppNotification", 'String'>
+    readonly recipientId: FieldRef<"InAppNotification", 'String'>
+    readonly title: FieldRef<"InAppNotification", 'String'>
+    readonly body: FieldRef<"InAppNotification", 'String'>
+    readonly link: FieldRef<"InAppNotification", 'String'>
+    readonly read: FieldRef<"InAppNotification", 'Boolean'>
+    readonly readAt: FieldRef<"InAppNotification", 'DateTime'>
+    readonly event: FieldRef<"InAppNotification", 'String'>
+    readonly createdAt: FieldRef<"InAppNotification", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * InAppNotification findUnique
+   */
+  export type InAppNotificationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InAppNotification
+     */
+    select?: InAppNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InAppNotification
+     */
+    omit?: InAppNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InAppNotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which InAppNotification to fetch.
+     */
+    where: InAppNotificationWhereUniqueInput
+  }
+
+  /**
+   * InAppNotification findUniqueOrThrow
+   */
+  export type InAppNotificationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InAppNotification
+     */
+    select?: InAppNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InAppNotification
+     */
+    omit?: InAppNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InAppNotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which InAppNotification to fetch.
+     */
+    where: InAppNotificationWhereUniqueInput
+  }
+
+  /**
+   * InAppNotification findFirst
+   */
+  export type InAppNotificationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InAppNotification
+     */
+    select?: InAppNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InAppNotification
+     */
+    omit?: InAppNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InAppNotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which InAppNotification to fetch.
+     */
+    where?: InAppNotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InAppNotifications to fetch.
+     */
+    orderBy?: InAppNotificationOrderByWithRelationInput | InAppNotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for InAppNotifications.
+     */
+    cursor?: InAppNotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InAppNotifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InAppNotifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of InAppNotifications.
+     */
+    distinct?: InAppNotificationScalarFieldEnum | InAppNotificationScalarFieldEnum[]
+  }
+
+  /**
+   * InAppNotification findFirstOrThrow
+   */
+  export type InAppNotificationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InAppNotification
+     */
+    select?: InAppNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InAppNotification
+     */
+    omit?: InAppNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InAppNotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which InAppNotification to fetch.
+     */
+    where?: InAppNotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InAppNotifications to fetch.
+     */
+    orderBy?: InAppNotificationOrderByWithRelationInput | InAppNotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for InAppNotifications.
+     */
+    cursor?: InAppNotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InAppNotifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InAppNotifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of InAppNotifications.
+     */
+    distinct?: InAppNotificationScalarFieldEnum | InAppNotificationScalarFieldEnum[]
+  }
+
+  /**
+   * InAppNotification findMany
+   */
+  export type InAppNotificationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InAppNotification
+     */
+    select?: InAppNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InAppNotification
+     */
+    omit?: InAppNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InAppNotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which InAppNotifications to fetch.
+     */
+    where?: InAppNotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InAppNotifications to fetch.
+     */
+    orderBy?: InAppNotificationOrderByWithRelationInput | InAppNotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing InAppNotifications.
+     */
+    cursor?: InAppNotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InAppNotifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InAppNotifications.
+     */
+    skip?: number
+    distinct?: InAppNotificationScalarFieldEnum | InAppNotificationScalarFieldEnum[]
+  }
+
+  /**
+   * InAppNotification create
+   */
+  export type InAppNotificationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InAppNotification
+     */
+    select?: InAppNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InAppNotification
+     */
+    omit?: InAppNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InAppNotificationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a InAppNotification.
+     */
+    data: XOR<InAppNotificationCreateInput, InAppNotificationUncheckedCreateInput>
+  }
+
+  /**
+   * InAppNotification createMany
+   */
+  export type InAppNotificationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many InAppNotifications.
+     */
+    data: InAppNotificationCreateManyInput | InAppNotificationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * InAppNotification createManyAndReturn
+   */
+  export type InAppNotificationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InAppNotification
+     */
+    select?: InAppNotificationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the InAppNotification
+     */
+    omit?: InAppNotificationOmit<ExtArgs> | null
+    /**
+     * The data used to create many InAppNotifications.
+     */
+    data: InAppNotificationCreateManyInput | InAppNotificationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InAppNotificationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * InAppNotification update
+   */
+  export type InAppNotificationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InAppNotification
+     */
+    select?: InAppNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InAppNotification
+     */
+    omit?: InAppNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InAppNotificationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a InAppNotification.
+     */
+    data: XOR<InAppNotificationUpdateInput, InAppNotificationUncheckedUpdateInput>
+    /**
+     * Choose, which InAppNotification to update.
+     */
+    where: InAppNotificationWhereUniqueInput
+  }
+
+  /**
+   * InAppNotification updateMany
+   */
+  export type InAppNotificationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update InAppNotifications.
+     */
+    data: XOR<InAppNotificationUpdateManyMutationInput, InAppNotificationUncheckedUpdateManyInput>
+    /**
+     * Filter which InAppNotifications to update
+     */
+    where?: InAppNotificationWhereInput
+    /**
+     * Limit how many InAppNotifications to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * InAppNotification updateManyAndReturn
+   */
+  export type InAppNotificationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InAppNotification
+     */
+    select?: InAppNotificationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the InAppNotification
+     */
+    omit?: InAppNotificationOmit<ExtArgs> | null
+    /**
+     * The data used to update InAppNotifications.
+     */
+    data: XOR<InAppNotificationUpdateManyMutationInput, InAppNotificationUncheckedUpdateManyInput>
+    /**
+     * Filter which InAppNotifications to update
+     */
+    where?: InAppNotificationWhereInput
+    /**
+     * Limit how many InAppNotifications to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InAppNotificationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * InAppNotification upsert
+   */
+  export type InAppNotificationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InAppNotification
+     */
+    select?: InAppNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InAppNotification
+     */
+    omit?: InAppNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InAppNotificationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the InAppNotification to update in case it exists.
+     */
+    where: InAppNotificationWhereUniqueInput
+    /**
+     * In case the InAppNotification found by the `where` argument doesn't exist, create a new InAppNotification with this data.
+     */
+    create: XOR<InAppNotificationCreateInput, InAppNotificationUncheckedCreateInput>
+    /**
+     * In case the InAppNotification was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<InAppNotificationUpdateInput, InAppNotificationUncheckedUpdateInput>
+  }
+
+  /**
+   * InAppNotification delete
+   */
+  export type InAppNotificationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InAppNotification
+     */
+    select?: InAppNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InAppNotification
+     */
+    omit?: InAppNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InAppNotificationInclude<ExtArgs> | null
+    /**
+     * Filter which InAppNotification to delete.
+     */
+    where: InAppNotificationWhereUniqueInput
+  }
+
+  /**
+   * InAppNotification deleteMany
+   */
+  export type InAppNotificationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which InAppNotifications to delete
+     */
+    where?: InAppNotificationWhereInput
+    /**
+     * Limit how many InAppNotifications to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * InAppNotification.batch
+   */
+  export type InAppNotification$batchArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationBatch
+     */
+    select?: NotificationBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationBatch
+     */
+    omit?: NotificationBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationBatchInclude<ExtArgs> | null
+    where?: NotificationBatchWhereInput
+  }
+
+  /**
+   * InAppNotification.sender
+   */
+  export type InAppNotification$senderArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * InAppNotification without action
+   */
+  export type InAppNotificationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InAppNotification
+     */
+    select?: InAppNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InAppNotification
+     */
+    omit?: InAppNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InAppNotificationInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model NotificationBatch
+   */
+
+  export type AggregateNotificationBatch = {
+    _count: NotificationBatchCountAggregateOutputType | null
+    _min: NotificationBatchMinAggregateOutputType | null
+    _max: NotificationBatchMaxAggregateOutputType | null
+  }
+
+  export type NotificationBatchMinAggregateOutputType = {
+    id: string | null
+    senderId: string | null
+    targetType: $Enums.NotificationTargetType | null
+    targetRef: string | null
+    title: string | null
+    body: string | null
+    link: string | null
+    scheduledFor: Date | null
+    status: $Enums.NotificationBatchStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type NotificationBatchMaxAggregateOutputType = {
+    id: string | null
+    senderId: string | null
+    targetType: $Enums.NotificationTargetType | null
+    targetRef: string | null
+    title: string | null
+    body: string | null
+    link: string | null
+    scheduledFor: Date | null
+    status: $Enums.NotificationBatchStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type NotificationBatchCountAggregateOutputType = {
+    id: number
+    senderId: number
+    targetType: number
+    targetRef: number
+    individualIds: number
+    title: number
+    body: number
+    link: number
+    scheduledFor: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type NotificationBatchMinAggregateInputType = {
+    id?: true
+    senderId?: true
+    targetType?: true
+    targetRef?: true
+    title?: true
+    body?: true
+    link?: true
+    scheduledFor?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type NotificationBatchMaxAggregateInputType = {
+    id?: true
+    senderId?: true
+    targetType?: true
+    targetRef?: true
+    title?: true
+    body?: true
+    link?: true
+    scheduledFor?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type NotificationBatchCountAggregateInputType = {
+    id?: true
+    senderId?: true
+    targetType?: true
+    targetRef?: true
+    individualIds?: true
+    title?: true
+    body?: true
+    link?: true
+    scheduledFor?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type NotificationBatchAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which NotificationBatch to aggregate.
+     */
+    where?: NotificationBatchWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotificationBatches to fetch.
+     */
+    orderBy?: NotificationBatchOrderByWithRelationInput | NotificationBatchOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: NotificationBatchWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotificationBatches from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotificationBatches.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned NotificationBatches
+    **/
+    _count?: true | NotificationBatchCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: NotificationBatchMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: NotificationBatchMaxAggregateInputType
+  }
+
+  export type GetNotificationBatchAggregateType<T extends NotificationBatchAggregateArgs> = {
+        [P in keyof T & keyof AggregateNotificationBatch]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateNotificationBatch[P]>
+      : GetScalarType<T[P], AggregateNotificationBatch[P]>
+  }
+
+
+
+
+  export type NotificationBatchGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationBatchWhereInput
+    orderBy?: NotificationBatchOrderByWithAggregationInput | NotificationBatchOrderByWithAggregationInput[]
+    by: NotificationBatchScalarFieldEnum[] | NotificationBatchScalarFieldEnum
+    having?: NotificationBatchScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: NotificationBatchCountAggregateInputType | true
+    _min?: NotificationBatchMinAggregateInputType
+    _max?: NotificationBatchMaxAggregateInputType
+  }
+
+  export type NotificationBatchGroupByOutputType = {
+    id: string
+    senderId: string
+    targetType: $Enums.NotificationTargetType
+    targetRef: string | null
+    individualIds: string[]
+    title: string
+    body: string
+    link: string | null
+    scheduledFor: Date | null
+    status: $Enums.NotificationBatchStatus
+    createdAt: Date
+    updatedAt: Date
+    _count: NotificationBatchCountAggregateOutputType | null
+    _min: NotificationBatchMinAggregateOutputType | null
+    _max: NotificationBatchMaxAggregateOutputType | null
+  }
+
+  type GetNotificationBatchGroupByPayload<T extends NotificationBatchGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<NotificationBatchGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof NotificationBatchGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], NotificationBatchGroupByOutputType[P]>
+            : GetScalarType<T[P], NotificationBatchGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type NotificationBatchSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    senderId?: boolean
+    targetType?: boolean
+    targetRef?: boolean
+    individualIds?: boolean
+    title?: boolean
+    body?: boolean
+    link?: boolean
+    scheduledFor?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+    notifications?: boolean | NotificationBatch$notificationsArgs<ExtArgs>
+    _count?: boolean | NotificationBatchCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notificationBatch"]>
+
+  export type NotificationBatchSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    senderId?: boolean
+    targetType?: boolean
+    targetRef?: boolean
+    individualIds?: boolean
+    title?: boolean
+    body?: boolean
+    link?: boolean
+    scheduledFor?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notificationBatch"]>
+
+  export type NotificationBatchSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    senderId?: boolean
+    targetType?: boolean
+    targetRef?: boolean
+    individualIds?: boolean
+    title?: boolean
+    body?: boolean
+    link?: boolean
+    scheduledFor?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notificationBatch"]>
+
+  export type NotificationBatchSelectScalar = {
+    id?: boolean
+    senderId?: boolean
+    targetType?: boolean
+    targetRef?: boolean
+    individualIds?: boolean
+    title?: boolean
+    body?: boolean
+    link?: boolean
+    scheduledFor?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type NotificationBatchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "senderId" | "targetType" | "targetRef" | "individualIds" | "title" | "body" | "link" | "scheduledFor" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["notificationBatch"]>
+  export type NotificationBatchInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+    notifications?: boolean | NotificationBatch$notificationsArgs<ExtArgs>
+    _count?: boolean | NotificationBatchCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type NotificationBatchIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type NotificationBatchIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $NotificationBatchPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "NotificationBatch"
+    objects: {
+      sender: Prisma.$UserPayload<ExtArgs>
+      notifications: Prisma.$InAppNotificationPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      senderId: string
+      targetType: $Enums.NotificationTargetType
+      targetRef: string | null
+      individualIds: string[]
+      title: string
+      body: string
+      link: string | null
+      scheduledFor: Date | null
+      status: $Enums.NotificationBatchStatus
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["notificationBatch"]>
+    composites: {}
+  }
+
+  type NotificationBatchGetPayload<S extends boolean | null | undefined | NotificationBatchDefaultArgs> = $Result.GetResult<Prisma.$NotificationBatchPayload, S>
+
+  type NotificationBatchCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<NotificationBatchFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: NotificationBatchCountAggregateInputType | true
+    }
+
+  export interface NotificationBatchDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['NotificationBatch'], meta: { name: 'NotificationBatch' } }
+    /**
+     * Find zero or one NotificationBatch that matches the filter.
+     * @param {NotificationBatchFindUniqueArgs} args - Arguments to find a NotificationBatch
+     * @example
+     * // Get one NotificationBatch
+     * const notificationBatch = await prisma.notificationBatch.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends NotificationBatchFindUniqueArgs>(args: SelectSubset<T, NotificationBatchFindUniqueArgs<ExtArgs>>): Prisma__NotificationBatchClient<$Result.GetResult<Prisma.$NotificationBatchPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one NotificationBatch that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {NotificationBatchFindUniqueOrThrowArgs} args - Arguments to find a NotificationBatch
+     * @example
+     * // Get one NotificationBatch
+     * const notificationBatch = await prisma.notificationBatch.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends NotificationBatchFindUniqueOrThrowArgs>(args: SelectSubset<T, NotificationBatchFindUniqueOrThrowArgs<ExtArgs>>): Prisma__NotificationBatchClient<$Result.GetResult<Prisma.$NotificationBatchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first NotificationBatch that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationBatchFindFirstArgs} args - Arguments to find a NotificationBatch
+     * @example
+     * // Get one NotificationBatch
+     * const notificationBatch = await prisma.notificationBatch.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends NotificationBatchFindFirstArgs>(args?: SelectSubset<T, NotificationBatchFindFirstArgs<ExtArgs>>): Prisma__NotificationBatchClient<$Result.GetResult<Prisma.$NotificationBatchPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first NotificationBatch that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationBatchFindFirstOrThrowArgs} args - Arguments to find a NotificationBatch
+     * @example
+     * // Get one NotificationBatch
+     * const notificationBatch = await prisma.notificationBatch.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends NotificationBatchFindFirstOrThrowArgs>(args?: SelectSubset<T, NotificationBatchFindFirstOrThrowArgs<ExtArgs>>): Prisma__NotificationBatchClient<$Result.GetResult<Prisma.$NotificationBatchPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more NotificationBatches that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationBatchFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all NotificationBatches
+     * const notificationBatches = await prisma.notificationBatch.findMany()
+     * 
+     * // Get first 10 NotificationBatches
+     * const notificationBatches = await prisma.notificationBatch.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const notificationBatchWithIdOnly = await prisma.notificationBatch.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends NotificationBatchFindManyArgs>(args?: SelectSubset<T, NotificationBatchFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationBatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a NotificationBatch.
+     * @param {NotificationBatchCreateArgs} args - Arguments to create a NotificationBatch.
+     * @example
+     * // Create one NotificationBatch
+     * const NotificationBatch = await prisma.notificationBatch.create({
+     *   data: {
+     *     // ... data to create a NotificationBatch
+     *   }
+     * })
+     * 
+     */
+    create<T extends NotificationBatchCreateArgs>(args: SelectSubset<T, NotificationBatchCreateArgs<ExtArgs>>): Prisma__NotificationBatchClient<$Result.GetResult<Prisma.$NotificationBatchPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many NotificationBatches.
+     * @param {NotificationBatchCreateManyArgs} args - Arguments to create many NotificationBatches.
+     * @example
+     * // Create many NotificationBatches
+     * const notificationBatch = await prisma.notificationBatch.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends NotificationBatchCreateManyArgs>(args?: SelectSubset<T, NotificationBatchCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many NotificationBatches and returns the data saved in the database.
+     * @param {NotificationBatchCreateManyAndReturnArgs} args - Arguments to create many NotificationBatches.
+     * @example
+     * // Create many NotificationBatches
+     * const notificationBatch = await prisma.notificationBatch.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many NotificationBatches and only return the `id`
+     * const notificationBatchWithIdOnly = await prisma.notificationBatch.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends NotificationBatchCreateManyAndReturnArgs>(args?: SelectSubset<T, NotificationBatchCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationBatchPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a NotificationBatch.
+     * @param {NotificationBatchDeleteArgs} args - Arguments to delete one NotificationBatch.
+     * @example
+     * // Delete one NotificationBatch
+     * const NotificationBatch = await prisma.notificationBatch.delete({
+     *   where: {
+     *     // ... filter to delete one NotificationBatch
+     *   }
+     * })
+     * 
+     */
+    delete<T extends NotificationBatchDeleteArgs>(args: SelectSubset<T, NotificationBatchDeleteArgs<ExtArgs>>): Prisma__NotificationBatchClient<$Result.GetResult<Prisma.$NotificationBatchPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one NotificationBatch.
+     * @param {NotificationBatchUpdateArgs} args - Arguments to update one NotificationBatch.
+     * @example
+     * // Update one NotificationBatch
+     * const notificationBatch = await prisma.notificationBatch.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends NotificationBatchUpdateArgs>(args: SelectSubset<T, NotificationBatchUpdateArgs<ExtArgs>>): Prisma__NotificationBatchClient<$Result.GetResult<Prisma.$NotificationBatchPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more NotificationBatches.
+     * @param {NotificationBatchDeleteManyArgs} args - Arguments to filter NotificationBatches to delete.
+     * @example
+     * // Delete a few NotificationBatches
+     * const { count } = await prisma.notificationBatch.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends NotificationBatchDeleteManyArgs>(args?: SelectSubset<T, NotificationBatchDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more NotificationBatches.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationBatchUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many NotificationBatches
+     * const notificationBatch = await prisma.notificationBatch.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends NotificationBatchUpdateManyArgs>(args: SelectSubset<T, NotificationBatchUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more NotificationBatches and returns the data updated in the database.
+     * @param {NotificationBatchUpdateManyAndReturnArgs} args - Arguments to update many NotificationBatches.
+     * @example
+     * // Update many NotificationBatches
+     * const notificationBatch = await prisma.notificationBatch.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more NotificationBatches and only return the `id`
+     * const notificationBatchWithIdOnly = await prisma.notificationBatch.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends NotificationBatchUpdateManyAndReturnArgs>(args: SelectSubset<T, NotificationBatchUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationBatchPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one NotificationBatch.
+     * @param {NotificationBatchUpsertArgs} args - Arguments to update or create a NotificationBatch.
+     * @example
+     * // Update or create a NotificationBatch
+     * const notificationBatch = await prisma.notificationBatch.upsert({
+     *   create: {
+     *     // ... data to create a NotificationBatch
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the NotificationBatch we want to update
+     *   }
+     * })
+     */
+    upsert<T extends NotificationBatchUpsertArgs>(args: SelectSubset<T, NotificationBatchUpsertArgs<ExtArgs>>): Prisma__NotificationBatchClient<$Result.GetResult<Prisma.$NotificationBatchPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of NotificationBatches.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationBatchCountArgs} args - Arguments to filter NotificationBatches to count.
+     * @example
+     * // Count the number of NotificationBatches
+     * const count = await prisma.notificationBatch.count({
+     *   where: {
+     *     // ... the filter for the NotificationBatches we want to count
+     *   }
+     * })
+    **/
+    count<T extends NotificationBatchCountArgs>(
+      args?: Subset<T, NotificationBatchCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], NotificationBatchCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a NotificationBatch.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationBatchAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends NotificationBatchAggregateArgs>(args: Subset<T, NotificationBatchAggregateArgs>): Prisma.PrismaPromise<GetNotificationBatchAggregateType<T>>
+
+    /**
+     * Group by NotificationBatch.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationBatchGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends NotificationBatchGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: NotificationBatchGroupByArgs['orderBy'] }
+        : { orderBy?: NotificationBatchGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, NotificationBatchGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetNotificationBatchGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the NotificationBatch model
+   */
+  readonly fields: NotificationBatchFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for NotificationBatch.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__NotificationBatchClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    sender<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    notifications<T extends NotificationBatch$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, NotificationBatch$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InAppNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the NotificationBatch model
+   */
+  interface NotificationBatchFieldRefs {
+    readonly id: FieldRef<"NotificationBatch", 'String'>
+    readonly senderId: FieldRef<"NotificationBatch", 'String'>
+    readonly targetType: FieldRef<"NotificationBatch", 'NotificationTargetType'>
+    readonly targetRef: FieldRef<"NotificationBatch", 'String'>
+    readonly individualIds: FieldRef<"NotificationBatch", 'String[]'>
+    readonly title: FieldRef<"NotificationBatch", 'String'>
+    readonly body: FieldRef<"NotificationBatch", 'String'>
+    readonly link: FieldRef<"NotificationBatch", 'String'>
+    readonly scheduledFor: FieldRef<"NotificationBatch", 'DateTime'>
+    readonly status: FieldRef<"NotificationBatch", 'NotificationBatchStatus'>
+    readonly createdAt: FieldRef<"NotificationBatch", 'DateTime'>
+    readonly updatedAt: FieldRef<"NotificationBatch", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * NotificationBatch findUnique
+   */
+  export type NotificationBatchFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationBatch
+     */
+    select?: NotificationBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationBatch
+     */
+    omit?: NotificationBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationBatchInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificationBatch to fetch.
+     */
+    where: NotificationBatchWhereUniqueInput
+  }
+
+  /**
+   * NotificationBatch findUniqueOrThrow
+   */
+  export type NotificationBatchFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationBatch
+     */
+    select?: NotificationBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationBatch
+     */
+    omit?: NotificationBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationBatchInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificationBatch to fetch.
+     */
+    where: NotificationBatchWhereUniqueInput
+  }
+
+  /**
+   * NotificationBatch findFirst
+   */
+  export type NotificationBatchFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationBatch
+     */
+    select?: NotificationBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationBatch
+     */
+    omit?: NotificationBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationBatchInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificationBatch to fetch.
+     */
+    where?: NotificationBatchWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotificationBatches to fetch.
+     */
+    orderBy?: NotificationBatchOrderByWithRelationInput | NotificationBatchOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for NotificationBatches.
+     */
+    cursor?: NotificationBatchWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotificationBatches from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotificationBatches.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of NotificationBatches.
+     */
+    distinct?: NotificationBatchScalarFieldEnum | NotificationBatchScalarFieldEnum[]
+  }
+
+  /**
+   * NotificationBatch findFirstOrThrow
+   */
+  export type NotificationBatchFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationBatch
+     */
+    select?: NotificationBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationBatch
+     */
+    omit?: NotificationBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationBatchInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificationBatch to fetch.
+     */
+    where?: NotificationBatchWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotificationBatches to fetch.
+     */
+    orderBy?: NotificationBatchOrderByWithRelationInput | NotificationBatchOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for NotificationBatches.
+     */
+    cursor?: NotificationBatchWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotificationBatches from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotificationBatches.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of NotificationBatches.
+     */
+    distinct?: NotificationBatchScalarFieldEnum | NotificationBatchScalarFieldEnum[]
+  }
+
+  /**
+   * NotificationBatch findMany
+   */
+  export type NotificationBatchFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationBatch
+     */
+    select?: NotificationBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationBatch
+     */
+    omit?: NotificationBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationBatchInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificationBatches to fetch.
+     */
+    where?: NotificationBatchWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotificationBatches to fetch.
+     */
+    orderBy?: NotificationBatchOrderByWithRelationInput | NotificationBatchOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing NotificationBatches.
+     */
+    cursor?: NotificationBatchWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotificationBatches from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotificationBatches.
+     */
+    skip?: number
+    distinct?: NotificationBatchScalarFieldEnum | NotificationBatchScalarFieldEnum[]
+  }
+
+  /**
+   * NotificationBatch create
+   */
+  export type NotificationBatchCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationBatch
+     */
+    select?: NotificationBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationBatch
+     */
+    omit?: NotificationBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationBatchInclude<ExtArgs> | null
+    /**
+     * The data needed to create a NotificationBatch.
+     */
+    data: XOR<NotificationBatchCreateInput, NotificationBatchUncheckedCreateInput>
+  }
+
+  /**
+   * NotificationBatch createMany
+   */
+  export type NotificationBatchCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many NotificationBatches.
+     */
+    data: NotificationBatchCreateManyInput | NotificationBatchCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * NotificationBatch createManyAndReturn
+   */
+  export type NotificationBatchCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationBatch
+     */
+    select?: NotificationBatchSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationBatch
+     */
+    omit?: NotificationBatchOmit<ExtArgs> | null
+    /**
+     * The data used to create many NotificationBatches.
+     */
+    data: NotificationBatchCreateManyInput | NotificationBatchCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationBatchIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * NotificationBatch update
+   */
+  export type NotificationBatchUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationBatch
+     */
+    select?: NotificationBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationBatch
+     */
+    omit?: NotificationBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationBatchInclude<ExtArgs> | null
+    /**
+     * The data needed to update a NotificationBatch.
+     */
+    data: XOR<NotificationBatchUpdateInput, NotificationBatchUncheckedUpdateInput>
+    /**
+     * Choose, which NotificationBatch to update.
+     */
+    where: NotificationBatchWhereUniqueInput
+  }
+
+  /**
+   * NotificationBatch updateMany
+   */
+  export type NotificationBatchUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update NotificationBatches.
+     */
+    data: XOR<NotificationBatchUpdateManyMutationInput, NotificationBatchUncheckedUpdateManyInput>
+    /**
+     * Filter which NotificationBatches to update
+     */
+    where?: NotificationBatchWhereInput
+    /**
+     * Limit how many NotificationBatches to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * NotificationBatch updateManyAndReturn
+   */
+  export type NotificationBatchUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationBatch
+     */
+    select?: NotificationBatchSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationBatch
+     */
+    omit?: NotificationBatchOmit<ExtArgs> | null
+    /**
+     * The data used to update NotificationBatches.
+     */
+    data: XOR<NotificationBatchUpdateManyMutationInput, NotificationBatchUncheckedUpdateManyInput>
+    /**
+     * Filter which NotificationBatches to update
+     */
+    where?: NotificationBatchWhereInput
+    /**
+     * Limit how many NotificationBatches to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationBatchIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * NotificationBatch upsert
+   */
+  export type NotificationBatchUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationBatch
+     */
+    select?: NotificationBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationBatch
+     */
+    omit?: NotificationBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationBatchInclude<ExtArgs> | null
+    /**
+     * The filter to search for the NotificationBatch to update in case it exists.
+     */
+    where: NotificationBatchWhereUniqueInput
+    /**
+     * In case the NotificationBatch found by the `where` argument doesn't exist, create a new NotificationBatch with this data.
+     */
+    create: XOR<NotificationBatchCreateInput, NotificationBatchUncheckedCreateInput>
+    /**
+     * In case the NotificationBatch was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<NotificationBatchUpdateInput, NotificationBatchUncheckedUpdateInput>
+  }
+
+  /**
+   * NotificationBatch delete
+   */
+  export type NotificationBatchDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationBatch
+     */
+    select?: NotificationBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationBatch
+     */
+    omit?: NotificationBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationBatchInclude<ExtArgs> | null
+    /**
+     * Filter which NotificationBatch to delete.
+     */
+    where: NotificationBatchWhereUniqueInput
+  }
+
+  /**
+   * NotificationBatch deleteMany
+   */
+  export type NotificationBatchDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which NotificationBatches to delete
+     */
+    where?: NotificationBatchWhereInput
+    /**
+     * Limit how many NotificationBatches to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * NotificationBatch.notifications
+   */
+  export type NotificationBatch$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InAppNotification
+     */
+    select?: InAppNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InAppNotification
+     */
+    omit?: InAppNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InAppNotificationInclude<ExtArgs> | null
+    where?: InAppNotificationWhereInput
+    orderBy?: InAppNotificationOrderByWithRelationInput | InAppNotificationOrderByWithRelationInput[]
+    cursor?: InAppNotificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InAppNotificationScalarFieldEnum | InAppNotificationScalarFieldEnum[]
+  }
+
+  /**
+   * NotificationBatch without action
+   */
+  export type NotificationBatchDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationBatch
+     */
+    select?: NotificationBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationBatch
+     */
+    omit?: NotificationBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationBatchInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RecipientGroup
+   */
+
+  export type AggregateRecipientGroup = {
+    _count: RecipientGroupCountAggregateOutputType | null
+    _min: RecipientGroupMinAggregateOutputType | null
+    _max: RecipientGroupMaxAggregateOutputType | null
+  }
+
+  export type RecipientGroupMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    createdBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RecipientGroupMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    createdBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RecipientGroupCountAggregateOutputType = {
+    id: number
+    name: number
+    createdBy: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type RecipientGroupMinAggregateInputType = {
+    id?: true
+    name?: true
+    createdBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RecipientGroupMaxAggregateInputType = {
+    id?: true
+    name?: true
+    createdBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RecipientGroupCountAggregateInputType = {
+    id?: true
+    name?: true
+    createdBy?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type RecipientGroupAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RecipientGroup to aggregate.
+     */
+    where?: RecipientGroupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RecipientGroups to fetch.
+     */
+    orderBy?: RecipientGroupOrderByWithRelationInput | RecipientGroupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RecipientGroupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RecipientGroups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RecipientGroups.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RecipientGroups
+    **/
+    _count?: true | RecipientGroupCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RecipientGroupMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RecipientGroupMaxAggregateInputType
+  }
+
+  export type GetRecipientGroupAggregateType<T extends RecipientGroupAggregateArgs> = {
+        [P in keyof T & keyof AggregateRecipientGroup]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRecipientGroup[P]>
+      : GetScalarType<T[P], AggregateRecipientGroup[P]>
+  }
+
+
+
+
+  export type RecipientGroupGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RecipientGroupWhereInput
+    orderBy?: RecipientGroupOrderByWithAggregationInput | RecipientGroupOrderByWithAggregationInput[]
+    by: RecipientGroupScalarFieldEnum[] | RecipientGroupScalarFieldEnum
+    having?: RecipientGroupScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RecipientGroupCountAggregateInputType | true
+    _min?: RecipientGroupMinAggregateInputType
+    _max?: RecipientGroupMaxAggregateInputType
+  }
+
+  export type RecipientGroupGroupByOutputType = {
+    id: string
+    name: string
+    createdBy: string
+    createdAt: Date
+    updatedAt: Date
+    _count: RecipientGroupCountAggregateOutputType | null
+    _min: RecipientGroupMinAggregateOutputType | null
+    _max: RecipientGroupMaxAggregateOutputType | null
+  }
+
+  type GetRecipientGroupGroupByPayload<T extends RecipientGroupGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RecipientGroupGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RecipientGroupGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RecipientGroupGroupByOutputType[P]>
+            : GetScalarType<T[P], RecipientGroupGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RecipientGroupSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+    members?: boolean | RecipientGroup$membersArgs<ExtArgs>
+    _count?: boolean | RecipientGroupCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["recipientGroup"]>
+
+  export type RecipientGroupSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["recipientGroup"]>
+
+  export type RecipientGroupSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["recipientGroup"]>
+
+  export type RecipientGroupSelectScalar = {
+    id?: boolean
+    name?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type RecipientGroupOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["recipientGroup"]>
+  export type RecipientGroupInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+    members?: boolean | RecipientGroup$membersArgs<ExtArgs>
+    _count?: boolean | RecipientGroupCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type RecipientGroupIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type RecipientGroupIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $RecipientGroupPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RecipientGroup"
+    objects: {
+      creator: Prisma.$UserPayload<ExtArgs>
+      members: Prisma.$RecipientGroupMemberPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      createdBy: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["recipientGroup"]>
+    composites: {}
+  }
+
+  type RecipientGroupGetPayload<S extends boolean | null | undefined | RecipientGroupDefaultArgs> = $Result.GetResult<Prisma.$RecipientGroupPayload, S>
+
+  type RecipientGroupCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RecipientGroupFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RecipientGroupCountAggregateInputType | true
+    }
+
+  export interface RecipientGroupDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RecipientGroup'], meta: { name: 'RecipientGroup' } }
+    /**
+     * Find zero or one RecipientGroup that matches the filter.
+     * @param {RecipientGroupFindUniqueArgs} args - Arguments to find a RecipientGroup
+     * @example
+     * // Get one RecipientGroup
+     * const recipientGroup = await prisma.recipientGroup.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RecipientGroupFindUniqueArgs>(args: SelectSubset<T, RecipientGroupFindUniqueArgs<ExtArgs>>): Prisma__RecipientGroupClient<$Result.GetResult<Prisma.$RecipientGroupPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RecipientGroup that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RecipientGroupFindUniqueOrThrowArgs} args - Arguments to find a RecipientGroup
+     * @example
+     * // Get one RecipientGroup
+     * const recipientGroup = await prisma.recipientGroup.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RecipientGroupFindUniqueOrThrowArgs>(args: SelectSubset<T, RecipientGroupFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RecipientGroupClient<$Result.GetResult<Prisma.$RecipientGroupPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RecipientGroup that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecipientGroupFindFirstArgs} args - Arguments to find a RecipientGroup
+     * @example
+     * // Get one RecipientGroup
+     * const recipientGroup = await prisma.recipientGroup.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RecipientGroupFindFirstArgs>(args?: SelectSubset<T, RecipientGroupFindFirstArgs<ExtArgs>>): Prisma__RecipientGroupClient<$Result.GetResult<Prisma.$RecipientGroupPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RecipientGroup that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecipientGroupFindFirstOrThrowArgs} args - Arguments to find a RecipientGroup
+     * @example
+     * // Get one RecipientGroup
+     * const recipientGroup = await prisma.recipientGroup.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RecipientGroupFindFirstOrThrowArgs>(args?: SelectSubset<T, RecipientGroupFindFirstOrThrowArgs<ExtArgs>>): Prisma__RecipientGroupClient<$Result.GetResult<Prisma.$RecipientGroupPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RecipientGroups that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecipientGroupFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RecipientGroups
+     * const recipientGroups = await prisma.recipientGroup.findMany()
+     * 
+     * // Get first 10 RecipientGroups
+     * const recipientGroups = await prisma.recipientGroup.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const recipientGroupWithIdOnly = await prisma.recipientGroup.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RecipientGroupFindManyArgs>(args?: SelectSubset<T, RecipientGroupFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RecipientGroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RecipientGroup.
+     * @param {RecipientGroupCreateArgs} args - Arguments to create a RecipientGroup.
+     * @example
+     * // Create one RecipientGroup
+     * const RecipientGroup = await prisma.recipientGroup.create({
+     *   data: {
+     *     // ... data to create a RecipientGroup
+     *   }
+     * })
+     * 
+     */
+    create<T extends RecipientGroupCreateArgs>(args: SelectSubset<T, RecipientGroupCreateArgs<ExtArgs>>): Prisma__RecipientGroupClient<$Result.GetResult<Prisma.$RecipientGroupPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RecipientGroups.
+     * @param {RecipientGroupCreateManyArgs} args - Arguments to create many RecipientGroups.
+     * @example
+     * // Create many RecipientGroups
+     * const recipientGroup = await prisma.recipientGroup.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RecipientGroupCreateManyArgs>(args?: SelectSubset<T, RecipientGroupCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RecipientGroups and returns the data saved in the database.
+     * @param {RecipientGroupCreateManyAndReturnArgs} args - Arguments to create many RecipientGroups.
+     * @example
+     * // Create many RecipientGroups
+     * const recipientGroup = await prisma.recipientGroup.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RecipientGroups and only return the `id`
+     * const recipientGroupWithIdOnly = await prisma.recipientGroup.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RecipientGroupCreateManyAndReturnArgs>(args?: SelectSubset<T, RecipientGroupCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RecipientGroupPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RecipientGroup.
+     * @param {RecipientGroupDeleteArgs} args - Arguments to delete one RecipientGroup.
+     * @example
+     * // Delete one RecipientGroup
+     * const RecipientGroup = await prisma.recipientGroup.delete({
+     *   where: {
+     *     // ... filter to delete one RecipientGroup
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RecipientGroupDeleteArgs>(args: SelectSubset<T, RecipientGroupDeleteArgs<ExtArgs>>): Prisma__RecipientGroupClient<$Result.GetResult<Prisma.$RecipientGroupPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RecipientGroup.
+     * @param {RecipientGroupUpdateArgs} args - Arguments to update one RecipientGroup.
+     * @example
+     * // Update one RecipientGroup
+     * const recipientGroup = await prisma.recipientGroup.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RecipientGroupUpdateArgs>(args: SelectSubset<T, RecipientGroupUpdateArgs<ExtArgs>>): Prisma__RecipientGroupClient<$Result.GetResult<Prisma.$RecipientGroupPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RecipientGroups.
+     * @param {RecipientGroupDeleteManyArgs} args - Arguments to filter RecipientGroups to delete.
+     * @example
+     * // Delete a few RecipientGroups
+     * const { count } = await prisma.recipientGroup.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RecipientGroupDeleteManyArgs>(args?: SelectSubset<T, RecipientGroupDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RecipientGroups.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecipientGroupUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RecipientGroups
+     * const recipientGroup = await prisma.recipientGroup.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RecipientGroupUpdateManyArgs>(args: SelectSubset<T, RecipientGroupUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RecipientGroups and returns the data updated in the database.
+     * @param {RecipientGroupUpdateManyAndReturnArgs} args - Arguments to update many RecipientGroups.
+     * @example
+     * // Update many RecipientGroups
+     * const recipientGroup = await prisma.recipientGroup.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RecipientGroups and only return the `id`
+     * const recipientGroupWithIdOnly = await prisma.recipientGroup.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RecipientGroupUpdateManyAndReturnArgs>(args: SelectSubset<T, RecipientGroupUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RecipientGroupPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RecipientGroup.
+     * @param {RecipientGroupUpsertArgs} args - Arguments to update or create a RecipientGroup.
+     * @example
+     * // Update or create a RecipientGroup
+     * const recipientGroup = await prisma.recipientGroup.upsert({
+     *   create: {
+     *     // ... data to create a RecipientGroup
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RecipientGroup we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RecipientGroupUpsertArgs>(args: SelectSubset<T, RecipientGroupUpsertArgs<ExtArgs>>): Prisma__RecipientGroupClient<$Result.GetResult<Prisma.$RecipientGroupPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RecipientGroups.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecipientGroupCountArgs} args - Arguments to filter RecipientGroups to count.
+     * @example
+     * // Count the number of RecipientGroups
+     * const count = await prisma.recipientGroup.count({
+     *   where: {
+     *     // ... the filter for the RecipientGroups we want to count
+     *   }
+     * })
+    **/
+    count<T extends RecipientGroupCountArgs>(
+      args?: Subset<T, RecipientGroupCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RecipientGroupCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RecipientGroup.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecipientGroupAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RecipientGroupAggregateArgs>(args: Subset<T, RecipientGroupAggregateArgs>): Prisma.PrismaPromise<GetRecipientGroupAggregateType<T>>
+
+    /**
+     * Group by RecipientGroup.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecipientGroupGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RecipientGroupGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RecipientGroupGroupByArgs['orderBy'] }
+        : { orderBy?: RecipientGroupGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RecipientGroupGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRecipientGroupGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RecipientGroup model
+   */
+  readonly fields: RecipientGroupFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RecipientGroup.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RecipientGroupClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    creator<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    members<T extends RecipientGroup$membersArgs<ExtArgs> = {}>(args?: Subset<T, RecipientGroup$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RecipientGroupMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RecipientGroup model
+   */
+  interface RecipientGroupFieldRefs {
+    readonly id: FieldRef<"RecipientGroup", 'String'>
+    readonly name: FieldRef<"RecipientGroup", 'String'>
+    readonly createdBy: FieldRef<"RecipientGroup", 'String'>
+    readonly createdAt: FieldRef<"RecipientGroup", 'DateTime'>
+    readonly updatedAt: FieldRef<"RecipientGroup", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RecipientGroup findUnique
+   */
+  export type RecipientGroupFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroup
+     */
+    select?: RecipientGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroup
+     */
+    omit?: RecipientGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupInclude<ExtArgs> | null
+    /**
+     * Filter, which RecipientGroup to fetch.
+     */
+    where: RecipientGroupWhereUniqueInput
+  }
+
+  /**
+   * RecipientGroup findUniqueOrThrow
+   */
+  export type RecipientGroupFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroup
+     */
+    select?: RecipientGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroup
+     */
+    omit?: RecipientGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupInclude<ExtArgs> | null
+    /**
+     * Filter, which RecipientGroup to fetch.
+     */
+    where: RecipientGroupWhereUniqueInput
+  }
+
+  /**
+   * RecipientGroup findFirst
+   */
+  export type RecipientGroupFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroup
+     */
+    select?: RecipientGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroup
+     */
+    omit?: RecipientGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupInclude<ExtArgs> | null
+    /**
+     * Filter, which RecipientGroup to fetch.
+     */
+    where?: RecipientGroupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RecipientGroups to fetch.
+     */
+    orderBy?: RecipientGroupOrderByWithRelationInput | RecipientGroupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RecipientGroups.
+     */
+    cursor?: RecipientGroupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RecipientGroups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RecipientGroups.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RecipientGroups.
+     */
+    distinct?: RecipientGroupScalarFieldEnum | RecipientGroupScalarFieldEnum[]
+  }
+
+  /**
+   * RecipientGroup findFirstOrThrow
+   */
+  export type RecipientGroupFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroup
+     */
+    select?: RecipientGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroup
+     */
+    omit?: RecipientGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupInclude<ExtArgs> | null
+    /**
+     * Filter, which RecipientGroup to fetch.
+     */
+    where?: RecipientGroupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RecipientGroups to fetch.
+     */
+    orderBy?: RecipientGroupOrderByWithRelationInput | RecipientGroupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RecipientGroups.
+     */
+    cursor?: RecipientGroupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RecipientGroups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RecipientGroups.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RecipientGroups.
+     */
+    distinct?: RecipientGroupScalarFieldEnum | RecipientGroupScalarFieldEnum[]
+  }
+
+  /**
+   * RecipientGroup findMany
+   */
+  export type RecipientGroupFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroup
+     */
+    select?: RecipientGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroup
+     */
+    omit?: RecipientGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupInclude<ExtArgs> | null
+    /**
+     * Filter, which RecipientGroups to fetch.
+     */
+    where?: RecipientGroupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RecipientGroups to fetch.
+     */
+    orderBy?: RecipientGroupOrderByWithRelationInput | RecipientGroupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RecipientGroups.
+     */
+    cursor?: RecipientGroupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RecipientGroups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RecipientGroups.
+     */
+    skip?: number
+    distinct?: RecipientGroupScalarFieldEnum | RecipientGroupScalarFieldEnum[]
+  }
+
+  /**
+   * RecipientGroup create
+   */
+  export type RecipientGroupCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroup
+     */
+    select?: RecipientGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroup
+     */
+    omit?: RecipientGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RecipientGroup.
+     */
+    data: XOR<RecipientGroupCreateInput, RecipientGroupUncheckedCreateInput>
+  }
+
+  /**
+   * RecipientGroup createMany
+   */
+  export type RecipientGroupCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RecipientGroups.
+     */
+    data: RecipientGroupCreateManyInput | RecipientGroupCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RecipientGroup createManyAndReturn
+   */
+  export type RecipientGroupCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroup
+     */
+    select?: RecipientGroupSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroup
+     */
+    omit?: RecipientGroupOmit<ExtArgs> | null
+    /**
+     * The data used to create many RecipientGroups.
+     */
+    data: RecipientGroupCreateManyInput | RecipientGroupCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RecipientGroup update
+   */
+  export type RecipientGroupUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroup
+     */
+    select?: RecipientGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroup
+     */
+    omit?: RecipientGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RecipientGroup.
+     */
+    data: XOR<RecipientGroupUpdateInput, RecipientGroupUncheckedUpdateInput>
+    /**
+     * Choose, which RecipientGroup to update.
+     */
+    where: RecipientGroupWhereUniqueInput
+  }
+
+  /**
+   * RecipientGroup updateMany
+   */
+  export type RecipientGroupUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RecipientGroups.
+     */
+    data: XOR<RecipientGroupUpdateManyMutationInput, RecipientGroupUncheckedUpdateManyInput>
+    /**
+     * Filter which RecipientGroups to update
+     */
+    where?: RecipientGroupWhereInput
+    /**
+     * Limit how many RecipientGroups to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RecipientGroup updateManyAndReturn
+   */
+  export type RecipientGroupUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroup
+     */
+    select?: RecipientGroupSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroup
+     */
+    omit?: RecipientGroupOmit<ExtArgs> | null
+    /**
+     * The data used to update RecipientGroups.
+     */
+    data: XOR<RecipientGroupUpdateManyMutationInput, RecipientGroupUncheckedUpdateManyInput>
+    /**
+     * Filter which RecipientGroups to update
+     */
+    where?: RecipientGroupWhereInput
+    /**
+     * Limit how many RecipientGroups to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RecipientGroup upsert
+   */
+  export type RecipientGroupUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroup
+     */
+    select?: RecipientGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroup
+     */
+    omit?: RecipientGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RecipientGroup to update in case it exists.
+     */
+    where: RecipientGroupWhereUniqueInput
+    /**
+     * In case the RecipientGroup found by the `where` argument doesn't exist, create a new RecipientGroup with this data.
+     */
+    create: XOR<RecipientGroupCreateInput, RecipientGroupUncheckedCreateInput>
+    /**
+     * In case the RecipientGroup was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RecipientGroupUpdateInput, RecipientGroupUncheckedUpdateInput>
+  }
+
+  /**
+   * RecipientGroup delete
+   */
+  export type RecipientGroupDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroup
+     */
+    select?: RecipientGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroup
+     */
+    omit?: RecipientGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupInclude<ExtArgs> | null
+    /**
+     * Filter which RecipientGroup to delete.
+     */
+    where: RecipientGroupWhereUniqueInput
+  }
+
+  /**
+   * RecipientGroup deleteMany
+   */
+  export type RecipientGroupDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RecipientGroups to delete
+     */
+    where?: RecipientGroupWhereInput
+    /**
+     * Limit how many RecipientGroups to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RecipientGroup.members
+   */
+  export type RecipientGroup$membersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroupMember
+     */
+    select?: RecipientGroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroupMember
+     */
+    omit?: RecipientGroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupMemberInclude<ExtArgs> | null
+    where?: RecipientGroupMemberWhereInput
+    orderBy?: RecipientGroupMemberOrderByWithRelationInput | RecipientGroupMemberOrderByWithRelationInput[]
+    cursor?: RecipientGroupMemberWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RecipientGroupMemberScalarFieldEnum | RecipientGroupMemberScalarFieldEnum[]
+  }
+
+  /**
+   * RecipientGroup without action
+   */
+  export type RecipientGroupDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroup
+     */
+    select?: RecipientGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroup
+     */
+    omit?: RecipientGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RecipientGroupMember
+   */
+
+  export type AggregateRecipientGroupMember = {
+    _count: RecipientGroupMemberCountAggregateOutputType | null
+    _min: RecipientGroupMemberMinAggregateOutputType | null
+    _max: RecipientGroupMemberMaxAggregateOutputType | null
+  }
+
+  export type RecipientGroupMemberMinAggregateOutputType = {
+    id: string | null
+    groupId: string | null
+    userId: string | null
+    createdAt: Date | null
+  }
+
+  export type RecipientGroupMemberMaxAggregateOutputType = {
+    id: string | null
+    groupId: string | null
+    userId: string | null
+    createdAt: Date | null
+  }
+
+  export type RecipientGroupMemberCountAggregateOutputType = {
+    id: number
+    groupId: number
+    userId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type RecipientGroupMemberMinAggregateInputType = {
+    id?: true
+    groupId?: true
+    userId?: true
+    createdAt?: true
+  }
+
+  export type RecipientGroupMemberMaxAggregateInputType = {
+    id?: true
+    groupId?: true
+    userId?: true
+    createdAt?: true
+  }
+
+  export type RecipientGroupMemberCountAggregateInputType = {
+    id?: true
+    groupId?: true
+    userId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type RecipientGroupMemberAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RecipientGroupMember to aggregate.
+     */
+    where?: RecipientGroupMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RecipientGroupMembers to fetch.
+     */
+    orderBy?: RecipientGroupMemberOrderByWithRelationInput | RecipientGroupMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RecipientGroupMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RecipientGroupMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RecipientGroupMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RecipientGroupMembers
+    **/
+    _count?: true | RecipientGroupMemberCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RecipientGroupMemberMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RecipientGroupMemberMaxAggregateInputType
+  }
+
+  export type GetRecipientGroupMemberAggregateType<T extends RecipientGroupMemberAggregateArgs> = {
+        [P in keyof T & keyof AggregateRecipientGroupMember]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRecipientGroupMember[P]>
+      : GetScalarType<T[P], AggregateRecipientGroupMember[P]>
+  }
+
+
+
+
+  export type RecipientGroupMemberGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RecipientGroupMemberWhereInput
+    orderBy?: RecipientGroupMemberOrderByWithAggregationInput | RecipientGroupMemberOrderByWithAggregationInput[]
+    by: RecipientGroupMemberScalarFieldEnum[] | RecipientGroupMemberScalarFieldEnum
+    having?: RecipientGroupMemberScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RecipientGroupMemberCountAggregateInputType | true
+    _min?: RecipientGroupMemberMinAggregateInputType
+    _max?: RecipientGroupMemberMaxAggregateInputType
+  }
+
+  export type RecipientGroupMemberGroupByOutputType = {
+    id: string
+    groupId: string
+    userId: string
+    createdAt: Date
+    _count: RecipientGroupMemberCountAggregateOutputType | null
+    _min: RecipientGroupMemberMinAggregateOutputType | null
+    _max: RecipientGroupMemberMaxAggregateOutputType | null
+  }
+
+  type GetRecipientGroupMemberGroupByPayload<T extends RecipientGroupMemberGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RecipientGroupMemberGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RecipientGroupMemberGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RecipientGroupMemberGroupByOutputType[P]>
+            : GetScalarType<T[P], RecipientGroupMemberGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RecipientGroupMemberSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    groupId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    group?: boolean | RecipientGroupDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["recipientGroupMember"]>
+
+  export type RecipientGroupMemberSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    groupId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    group?: boolean | RecipientGroupDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["recipientGroupMember"]>
+
+  export type RecipientGroupMemberSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    groupId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    group?: boolean | RecipientGroupDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["recipientGroupMember"]>
+
+  export type RecipientGroupMemberSelectScalar = {
+    id?: boolean
+    groupId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+  }
+
+  export type RecipientGroupMemberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "groupId" | "userId" | "createdAt", ExtArgs["result"]["recipientGroupMember"]>
+  export type RecipientGroupMemberInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    group?: boolean | RecipientGroupDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type RecipientGroupMemberIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    group?: boolean | RecipientGroupDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type RecipientGroupMemberIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    group?: boolean | RecipientGroupDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $RecipientGroupMemberPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RecipientGroupMember"
+    objects: {
+      group: Prisma.$RecipientGroupPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      groupId: string
+      userId: string
+      createdAt: Date
+    }, ExtArgs["result"]["recipientGroupMember"]>
+    composites: {}
+  }
+
+  type RecipientGroupMemberGetPayload<S extends boolean | null | undefined | RecipientGroupMemberDefaultArgs> = $Result.GetResult<Prisma.$RecipientGroupMemberPayload, S>
+
+  type RecipientGroupMemberCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RecipientGroupMemberFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RecipientGroupMemberCountAggregateInputType | true
+    }
+
+  export interface RecipientGroupMemberDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RecipientGroupMember'], meta: { name: 'RecipientGroupMember' } }
+    /**
+     * Find zero or one RecipientGroupMember that matches the filter.
+     * @param {RecipientGroupMemberFindUniqueArgs} args - Arguments to find a RecipientGroupMember
+     * @example
+     * // Get one RecipientGroupMember
+     * const recipientGroupMember = await prisma.recipientGroupMember.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RecipientGroupMemberFindUniqueArgs>(args: SelectSubset<T, RecipientGroupMemberFindUniqueArgs<ExtArgs>>): Prisma__RecipientGroupMemberClient<$Result.GetResult<Prisma.$RecipientGroupMemberPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RecipientGroupMember that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RecipientGroupMemberFindUniqueOrThrowArgs} args - Arguments to find a RecipientGroupMember
+     * @example
+     * // Get one RecipientGroupMember
+     * const recipientGroupMember = await prisma.recipientGroupMember.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RecipientGroupMemberFindUniqueOrThrowArgs>(args: SelectSubset<T, RecipientGroupMemberFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RecipientGroupMemberClient<$Result.GetResult<Prisma.$RecipientGroupMemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RecipientGroupMember that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecipientGroupMemberFindFirstArgs} args - Arguments to find a RecipientGroupMember
+     * @example
+     * // Get one RecipientGroupMember
+     * const recipientGroupMember = await prisma.recipientGroupMember.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RecipientGroupMemberFindFirstArgs>(args?: SelectSubset<T, RecipientGroupMemberFindFirstArgs<ExtArgs>>): Prisma__RecipientGroupMemberClient<$Result.GetResult<Prisma.$RecipientGroupMemberPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RecipientGroupMember that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecipientGroupMemberFindFirstOrThrowArgs} args - Arguments to find a RecipientGroupMember
+     * @example
+     * // Get one RecipientGroupMember
+     * const recipientGroupMember = await prisma.recipientGroupMember.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RecipientGroupMemberFindFirstOrThrowArgs>(args?: SelectSubset<T, RecipientGroupMemberFindFirstOrThrowArgs<ExtArgs>>): Prisma__RecipientGroupMemberClient<$Result.GetResult<Prisma.$RecipientGroupMemberPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RecipientGroupMembers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecipientGroupMemberFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RecipientGroupMembers
+     * const recipientGroupMembers = await prisma.recipientGroupMember.findMany()
+     * 
+     * // Get first 10 RecipientGroupMembers
+     * const recipientGroupMembers = await prisma.recipientGroupMember.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const recipientGroupMemberWithIdOnly = await prisma.recipientGroupMember.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RecipientGroupMemberFindManyArgs>(args?: SelectSubset<T, RecipientGroupMemberFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RecipientGroupMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RecipientGroupMember.
+     * @param {RecipientGroupMemberCreateArgs} args - Arguments to create a RecipientGroupMember.
+     * @example
+     * // Create one RecipientGroupMember
+     * const RecipientGroupMember = await prisma.recipientGroupMember.create({
+     *   data: {
+     *     // ... data to create a RecipientGroupMember
+     *   }
+     * })
+     * 
+     */
+    create<T extends RecipientGroupMemberCreateArgs>(args: SelectSubset<T, RecipientGroupMemberCreateArgs<ExtArgs>>): Prisma__RecipientGroupMemberClient<$Result.GetResult<Prisma.$RecipientGroupMemberPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RecipientGroupMembers.
+     * @param {RecipientGroupMemberCreateManyArgs} args - Arguments to create many RecipientGroupMembers.
+     * @example
+     * // Create many RecipientGroupMembers
+     * const recipientGroupMember = await prisma.recipientGroupMember.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RecipientGroupMemberCreateManyArgs>(args?: SelectSubset<T, RecipientGroupMemberCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RecipientGroupMembers and returns the data saved in the database.
+     * @param {RecipientGroupMemberCreateManyAndReturnArgs} args - Arguments to create many RecipientGroupMembers.
+     * @example
+     * // Create many RecipientGroupMembers
+     * const recipientGroupMember = await prisma.recipientGroupMember.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RecipientGroupMembers and only return the `id`
+     * const recipientGroupMemberWithIdOnly = await prisma.recipientGroupMember.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RecipientGroupMemberCreateManyAndReturnArgs>(args?: SelectSubset<T, RecipientGroupMemberCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RecipientGroupMemberPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RecipientGroupMember.
+     * @param {RecipientGroupMemberDeleteArgs} args - Arguments to delete one RecipientGroupMember.
+     * @example
+     * // Delete one RecipientGroupMember
+     * const RecipientGroupMember = await prisma.recipientGroupMember.delete({
+     *   where: {
+     *     // ... filter to delete one RecipientGroupMember
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RecipientGroupMemberDeleteArgs>(args: SelectSubset<T, RecipientGroupMemberDeleteArgs<ExtArgs>>): Prisma__RecipientGroupMemberClient<$Result.GetResult<Prisma.$RecipientGroupMemberPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RecipientGroupMember.
+     * @param {RecipientGroupMemberUpdateArgs} args - Arguments to update one RecipientGroupMember.
+     * @example
+     * // Update one RecipientGroupMember
+     * const recipientGroupMember = await prisma.recipientGroupMember.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RecipientGroupMemberUpdateArgs>(args: SelectSubset<T, RecipientGroupMemberUpdateArgs<ExtArgs>>): Prisma__RecipientGroupMemberClient<$Result.GetResult<Prisma.$RecipientGroupMemberPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RecipientGroupMembers.
+     * @param {RecipientGroupMemberDeleteManyArgs} args - Arguments to filter RecipientGroupMembers to delete.
+     * @example
+     * // Delete a few RecipientGroupMembers
+     * const { count } = await prisma.recipientGroupMember.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RecipientGroupMemberDeleteManyArgs>(args?: SelectSubset<T, RecipientGroupMemberDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RecipientGroupMembers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecipientGroupMemberUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RecipientGroupMembers
+     * const recipientGroupMember = await prisma.recipientGroupMember.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RecipientGroupMemberUpdateManyArgs>(args: SelectSubset<T, RecipientGroupMemberUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RecipientGroupMembers and returns the data updated in the database.
+     * @param {RecipientGroupMemberUpdateManyAndReturnArgs} args - Arguments to update many RecipientGroupMembers.
+     * @example
+     * // Update many RecipientGroupMembers
+     * const recipientGroupMember = await prisma.recipientGroupMember.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RecipientGroupMembers and only return the `id`
+     * const recipientGroupMemberWithIdOnly = await prisma.recipientGroupMember.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RecipientGroupMemberUpdateManyAndReturnArgs>(args: SelectSubset<T, RecipientGroupMemberUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RecipientGroupMemberPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RecipientGroupMember.
+     * @param {RecipientGroupMemberUpsertArgs} args - Arguments to update or create a RecipientGroupMember.
+     * @example
+     * // Update or create a RecipientGroupMember
+     * const recipientGroupMember = await prisma.recipientGroupMember.upsert({
+     *   create: {
+     *     // ... data to create a RecipientGroupMember
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RecipientGroupMember we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RecipientGroupMemberUpsertArgs>(args: SelectSubset<T, RecipientGroupMemberUpsertArgs<ExtArgs>>): Prisma__RecipientGroupMemberClient<$Result.GetResult<Prisma.$RecipientGroupMemberPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RecipientGroupMembers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecipientGroupMemberCountArgs} args - Arguments to filter RecipientGroupMembers to count.
+     * @example
+     * // Count the number of RecipientGroupMembers
+     * const count = await prisma.recipientGroupMember.count({
+     *   where: {
+     *     // ... the filter for the RecipientGroupMembers we want to count
+     *   }
+     * })
+    **/
+    count<T extends RecipientGroupMemberCountArgs>(
+      args?: Subset<T, RecipientGroupMemberCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RecipientGroupMemberCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RecipientGroupMember.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecipientGroupMemberAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RecipientGroupMemberAggregateArgs>(args: Subset<T, RecipientGroupMemberAggregateArgs>): Prisma.PrismaPromise<GetRecipientGroupMemberAggregateType<T>>
+
+    /**
+     * Group by RecipientGroupMember.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecipientGroupMemberGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RecipientGroupMemberGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RecipientGroupMemberGroupByArgs['orderBy'] }
+        : { orderBy?: RecipientGroupMemberGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RecipientGroupMemberGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRecipientGroupMemberGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RecipientGroupMember model
+   */
+  readonly fields: RecipientGroupMemberFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RecipientGroupMember.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RecipientGroupMemberClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    group<T extends RecipientGroupDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RecipientGroupDefaultArgs<ExtArgs>>): Prisma__RecipientGroupClient<$Result.GetResult<Prisma.$RecipientGroupPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RecipientGroupMember model
+   */
+  interface RecipientGroupMemberFieldRefs {
+    readonly id: FieldRef<"RecipientGroupMember", 'String'>
+    readonly groupId: FieldRef<"RecipientGroupMember", 'String'>
+    readonly userId: FieldRef<"RecipientGroupMember", 'String'>
+    readonly createdAt: FieldRef<"RecipientGroupMember", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RecipientGroupMember findUnique
+   */
+  export type RecipientGroupMemberFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroupMember
+     */
+    select?: RecipientGroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroupMember
+     */
+    omit?: RecipientGroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which RecipientGroupMember to fetch.
+     */
+    where: RecipientGroupMemberWhereUniqueInput
+  }
+
+  /**
+   * RecipientGroupMember findUniqueOrThrow
+   */
+  export type RecipientGroupMemberFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroupMember
+     */
+    select?: RecipientGroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroupMember
+     */
+    omit?: RecipientGroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which RecipientGroupMember to fetch.
+     */
+    where: RecipientGroupMemberWhereUniqueInput
+  }
+
+  /**
+   * RecipientGroupMember findFirst
+   */
+  export type RecipientGroupMemberFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroupMember
+     */
+    select?: RecipientGroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroupMember
+     */
+    omit?: RecipientGroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which RecipientGroupMember to fetch.
+     */
+    where?: RecipientGroupMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RecipientGroupMembers to fetch.
+     */
+    orderBy?: RecipientGroupMemberOrderByWithRelationInput | RecipientGroupMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RecipientGroupMembers.
+     */
+    cursor?: RecipientGroupMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RecipientGroupMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RecipientGroupMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RecipientGroupMembers.
+     */
+    distinct?: RecipientGroupMemberScalarFieldEnum | RecipientGroupMemberScalarFieldEnum[]
+  }
+
+  /**
+   * RecipientGroupMember findFirstOrThrow
+   */
+  export type RecipientGroupMemberFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroupMember
+     */
+    select?: RecipientGroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroupMember
+     */
+    omit?: RecipientGroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which RecipientGroupMember to fetch.
+     */
+    where?: RecipientGroupMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RecipientGroupMembers to fetch.
+     */
+    orderBy?: RecipientGroupMemberOrderByWithRelationInput | RecipientGroupMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RecipientGroupMembers.
+     */
+    cursor?: RecipientGroupMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RecipientGroupMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RecipientGroupMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RecipientGroupMembers.
+     */
+    distinct?: RecipientGroupMemberScalarFieldEnum | RecipientGroupMemberScalarFieldEnum[]
+  }
+
+  /**
+   * RecipientGroupMember findMany
+   */
+  export type RecipientGroupMemberFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroupMember
+     */
+    select?: RecipientGroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroupMember
+     */
+    omit?: RecipientGroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which RecipientGroupMembers to fetch.
+     */
+    where?: RecipientGroupMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RecipientGroupMembers to fetch.
+     */
+    orderBy?: RecipientGroupMemberOrderByWithRelationInput | RecipientGroupMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RecipientGroupMembers.
+     */
+    cursor?: RecipientGroupMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RecipientGroupMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RecipientGroupMembers.
+     */
+    skip?: number
+    distinct?: RecipientGroupMemberScalarFieldEnum | RecipientGroupMemberScalarFieldEnum[]
+  }
+
+  /**
+   * RecipientGroupMember create
+   */
+  export type RecipientGroupMemberCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroupMember
+     */
+    select?: RecipientGroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroupMember
+     */
+    omit?: RecipientGroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupMemberInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RecipientGroupMember.
+     */
+    data: XOR<RecipientGroupMemberCreateInput, RecipientGroupMemberUncheckedCreateInput>
+  }
+
+  /**
+   * RecipientGroupMember createMany
+   */
+  export type RecipientGroupMemberCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RecipientGroupMembers.
+     */
+    data: RecipientGroupMemberCreateManyInput | RecipientGroupMemberCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RecipientGroupMember createManyAndReturn
+   */
+  export type RecipientGroupMemberCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroupMember
+     */
+    select?: RecipientGroupMemberSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroupMember
+     */
+    omit?: RecipientGroupMemberOmit<ExtArgs> | null
+    /**
+     * The data used to create many RecipientGroupMembers.
+     */
+    data: RecipientGroupMemberCreateManyInput | RecipientGroupMemberCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupMemberIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RecipientGroupMember update
+   */
+  export type RecipientGroupMemberUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroupMember
+     */
+    select?: RecipientGroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroupMember
+     */
+    omit?: RecipientGroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupMemberInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RecipientGroupMember.
+     */
+    data: XOR<RecipientGroupMemberUpdateInput, RecipientGroupMemberUncheckedUpdateInput>
+    /**
+     * Choose, which RecipientGroupMember to update.
+     */
+    where: RecipientGroupMemberWhereUniqueInput
+  }
+
+  /**
+   * RecipientGroupMember updateMany
+   */
+  export type RecipientGroupMemberUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RecipientGroupMembers.
+     */
+    data: XOR<RecipientGroupMemberUpdateManyMutationInput, RecipientGroupMemberUncheckedUpdateManyInput>
+    /**
+     * Filter which RecipientGroupMembers to update
+     */
+    where?: RecipientGroupMemberWhereInput
+    /**
+     * Limit how many RecipientGroupMembers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RecipientGroupMember updateManyAndReturn
+   */
+  export type RecipientGroupMemberUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroupMember
+     */
+    select?: RecipientGroupMemberSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroupMember
+     */
+    omit?: RecipientGroupMemberOmit<ExtArgs> | null
+    /**
+     * The data used to update RecipientGroupMembers.
+     */
+    data: XOR<RecipientGroupMemberUpdateManyMutationInput, RecipientGroupMemberUncheckedUpdateManyInput>
+    /**
+     * Filter which RecipientGroupMembers to update
+     */
+    where?: RecipientGroupMemberWhereInput
+    /**
+     * Limit how many RecipientGroupMembers to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupMemberIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RecipientGroupMember upsert
+   */
+  export type RecipientGroupMemberUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroupMember
+     */
+    select?: RecipientGroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroupMember
+     */
+    omit?: RecipientGroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupMemberInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RecipientGroupMember to update in case it exists.
+     */
+    where: RecipientGroupMemberWhereUniqueInput
+    /**
+     * In case the RecipientGroupMember found by the `where` argument doesn't exist, create a new RecipientGroupMember with this data.
+     */
+    create: XOR<RecipientGroupMemberCreateInput, RecipientGroupMemberUncheckedCreateInput>
+    /**
+     * In case the RecipientGroupMember was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RecipientGroupMemberUpdateInput, RecipientGroupMemberUncheckedUpdateInput>
+  }
+
+  /**
+   * RecipientGroupMember delete
+   */
+  export type RecipientGroupMemberDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroupMember
+     */
+    select?: RecipientGroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroupMember
+     */
+    omit?: RecipientGroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupMemberInclude<ExtArgs> | null
+    /**
+     * Filter which RecipientGroupMember to delete.
+     */
+    where: RecipientGroupMemberWhereUniqueInput
+  }
+
+  /**
+   * RecipientGroupMember deleteMany
+   */
+  export type RecipientGroupMemberDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RecipientGroupMembers to delete
+     */
+    where?: RecipientGroupMemberWhereInput
+    /**
+     * Limit how many RecipientGroupMembers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RecipientGroupMember without action
+   */
+  export type RecipientGroupMemberDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipientGroupMember
+     */
+    select?: RecipientGroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipientGroupMember
+     */
+    omit?: RecipientGroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipientGroupMemberInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -18333,6 +23546,62 @@ export namespace Prisma {
   export type EmailNotificationScalarFieldEnum = (typeof EmailNotificationScalarFieldEnum)[keyof typeof EmailNotificationScalarFieldEnum]
 
 
+  export const InAppNotificationScalarFieldEnum: {
+    id: 'id',
+    batchId: 'batchId',
+    senderId: 'senderId',
+    recipientId: 'recipientId',
+    title: 'title',
+    body: 'body',
+    link: 'link',
+    read: 'read',
+    readAt: 'readAt',
+    event: 'event',
+    createdAt: 'createdAt'
+  };
+
+  export type InAppNotificationScalarFieldEnum = (typeof InAppNotificationScalarFieldEnum)[keyof typeof InAppNotificationScalarFieldEnum]
+
+
+  export const NotificationBatchScalarFieldEnum: {
+    id: 'id',
+    senderId: 'senderId',
+    targetType: 'targetType',
+    targetRef: 'targetRef',
+    individualIds: 'individualIds',
+    title: 'title',
+    body: 'body',
+    link: 'link',
+    scheduledFor: 'scheduledFor',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type NotificationBatchScalarFieldEnum = (typeof NotificationBatchScalarFieldEnum)[keyof typeof NotificationBatchScalarFieldEnum]
+
+
+  export const RecipientGroupScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    createdBy: 'createdBy',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type RecipientGroupScalarFieldEnum = (typeof RecipientGroupScalarFieldEnum)[keyof typeof RecipientGroupScalarFieldEnum]
+
+
+  export const RecipientGroupMemberScalarFieldEnum: {
+    id: 'id',
+    groupId: 'groupId',
+    userId: 'userId',
+    createdAt: 'createdAt'
+  };
+
+  export type RecipientGroupMemberScalarFieldEnum = (typeof RecipientGroupMemberScalarFieldEnum)[keyof typeof RecipientGroupMemberScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -18451,6 +23720,34 @@ export namespace Prisma {
    */
   export type ListEnumEmailNotificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EmailNotificationStatus[]'>
     
+
+
+  /**
+   * Reference to a field of type 'NotificationTargetType'
+   */
+  export type EnumNotificationTargetTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationTargetType'>
+    
+
+
+  /**
+   * Reference to a field of type 'NotificationTargetType[]'
+   */
+  export type ListEnumNotificationTargetTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationTargetType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'NotificationBatchStatus'
+   */
+  export type EnumNotificationBatchStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationBatchStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'NotificationBatchStatus[]'
+   */
+  export type ListEnumNotificationBatchStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationBatchStatus[]'>
+    
   /**
    * Deep Input Types
    */
@@ -18477,6 +23774,11 @@ export namespace Prisma {
     verificationTokenExpiresAt?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    sentNotifications?: InAppNotificationListRelationFilter
+    receivedNotifications?: InAppNotificationListRelationFilter
+    notificationBatches?: NotificationBatchListRelationFilter
+    recipientGroupsCreated?: RecipientGroupListRelationFilter
+    recipientGroupMemberships?: RecipientGroupMemberListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -18497,6 +23799,11 @@ export namespace Prisma {
     verificationTokenExpiresAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    sentNotifications?: InAppNotificationOrderByRelationAggregateInput
+    receivedNotifications?: InAppNotificationOrderByRelationAggregateInput
+    notificationBatches?: NotificationBatchOrderByRelationAggregateInput
+    recipientGroupsCreated?: RecipientGroupOrderByRelationAggregateInput
+    recipientGroupMemberships?: RecipientGroupMemberOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -18520,6 +23827,11 @@ export namespace Prisma {
     verificationTokenExpiresAt?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    sentNotifications?: InAppNotificationListRelationFilter
+    receivedNotifications?: InAppNotificationListRelationFilter
+    notificationBatches?: NotificationBatchListRelationFilter
+    recipientGroupsCreated?: RecipientGroupListRelationFilter
+    recipientGroupMemberships?: RecipientGroupMemberListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -19548,6 +24860,302 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"EmailNotification"> | Date | string
   }
 
+  export type InAppNotificationWhereInput = {
+    AND?: InAppNotificationWhereInput | InAppNotificationWhereInput[]
+    OR?: InAppNotificationWhereInput[]
+    NOT?: InAppNotificationWhereInput | InAppNotificationWhereInput[]
+    id?: StringFilter<"InAppNotification"> | string
+    batchId?: StringNullableFilter<"InAppNotification"> | string | null
+    senderId?: StringNullableFilter<"InAppNotification"> | string | null
+    recipientId?: StringFilter<"InAppNotification"> | string
+    title?: StringFilter<"InAppNotification"> | string
+    body?: StringFilter<"InAppNotification"> | string
+    link?: StringNullableFilter<"InAppNotification"> | string | null
+    read?: BoolFilter<"InAppNotification"> | boolean
+    readAt?: DateTimeNullableFilter<"InAppNotification"> | Date | string | null
+    event?: StringNullableFilter<"InAppNotification"> | string | null
+    createdAt?: DateTimeFilter<"InAppNotification"> | Date | string
+    batch?: XOR<NotificationBatchNullableScalarRelationFilter, NotificationBatchWhereInput> | null
+    sender?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    recipient?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type InAppNotificationOrderByWithRelationInput = {
+    id?: SortOrder
+    batchId?: SortOrderInput | SortOrder
+    senderId?: SortOrderInput | SortOrder
+    recipientId?: SortOrder
+    title?: SortOrder
+    body?: SortOrder
+    link?: SortOrderInput | SortOrder
+    read?: SortOrder
+    readAt?: SortOrderInput | SortOrder
+    event?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    batch?: NotificationBatchOrderByWithRelationInput
+    sender?: UserOrderByWithRelationInput
+    recipient?: UserOrderByWithRelationInput
+  }
+
+  export type InAppNotificationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: InAppNotificationWhereInput | InAppNotificationWhereInput[]
+    OR?: InAppNotificationWhereInput[]
+    NOT?: InAppNotificationWhereInput | InAppNotificationWhereInput[]
+    batchId?: StringNullableFilter<"InAppNotification"> | string | null
+    senderId?: StringNullableFilter<"InAppNotification"> | string | null
+    recipientId?: StringFilter<"InAppNotification"> | string
+    title?: StringFilter<"InAppNotification"> | string
+    body?: StringFilter<"InAppNotification"> | string
+    link?: StringNullableFilter<"InAppNotification"> | string | null
+    read?: BoolFilter<"InAppNotification"> | boolean
+    readAt?: DateTimeNullableFilter<"InAppNotification"> | Date | string | null
+    event?: StringNullableFilter<"InAppNotification"> | string | null
+    createdAt?: DateTimeFilter<"InAppNotification"> | Date | string
+    batch?: XOR<NotificationBatchNullableScalarRelationFilter, NotificationBatchWhereInput> | null
+    sender?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    recipient?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type InAppNotificationOrderByWithAggregationInput = {
+    id?: SortOrder
+    batchId?: SortOrderInput | SortOrder
+    senderId?: SortOrderInput | SortOrder
+    recipientId?: SortOrder
+    title?: SortOrder
+    body?: SortOrder
+    link?: SortOrderInput | SortOrder
+    read?: SortOrder
+    readAt?: SortOrderInput | SortOrder
+    event?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: InAppNotificationCountOrderByAggregateInput
+    _max?: InAppNotificationMaxOrderByAggregateInput
+    _min?: InAppNotificationMinOrderByAggregateInput
+  }
+
+  export type InAppNotificationScalarWhereWithAggregatesInput = {
+    AND?: InAppNotificationScalarWhereWithAggregatesInput | InAppNotificationScalarWhereWithAggregatesInput[]
+    OR?: InAppNotificationScalarWhereWithAggregatesInput[]
+    NOT?: InAppNotificationScalarWhereWithAggregatesInput | InAppNotificationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"InAppNotification"> | string
+    batchId?: StringNullableWithAggregatesFilter<"InAppNotification"> | string | null
+    senderId?: StringNullableWithAggregatesFilter<"InAppNotification"> | string | null
+    recipientId?: StringWithAggregatesFilter<"InAppNotification"> | string
+    title?: StringWithAggregatesFilter<"InAppNotification"> | string
+    body?: StringWithAggregatesFilter<"InAppNotification"> | string
+    link?: StringNullableWithAggregatesFilter<"InAppNotification"> | string | null
+    read?: BoolWithAggregatesFilter<"InAppNotification"> | boolean
+    readAt?: DateTimeNullableWithAggregatesFilter<"InAppNotification"> | Date | string | null
+    event?: StringNullableWithAggregatesFilter<"InAppNotification"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"InAppNotification"> | Date | string
+  }
+
+  export type NotificationBatchWhereInput = {
+    AND?: NotificationBatchWhereInput | NotificationBatchWhereInput[]
+    OR?: NotificationBatchWhereInput[]
+    NOT?: NotificationBatchWhereInput | NotificationBatchWhereInput[]
+    id?: StringFilter<"NotificationBatch"> | string
+    senderId?: StringFilter<"NotificationBatch"> | string
+    targetType?: EnumNotificationTargetTypeFilter<"NotificationBatch"> | $Enums.NotificationTargetType
+    targetRef?: StringNullableFilter<"NotificationBatch"> | string | null
+    individualIds?: StringNullableListFilter<"NotificationBatch">
+    title?: StringFilter<"NotificationBatch"> | string
+    body?: StringFilter<"NotificationBatch"> | string
+    link?: StringNullableFilter<"NotificationBatch"> | string | null
+    scheduledFor?: DateTimeNullableFilter<"NotificationBatch"> | Date | string | null
+    status?: EnumNotificationBatchStatusFilter<"NotificationBatch"> | $Enums.NotificationBatchStatus
+    createdAt?: DateTimeFilter<"NotificationBatch"> | Date | string
+    updatedAt?: DateTimeFilter<"NotificationBatch"> | Date | string
+    sender?: XOR<UserScalarRelationFilter, UserWhereInput>
+    notifications?: InAppNotificationListRelationFilter
+  }
+
+  export type NotificationBatchOrderByWithRelationInput = {
+    id?: SortOrder
+    senderId?: SortOrder
+    targetType?: SortOrder
+    targetRef?: SortOrderInput | SortOrder
+    individualIds?: SortOrder
+    title?: SortOrder
+    body?: SortOrder
+    link?: SortOrderInput | SortOrder
+    scheduledFor?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    sender?: UserOrderByWithRelationInput
+    notifications?: InAppNotificationOrderByRelationAggregateInput
+  }
+
+  export type NotificationBatchWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: NotificationBatchWhereInput | NotificationBatchWhereInput[]
+    OR?: NotificationBatchWhereInput[]
+    NOT?: NotificationBatchWhereInput | NotificationBatchWhereInput[]
+    senderId?: StringFilter<"NotificationBatch"> | string
+    targetType?: EnumNotificationTargetTypeFilter<"NotificationBatch"> | $Enums.NotificationTargetType
+    targetRef?: StringNullableFilter<"NotificationBatch"> | string | null
+    individualIds?: StringNullableListFilter<"NotificationBatch">
+    title?: StringFilter<"NotificationBatch"> | string
+    body?: StringFilter<"NotificationBatch"> | string
+    link?: StringNullableFilter<"NotificationBatch"> | string | null
+    scheduledFor?: DateTimeNullableFilter<"NotificationBatch"> | Date | string | null
+    status?: EnumNotificationBatchStatusFilter<"NotificationBatch"> | $Enums.NotificationBatchStatus
+    createdAt?: DateTimeFilter<"NotificationBatch"> | Date | string
+    updatedAt?: DateTimeFilter<"NotificationBatch"> | Date | string
+    sender?: XOR<UserScalarRelationFilter, UserWhereInput>
+    notifications?: InAppNotificationListRelationFilter
+  }, "id">
+
+  export type NotificationBatchOrderByWithAggregationInput = {
+    id?: SortOrder
+    senderId?: SortOrder
+    targetType?: SortOrder
+    targetRef?: SortOrderInput | SortOrder
+    individualIds?: SortOrder
+    title?: SortOrder
+    body?: SortOrder
+    link?: SortOrderInput | SortOrder
+    scheduledFor?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: NotificationBatchCountOrderByAggregateInput
+    _max?: NotificationBatchMaxOrderByAggregateInput
+    _min?: NotificationBatchMinOrderByAggregateInput
+  }
+
+  export type NotificationBatchScalarWhereWithAggregatesInput = {
+    AND?: NotificationBatchScalarWhereWithAggregatesInput | NotificationBatchScalarWhereWithAggregatesInput[]
+    OR?: NotificationBatchScalarWhereWithAggregatesInput[]
+    NOT?: NotificationBatchScalarWhereWithAggregatesInput | NotificationBatchScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"NotificationBatch"> | string
+    senderId?: StringWithAggregatesFilter<"NotificationBatch"> | string
+    targetType?: EnumNotificationTargetTypeWithAggregatesFilter<"NotificationBatch"> | $Enums.NotificationTargetType
+    targetRef?: StringNullableWithAggregatesFilter<"NotificationBatch"> | string | null
+    individualIds?: StringNullableListFilter<"NotificationBatch">
+    title?: StringWithAggregatesFilter<"NotificationBatch"> | string
+    body?: StringWithAggregatesFilter<"NotificationBatch"> | string
+    link?: StringNullableWithAggregatesFilter<"NotificationBatch"> | string | null
+    scheduledFor?: DateTimeNullableWithAggregatesFilter<"NotificationBatch"> | Date | string | null
+    status?: EnumNotificationBatchStatusWithAggregatesFilter<"NotificationBatch"> | $Enums.NotificationBatchStatus
+    createdAt?: DateTimeWithAggregatesFilter<"NotificationBatch"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"NotificationBatch"> | Date | string
+  }
+
+  export type RecipientGroupWhereInput = {
+    AND?: RecipientGroupWhereInput | RecipientGroupWhereInput[]
+    OR?: RecipientGroupWhereInput[]
+    NOT?: RecipientGroupWhereInput | RecipientGroupWhereInput[]
+    id?: StringFilter<"RecipientGroup"> | string
+    name?: StringFilter<"RecipientGroup"> | string
+    createdBy?: StringFilter<"RecipientGroup"> | string
+    createdAt?: DateTimeFilter<"RecipientGroup"> | Date | string
+    updatedAt?: DateTimeFilter<"RecipientGroup"> | Date | string
+    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    members?: RecipientGroupMemberListRelationFilter
+  }
+
+  export type RecipientGroupOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    creator?: UserOrderByWithRelationInput
+    members?: RecipientGroupMemberOrderByRelationAggregateInput
+  }
+
+  export type RecipientGroupWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: RecipientGroupWhereInput | RecipientGroupWhereInput[]
+    OR?: RecipientGroupWhereInput[]
+    NOT?: RecipientGroupWhereInput | RecipientGroupWhereInput[]
+    name?: StringFilter<"RecipientGroup"> | string
+    createdBy?: StringFilter<"RecipientGroup"> | string
+    createdAt?: DateTimeFilter<"RecipientGroup"> | Date | string
+    updatedAt?: DateTimeFilter<"RecipientGroup"> | Date | string
+    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    members?: RecipientGroupMemberListRelationFilter
+  }, "id">
+
+  export type RecipientGroupOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: RecipientGroupCountOrderByAggregateInput
+    _max?: RecipientGroupMaxOrderByAggregateInput
+    _min?: RecipientGroupMinOrderByAggregateInput
+  }
+
+  export type RecipientGroupScalarWhereWithAggregatesInput = {
+    AND?: RecipientGroupScalarWhereWithAggregatesInput | RecipientGroupScalarWhereWithAggregatesInput[]
+    OR?: RecipientGroupScalarWhereWithAggregatesInput[]
+    NOT?: RecipientGroupScalarWhereWithAggregatesInput | RecipientGroupScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RecipientGroup"> | string
+    name?: StringWithAggregatesFilter<"RecipientGroup"> | string
+    createdBy?: StringWithAggregatesFilter<"RecipientGroup"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"RecipientGroup"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"RecipientGroup"> | Date | string
+  }
+
+  export type RecipientGroupMemberWhereInput = {
+    AND?: RecipientGroupMemberWhereInput | RecipientGroupMemberWhereInput[]
+    OR?: RecipientGroupMemberWhereInput[]
+    NOT?: RecipientGroupMemberWhereInput | RecipientGroupMemberWhereInput[]
+    id?: StringFilter<"RecipientGroupMember"> | string
+    groupId?: StringFilter<"RecipientGroupMember"> | string
+    userId?: StringFilter<"RecipientGroupMember"> | string
+    createdAt?: DateTimeFilter<"RecipientGroupMember"> | Date | string
+    group?: XOR<RecipientGroupScalarRelationFilter, RecipientGroupWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type RecipientGroupMemberOrderByWithRelationInput = {
+    id?: SortOrder
+    groupId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    group?: RecipientGroupOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type RecipientGroupMemberWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    groupId_userId?: RecipientGroupMemberGroupIdUserIdCompoundUniqueInput
+    AND?: RecipientGroupMemberWhereInput | RecipientGroupMemberWhereInput[]
+    OR?: RecipientGroupMemberWhereInput[]
+    NOT?: RecipientGroupMemberWhereInput | RecipientGroupMemberWhereInput[]
+    groupId?: StringFilter<"RecipientGroupMember"> | string
+    userId?: StringFilter<"RecipientGroupMember"> | string
+    createdAt?: DateTimeFilter<"RecipientGroupMember"> | Date | string
+    group?: XOR<RecipientGroupScalarRelationFilter, RecipientGroupWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "groupId_userId">
+
+  export type RecipientGroupMemberOrderByWithAggregationInput = {
+    id?: SortOrder
+    groupId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    _count?: RecipientGroupMemberCountOrderByAggregateInput
+    _max?: RecipientGroupMemberMaxOrderByAggregateInput
+    _min?: RecipientGroupMemberMinOrderByAggregateInput
+  }
+
+  export type RecipientGroupMemberScalarWhereWithAggregatesInput = {
+    AND?: RecipientGroupMemberScalarWhereWithAggregatesInput | RecipientGroupMemberScalarWhereWithAggregatesInput[]
+    OR?: RecipientGroupMemberScalarWhereWithAggregatesInput[]
+    NOT?: RecipientGroupMemberScalarWhereWithAggregatesInput | RecipientGroupMemberScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RecipientGroupMember"> | string
+    groupId?: StringWithAggregatesFilter<"RecipientGroupMember"> | string
+    userId?: StringWithAggregatesFilter<"RecipientGroupMember"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"RecipientGroupMember"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -19566,6 +25174,11 @@ export namespace Prisma {
     verificationTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    sentNotifications?: InAppNotificationCreateNestedManyWithoutSenderInput
+    receivedNotifications?: InAppNotificationCreateNestedManyWithoutRecipientInput
+    notificationBatches?: NotificationBatchCreateNestedManyWithoutSenderInput
+    recipientGroupsCreated?: RecipientGroupCreateNestedManyWithoutCreatorInput
+    recipientGroupMemberships?: RecipientGroupMemberCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -19586,6 +25199,11 @@ export namespace Prisma {
     verificationTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    sentNotifications?: InAppNotificationUncheckedCreateNestedManyWithoutSenderInput
+    receivedNotifications?: InAppNotificationUncheckedCreateNestedManyWithoutRecipientInput
+    notificationBatches?: NotificationBatchUncheckedCreateNestedManyWithoutSenderInput
+    recipientGroupsCreated?: RecipientGroupUncheckedCreateNestedManyWithoutCreatorInput
+    recipientGroupMemberships?: RecipientGroupMemberUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -19606,6 +25224,11 @@ export namespace Prisma {
     verificationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentNotifications?: InAppNotificationUpdateManyWithoutSenderNestedInput
+    receivedNotifications?: InAppNotificationUpdateManyWithoutRecipientNestedInput
+    notificationBatches?: NotificationBatchUpdateManyWithoutSenderNestedInput
+    recipientGroupsCreated?: RecipientGroupUpdateManyWithoutCreatorNestedInput
+    recipientGroupMemberships?: RecipientGroupMemberUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -19626,6 +25249,11 @@ export namespace Prisma {
     verificationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentNotifications?: InAppNotificationUncheckedUpdateManyWithoutSenderNestedInput
+    receivedNotifications?: InAppNotificationUncheckedUpdateManyWithoutRecipientNestedInput
+    notificationBatches?: NotificationBatchUncheckedUpdateManyWithoutSenderNestedInput
+    recipientGroupsCreated?: RecipientGroupUncheckedUpdateManyWithoutCreatorNestedInput
+    recipientGroupMemberships?: RecipientGroupMemberUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -20808,6 +26436,315 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type InAppNotificationCreateInput = {
+    id?: string
+    title: string
+    body: string
+    link?: string | null
+    read?: boolean
+    readAt?: Date | string | null
+    event?: string | null
+    createdAt?: Date | string
+    batch?: NotificationBatchCreateNestedOneWithoutNotificationsInput
+    sender?: UserCreateNestedOneWithoutSentNotificationsInput
+    recipient: UserCreateNestedOneWithoutReceivedNotificationsInput
+  }
+
+  export type InAppNotificationUncheckedCreateInput = {
+    id?: string
+    batchId?: string | null
+    senderId?: string | null
+    recipientId: string
+    title: string
+    body: string
+    link?: string | null
+    read?: boolean
+    readAt?: Date | string | null
+    event?: string | null
+    createdAt?: Date | string
+  }
+
+  export type InAppNotificationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    event?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batch?: NotificationBatchUpdateOneWithoutNotificationsNestedInput
+    sender?: UserUpdateOneWithoutSentNotificationsNestedInput
+    recipient?: UserUpdateOneRequiredWithoutReceivedNotificationsNestedInput
+  }
+
+  export type InAppNotificationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    senderId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    event?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InAppNotificationCreateManyInput = {
+    id?: string
+    batchId?: string | null
+    senderId?: string | null
+    recipientId: string
+    title: string
+    body: string
+    link?: string | null
+    read?: boolean
+    readAt?: Date | string | null
+    event?: string | null
+    createdAt?: Date | string
+  }
+
+  export type InAppNotificationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    event?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InAppNotificationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    senderId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    event?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationBatchCreateInput = {
+    id?: string
+    targetType: $Enums.NotificationTargetType
+    targetRef?: string | null
+    individualIds?: NotificationBatchCreateindividualIdsInput | string[]
+    title: string
+    body: string
+    link?: string | null
+    scheduledFor?: Date | string | null
+    status?: $Enums.NotificationBatchStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sender: UserCreateNestedOneWithoutNotificationBatchesInput
+    notifications?: InAppNotificationCreateNestedManyWithoutBatchInput
+  }
+
+  export type NotificationBatchUncheckedCreateInput = {
+    id?: string
+    senderId: string
+    targetType: $Enums.NotificationTargetType
+    targetRef?: string | null
+    individualIds?: NotificationBatchCreateindividualIdsInput | string[]
+    title: string
+    body: string
+    link?: string | null
+    scheduledFor?: Date | string | null
+    status?: $Enums.NotificationBatchStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    notifications?: InAppNotificationUncheckedCreateNestedManyWithoutBatchInput
+  }
+
+  export type NotificationBatchUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetType?: EnumNotificationTargetTypeFieldUpdateOperationsInput | $Enums.NotificationTargetType
+    targetRef?: NullableStringFieldUpdateOperationsInput | string | null
+    individualIds?: NotificationBatchUpdateindividualIdsInput | string[]
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduledFor?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumNotificationBatchStatusFieldUpdateOperationsInput | $Enums.NotificationBatchStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sender?: UserUpdateOneRequiredWithoutNotificationBatchesNestedInput
+    notifications?: InAppNotificationUpdateManyWithoutBatchNestedInput
+  }
+
+  export type NotificationBatchUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderId?: StringFieldUpdateOperationsInput | string
+    targetType?: EnumNotificationTargetTypeFieldUpdateOperationsInput | $Enums.NotificationTargetType
+    targetRef?: NullableStringFieldUpdateOperationsInput | string | null
+    individualIds?: NotificationBatchUpdateindividualIdsInput | string[]
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduledFor?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumNotificationBatchStatusFieldUpdateOperationsInput | $Enums.NotificationBatchStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: InAppNotificationUncheckedUpdateManyWithoutBatchNestedInput
+  }
+
+  export type NotificationBatchCreateManyInput = {
+    id?: string
+    senderId: string
+    targetType: $Enums.NotificationTargetType
+    targetRef?: string | null
+    individualIds?: NotificationBatchCreateindividualIdsInput | string[]
+    title: string
+    body: string
+    link?: string | null
+    scheduledFor?: Date | string | null
+    status?: $Enums.NotificationBatchStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NotificationBatchUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetType?: EnumNotificationTargetTypeFieldUpdateOperationsInput | $Enums.NotificationTargetType
+    targetRef?: NullableStringFieldUpdateOperationsInput | string | null
+    individualIds?: NotificationBatchUpdateindividualIdsInput | string[]
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduledFor?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumNotificationBatchStatusFieldUpdateOperationsInput | $Enums.NotificationBatchStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationBatchUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderId?: StringFieldUpdateOperationsInput | string
+    targetType?: EnumNotificationTargetTypeFieldUpdateOperationsInput | $Enums.NotificationTargetType
+    targetRef?: NullableStringFieldUpdateOperationsInput | string | null
+    individualIds?: NotificationBatchUpdateindividualIdsInput | string[]
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduledFor?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumNotificationBatchStatusFieldUpdateOperationsInput | $Enums.NotificationBatchStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RecipientGroupCreateInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    creator: UserCreateNestedOneWithoutRecipientGroupsCreatedInput
+    members?: RecipientGroupMemberCreateNestedManyWithoutGroupInput
+  }
+
+  export type RecipientGroupUncheckedCreateInput = {
+    id?: string
+    name: string
+    createdBy: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: RecipientGroupMemberUncheckedCreateNestedManyWithoutGroupInput
+  }
+
+  export type RecipientGroupUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    creator?: UserUpdateOneRequiredWithoutRecipientGroupsCreatedNestedInput
+    members?: RecipientGroupMemberUpdateManyWithoutGroupNestedInput
+  }
+
+  export type RecipientGroupUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: RecipientGroupMemberUncheckedUpdateManyWithoutGroupNestedInput
+  }
+
+  export type RecipientGroupCreateManyInput = {
+    id?: string
+    name: string
+    createdBy: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RecipientGroupUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RecipientGroupUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RecipientGroupMemberCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    group: RecipientGroupCreateNestedOneWithoutMembersInput
+    user: UserCreateNestedOneWithoutRecipientGroupMembershipsInput
+  }
+
+  export type RecipientGroupMemberUncheckedCreateInput = {
+    id?: string
+    groupId: string
+    userId: string
+    createdAt?: Date | string
+  }
+
+  export type RecipientGroupMemberUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    group?: RecipientGroupUpdateOneRequiredWithoutMembersNestedInput
+    user?: UserUpdateOneRequiredWithoutRecipientGroupMembershipsNestedInput
+  }
+
+  export type RecipientGroupMemberUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RecipientGroupMemberCreateManyInput = {
+    id?: string
+    groupId: string
+    userId: string
+    createdAt?: Date | string
+  }
+
+  export type RecipientGroupMemberUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RecipientGroupMemberUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -20872,9 +26809,49 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type InAppNotificationListRelationFilter = {
+    every?: InAppNotificationWhereInput
+    some?: InAppNotificationWhereInput
+    none?: InAppNotificationWhereInput
+  }
+
+  export type NotificationBatchListRelationFilter = {
+    every?: NotificationBatchWhereInput
+    some?: NotificationBatchWhereInput
+    none?: NotificationBatchWhereInput
+  }
+
+  export type RecipientGroupListRelationFilter = {
+    every?: RecipientGroupWhereInput
+    some?: RecipientGroupWhereInput
+    none?: RecipientGroupWhereInput
+  }
+
+  export type RecipientGroupMemberListRelationFilter = {
+    every?: RecipientGroupMemberWhereInput
+    some?: RecipientGroupMemberWhereInput
+    none?: RecipientGroupMemberWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
+  }
+
+  export type InAppNotificationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type NotificationBatchOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RecipientGroupOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RecipientGroupMemberOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type UserCountOrderByAggregateInput = {
@@ -21626,6 +27603,273 @@ export namespace Prisma {
     _max?: NestedEnumEmailNotificationStatusFilter<$PrismaModel>
   }
 
+  export type NotificationBatchNullableScalarRelationFilter = {
+    is?: NotificationBatchWhereInput | null
+    isNot?: NotificationBatchWhereInput | null
+  }
+
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type InAppNotificationCountOrderByAggregateInput = {
+    id?: SortOrder
+    batchId?: SortOrder
+    senderId?: SortOrder
+    recipientId?: SortOrder
+    title?: SortOrder
+    body?: SortOrder
+    link?: SortOrder
+    read?: SortOrder
+    readAt?: SortOrder
+    event?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type InAppNotificationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    batchId?: SortOrder
+    senderId?: SortOrder
+    recipientId?: SortOrder
+    title?: SortOrder
+    body?: SortOrder
+    link?: SortOrder
+    read?: SortOrder
+    readAt?: SortOrder
+    event?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type InAppNotificationMinOrderByAggregateInput = {
+    id?: SortOrder
+    batchId?: SortOrder
+    senderId?: SortOrder
+    recipientId?: SortOrder
+    title?: SortOrder
+    body?: SortOrder
+    link?: SortOrder
+    read?: SortOrder
+    readAt?: SortOrder
+    event?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EnumNotificationTargetTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationTargetType | EnumNotificationTargetTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationTargetType[] | ListEnumNotificationTargetTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationTargetType[] | ListEnumNotificationTargetTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationTargetTypeFilter<$PrismaModel> | $Enums.NotificationTargetType
+  }
+
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
+  export type EnumNotificationBatchStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationBatchStatus | EnumNotificationBatchStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationBatchStatus[] | ListEnumNotificationBatchStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationBatchStatus[] | ListEnumNotificationBatchStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationBatchStatusFilter<$PrismaModel> | $Enums.NotificationBatchStatus
+  }
+
+  export type NotificationBatchCountOrderByAggregateInput = {
+    id?: SortOrder
+    senderId?: SortOrder
+    targetType?: SortOrder
+    targetRef?: SortOrder
+    individualIds?: SortOrder
+    title?: SortOrder
+    body?: SortOrder
+    link?: SortOrder
+    scheduledFor?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type NotificationBatchMaxOrderByAggregateInput = {
+    id?: SortOrder
+    senderId?: SortOrder
+    targetType?: SortOrder
+    targetRef?: SortOrder
+    title?: SortOrder
+    body?: SortOrder
+    link?: SortOrder
+    scheduledFor?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type NotificationBatchMinOrderByAggregateInput = {
+    id?: SortOrder
+    senderId?: SortOrder
+    targetType?: SortOrder
+    targetRef?: SortOrder
+    title?: SortOrder
+    body?: SortOrder
+    link?: SortOrder
+    scheduledFor?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumNotificationTargetTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationTargetType | EnumNotificationTargetTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationTargetType[] | ListEnumNotificationTargetTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationTargetType[] | ListEnumNotificationTargetTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationTargetTypeWithAggregatesFilter<$PrismaModel> | $Enums.NotificationTargetType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumNotificationTargetTypeFilter<$PrismaModel>
+    _max?: NestedEnumNotificationTargetTypeFilter<$PrismaModel>
+  }
+
+  export type EnumNotificationBatchStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationBatchStatus | EnumNotificationBatchStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationBatchStatus[] | ListEnumNotificationBatchStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationBatchStatus[] | ListEnumNotificationBatchStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationBatchStatusWithAggregatesFilter<$PrismaModel> | $Enums.NotificationBatchStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumNotificationBatchStatusFilter<$PrismaModel>
+    _max?: NestedEnumNotificationBatchStatusFilter<$PrismaModel>
+  }
+
+  export type RecipientGroupCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RecipientGroupMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RecipientGroupMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RecipientGroupScalarRelationFilter = {
+    is?: RecipientGroupWhereInput
+    isNot?: RecipientGroupWhereInput
+  }
+
+  export type RecipientGroupMemberGroupIdUserIdCompoundUniqueInput = {
+    groupId: string
+    userId: string
+  }
+
+  export type RecipientGroupMemberCountOrderByAggregateInput = {
+    id?: SortOrder
+    groupId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RecipientGroupMemberMaxOrderByAggregateInput = {
+    id?: SortOrder
+    groupId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RecipientGroupMemberMinOrderByAggregateInput = {
+    id?: SortOrder
+    groupId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type InAppNotificationCreateNestedManyWithoutSenderInput = {
+    create?: XOR<InAppNotificationCreateWithoutSenderInput, InAppNotificationUncheckedCreateWithoutSenderInput> | InAppNotificationCreateWithoutSenderInput[] | InAppNotificationUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: InAppNotificationCreateOrConnectWithoutSenderInput | InAppNotificationCreateOrConnectWithoutSenderInput[]
+    createMany?: InAppNotificationCreateManySenderInputEnvelope
+    connect?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+  }
+
+  export type InAppNotificationCreateNestedManyWithoutRecipientInput = {
+    create?: XOR<InAppNotificationCreateWithoutRecipientInput, InAppNotificationUncheckedCreateWithoutRecipientInput> | InAppNotificationCreateWithoutRecipientInput[] | InAppNotificationUncheckedCreateWithoutRecipientInput[]
+    connectOrCreate?: InAppNotificationCreateOrConnectWithoutRecipientInput | InAppNotificationCreateOrConnectWithoutRecipientInput[]
+    createMany?: InAppNotificationCreateManyRecipientInputEnvelope
+    connect?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+  }
+
+  export type NotificationBatchCreateNestedManyWithoutSenderInput = {
+    create?: XOR<NotificationBatchCreateWithoutSenderInput, NotificationBatchUncheckedCreateWithoutSenderInput> | NotificationBatchCreateWithoutSenderInput[] | NotificationBatchUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: NotificationBatchCreateOrConnectWithoutSenderInput | NotificationBatchCreateOrConnectWithoutSenderInput[]
+    createMany?: NotificationBatchCreateManySenderInputEnvelope
+    connect?: NotificationBatchWhereUniqueInput | NotificationBatchWhereUniqueInput[]
+  }
+
+  export type RecipientGroupCreateNestedManyWithoutCreatorInput = {
+    create?: XOR<RecipientGroupCreateWithoutCreatorInput, RecipientGroupUncheckedCreateWithoutCreatorInput> | RecipientGroupCreateWithoutCreatorInput[] | RecipientGroupUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: RecipientGroupCreateOrConnectWithoutCreatorInput | RecipientGroupCreateOrConnectWithoutCreatorInput[]
+    createMany?: RecipientGroupCreateManyCreatorInputEnvelope
+    connect?: RecipientGroupWhereUniqueInput | RecipientGroupWhereUniqueInput[]
+  }
+
+  export type RecipientGroupMemberCreateNestedManyWithoutUserInput = {
+    create?: XOR<RecipientGroupMemberCreateWithoutUserInput, RecipientGroupMemberUncheckedCreateWithoutUserInput> | RecipientGroupMemberCreateWithoutUserInput[] | RecipientGroupMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RecipientGroupMemberCreateOrConnectWithoutUserInput | RecipientGroupMemberCreateOrConnectWithoutUserInput[]
+    createMany?: RecipientGroupMemberCreateManyUserInputEnvelope
+    connect?: RecipientGroupMemberWhereUniqueInput | RecipientGroupMemberWhereUniqueInput[]
+  }
+
+  export type InAppNotificationUncheckedCreateNestedManyWithoutSenderInput = {
+    create?: XOR<InAppNotificationCreateWithoutSenderInput, InAppNotificationUncheckedCreateWithoutSenderInput> | InAppNotificationCreateWithoutSenderInput[] | InAppNotificationUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: InAppNotificationCreateOrConnectWithoutSenderInput | InAppNotificationCreateOrConnectWithoutSenderInput[]
+    createMany?: InAppNotificationCreateManySenderInputEnvelope
+    connect?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+  }
+
+  export type InAppNotificationUncheckedCreateNestedManyWithoutRecipientInput = {
+    create?: XOR<InAppNotificationCreateWithoutRecipientInput, InAppNotificationUncheckedCreateWithoutRecipientInput> | InAppNotificationCreateWithoutRecipientInput[] | InAppNotificationUncheckedCreateWithoutRecipientInput[]
+    connectOrCreate?: InAppNotificationCreateOrConnectWithoutRecipientInput | InAppNotificationCreateOrConnectWithoutRecipientInput[]
+    createMany?: InAppNotificationCreateManyRecipientInputEnvelope
+    connect?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+  }
+
+  export type NotificationBatchUncheckedCreateNestedManyWithoutSenderInput = {
+    create?: XOR<NotificationBatchCreateWithoutSenderInput, NotificationBatchUncheckedCreateWithoutSenderInput> | NotificationBatchCreateWithoutSenderInput[] | NotificationBatchUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: NotificationBatchCreateOrConnectWithoutSenderInput | NotificationBatchCreateOrConnectWithoutSenderInput[]
+    createMany?: NotificationBatchCreateManySenderInputEnvelope
+    connect?: NotificationBatchWhereUniqueInput | NotificationBatchWhereUniqueInput[]
+  }
+
+  export type RecipientGroupUncheckedCreateNestedManyWithoutCreatorInput = {
+    create?: XOR<RecipientGroupCreateWithoutCreatorInput, RecipientGroupUncheckedCreateWithoutCreatorInput> | RecipientGroupCreateWithoutCreatorInput[] | RecipientGroupUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: RecipientGroupCreateOrConnectWithoutCreatorInput | RecipientGroupCreateOrConnectWithoutCreatorInput[]
+    createMany?: RecipientGroupCreateManyCreatorInputEnvelope
+    connect?: RecipientGroupWhereUniqueInput | RecipientGroupWhereUniqueInput[]
+  }
+
+  export type RecipientGroupMemberUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<RecipientGroupMemberCreateWithoutUserInput, RecipientGroupMemberUncheckedCreateWithoutUserInput> | RecipientGroupMemberCreateWithoutUserInput[] | RecipientGroupMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RecipientGroupMemberCreateOrConnectWithoutUserInput | RecipientGroupMemberCreateOrConnectWithoutUserInput[]
+    createMany?: RecipientGroupMemberCreateManyUserInputEnvelope
+    connect?: RecipientGroupMemberWhereUniqueInput | RecipientGroupMemberWhereUniqueInput[]
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -21650,6 +27894,146 @@ export namespace Prisma {
     set?: Date | string | null
   }
 
+  export type InAppNotificationUpdateManyWithoutSenderNestedInput = {
+    create?: XOR<InAppNotificationCreateWithoutSenderInput, InAppNotificationUncheckedCreateWithoutSenderInput> | InAppNotificationCreateWithoutSenderInput[] | InAppNotificationUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: InAppNotificationCreateOrConnectWithoutSenderInput | InAppNotificationCreateOrConnectWithoutSenderInput[]
+    upsert?: InAppNotificationUpsertWithWhereUniqueWithoutSenderInput | InAppNotificationUpsertWithWhereUniqueWithoutSenderInput[]
+    createMany?: InAppNotificationCreateManySenderInputEnvelope
+    set?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    disconnect?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    delete?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    connect?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    update?: InAppNotificationUpdateWithWhereUniqueWithoutSenderInput | InAppNotificationUpdateWithWhereUniqueWithoutSenderInput[]
+    updateMany?: InAppNotificationUpdateManyWithWhereWithoutSenderInput | InAppNotificationUpdateManyWithWhereWithoutSenderInput[]
+    deleteMany?: InAppNotificationScalarWhereInput | InAppNotificationScalarWhereInput[]
+  }
+
+  export type InAppNotificationUpdateManyWithoutRecipientNestedInput = {
+    create?: XOR<InAppNotificationCreateWithoutRecipientInput, InAppNotificationUncheckedCreateWithoutRecipientInput> | InAppNotificationCreateWithoutRecipientInput[] | InAppNotificationUncheckedCreateWithoutRecipientInput[]
+    connectOrCreate?: InAppNotificationCreateOrConnectWithoutRecipientInput | InAppNotificationCreateOrConnectWithoutRecipientInput[]
+    upsert?: InAppNotificationUpsertWithWhereUniqueWithoutRecipientInput | InAppNotificationUpsertWithWhereUniqueWithoutRecipientInput[]
+    createMany?: InAppNotificationCreateManyRecipientInputEnvelope
+    set?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    disconnect?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    delete?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    connect?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    update?: InAppNotificationUpdateWithWhereUniqueWithoutRecipientInput | InAppNotificationUpdateWithWhereUniqueWithoutRecipientInput[]
+    updateMany?: InAppNotificationUpdateManyWithWhereWithoutRecipientInput | InAppNotificationUpdateManyWithWhereWithoutRecipientInput[]
+    deleteMany?: InAppNotificationScalarWhereInput | InAppNotificationScalarWhereInput[]
+  }
+
+  export type NotificationBatchUpdateManyWithoutSenderNestedInput = {
+    create?: XOR<NotificationBatchCreateWithoutSenderInput, NotificationBatchUncheckedCreateWithoutSenderInput> | NotificationBatchCreateWithoutSenderInput[] | NotificationBatchUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: NotificationBatchCreateOrConnectWithoutSenderInput | NotificationBatchCreateOrConnectWithoutSenderInput[]
+    upsert?: NotificationBatchUpsertWithWhereUniqueWithoutSenderInput | NotificationBatchUpsertWithWhereUniqueWithoutSenderInput[]
+    createMany?: NotificationBatchCreateManySenderInputEnvelope
+    set?: NotificationBatchWhereUniqueInput | NotificationBatchWhereUniqueInput[]
+    disconnect?: NotificationBatchWhereUniqueInput | NotificationBatchWhereUniqueInput[]
+    delete?: NotificationBatchWhereUniqueInput | NotificationBatchWhereUniqueInput[]
+    connect?: NotificationBatchWhereUniqueInput | NotificationBatchWhereUniqueInput[]
+    update?: NotificationBatchUpdateWithWhereUniqueWithoutSenderInput | NotificationBatchUpdateWithWhereUniqueWithoutSenderInput[]
+    updateMany?: NotificationBatchUpdateManyWithWhereWithoutSenderInput | NotificationBatchUpdateManyWithWhereWithoutSenderInput[]
+    deleteMany?: NotificationBatchScalarWhereInput | NotificationBatchScalarWhereInput[]
+  }
+
+  export type RecipientGroupUpdateManyWithoutCreatorNestedInput = {
+    create?: XOR<RecipientGroupCreateWithoutCreatorInput, RecipientGroupUncheckedCreateWithoutCreatorInput> | RecipientGroupCreateWithoutCreatorInput[] | RecipientGroupUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: RecipientGroupCreateOrConnectWithoutCreatorInput | RecipientGroupCreateOrConnectWithoutCreatorInput[]
+    upsert?: RecipientGroupUpsertWithWhereUniqueWithoutCreatorInput | RecipientGroupUpsertWithWhereUniqueWithoutCreatorInput[]
+    createMany?: RecipientGroupCreateManyCreatorInputEnvelope
+    set?: RecipientGroupWhereUniqueInput | RecipientGroupWhereUniqueInput[]
+    disconnect?: RecipientGroupWhereUniqueInput | RecipientGroupWhereUniqueInput[]
+    delete?: RecipientGroupWhereUniqueInput | RecipientGroupWhereUniqueInput[]
+    connect?: RecipientGroupWhereUniqueInput | RecipientGroupWhereUniqueInput[]
+    update?: RecipientGroupUpdateWithWhereUniqueWithoutCreatorInput | RecipientGroupUpdateWithWhereUniqueWithoutCreatorInput[]
+    updateMany?: RecipientGroupUpdateManyWithWhereWithoutCreatorInput | RecipientGroupUpdateManyWithWhereWithoutCreatorInput[]
+    deleteMany?: RecipientGroupScalarWhereInput | RecipientGroupScalarWhereInput[]
+  }
+
+  export type RecipientGroupMemberUpdateManyWithoutUserNestedInput = {
+    create?: XOR<RecipientGroupMemberCreateWithoutUserInput, RecipientGroupMemberUncheckedCreateWithoutUserInput> | RecipientGroupMemberCreateWithoutUserInput[] | RecipientGroupMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RecipientGroupMemberCreateOrConnectWithoutUserInput | RecipientGroupMemberCreateOrConnectWithoutUserInput[]
+    upsert?: RecipientGroupMemberUpsertWithWhereUniqueWithoutUserInput | RecipientGroupMemberUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: RecipientGroupMemberCreateManyUserInputEnvelope
+    set?: RecipientGroupMemberWhereUniqueInput | RecipientGroupMemberWhereUniqueInput[]
+    disconnect?: RecipientGroupMemberWhereUniqueInput | RecipientGroupMemberWhereUniqueInput[]
+    delete?: RecipientGroupMemberWhereUniqueInput | RecipientGroupMemberWhereUniqueInput[]
+    connect?: RecipientGroupMemberWhereUniqueInput | RecipientGroupMemberWhereUniqueInput[]
+    update?: RecipientGroupMemberUpdateWithWhereUniqueWithoutUserInput | RecipientGroupMemberUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: RecipientGroupMemberUpdateManyWithWhereWithoutUserInput | RecipientGroupMemberUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: RecipientGroupMemberScalarWhereInput | RecipientGroupMemberScalarWhereInput[]
+  }
+
+  export type InAppNotificationUncheckedUpdateManyWithoutSenderNestedInput = {
+    create?: XOR<InAppNotificationCreateWithoutSenderInput, InAppNotificationUncheckedCreateWithoutSenderInput> | InAppNotificationCreateWithoutSenderInput[] | InAppNotificationUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: InAppNotificationCreateOrConnectWithoutSenderInput | InAppNotificationCreateOrConnectWithoutSenderInput[]
+    upsert?: InAppNotificationUpsertWithWhereUniqueWithoutSenderInput | InAppNotificationUpsertWithWhereUniqueWithoutSenderInput[]
+    createMany?: InAppNotificationCreateManySenderInputEnvelope
+    set?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    disconnect?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    delete?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    connect?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    update?: InAppNotificationUpdateWithWhereUniqueWithoutSenderInput | InAppNotificationUpdateWithWhereUniqueWithoutSenderInput[]
+    updateMany?: InAppNotificationUpdateManyWithWhereWithoutSenderInput | InAppNotificationUpdateManyWithWhereWithoutSenderInput[]
+    deleteMany?: InAppNotificationScalarWhereInput | InAppNotificationScalarWhereInput[]
+  }
+
+  export type InAppNotificationUncheckedUpdateManyWithoutRecipientNestedInput = {
+    create?: XOR<InAppNotificationCreateWithoutRecipientInput, InAppNotificationUncheckedCreateWithoutRecipientInput> | InAppNotificationCreateWithoutRecipientInput[] | InAppNotificationUncheckedCreateWithoutRecipientInput[]
+    connectOrCreate?: InAppNotificationCreateOrConnectWithoutRecipientInput | InAppNotificationCreateOrConnectWithoutRecipientInput[]
+    upsert?: InAppNotificationUpsertWithWhereUniqueWithoutRecipientInput | InAppNotificationUpsertWithWhereUniqueWithoutRecipientInput[]
+    createMany?: InAppNotificationCreateManyRecipientInputEnvelope
+    set?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    disconnect?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    delete?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    connect?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    update?: InAppNotificationUpdateWithWhereUniqueWithoutRecipientInput | InAppNotificationUpdateWithWhereUniqueWithoutRecipientInput[]
+    updateMany?: InAppNotificationUpdateManyWithWhereWithoutRecipientInput | InAppNotificationUpdateManyWithWhereWithoutRecipientInput[]
+    deleteMany?: InAppNotificationScalarWhereInput | InAppNotificationScalarWhereInput[]
+  }
+
+  export type NotificationBatchUncheckedUpdateManyWithoutSenderNestedInput = {
+    create?: XOR<NotificationBatchCreateWithoutSenderInput, NotificationBatchUncheckedCreateWithoutSenderInput> | NotificationBatchCreateWithoutSenderInput[] | NotificationBatchUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: NotificationBatchCreateOrConnectWithoutSenderInput | NotificationBatchCreateOrConnectWithoutSenderInput[]
+    upsert?: NotificationBatchUpsertWithWhereUniqueWithoutSenderInput | NotificationBatchUpsertWithWhereUniqueWithoutSenderInput[]
+    createMany?: NotificationBatchCreateManySenderInputEnvelope
+    set?: NotificationBatchWhereUniqueInput | NotificationBatchWhereUniqueInput[]
+    disconnect?: NotificationBatchWhereUniqueInput | NotificationBatchWhereUniqueInput[]
+    delete?: NotificationBatchWhereUniqueInput | NotificationBatchWhereUniqueInput[]
+    connect?: NotificationBatchWhereUniqueInput | NotificationBatchWhereUniqueInput[]
+    update?: NotificationBatchUpdateWithWhereUniqueWithoutSenderInput | NotificationBatchUpdateWithWhereUniqueWithoutSenderInput[]
+    updateMany?: NotificationBatchUpdateManyWithWhereWithoutSenderInput | NotificationBatchUpdateManyWithWhereWithoutSenderInput[]
+    deleteMany?: NotificationBatchScalarWhereInput | NotificationBatchScalarWhereInput[]
+  }
+
+  export type RecipientGroupUncheckedUpdateManyWithoutCreatorNestedInput = {
+    create?: XOR<RecipientGroupCreateWithoutCreatorInput, RecipientGroupUncheckedCreateWithoutCreatorInput> | RecipientGroupCreateWithoutCreatorInput[] | RecipientGroupUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: RecipientGroupCreateOrConnectWithoutCreatorInput | RecipientGroupCreateOrConnectWithoutCreatorInput[]
+    upsert?: RecipientGroupUpsertWithWhereUniqueWithoutCreatorInput | RecipientGroupUpsertWithWhereUniqueWithoutCreatorInput[]
+    createMany?: RecipientGroupCreateManyCreatorInputEnvelope
+    set?: RecipientGroupWhereUniqueInput | RecipientGroupWhereUniqueInput[]
+    disconnect?: RecipientGroupWhereUniqueInput | RecipientGroupWhereUniqueInput[]
+    delete?: RecipientGroupWhereUniqueInput | RecipientGroupWhereUniqueInput[]
+    connect?: RecipientGroupWhereUniqueInput | RecipientGroupWhereUniqueInput[]
+    update?: RecipientGroupUpdateWithWhereUniqueWithoutCreatorInput | RecipientGroupUpdateWithWhereUniqueWithoutCreatorInput[]
+    updateMany?: RecipientGroupUpdateManyWithWhereWithoutCreatorInput | RecipientGroupUpdateManyWithWhereWithoutCreatorInput[]
+    deleteMany?: RecipientGroupScalarWhereInput | RecipientGroupScalarWhereInput[]
+  }
+
+  export type RecipientGroupMemberUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<RecipientGroupMemberCreateWithoutUserInput, RecipientGroupMemberUncheckedCreateWithoutUserInput> | RecipientGroupMemberCreateWithoutUserInput[] | RecipientGroupMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RecipientGroupMemberCreateOrConnectWithoutUserInput | RecipientGroupMemberCreateOrConnectWithoutUserInput[]
+    upsert?: RecipientGroupMemberUpsertWithWhereUniqueWithoutUserInput | RecipientGroupMemberUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: RecipientGroupMemberCreateManyUserInputEnvelope
+    set?: RecipientGroupMemberWhereUniqueInput | RecipientGroupMemberWhereUniqueInput[]
+    disconnect?: RecipientGroupMemberWhereUniqueInput | RecipientGroupMemberWhereUniqueInput[]
+    delete?: RecipientGroupMemberWhereUniqueInput | RecipientGroupMemberWhereUniqueInput[]
+    connect?: RecipientGroupMemberWhereUniqueInput | RecipientGroupMemberWhereUniqueInput[]
+    update?: RecipientGroupMemberUpdateWithWhereUniqueWithoutUserInput | RecipientGroupMemberUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: RecipientGroupMemberUpdateManyWithWhereWithoutUserInput | RecipientGroupMemberUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: RecipientGroupMemberScalarWhereInput | RecipientGroupMemberScalarWhereInput[]
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -21668,6 +28052,209 @@ export namespace Prisma {
 
   export type EnumEmailNotificationStatusFieldUpdateOperationsInput = {
     set?: $Enums.EmailNotificationStatus
+  }
+
+  export type NotificationBatchCreateNestedOneWithoutNotificationsInput = {
+    create?: XOR<NotificationBatchCreateWithoutNotificationsInput, NotificationBatchUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: NotificationBatchCreateOrConnectWithoutNotificationsInput
+    connect?: NotificationBatchWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutSentNotificationsInput = {
+    create?: XOR<UserCreateWithoutSentNotificationsInput, UserUncheckedCreateWithoutSentNotificationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSentNotificationsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutReceivedNotificationsInput = {
+    create?: XOR<UserCreateWithoutReceivedNotificationsInput, UserUncheckedCreateWithoutReceivedNotificationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReceivedNotificationsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type NotificationBatchUpdateOneWithoutNotificationsNestedInput = {
+    create?: XOR<NotificationBatchCreateWithoutNotificationsInput, NotificationBatchUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: NotificationBatchCreateOrConnectWithoutNotificationsInput
+    upsert?: NotificationBatchUpsertWithoutNotificationsInput
+    disconnect?: NotificationBatchWhereInput | boolean
+    delete?: NotificationBatchWhereInput | boolean
+    connect?: NotificationBatchWhereUniqueInput
+    update?: XOR<XOR<NotificationBatchUpdateToOneWithWhereWithoutNotificationsInput, NotificationBatchUpdateWithoutNotificationsInput>, NotificationBatchUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type UserUpdateOneWithoutSentNotificationsNestedInput = {
+    create?: XOR<UserCreateWithoutSentNotificationsInput, UserUncheckedCreateWithoutSentNotificationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSentNotificationsInput
+    upsert?: UserUpsertWithoutSentNotificationsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSentNotificationsInput, UserUpdateWithoutSentNotificationsInput>, UserUncheckedUpdateWithoutSentNotificationsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutReceivedNotificationsNestedInput = {
+    create?: XOR<UserCreateWithoutReceivedNotificationsInput, UserUncheckedCreateWithoutReceivedNotificationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReceivedNotificationsInput
+    upsert?: UserUpsertWithoutReceivedNotificationsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReceivedNotificationsInput, UserUpdateWithoutReceivedNotificationsInput>, UserUncheckedUpdateWithoutReceivedNotificationsInput>
+  }
+
+  export type NotificationBatchCreateindividualIdsInput = {
+    set: string[]
+  }
+
+  export type UserCreateNestedOneWithoutNotificationBatchesInput = {
+    create?: XOR<UserCreateWithoutNotificationBatchesInput, UserUncheckedCreateWithoutNotificationBatchesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNotificationBatchesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type InAppNotificationCreateNestedManyWithoutBatchInput = {
+    create?: XOR<InAppNotificationCreateWithoutBatchInput, InAppNotificationUncheckedCreateWithoutBatchInput> | InAppNotificationCreateWithoutBatchInput[] | InAppNotificationUncheckedCreateWithoutBatchInput[]
+    connectOrCreate?: InAppNotificationCreateOrConnectWithoutBatchInput | InAppNotificationCreateOrConnectWithoutBatchInput[]
+    createMany?: InAppNotificationCreateManyBatchInputEnvelope
+    connect?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+  }
+
+  export type InAppNotificationUncheckedCreateNestedManyWithoutBatchInput = {
+    create?: XOR<InAppNotificationCreateWithoutBatchInput, InAppNotificationUncheckedCreateWithoutBatchInput> | InAppNotificationCreateWithoutBatchInput[] | InAppNotificationUncheckedCreateWithoutBatchInput[]
+    connectOrCreate?: InAppNotificationCreateOrConnectWithoutBatchInput | InAppNotificationCreateOrConnectWithoutBatchInput[]
+    createMany?: InAppNotificationCreateManyBatchInputEnvelope
+    connect?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+  }
+
+  export type EnumNotificationTargetTypeFieldUpdateOperationsInput = {
+    set?: $Enums.NotificationTargetType
+  }
+
+  export type NotificationBatchUpdateindividualIdsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type EnumNotificationBatchStatusFieldUpdateOperationsInput = {
+    set?: $Enums.NotificationBatchStatus
+  }
+
+  export type UserUpdateOneRequiredWithoutNotificationBatchesNestedInput = {
+    create?: XOR<UserCreateWithoutNotificationBatchesInput, UserUncheckedCreateWithoutNotificationBatchesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNotificationBatchesInput
+    upsert?: UserUpsertWithoutNotificationBatchesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNotificationBatchesInput, UserUpdateWithoutNotificationBatchesInput>, UserUncheckedUpdateWithoutNotificationBatchesInput>
+  }
+
+  export type InAppNotificationUpdateManyWithoutBatchNestedInput = {
+    create?: XOR<InAppNotificationCreateWithoutBatchInput, InAppNotificationUncheckedCreateWithoutBatchInput> | InAppNotificationCreateWithoutBatchInput[] | InAppNotificationUncheckedCreateWithoutBatchInput[]
+    connectOrCreate?: InAppNotificationCreateOrConnectWithoutBatchInput | InAppNotificationCreateOrConnectWithoutBatchInput[]
+    upsert?: InAppNotificationUpsertWithWhereUniqueWithoutBatchInput | InAppNotificationUpsertWithWhereUniqueWithoutBatchInput[]
+    createMany?: InAppNotificationCreateManyBatchInputEnvelope
+    set?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    disconnect?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    delete?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    connect?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    update?: InAppNotificationUpdateWithWhereUniqueWithoutBatchInput | InAppNotificationUpdateWithWhereUniqueWithoutBatchInput[]
+    updateMany?: InAppNotificationUpdateManyWithWhereWithoutBatchInput | InAppNotificationUpdateManyWithWhereWithoutBatchInput[]
+    deleteMany?: InAppNotificationScalarWhereInput | InAppNotificationScalarWhereInput[]
+  }
+
+  export type InAppNotificationUncheckedUpdateManyWithoutBatchNestedInput = {
+    create?: XOR<InAppNotificationCreateWithoutBatchInput, InAppNotificationUncheckedCreateWithoutBatchInput> | InAppNotificationCreateWithoutBatchInput[] | InAppNotificationUncheckedCreateWithoutBatchInput[]
+    connectOrCreate?: InAppNotificationCreateOrConnectWithoutBatchInput | InAppNotificationCreateOrConnectWithoutBatchInput[]
+    upsert?: InAppNotificationUpsertWithWhereUniqueWithoutBatchInput | InAppNotificationUpsertWithWhereUniqueWithoutBatchInput[]
+    createMany?: InAppNotificationCreateManyBatchInputEnvelope
+    set?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    disconnect?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    delete?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    connect?: InAppNotificationWhereUniqueInput | InAppNotificationWhereUniqueInput[]
+    update?: InAppNotificationUpdateWithWhereUniqueWithoutBatchInput | InAppNotificationUpdateWithWhereUniqueWithoutBatchInput[]
+    updateMany?: InAppNotificationUpdateManyWithWhereWithoutBatchInput | InAppNotificationUpdateManyWithWhereWithoutBatchInput[]
+    deleteMany?: InAppNotificationScalarWhereInput | InAppNotificationScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutRecipientGroupsCreatedInput = {
+    create?: XOR<UserCreateWithoutRecipientGroupsCreatedInput, UserUncheckedCreateWithoutRecipientGroupsCreatedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRecipientGroupsCreatedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type RecipientGroupMemberCreateNestedManyWithoutGroupInput = {
+    create?: XOR<RecipientGroupMemberCreateWithoutGroupInput, RecipientGroupMemberUncheckedCreateWithoutGroupInput> | RecipientGroupMemberCreateWithoutGroupInput[] | RecipientGroupMemberUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: RecipientGroupMemberCreateOrConnectWithoutGroupInput | RecipientGroupMemberCreateOrConnectWithoutGroupInput[]
+    createMany?: RecipientGroupMemberCreateManyGroupInputEnvelope
+    connect?: RecipientGroupMemberWhereUniqueInput | RecipientGroupMemberWhereUniqueInput[]
+  }
+
+  export type RecipientGroupMemberUncheckedCreateNestedManyWithoutGroupInput = {
+    create?: XOR<RecipientGroupMemberCreateWithoutGroupInput, RecipientGroupMemberUncheckedCreateWithoutGroupInput> | RecipientGroupMemberCreateWithoutGroupInput[] | RecipientGroupMemberUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: RecipientGroupMemberCreateOrConnectWithoutGroupInput | RecipientGroupMemberCreateOrConnectWithoutGroupInput[]
+    createMany?: RecipientGroupMemberCreateManyGroupInputEnvelope
+    connect?: RecipientGroupMemberWhereUniqueInput | RecipientGroupMemberWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutRecipientGroupsCreatedNestedInput = {
+    create?: XOR<UserCreateWithoutRecipientGroupsCreatedInput, UserUncheckedCreateWithoutRecipientGroupsCreatedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRecipientGroupsCreatedInput
+    upsert?: UserUpsertWithoutRecipientGroupsCreatedInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRecipientGroupsCreatedInput, UserUpdateWithoutRecipientGroupsCreatedInput>, UserUncheckedUpdateWithoutRecipientGroupsCreatedInput>
+  }
+
+  export type RecipientGroupMemberUpdateManyWithoutGroupNestedInput = {
+    create?: XOR<RecipientGroupMemberCreateWithoutGroupInput, RecipientGroupMemberUncheckedCreateWithoutGroupInput> | RecipientGroupMemberCreateWithoutGroupInput[] | RecipientGroupMemberUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: RecipientGroupMemberCreateOrConnectWithoutGroupInput | RecipientGroupMemberCreateOrConnectWithoutGroupInput[]
+    upsert?: RecipientGroupMemberUpsertWithWhereUniqueWithoutGroupInput | RecipientGroupMemberUpsertWithWhereUniqueWithoutGroupInput[]
+    createMany?: RecipientGroupMemberCreateManyGroupInputEnvelope
+    set?: RecipientGroupMemberWhereUniqueInput | RecipientGroupMemberWhereUniqueInput[]
+    disconnect?: RecipientGroupMemberWhereUniqueInput | RecipientGroupMemberWhereUniqueInput[]
+    delete?: RecipientGroupMemberWhereUniqueInput | RecipientGroupMemberWhereUniqueInput[]
+    connect?: RecipientGroupMemberWhereUniqueInput | RecipientGroupMemberWhereUniqueInput[]
+    update?: RecipientGroupMemberUpdateWithWhereUniqueWithoutGroupInput | RecipientGroupMemberUpdateWithWhereUniqueWithoutGroupInput[]
+    updateMany?: RecipientGroupMemberUpdateManyWithWhereWithoutGroupInput | RecipientGroupMemberUpdateManyWithWhereWithoutGroupInput[]
+    deleteMany?: RecipientGroupMemberScalarWhereInput | RecipientGroupMemberScalarWhereInput[]
+  }
+
+  export type RecipientGroupMemberUncheckedUpdateManyWithoutGroupNestedInput = {
+    create?: XOR<RecipientGroupMemberCreateWithoutGroupInput, RecipientGroupMemberUncheckedCreateWithoutGroupInput> | RecipientGroupMemberCreateWithoutGroupInput[] | RecipientGroupMemberUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: RecipientGroupMemberCreateOrConnectWithoutGroupInput | RecipientGroupMemberCreateOrConnectWithoutGroupInput[]
+    upsert?: RecipientGroupMemberUpsertWithWhereUniqueWithoutGroupInput | RecipientGroupMemberUpsertWithWhereUniqueWithoutGroupInput[]
+    createMany?: RecipientGroupMemberCreateManyGroupInputEnvelope
+    set?: RecipientGroupMemberWhereUniqueInput | RecipientGroupMemberWhereUniqueInput[]
+    disconnect?: RecipientGroupMemberWhereUniqueInput | RecipientGroupMemberWhereUniqueInput[]
+    delete?: RecipientGroupMemberWhereUniqueInput | RecipientGroupMemberWhereUniqueInput[]
+    connect?: RecipientGroupMemberWhereUniqueInput | RecipientGroupMemberWhereUniqueInput[]
+    update?: RecipientGroupMemberUpdateWithWhereUniqueWithoutGroupInput | RecipientGroupMemberUpdateWithWhereUniqueWithoutGroupInput[]
+    updateMany?: RecipientGroupMemberUpdateManyWithWhereWithoutGroupInput | RecipientGroupMemberUpdateManyWithWhereWithoutGroupInput[]
+    deleteMany?: RecipientGroupMemberScalarWhereInput | RecipientGroupMemberScalarWhereInput[]
+  }
+
+  export type RecipientGroupCreateNestedOneWithoutMembersInput = {
+    create?: XOR<RecipientGroupCreateWithoutMembersInput, RecipientGroupUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: RecipientGroupCreateOrConnectWithoutMembersInput
+    connect?: RecipientGroupWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutRecipientGroupMembershipsInput = {
+    create?: XOR<UserCreateWithoutRecipientGroupMembershipsInput, UserUncheckedCreateWithoutRecipientGroupMembershipsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRecipientGroupMembershipsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type RecipientGroupUpdateOneRequiredWithoutMembersNestedInput = {
+    create?: XOR<RecipientGroupCreateWithoutMembersInput, RecipientGroupUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: RecipientGroupCreateOrConnectWithoutMembersInput
+    upsert?: RecipientGroupUpsertWithoutMembersInput
+    connect?: RecipientGroupWhereUniqueInput
+    update?: XOR<XOR<RecipientGroupUpdateToOneWithWhereWithoutMembersInput, RecipientGroupUpdateWithoutMembersInput>, RecipientGroupUncheckedUpdateWithoutMembersInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutRecipientGroupMembershipsNestedInput = {
+    create?: XOR<UserCreateWithoutRecipientGroupMembershipsInput, UserUncheckedCreateWithoutRecipientGroupMembershipsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRecipientGroupMembershipsInput
+    upsert?: UserUpsertWithoutRecipientGroupMembershipsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRecipientGroupMembershipsInput, UserUpdateWithoutRecipientGroupMembershipsInput>, UserUncheckedUpdateWithoutRecipientGroupMembershipsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -21892,6 +28479,1402 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumEmailNotificationStatusFilter<$PrismaModel>
     _max?: NestedEnumEmailNotificationStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumNotificationTargetTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationTargetType | EnumNotificationTargetTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationTargetType[] | ListEnumNotificationTargetTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationTargetType[] | ListEnumNotificationTargetTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationTargetTypeFilter<$PrismaModel> | $Enums.NotificationTargetType
+  }
+
+  export type NestedEnumNotificationBatchStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationBatchStatus | EnumNotificationBatchStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationBatchStatus[] | ListEnumNotificationBatchStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationBatchStatus[] | ListEnumNotificationBatchStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationBatchStatusFilter<$PrismaModel> | $Enums.NotificationBatchStatus
+  }
+
+  export type NestedEnumNotificationTargetTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationTargetType | EnumNotificationTargetTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationTargetType[] | ListEnumNotificationTargetTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationTargetType[] | ListEnumNotificationTargetTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationTargetTypeWithAggregatesFilter<$PrismaModel> | $Enums.NotificationTargetType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumNotificationTargetTypeFilter<$PrismaModel>
+    _max?: NestedEnumNotificationTargetTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumNotificationBatchStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationBatchStatus | EnumNotificationBatchStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationBatchStatus[] | ListEnumNotificationBatchStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationBatchStatus[] | ListEnumNotificationBatchStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationBatchStatusWithAggregatesFilter<$PrismaModel> | $Enums.NotificationBatchStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumNotificationBatchStatusFilter<$PrismaModel>
+    _max?: NestedEnumNotificationBatchStatusFilter<$PrismaModel>
+  }
+
+  export type InAppNotificationCreateWithoutSenderInput = {
+    id?: string
+    title: string
+    body: string
+    link?: string | null
+    read?: boolean
+    readAt?: Date | string | null
+    event?: string | null
+    createdAt?: Date | string
+    batch?: NotificationBatchCreateNestedOneWithoutNotificationsInput
+    recipient: UserCreateNestedOneWithoutReceivedNotificationsInput
+  }
+
+  export type InAppNotificationUncheckedCreateWithoutSenderInput = {
+    id?: string
+    batchId?: string | null
+    recipientId: string
+    title: string
+    body: string
+    link?: string | null
+    read?: boolean
+    readAt?: Date | string | null
+    event?: string | null
+    createdAt?: Date | string
+  }
+
+  export type InAppNotificationCreateOrConnectWithoutSenderInput = {
+    where: InAppNotificationWhereUniqueInput
+    create: XOR<InAppNotificationCreateWithoutSenderInput, InAppNotificationUncheckedCreateWithoutSenderInput>
+  }
+
+  export type InAppNotificationCreateManySenderInputEnvelope = {
+    data: InAppNotificationCreateManySenderInput | InAppNotificationCreateManySenderInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InAppNotificationCreateWithoutRecipientInput = {
+    id?: string
+    title: string
+    body: string
+    link?: string | null
+    read?: boolean
+    readAt?: Date | string | null
+    event?: string | null
+    createdAt?: Date | string
+    batch?: NotificationBatchCreateNestedOneWithoutNotificationsInput
+    sender?: UserCreateNestedOneWithoutSentNotificationsInput
+  }
+
+  export type InAppNotificationUncheckedCreateWithoutRecipientInput = {
+    id?: string
+    batchId?: string | null
+    senderId?: string | null
+    title: string
+    body: string
+    link?: string | null
+    read?: boolean
+    readAt?: Date | string | null
+    event?: string | null
+    createdAt?: Date | string
+  }
+
+  export type InAppNotificationCreateOrConnectWithoutRecipientInput = {
+    where: InAppNotificationWhereUniqueInput
+    create: XOR<InAppNotificationCreateWithoutRecipientInput, InAppNotificationUncheckedCreateWithoutRecipientInput>
+  }
+
+  export type InAppNotificationCreateManyRecipientInputEnvelope = {
+    data: InAppNotificationCreateManyRecipientInput | InAppNotificationCreateManyRecipientInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type NotificationBatchCreateWithoutSenderInput = {
+    id?: string
+    targetType: $Enums.NotificationTargetType
+    targetRef?: string | null
+    individualIds?: NotificationBatchCreateindividualIdsInput | string[]
+    title: string
+    body: string
+    link?: string | null
+    scheduledFor?: Date | string | null
+    status?: $Enums.NotificationBatchStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    notifications?: InAppNotificationCreateNestedManyWithoutBatchInput
+  }
+
+  export type NotificationBatchUncheckedCreateWithoutSenderInput = {
+    id?: string
+    targetType: $Enums.NotificationTargetType
+    targetRef?: string | null
+    individualIds?: NotificationBatchCreateindividualIdsInput | string[]
+    title: string
+    body: string
+    link?: string | null
+    scheduledFor?: Date | string | null
+    status?: $Enums.NotificationBatchStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    notifications?: InAppNotificationUncheckedCreateNestedManyWithoutBatchInput
+  }
+
+  export type NotificationBatchCreateOrConnectWithoutSenderInput = {
+    where: NotificationBatchWhereUniqueInput
+    create: XOR<NotificationBatchCreateWithoutSenderInput, NotificationBatchUncheckedCreateWithoutSenderInput>
+  }
+
+  export type NotificationBatchCreateManySenderInputEnvelope = {
+    data: NotificationBatchCreateManySenderInput | NotificationBatchCreateManySenderInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RecipientGroupCreateWithoutCreatorInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: RecipientGroupMemberCreateNestedManyWithoutGroupInput
+  }
+
+  export type RecipientGroupUncheckedCreateWithoutCreatorInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: RecipientGroupMemberUncheckedCreateNestedManyWithoutGroupInput
+  }
+
+  export type RecipientGroupCreateOrConnectWithoutCreatorInput = {
+    where: RecipientGroupWhereUniqueInput
+    create: XOR<RecipientGroupCreateWithoutCreatorInput, RecipientGroupUncheckedCreateWithoutCreatorInput>
+  }
+
+  export type RecipientGroupCreateManyCreatorInputEnvelope = {
+    data: RecipientGroupCreateManyCreatorInput | RecipientGroupCreateManyCreatorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RecipientGroupMemberCreateWithoutUserInput = {
+    id?: string
+    createdAt?: Date | string
+    group: RecipientGroupCreateNestedOneWithoutMembersInput
+  }
+
+  export type RecipientGroupMemberUncheckedCreateWithoutUserInput = {
+    id?: string
+    groupId: string
+    createdAt?: Date | string
+  }
+
+  export type RecipientGroupMemberCreateOrConnectWithoutUserInput = {
+    where: RecipientGroupMemberWhereUniqueInput
+    create: XOR<RecipientGroupMemberCreateWithoutUserInput, RecipientGroupMemberUncheckedCreateWithoutUserInput>
+  }
+
+  export type RecipientGroupMemberCreateManyUserInputEnvelope = {
+    data: RecipientGroupMemberCreateManyUserInput | RecipientGroupMemberCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InAppNotificationUpsertWithWhereUniqueWithoutSenderInput = {
+    where: InAppNotificationWhereUniqueInput
+    update: XOR<InAppNotificationUpdateWithoutSenderInput, InAppNotificationUncheckedUpdateWithoutSenderInput>
+    create: XOR<InAppNotificationCreateWithoutSenderInput, InAppNotificationUncheckedCreateWithoutSenderInput>
+  }
+
+  export type InAppNotificationUpdateWithWhereUniqueWithoutSenderInput = {
+    where: InAppNotificationWhereUniqueInput
+    data: XOR<InAppNotificationUpdateWithoutSenderInput, InAppNotificationUncheckedUpdateWithoutSenderInput>
+  }
+
+  export type InAppNotificationUpdateManyWithWhereWithoutSenderInput = {
+    where: InAppNotificationScalarWhereInput
+    data: XOR<InAppNotificationUpdateManyMutationInput, InAppNotificationUncheckedUpdateManyWithoutSenderInput>
+  }
+
+  export type InAppNotificationScalarWhereInput = {
+    AND?: InAppNotificationScalarWhereInput | InAppNotificationScalarWhereInput[]
+    OR?: InAppNotificationScalarWhereInput[]
+    NOT?: InAppNotificationScalarWhereInput | InAppNotificationScalarWhereInput[]
+    id?: StringFilter<"InAppNotification"> | string
+    batchId?: StringNullableFilter<"InAppNotification"> | string | null
+    senderId?: StringNullableFilter<"InAppNotification"> | string | null
+    recipientId?: StringFilter<"InAppNotification"> | string
+    title?: StringFilter<"InAppNotification"> | string
+    body?: StringFilter<"InAppNotification"> | string
+    link?: StringNullableFilter<"InAppNotification"> | string | null
+    read?: BoolFilter<"InAppNotification"> | boolean
+    readAt?: DateTimeNullableFilter<"InAppNotification"> | Date | string | null
+    event?: StringNullableFilter<"InAppNotification"> | string | null
+    createdAt?: DateTimeFilter<"InAppNotification"> | Date | string
+  }
+
+  export type InAppNotificationUpsertWithWhereUniqueWithoutRecipientInput = {
+    where: InAppNotificationWhereUniqueInput
+    update: XOR<InAppNotificationUpdateWithoutRecipientInput, InAppNotificationUncheckedUpdateWithoutRecipientInput>
+    create: XOR<InAppNotificationCreateWithoutRecipientInput, InAppNotificationUncheckedCreateWithoutRecipientInput>
+  }
+
+  export type InAppNotificationUpdateWithWhereUniqueWithoutRecipientInput = {
+    where: InAppNotificationWhereUniqueInput
+    data: XOR<InAppNotificationUpdateWithoutRecipientInput, InAppNotificationUncheckedUpdateWithoutRecipientInput>
+  }
+
+  export type InAppNotificationUpdateManyWithWhereWithoutRecipientInput = {
+    where: InAppNotificationScalarWhereInput
+    data: XOR<InAppNotificationUpdateManyMutationInput, InAppNotificationUncheckedUpdateManyWithoutRecipientInput>
+  }
+
+  export type NotificationBatchUpsertWithWhereUniqueWithoutSenderInput = {
+    where: NotificationBatchWhereUniqueInput
+    update: XOR<NotificationBatchUpdateWithoutSenderInput, NotificationBatchUncheckedUpdateWithoutSenderInput>
+    create: XOR<NotificationBatchCreateWithoutSenderInput, NotificationBatchUncheckedCreateWithoutSenderInput>
+  }
+
+  export type NotificationBatchUpdateWithWhereUniqueWithoutSenderInput = {
+    where: NotificationBatchWhereUniqueInput
+    data: XOR<NotificationBatchUpdateWithoutSenderInput, NotificationBatchUncheckedUpdateWithoutSenderInput>
+  }
+
+  export type NotificationBatchUpdateManyWithWhereWithoutSenderInput = {
+    where: NotificationBatchScalarWhereInput
+    data: XOR<NotificationBatchUpdateManyMutationInput, NotificationBatchUncheckedUpdateManyWithoutSenderInput>
+  }
+
+  export type NotificationBatchScalarWhereInput = {
+    AND?: NotificationBatchScalarWhereInput | NotificationBatchScalarWhereInput[]
+    OR?: NotificationBatchScalarWhereInput[]
+    NOT?: NotificationBatchScalarWhereInput | NotificationBatchScalarWhereInput[]
+    id?: StringFilter<"NotificationBatch"> | string
+    senderId?: StringFilter<"NotificationBatch"> | string
+    targetType?: EnumNotificationTargetTypeFilter<"NotificationBatch"> | $Enums.NotificationTargetType
+    targetRef?: StringNullableFilter<"NotificationBatch"> | string | null
+    individualIds?: StringNullableListFilter<"NotificationBatch">
+    title?: StringFilter<"NotificationBatch"> | string
+    body?: StringFilter<"NotificationBatch"> | string
+    link?: StringNullableFilter<"NotificationBatch"> | string | null
+    scheduledFor?: DateTimeNullableFilter<"NotificationBatch"> | Date | string | null
+    status?: EnumNotificationBatchStatusFilter<"NotificationBatch"> | $Enums.NotificationBatchStatus
+    createdAt?: DateTimeFilter<"NotificationBatch"> | Date | string
+    updatedAt?: DateTimeFilter<"NotificationBatch"> | Date | string
+  }
+
+  export type RecipientGroupUpsertWithWhereUniqueWithoutCreatorInput = {
+    where: RecipientGroupWhereUniqueInput
+    update: XOR<RecipientGroupUpdateWithoutCreatorInput, RecipientGroupUncheckedUpdateWithoutCreatorInput>
+    create: XOR<RecipientGroupCreateWithoutCreatorInput, RecipientGroupUncheckedCreateWithoutCreatorInput>
+  }
+
+  export type RecipientGroupUpdateWithWhereUniqueWithoutCreatorInput = {
+    where: RecipientGroupWhereUniqueInput
+    data: XOR<RecipientGroupUpdateWithoutCreatorInput, RecipientGroupUncheckedUpdateWithoutCreatorInput>
+  }
+
+  export type RecipientGroupUpdateManyWithWhereWithoutCreatorInput = {
+    where: RecipientGroupScalarWhereInput
+    data: XOR<RecipientGroupUpdateManyMutationInput, RecipientGroupUncheckedUpdateManyWithoutCreatorInput>
+  }
+
+  export type RecipientGroupScalarWhereInput = {
+    AND?: RecipientGroupScalarWhereInput | RecipientGroupScalarWhereInput[]
+    OR?: RecipientGroupScalarWhereInput[]
+    NOT?: RecipientGroupScalarWhereInput | RecipientGroupScalarWhereInput[]
+    id?: StringFilter<"RecipientGroup"> | string
+    name?: StringFilter<"RecipientGroup"> | string
+    createdBy?: StringFilter<"RecipientGroup"> | string
+    createdAt?: DateTimeFilter<"RecipientGroup"> | Date | string
+    updatedAt?: DateTimeFilter<"RecipientGroup"> | Date | string
+  }
+
+  export type RecipientGroupMemberUpsertWithWhereUniqueWithoutUserInput = {
+    where: RecipientGroupMemberWhereUniqueInput
+    update: XOR<RecipientGroupMemberUpdateWithoutUserInput, RecipientGroupMemberUncheckedUpdateWithoutUserInput>
+    create: XOR<RecipientGroupMemberCreateWithoutUserInput, RecipientGroupMemberUncheckedCreateWithoutUserInput>
+  }
+
+  export type RecipientGroupMemberUpdateWithWhereUniqueWithoutUserInput = {
+    where: RecipientGroupMemberWhereUniqueInput
+    data: XOR<RecipientGroupMemberUpdateWithoutUserInput, RecipientGroupMemberUncheckedUpdateWithoutUserInput>
+  }
+
+  export type RecipientGroupMemberUpdateManyWithWhereWithoutUserInput = {
+    where: RecipientGroupMemberScalarWhereInput
+    data: XOR<RecipientGroupMemberUpdateManyMutationInput, RecipientGroupMemberUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type RecipientGroupMemberScalarWhereInput = {
+    AND?: RecipientGroupMemberScalarWhereInput | RecipientGroupMemberScalarWhereInput[]
+    OR?: RecipientGroupMemberScalarWhereInput[]
+    NOT?: RecipientGroupMemberScalarWhereInput | RecipientGroupMemberScalarWhereInput[]
+    id?: StringFilter<"RecipientGroupMember"> | string
+    groupId?: StringFilter<"RecipientGroupMember"> | string
+    userId?: StringFilter<"RecipientGroupMember"> | string
+    createdAt?: DateTimeFilter<"RecipientGroupMember"> | Date | string
+  }
+
+  export type NotificationBatchCreateWithoutNotificationsInput = {
+    id?: string
+    targetType: $Enums.NotificationTargetType
+    targetRef?: string | null
+    individualIds?: NotificationBatchCreateindividualIdsInput | string[]
+    title: string
+    body: string
+    link?: string | null
+    scheduledFor?: Date | string | null
+    status?: $Enums.NotificationBatchStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sender: UserCreateNestedOneWithoutNotificationBatchesInput
+  }
+
+  export type NotificationBatchUncheckedCreateWithoutNotificationsInput = {
+    id?: string
+    senderId: string
+    targetType: $Enums.NotificationTargetType
+    targetRef?: string | null
+    individualIds?: NotificationBatchCreateindividualIdsInput | string[]
+    title: string
+    body: string
+    link?: string | null
+    scheduledFor?: Date | string | null
+    status?: $Enums.NotificationBatchStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NotificationBatchCreateOrConnectWithoutNotificationsInput = {
+    where: NotificationBatchWhereUniqueInput
+    create: XOR<NotificationBatchCreateWithoutNotificationsInput, NotificationBatchUncheckedCreateWithoutNotificationsInput>
+  }
+
+  export type UserCreateWithoutSentNotificationsInput = {
+    id?: string
+    email: string
+    password?: string | null
+    phoneNumber: string
+    name: string
+    avatar?: string | null
+    district?: string | null
+    about?: string | null
+    role?: $Enums.Role
+    lastLogin?: Date | string
+    isVerified?: boolean
+    resetPasswordToken?: string | null
+    resetPasswordExpiresAt?: Date | string | null
+    verificationToken?: string | null
+    verificationTokenExpiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    receivedNotifications?: InAppNotificationCreateNestedManyWithoutRecipientInput
+    notificationBatches?: NotificationBatchCreateNestedManyWithoutSenderInput
+    recipientGroupsCreated?: RecipientGroupCreateNestedManyWithoutCreatorInput
+    recipientGroupMemberships?: RecipientGroupMemberCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSentNotificationsInput = {
+    id?: string
+    email: string
+    password?: string | null
+    phoneNumber: string
+    name: string
+    avatar?: string | null
+    district?: string | null
+    about?: string | null
+    role?: $Enums.Role
+    lastLogin?: Date | string
+    isVerified?: boolean
+    resetPasswordToken?: string | null
+    resetPasswordExpiresAt?: Date | string | null
+    verificationToken?: string | null
+    verificationTokenExpiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    receivedNotifications?: InAppNotificationUncheckedCreateNestedManyWithoutRecipientInput
+    notificationBatches?: NotificationBatchUncheckedCreateNestedManyWithoutSenderInput
+    recipientGroupsCreated?: RecipientGroupUncheckedCreateNestedManyWithoutCreatorInput
+    recipientGroupMemberships?: RecipientGroupMemberUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSentNotificationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSentNotificationsInput, UserUncheckedCreateWithoutSentNotificationsInput>
+  }
+
+  export type UserCreateWithoutReceivedNotificationsInput = {
+    id?: string
+    email: string
+    password?: string | null
+    phoneNumber: string
+    name: string
+    avatar?: string | null
+    district?: string | null
+    about?: string | null
+    role?: $Enums.Role
+    lastLogin?: Date | string
+    isVerified?: boolean
+    resetPasswordToken?: string | null
+    resetPasswordExpiresAt?: Date | string | null
+    verificationToken?: string | null
+    verificationTokenExpiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sentNotifications?: InAppNotificationCreateNestedManyWithoutSenderInput
+    notificationBatches?: NotificationBatchCreateNestedManyWithoutSenderInput
+    recipientGroupsCreated?: RecipientGroupCreateNestedManyWithoutCreatorInput
+    recipientGroupMemberships?: RecipientGroupMemberCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutReceivedNotificationsInput = {
+    id?: string
+    email: string
+    password?: string | null
+    phoneNumber: string
+    name: string
+    avatar?: string | null
+    district?: string | null
+    about?: string | null
+    role?: $Enums.Role
+    lastLogin?: Date | string
+    isVerified?: boolean
+    resetPasswordToken?: string | null
+    resetPasswordExpiresAt?: Date | string | null
+    verificationToken?: string | null
+    verificationTokenExpiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sentNotifications?: InAppNotificationUncheckedCreateNestedManyWithoutSenderInput
+    notificationBatches?: NotificationBatchUncheckedCreateNestedManyWithoutSenderInput
+    recipientGroupsCreated?: RecipientGroupUncheckedCreateNestedManyWithoutCreatorInput
+    recipientGroupMemberships?: RecipientGroupMemberUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutReceivedNotificationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutReceivedNotificationsInput, UserUncheckedCreateWithoutReceivedNotificationsInput>
+  }
+
+  export type NotificationBatchUpsertWithoutNotificationsInput = {
+    update: XOR<NotificationBatchUpdateWithoutNotificationsInput, NotificationBatchUncheckedUpdateWithoutNotificationsInput>
+    create: XOR<NotificationBatchCreateWithoutNotificationsInput, NotificationBatchUncheckedCreateWithoutNotificationsInput>
+    where?: NotificationBatchWhereInput
+  }
+
+  export type NotificationBatchUpdateToOneWithWhereWithoutNotificationsInput = {
+    where?: NotificationBatchWhereInput
+    data: XOR<NotificationBatchUpdateWithoutNotificationsInput, NotificationBatchUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type NotificationBatchUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetType?: EnumNotificationTargetTypeFieldUpdateOperationsInput | $Enums.NotificationTargetType
+    targetRef?: NullableStringFieldUpdateOperationsInput | string | null
+    individualIds?: NotificationBatchUpdateindividualIdsInput | string[]
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduledFor?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumNotificationBatchStatusFieldUpdateOperationsInput | $Enums.NotificationBatchStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sender?: UserUpdateOneRequiredWithoutNotificationBatchesNestedInput
+  }
+
+  export type NotificationBatchUncheckedUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderId?: StringFieldUpdateOperationsInput | string
+    targetType?: EnumNotificationTargetTypeFieldUpdateOperationsInput | $Enums.NotificationTargetType
+    targetRef?: NullableStringFieldUpdateOperationsInput | string | null
+    individualIds?: NotificationBatchUpdateindividualIdsInput | string[]
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduledFor?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumNotificationBatchStatusFieldUpdateOperationsInput | $Enums.NotificationBatchStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserUpsertWithoutSentNotificationsInput = {
+    update: XOR<UserUpdateWithoutSentNotificationsInput, UserUncheckedUpdateWithoutSentNotificationsInput>
+    create: XOR<UserCreateWithoutSentNotificationsInput, UserUncheckedCreateWithoutSentNotificationsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSentNotificationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSentNotificationsInput, UserUncheckedUpdateWithoutSentNotificationsInput>
+  }
+
+  export type UserUpdateWithoutSentNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    about?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receivedNotifications?: InAppNotificationUpdateManyWithoutRecipientNestedInput
+    notificationBatches?: NotificationBatchUpdateManyWithoutSenderNestedInput
+    recipientGroupsCreated?: RecipientGroupUpdateManyWithoutCreatorNestedInput
+    recipientGroupMemberships?: RecipientGroupMemberUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSentNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    about?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receivedNotifications?: InAppNotificationUncheckedUpdateManyWithoutRecipientNestedInput
+    notificationBatches?: NotificationBatchUncheckedUpdateManyWithoutSenderNestedInput
+    recipientGroupsCreated?: RecipientGroupUncheckedUpdateManyWithoutCreatorNestedInput
+    recipientGroupMemberships?: RecipientGroupMemberUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUpsertWithoutReceivedNotificationsInput = {
+    update: XOR<UserUpdateWithoutReceivedNotificationsInput, UserUncheckedUpdateWithoutReceivedNotificationsInput>
+    create: XOR<UserCreateWithoutReceivedNotificationsInput, UserUncheckedCreateWithoutReceivedNotificationsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutReceivedNotificationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutReceivedNotificationsInput, UserUncheckedUpdateWithoutReceivedNotificationsInput>
+  }
+
+  export type UserUpdateWithoutReceivedNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    about?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentNotifications?: InAppNotificationUpdateManyWithoutSenderNestedInput
+    notificationBatches?: NotificationBatchUpdateManyWithoutSenderNestedInput
+    recipientGroupsCreated?: RecipientGroupUpdateManyWithoutCreatorNestedInput
+    recipientGroupMemberships?: RecipientGroupMemberUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutReceivedNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    about?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentNotifications?: InAppNotificationUncheckedUpdateManyWithoutSenderNestedInput
+    notificationBatches?: NotificationBatchUncheckedUpdateManyWithoutSenderNestedInput
+    recipientGroupsCreated?: RecipientGroupUncheckedUpdateManyWithoutCreatorNestedInput
+    recipientGroupMemberships?: RecipientGroupMemberUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutNotificationBatchesInput = {
+    id?: string
+    email: string
+    password?: string | null
+    phoneNumber: string
+    name: string
+    avatar?: string | null
+    district?: string | null
+    about?: string | null
+    role?: $Enums.Role
+    lastLogin?: Date | string
+    isVerified?: boolean
+    resetPasswordToken?: string | null
+    resetPasswordExpiresAt?: Date | string | null
+    verificationToken?: string | null
+    verificationTokenExpiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sentNotifications?: InAppNotificationCreateNestedManyWithoutSenderInput
+    receivedNotifications?: InAppNotificationCreateNestedManyWithoutRecipientInput
+    recipientGroupsCreated?: RecipientGroupCreateNestedManyWithoutCreatorInput
+    recipientGroupMemberships?: RecipientGroupMemberCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutNotificationBatchesInput = {
+    id?: string
+    email: string
+    password?: string | null
+    phoneNumber: string
+    name: string
+    avatar?: string | null
+    district?: string | null
+    about?: string | null
+    role?: $Enums.Role
+    lastLogin?: Date | string
+    isVerified?: boolean
+    resetPasswordToken?: string | null
+    resetPasswordExpiresAt?: Date | string | null
+    verificationToken?: string | null
+    verificationTokenExpiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sentNotifications?: InAppNotificationUncheckedCreateNestedManyWithoutSenderInput
+    receivedNotifications?: InAppNotificationUncheckedCreateNestedManyWithoutRecipientInput
+    recipientGroupsCreated?: RecipientGroupUncheckedCreateNestedManyWithoutCreatorInput
+    recipientGroupMemberships?: RecipientGroupMemberUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutNotificationBatchesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutNotificationBatchesInput, UserUncheckedCreateWithoutNotificationBatchesInput>
+  }
+
+  export type InAppNotificationCreateWithoutBatchInput = {
+    id?: string
+    title: string
+    body: string
+    link?: string | null
+    read?: boolean
+    readAt?: Date | string | null
+    event?: string | null
+    createdAt?: Date | string
+    sender?: UserCreateNestedOneWithoutSentNotificationsInput
+    recipient: UserCreateNestedOneWithoutReceivedNotificationsInput
+  }
+
+  export type InAppNotificationUncheckedCreateWithoutBatchInput = {
+    id?: string
+    senderId?: string | null
+    recipientId: string
+    title: string
+    body: string
+    link?: string | null
+    read?: boolean
+    readAt?: Date | string | null
+    event?: string | null
+    createdAt?: Date | string
+  }
+
+  export type InAppNotificationCreateOrConnectWithoutBatchInput = {
+    where: InAppNotificationWhereUniqueInput
+    create: XOR<InAppNotificationCreateWithoutBatchInput, InAppNotificationUncheckedCreateWithoutBatchInput>
+  }
+
+  export type InAppNotificationCreateManyBatchInputEnvelope = {
+    data: InAppNotificationCreateManyBatchInput | InAppNotificationCreateManyBatchInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutNotificationBatchesInput = {
+    update: XOR<UserUpdateWithoutNotificationBatchesInput, UserUncheckedUpdateWithoutNotificationBatchesInput>
+    create: XOR<UserCreateWithoutNotificationBatchesInput, UserUncheckedCreateWithoutNotificationBatchesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutNotificationBatchesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutNotificationBatchesInput, UserUncheckedUpdateWithoutNotificationBatchesInput>
+  }
+
+  export type UserUpdateWithoutNotificationBatchesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    about?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentNotifications?: InAppNotificationUpdateManyWithoutSenderNestedInput
+    receivedNotifications?: InAppNotificationUpdateManyWithoutRecipientNestedInput
+    recipientGroupsCreated?: RecipientGroupUpdateManyWithoutCreatorNestedInput
+    recipientGroupMemberships?: RecipientGroupMemberUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutNotificationBatchesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    about?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentNotifications?: InAppNotificationUncheckedUpdateManyWithoutSenderNestedInput
+    receivedNotifications?: InAppNotificationUncheckedUpdateManyWithoutRecipientNestedInput
+    recipientGroupsCreated?: RecipientGroupUncheckedUpdateManyWithoutCreatorNestedInput
+    recipientGroupMemberships?: RecipientGroupMemberUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type InAppNotificationUpsertWithWhereUniqueWithoutBatchInput = {
+    where: InAppNotificationWhereUniqueInput
+    update: XOR<InAppNotificationUpdateWithoutBatchInput, InAppNotificationUncheckedUpdateWithoutBatchInput>
+    create: XOR<InAppNotificationCreateWithoutBatchInput, InAppNotificationUncheckedCreateWithoutBatchInput>
+  }
+
+  export type InAppNotificationUpdateWithWhereUniqueWithoutBatchInput = {
+    where: InAppNotificationWhereUniqueInput
+    data: XOR<InAppNotificationUpdateWithoutBatchInput, InAppNotificationUncheckedUpdateWithoutBatchInput>
+  }
+
+  export type InAppNotificationUpdateManyWithWhereWithoutBatchInput = {
+    where: InAppNotificationScalarWhereInput
+    data: XOR<InAppNotificationUpdateManyMutationInput, InAppNotificationUncheckedUpdateManyWithoutBatchInput>
+  }
+
+  export type UserCreateWithoutRecipientGroupsCreatedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    phoneNumber: string
+    name: string
+    avatar?: string | null
+    district?: string | null
+    about?: string | null
+    role?: $Enums.Role
+    lastLogin?: Date | string
+    isVerified?: boolean
+    resetPasswordToken?: string | null
+    resetPasswordExpiresAt?: Date | string | null
+    verificationToken?: string | null
+    verificationTokenExpiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sentNotifications?: InAppNotificationCreateNestedManyWithoutSenderInput
+    receivedNotifications?: InAppNotificationCreateNestedManyWithoutRecipientInput
+    notificationBatches?: NotificationBatchCreateNestedManyWithoutSenderInput
+    recipientGroupMemberships?: RecipientGroupMemberCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutRecipientGroupsCreatedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    phoneNumber: string
+    name: string
+    avatar?: string | null
+    district?: string | null
+    about?: string | null
+    role?: $Enums.Role
+    lastLogin?: Date | string
+    isVerified?: boolean
+    resetPasswordToken?: string | null
+    resetPasswordExpiresAt?: Date | string | null
+    verificationToken?: string | null
+    verificationTokenExpiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sentNotifications?: InAppNotificationUncheckedCreateNestedManyWithoutSenderInput
+    receivedNotifications?: InAppNotificationUncheckedCreateNestedManyWithoutRecipientInput
+    notificationBatches?: NotificationBatchUncheckedCreateNestedManyWithoutSenderInput
+    recipientGroupMemberships?: RecipientGroupMemberUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutRecipientGroupsCreatedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutRecipientGroupsCreatedInput, UserUncheckedCreateWithoutRecipientGroupsCreatedInput>
+  }
+
+  export type RecipientGroupMemberCreateWithoutGroupInput = {
+    id?: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutRecipientGroupMembershipsInput
+  }
+
+  export type RecipientGroupMemberUncheckedCreateWithoutGroupInput = {
+    id?: string
+    userId: string
+    createdAt?: Date | string
+  }
+
+  export type RecipientGroupMemberCreateOrConnectWithoutGroupInput = {
+    where: RecipientGroupMemberWhereUniqueInput
+    create: XOR<RecipientGroupMemberCreateWithoutGroupInput, RecipientGroupMemberUncheckedCreateWithoutGroupInput>
+  }
+
+  export type RecipientGroupMemberCreateManyGroupInputEnvelope = {
+    data: RecipientGroupMemberCreateManyGroupInput | RecipientGroupMemberCreateManyGroupInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutRecipientGroupsCreatedInput = {
+    update: XOR<UserUpdateWithoutRecipientGroupsCreatedInput, UserUncheckedUpdateWithoutRecipientGroupsCreatedInput>
+    create: XOR<UserCreateWithoutRecipientGroupsCreatedInput, UserUncheckedCreateWithoutRecipientGroupsCreatedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutRecipientGroupsCreatedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutRecipientGroupsCreatedInput, UserUncheckedUpdateWithoutRecipientGroupsCreatedInput>
+  }
+
+  export type UserUpdateWithoutRecipientGroupsCreatedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    about?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentNotifications?: InAppNotificationUpdateManyWithoutSenderNestedInput
+    receivedNotifications?: InAppNotificationUpdateManyWithoutRecipientNestedInput
+    notificationBatches?: NotificationBatchUpdateManyWithoutSenderNestedInput
+    recipientGroupMemberships?: RecipientGroupMemberUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutRecipientGroupsCreatedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    about?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentNotifications?: InAppNotificationUncheckedUpdateManyWithoutSenderNestedInput
+    receivedNotifications?: InAppNotificationUncheckedUpdateManyWithoutRecipientNestedInput
+    notificationBatches?: NotificationBatchUncheckedUpdateManyWithoutSenderNestedInput
+    recipientGroupMemberships?: RecipientGroupMemberUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type RecipientGroupMemberUpsertWithWhereUniqueWithoutGroupInput = {
+    where: RecipientGroupMemberWhereUniqueInput
+    update: XOR<RecipientGroupMemberUpdateWithoutGroupInput, RecipientGroupMemberUncheckedUpdateWithoutGroupInput>
+    create: XOR<RecipientGroupMemberCreateWithoutGroupInput, RecipientGroupMemberUncheckedCreateWithoutGroupInput>
+  }
+
+  export type RecipientGroupMemberUpdateWithWhereUniqueWithoutGroupInput = {
+    where: RecipientGroupMemberWhereUniqueInput
+    data: XOR<RecipientGroupMemberUpdateWithoutGroupInput, RecipientGroupMemberUncheckedUpdateWithoutGroupInput>
+  }
+
+  export type RecipientGroupMemberUpdateManyWithWhereWithoutGroupInput = {
+    where: RecipientGroupMemberScalarWhereInput
+    data: XOR<RecipientGroupMemberUpdateManyMutationInput, RecipientGroupMemberUncheckedUpdateManyWithoutGroupInput>
+  }
+
+  export type RecipientGroupCreateWithoutMembersInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    creator: UserCreateNestedOneWithoutRecipientGroupsCreatedInput
+  }
+
+  export type RecipientGroupUncheckedCreateWithoutMembersInput = {
+    id?: string
+    name: string
+    createdBy: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RecipientGroupCreateOrConnectWithoutMembersInput = {
+    where: RecipientGroupWhereUniqueInput
+    create: XOR<RecipientGroupCreateWithoutMembersInput, RecipientGroupUncheckedCreateWithoutMembersInput>
+  }
+
+  export type UserCreateWithoutRecipientGroupMembershipsInput = {
+    id?: string
+    email: string
+    password?: string | null
+    phoneNumber: string
+    name: string
+    avatar?: string | null
+    district?: string | null
+    about?: string | null
+    role?: $Enums.Role
+    lastLogin?: Date | string
+    isVerified?: boolean
+    resetPasswordToken?: string | null
+    resetPasswordExpiresAt?: Date | string | null
+    verificationToken?: string | null
+    verificationTokenExpiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sentNotifications?: InAppNotificationCreateNestedManyWithoutSenderInput
+    receivedNotifications?: InAppNotificationCreateNestedManyWithoutRecipientInput
+    notificationBatches?: NotificationBatchCreateNestedManyWithoutSenderInput
+    recipientGroupsCreated?: RecipientGroupCreateNestedManyWithoutCreatorInput
+  }
+
+  export type UserUncheckedCreateWithoutRecipientGroupMembershipsInput = {
+    id?: string
+    email: string
+    password?: string | null
+    phoneNumber: string
+    name: string
+    avatar?: string | null
+    district?: string | null
+    about?: string | null
+    role?: $Enums.Role
+    lastLogin?: Date | string
+    isVerified?: boolean
+    resetPasswordToken?: string | null
+    resetPasswordExpiresAt?: Date | string | null
+    verificationToken?: string | null
+    verificationTokenExpiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sentNotifications?: InAppNotificationUncheckedCreateNestedManyWithoutSenderInput
+    receivedNotifications?: InAppNotificationUncheckedCreateNestedManyWithoutRecipientInput
+    notificationBatches?: NotificationBatchUncheckedCreateNestedManyWithoutSenderInput
+    recipientGroupsCreated?: RecipientGroupUncheckedCreateNestedManyWithoutCreatorInput
+  }
+
+  export type UserCreateOrConnectWithoutRecipientGroupMembershipsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutRecipientGroupMembershipsInput, UserUncheckedCreateWithoutRecipientGroupMembershipsInput>
+  }
+
+  export type RecipientGroupUpsertWithoutMembersInput = {
+    update: XOR<RecipientGroupUpdateWithoutMembersInput, RecipientGroupUncheckedUpdateWithoutMembersInput>
+    create: XOR<RecipientGroupCreateWithoutMembersInput, RecipientGroupUncheckedCreateWithoutMembersInput>
+    where?: RecipientGroupWhereInput
+  }
+
+  export type RecipientGroupUpdateToOneWithWhereWithoutMembersInput = {
+    where?: RecipientGroupWhereInput
+    data: XOR<RecipientGroupUpdateWithoutMembersInput, RecipientGroupUncheckedUpdateWithoutMembersInput>
+  }
+
+  export type RecipientGroupUpdateWithoutMembersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    creator?: UserUpdateOneRequiredWithoutRecipientGroupsCreatedNestedInput
+  }
+
+  export type RecipientGroupUncheckedUpdateWithoutMembersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserUpsertWithoutRecipientGroupMembershipsInput = {
+    update: XOR<UserUpdateWithoutRecipientGroupMembershipsInput, UserUncheckedUpdateWithoutRecipientGroupMembershipsInput>
+    create: XOR<UserCreateWithoutRecipientGroupMembershipsInput, UserUncheckedCreateWithoutRecipientGroupMembershipsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutRecipientGroupMembershipsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutRecipientGroupMembershipsInput, UserUncheckedUpdateWithoutRecipientGroupMembershipsInput>
+  }
+
+  export type UserUpdateWithoutRecipientGroupMembershipsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    about?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentNotifications?: InAppNotificationUpdateManyWithoutSenderNestedInput
+    receivedNotifications?: InAppNotificationUpdateManyWithoutRecipientNestedInput
+    notificationBatches?: NotificationBatchUpdateManyWithoutSenderNestedInput
+    recipientGroupsCreated?: RecipientGroupUpdateManyWithoutCreatorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutRecipientGroupMembershipsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    about?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentNotifications?: InAppNotificationUncheckedUpdateManyWithoutSenderNestedInput
+    receivedNotifications?: InAppNotificationUncheckedUpdateManyWithoutRecipientNestedInput
+    notificationBatches?: NotificationBatchUncheckedUpdateManyWithoutSenderNestedInput
+    recipientGroupsCreated?: RecipientGroupUncheckedUpdateManyWithoutCreatorNestedInput
+  }
+
+  export type InAppNotificationCreateManySenderInput = {
+    id?: string
+    batchId?: string | null
+    recipientId: string
+    title: string
+    body: string
+    link?: string | null
+    read?: boolean
+    readAt?: Date | string | null
+    event?: string | null
+    createdAt?: Date | string
+  }
+
+  export type InAppNotificationCreateManyRecipientInput = {
+    id?: string
+    batchId?: string | null
+    senderId?: string | null
+    title: string
+    body: string
+    link?: string | null
+    read?: boolean
+    readAt?: Date | string | null
+    event?: string | null
+    createdAt?: Date | string
+  }
+
+  export type NotificationBatchCreateManySenderInput = {
+    id?: string
+    targetType: $Enums.NotificationTargetType
+    targetRef?: string | null
+    individualIds?: NotificationBatchCreateindividualIdsInput | string[]
+    title: string
+    body: string
+    link?: string | null
+    scheduledFor?: Date | string | null
+    status?: $Enums.NotificationBatchStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RecipientGroupCreateManyCreatorInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RecipientGroupMemberCreateManyUserInput = {
+    id?: string
+    groupId: string
+    createdAt?: Date | string
+  }
+
+  export type InAppNotificationUpdateWithoutSenderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    event?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batch?: NotificationBatchUpdateOneWithoutNotificationsNestedInput
+    recipient?: UserUpdateOneRequiredWithoutReceivedNotificationsNestedInput
+  }
+
+  export type InAppNotificationUncheckedUpdateWithoutSenderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    event?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InAppNotificationUncheckedUpdateManyWithoutSenderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    event?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InAppNotificationUpdateWithoutRecipientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    event?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batch?: NotificationBatchUpdateOneWithoutNotificationsNestedInput
+    sender?: UserUpdateOneWithoutSentNotificationsNestedInput
+  }
+
+  export type InAppNotificationUncheckedUpdateWithoutRecipientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    senderId?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    event?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InAppNotificationUncheckedUpdateManyWithoutRecipientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    senderId?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    event?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationBatchUpdateWithoutSenderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetType?: EnumNotificationTargetTypeFieldUpdateOperationsInput | $Enums.NotificationTargetType
+    targetRef?: NullableStringFieldUpdateOperationsInput | string | null
+    individualIds?: NotificationBatchUpdateindividualIdsInput | string[]
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduledFor?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumNotificationBatchStatusFieldUpdateOperationsInput | $Enums.NotificationBatchStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: InAppNotificationUpdateManyWithoutBatchNestedInput
+  }
+
+  export type NotificationBatchUncheckedUpdateWithoutSenderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetType?: EnumNotificationTargetTypeFieldUpdateOperationsInput | $Enums.NotificationTargetType
+    targetRef?: NullableStringFieldUpdateOperationsInput | string | null
+    individualIds?: NotificationBatchUpdateindividualIdsInput | string[]
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduledFor?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumNotificationBatchStatusFieldUpdateOperationsInput | $Enums.NotificationBatchStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: InAppNotificationUncheckedUpdateManyWithoutBatchNestedInput
+  }
+
+  export type NotificationBatchUncheckedUpdateManyWithoutSenderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetType?: EnumNotificationTargetTypeFieldUpdateOperationsInput | $Enums.NotificationTargetType
+    targetRef?: NullableStringFieldUpdateOperationsInput | string | null
+    individualIds?: NotificationBatchUpdateindividualIdsInput | string[]
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduledFor?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumNotificationBatchStatusFieldUpdateOperationsInput | $Enums.NotificationBatchStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RecipientGroupUpdateWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: RecipientGroupMemberUpdateManyWithoutGroupNestedInput
+  }
+
+  export type RecipientGroupUncheckedUpdateWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: RecipientGroupMemberUncheckedUpdateManyWithoutGroupNestedInput
+  }
+
+  export type RecipientGroupUncheckedUpdateManyWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RecipientGroupMemberUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    group?: RecipientGroupUpdateOneRequiredWithoutMembersNestedInput
+  }
+
+  export type RecipientGroupMemberUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RecipientGroupMemberUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InAppNotificationCreateManyBatchInput = {
+    id?: string
+    senderId?: string | null
+    recipientId: string
+    title: string
+    body: string
+    link?: string | null
+    read?: boolean
+    readAt?: Date | string | null
+    event?: string | null
+    createdAt?: Date | string
+  }
+
+  export type InAppNotificationUpdateWithoutBatchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    event?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sender?: UserUpdateOneWithoutSentNotificationsNestedInput
+    recipient?: UserUpdateOneRequiredWithoutReceivedNotificationsNestedInput
+  }
+
+  export type InAppNotificationUncheckedUpdateWithoutBatchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    event?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InAppNotificationUncheckedUpdateManyWithoutBatchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    event?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RecipientGroupMemberCreateManyGroupInput = {
+    id?: string
+    userId: string
+    createdAt?: Date | string
+  }
+
+  export type RecipientGroupMemberUpdateWithoutGroupInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutRecipientGroupMembershipsNestedInput
+  }
+
+  export type RecipientGroupMemberUncheckedUpdateWithoutGroupInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RecipientGroupMemberUncheckedUpdateManyWithoutGroupInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

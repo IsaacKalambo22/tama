@@ -1,9 +1,9 @@
 import { Router } from "express"
 import {
   getEmailConfig,
-  updateEmailConfig,
-  testSendEmail,
   getEmailLog,
+  testSendEmail,
+  updateEmailConfig,
 } from "../../controllers/email-admin"
 import { verifyAdmin } from "../../middlewares/verify-token"
 

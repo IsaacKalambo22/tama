@@ -139,10 +139,7 @@ export async function sendEmail(
   }
 
   if (hasInline && !subject) {
-    throw new InfisendError(
-      "Inline sends require a subject.",
-      400
-    )
+    throw new InfisendError("Inline sends require a subject.", 400)
   }
 
   if (templateId && variables === undefined) {
@@ -241,10 +238,7 @@ export async function sendBulkEmail(
   }
 
   if (hasInline && !subject) {
-    throw new InfisendError(
-      "Inline sends require a subject.",
-      400
-    )
+    throw new InfisendError("Inline sends require a subject.", 400)
   }
 
   const body: Record<string, unknown> = { recipients }

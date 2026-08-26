@@ -21,7 +21,9 @@ export const handleInfiSendWebhook = async (
 
   const header = req.get("x-infitech-signature") ?? ""
   if (!header) {
-    res.status(400).json({ success: false, message: "Missing signature header" })
+    res
+      .status(400)
+      .json({ success: false, message: "Missing signature header" })
     return
   }
 
@@ -36,14 +38,18 @@ export const handleInfiSendWebhook = async (
   const v1 = parts["v1"]
 
   if (!t || !v1) {
-    res.status(400).json({ success: false, message: "Malformed signature header" })
+    res
+      .status(400)
+      .json({ success: false, message: "Malformed signature header" })
     return
   }
 
   // Check freshness — reject if timestamp is >5 min old
   const timestamp = Number(t)
   if (Number.isNaN(timestamp)) {
-    res.status(400).json({ success: false, message: "Invalid signature timestamp" })
+    res
+      .status(400)
+      .json({ success: false, message: "Invalid signature timestamp" })
     return
   }
 
@@ -57,7 +63,9 @@ export const handleInfiSendWebhook = async (
   const secret = process.env.INFISEND_WEBHOOK_SECRET
   if (!secret) {
     console.error("[webhook] INFISEND_WEBHOOK_SECRET is not configured")
-    res.status(500).json({ success: false, message: "Webhook secret not configured" })
+    res
+      .status(500)
+      .json({ success: false, message: "Webhook secret not configured" })
     return
   }
 
@@ -96,13 +104,17 @@ export const handleInfiSendWebhook = async (
     }
 
     if (!event.messageId || !event.status) {
-      console.warn("[webhook] Received event with missing messageId or status — ignoring.")
+      console.warn(
+        "[webhook] Received event with missing messageId or status — ignoring."
+      )
       return
     }
 
     // Only process message.* lifecycle events
     if (!event.event?.startsWith("message.")) {
-      console.warn(`[webhook] Unhandled event type "${event.event}" — ignoring.`)
+      console.warn(
+        `[webhook] Unhandled event type "${event.event}" — ignoring.`
+      )
       return
     }
 

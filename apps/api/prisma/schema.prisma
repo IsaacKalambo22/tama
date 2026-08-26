@@ -29,6 +29,20 @@ enum EmailNotificationStatus {
   CANCELLED
 }
 
+enum NotificationTargetType {
+  INDIVIDUALS
+  GROUP
+  DISTRICT
+  COUNCIL
+}
+
+enum NotificationBatchStatus {
+  DRAFT
+  SCHEDULED
+  SENT
+  CANCELLED
+}
+
 model User {
   id                         String    @id @default(uuid())
   email                      String    @unique
@@ -47,6 +61,12 @@ model User {
   verificationTokenExpiresAt DateTime?
   createdAt                  DateTime  @default(now())
   updatedAt                  DateTime  @updatedAt
+
+  sentNotifications         InAppNotification[]    @relation("NotificationSender")
+  receivedNotifications     InAppNotification[]    @relation("NotificationRecipient")
+  notificationBatches       NotificationBatch[]    @relation("NotificationBatchSender")
+  recipientGroupsCreated    RecipientGroup[]       @relation("RecipientGroupCreator")
+  recipientGroupMemberships RecipientGroupMember[] @relation("RecipientGroupMember")
 }
 
 model Shop {
@@ -211,4 +231,78 @@ model EmailNotification {
   @@index([recipient])
   @@index([event])
   @@index([status])
+}
+
+// One row per (batch, recipient) so read state is tracked per person, even
+// for a bulk send. `event` mirrors the shared vocabulary in
+// apps/api/src/notifications/event-map.ts for system-triggered rows (e.g.
+// "user.created"); it stays null for manually composed sends.
+model InAppNotification {
+  id          String   @id @default(uuid())
+  batchId     String?
+  batch       NotificationBatch? @relation(fields: [batchId], references: [id], onDelete: SetNull)
+  senderId    String?
+  sender      User?    @relation("NotificationSender", fields: [senderId], references: [id], onDelete: SetNull)
+  recipientId String
+  recipient   User     @relation("NotificationRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  title       String
+  body        String
+  link        String?
+  read        Boolean  @default(false)
+  readAt      DateTime?
+  event       String?
+  createdAt   DateTime @default(now())
+
+  @@index([recipientId, read, createdAt])
+  @@index([batchId])
+}
+
+// Groups the fan-out for the sender's view ("sent to District X, 340
+// recipients, 12 read"). `targetRef` holds the RecipientGroup id, the
+// district string, or the CouncilList id depending on `targetType`;
+// `individualIds` is used only when targetType is INDIVIDUALS.
+model NotificationBatch {
+  id            String                  @id @default(uuid())
+  senderId      String
+  sender        User                    @relation("NotificationBatchSender", fields: [senderId], references: [id], onDelete: Cascade)
+  targetType    NotificationTargetType
+  targetRef     String?
+  individualIds String[]                @default([])
+  title         String
+  body          String
+  link          String?
+  scheduledFor  DateTime?
+  status        NotificationBatchStatus @default(DRAFT)
+  createdAt     DateTime                @default(now())
+  updatedAt     DateTime                @updatedAt
+
+  notifications InAppNotification[]
+
+  @@index([senderId])
+  @@index([status, scheduledFor])
+}
+
+// Reusable, named recipient lists a sender can target repeatedly instead of
+// re-selecting individuals each time. No equivalent concept existed
+// elsewhere in the schema.
+model RecipientGroup {
+  id        String                 @id @default(uuid())
+  name      String
+  createdBy String
+  creator   User                   @relation("RecipientGroupCreator", fields: [createdBy], references: [id], onDelete: Cascade)
+  members   RecipientGroupMember[]
+  createdAt DateTime               @default(now())
+  updatedAt DateTime               @updatedAt
+}
+
+model RecipientGroupMember {
+  id        String         @id @default(uuid())
+  groupId   String
+  group     RecipientGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User           @relation("RecipientGroupMember", fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime       @default(now())
+
+  @@unique([groupId, userId])
+  @@index([userId])
 }

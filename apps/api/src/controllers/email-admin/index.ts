@@ -1,7 +1,6 @@
 import { Request, Response } from "express"
 import prisma from "../../config"
-import { sendEmail } from "../../infisend/client"
-import { InfisendError } from "../../infisend/client"
+import { InfisendError, sendEmail } from "../../infisend/client"
 import { APIResponse } from "../../types"
 
 /**
@@ -78,7 +77,8 @@ export const testSendEmail = async (
     return
   }
 
-  const fromName = process.env.INFISEND_DEFAULT_FROM_NAME || "TAMA Farmers Trust"
+  const fromName =
+    process.env.INFISEND_DEFAULT_FROM_NAME || "TAMA Farmers Trust"
   const replyTo = process.env.INFISEND_DEFAULT_REPLY_TO
 
   try {
@@ -156,7 +156,10 @@ export const getEmailLog = async (
     where.event = req.query.event as string
   }
   if (req.query.recipient) {
-    where.recipient = { contains: req.query.recipient as string, mode: "insensitive" }
+    where.recipient = {
+      contains: req.query.recipient as string,
+      mode: "insensitive",
+    }
   }
 
   try {

@@ -1,6 +1,5 @@
 import { Request, Response } from "express"
 import prisma from "../../config"
-import { notifyEvent } from "../../notifications/service"
 import { APIResponse } from "../../types"
 
 export const createEvent = async (

@@ -93,3 +93,10 @@ export const verifyAdminAndManager = (
     }
   })
 }
+
+// Gate for composing/sending notifications. Spec calls for
+// ADMIN/MANAGER/DISTRICT_ADMIN, but DISTRICT_ADMIN doesn't exist on the
+// Role enum yet (see schema.prisma) — this is an alias over
+// verifyAdminAndManager so the one place that needs updating, once that
+// role lands, is here rather than every route file.
+export const verifyNotificationSender = verifyAdminAndManager
