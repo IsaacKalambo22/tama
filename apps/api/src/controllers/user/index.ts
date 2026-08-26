@@ -3,7 +3,6 @@ import { sendContactEmail } from "@/nodemailer/emails"
 import { APIResponse } from "@/types"
 import bcrypt from "bcryptjs"
 import { Request, Response } from "express"
-import { parsePhoneNumberFromString } from "libphonenumber-js"
 
 export const getAllUsers = async (
   _req: Request,
@@ -261,9 +260,17 @@ function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
 
-function isValidE164Phone(phone: string): boolean {
-  const parsed = parsePhoneNumberFromString(phone)
-  return parsed ? parsed.isValid() && parsed.number === phone : false
+function isValidPhone(phone: string): boolean {
+  return /^(\+265(9|8)\d{8}|0(9|8)\d{8})$/.test(phone.trim())
+}
+
+function normalizePhone(phone: string): string {
+  const trimmed = phone.trim()
+  if (trimmed.startsWith("+265")) return trimmed
+  if (trimmed.startsWith("09") || trimmed.startsWith("08")) {
+    return "+265" + trimmed.slice(1)
+  }
+  return trimmed
 }
 
 interface ImportRow {
@@ -344,13 +351,13 @@ export const bulkImportUsers = async (
       continue
     }
 
-    if (!phoneNumber || !isValidE164Phone(phoneNumber)) {
+    if (!phoneNumber || !isValidPhone(phoneNumber)) {
       results.push({
         row,
         email,
         status: "failed",
         reason:
-          "A valid phone number in E.164 format is required (e.g., +1234567890)",
+          "A valid TNM or Airtel phone number is required (e.g., +2659XXXXXXXX or 09XXXXXXXX)",
       })
       continue
     }
@@ -408,7 +415,7 @@ export const bulkImportUsers = async (
         data: {
           name,
           email,
-          phoneNumber,
+          phoneNumber: normalizePhone(phoneNumber),
           role: role as "ADMIN" | "MANAGER" | "USER",
           district: district || null,
           password: defaultPassword,
@@ -487,14 +494,14 @@ export const bulkImportPhoneNumbers = async (
     const email = update.email?.trim().toLowerCase() || ""
     const name = update.name?.trim() || ""
 
-    if (!phoneNumber || !isValidE164Phone(phoneNumber)) {
+    if (!phoneNumber || !isValidPhone(phoneNumber)) {
       results.push({
         row,
         email,
         name,
         phoneNumber,
         status: "failed",
-        reason: "A valid phone number in E.164 format is required",
+        reason: "A valid TNM or Airtel phone number is required (e.g., +2659XXXXXXXX or 09XXXXXXXX)",
       })
       continue
     }
@@ -559,7 +566,7 @@ export const bulkImportPhoneNumbers = async (
     try {
       await prisma.user.update({
         where: { id: matchedUser.id },
-        data: { phoneNumber },
+        data: { phoneNumber: normalizePhone(phoneNumber) },
       })
       results.push({
         row,
