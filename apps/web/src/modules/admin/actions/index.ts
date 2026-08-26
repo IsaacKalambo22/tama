@@ -651,3 +651,74 @@ export const deleteStat = async (
     layout,
   ])
 }
+
+// BULK IMPORT SERVER ACTIONS
+export const bulkImportUsers = async (payload: object) => {
+  try {
+    const session = await auth()
+    if (!session) {
+      return { success: false, error: "Not signed in" }
+    }
+
+    const response = await fetch(`${BASE_URL}/users/import/bulk`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.accessToken}`,
+      },
+      body: JSON.stringify(payload),
+    })
+
+    const result = await response.json()
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: result.message || "Something went wrong",
+      }
+    }
+
+    return { success: true, data: result.data }
+  } catch (error) {
+    return {
+      success: false,
+      error:
+        error instanceof Error ? error.message : "An unexpected error occurred",
+    }
+  }
+}
+
+export const bulkImportPhoneNumbers = async (payload: object) => {
+  try {
+    const session = await auth()
+    if (!session) {
+      return { success: false, error: "Not signed in" }
+    }
+
+    const response = await fetch(`${BASE_URL}/users/import/phone/bulk`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.accessToken}`,
+      },
+      body: JSON.stringify(payload),
+    })
+
+    const result = await response.json()
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: result.message || "Something went wrong",
+      }
+    }
+
+    return { success: true, data: result.data }
+  } catch (error) {
+    return {
+      success: false,
+      error:
+        error instanceof Error ? error.message : "An unexpected error occurred",
+    }
+  }
+}
