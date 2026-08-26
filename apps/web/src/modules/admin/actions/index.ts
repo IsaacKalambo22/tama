@@ -652,7 +652,6 @@ export const deleteStat = async (
   ])
 }
 
-<<<<<<< HEAD
 // BULK IMPORT SERVER ACTIONS
 export const bulkImportUsers = async (payload: object) => {
   try {
