@@ -74,7 +74,7 @@ export const getTeam = async (
 }
 
 export const getTeamById = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -106,7 +106,7 @@ export const getTeamById = async (
 }
 
 export const updateTeam = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -185,7 +185,7 @@ export const updateTeam = async (
 }
 
 export const deleteTeam = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
