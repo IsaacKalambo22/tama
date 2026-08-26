@@ -41,7 +41,7 @@ export const getAllUsers = async (
 }
 
 export const getUserById = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -88,7 +88,7 @@ export const getUserById = async (
 }
 
 export const updateUser = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -161,7 +161,7 @@ export const updateUser = async (
 }
 
 export const deleteUser = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
