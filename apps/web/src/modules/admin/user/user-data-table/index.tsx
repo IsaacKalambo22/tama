@@ -1,8 +1,8 @@
 import { fetchUsers } from "@/lib/api"
 import AddNewHeader from "@/modules/admin/add-new-header"
 import { CustomDataTable } from "@/modules/common/custom-data-table"
-import { userColumns } from "../user-data-columns"
 import DownloadTemplateDropdown from "../download-template-dropdown"
+import { userColumns } from "../user-data-columns"
 
 const UserDataTable = async () => {
   let users = []

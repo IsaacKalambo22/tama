@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "prisma-client-b88966fe9ee8940706deccb358e9fdd6c3549b9d892a5edb96d2afcf0fafbe28",
+=======
+  "name": "prisma-client-2cf8f48214491280ec4e0e79907bc2577752a1a8957e267ad7aaec74f67d6cba",
+>>>>>>> origin/feature/messages-and-notifications
   "main": "index.js",
   "types": "index.d.ts",
   "browser": "default.js",

@@ -4,6 +4,7 @@ import { Form } from "@/components/ui/form"
 import { SelectItem } from "@/components/ui/select"
 import useCustomPath from "@/hooks/use-custom-path"
 import { Role } from "@/lib/api"
+import { normalizeMalawiPhone } from "@/lib/phone-validation"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -16,7 +17,6 @@ import { toast } from "sonner"
 import * as zod from "zod"
 import { createUser } from "../../actions"
 import Modal from "../../modal"
-import { normalizeMalawiPhone } from "@/lib/phone-validation"
 
 type Props = {
   isOpen: boolean

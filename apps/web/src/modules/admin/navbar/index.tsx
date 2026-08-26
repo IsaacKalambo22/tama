@@ -17,6 +17,7 @@ import { useSession } from "next-auth/react"
 import { AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai"
 
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
+import NotificationBell from "@/modules/admin/notification-bell"
 import Link from "next/link"
 import { useEffect } from "react"
 
@@ -55,7 +56,8 @@ const Navbar = () => {
         )}
       </div>
 
-      <div className="mr-5">
+      <div className="flex items-center gap-2 mr-5">
+        <NotificationBell />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button className="h-10 " variant="outline">

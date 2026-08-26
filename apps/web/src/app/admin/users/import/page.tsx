@@ -11,8 +11,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import {
+  isValidMalawiPhone,
+  normalizeMalawiPhone,
+} from "@/lib/phone-validation"
 import { bulkImportUsers } from "@/modules/admin/actions"
-import { isValidMalawiPhone, normalizeMalawiPhone } from "@/lib/phone-validation"
 import {
   ArrowLeft,
   CheckCircle,
@@ -23,7 +26,7 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import Papa from "papaparse"
-import { useRef, useState, useCallback } from "react"
+import { useCallback, useRef, useState } from "react"
 import { useDropzone } from "react-dropzone"
 import { toast } from "sonner"
 import * as XLSX from "xlsx"
@@ -83,9 +86,7 @@ function validateHeaders(headers: string[]): string[] {
     return null
   })
 
-  const missingFields = EXPECTED_FIELDS.filter(
-    (f) => !mappedFields.includes(f)
-  )
+  const missingFields = EXPECTED_FIELDS.filter((f) => !mappedFields.includes(f))
   if (missingFields.length > 0) {
     errors.push(`Missing required columns: ${missingFields.join(", ")}`)
   }

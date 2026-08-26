@@ -501,7 +501,8 @@ export const bulkImportPhoneNumbers = async (
         name,
         phoneNumber,
         status: "failed",
-        reason: "A valid TNM or Airtel phone number is required (e.g., +2659XXXXXXXX or 09XXXXXXXX)",
+        reason:
+          "A valid TNM or Airtel phone number is required (e.g., +2659XXXXXXXX or 09XXXXXXXX)",
       })
       continue
     }

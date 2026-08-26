@@ -285,6 +285,66 @@ exports.Prisma.ImageTextScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.EmailNotificationScalarFieldEnum = {
+  id: 'id',
+  messageId: 'messageId',
+  event: 'event',
+  recipient: 'recipient',
+  templateId: 'templateId',
+  subject: 'subject',
+  status: 'status',
+  failureCode: 'failureCode',
+  failureReason: 'failureReason',
+  costCharged: 'costCharged',
+  providerMessageId: 'providerMessageId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.InAppNotificationScalarFieldEnum = {
+  id: 'id',
+  batchId: 'batchId',
+  senderId: 'senderId',
+  recipientId: 'recipientId',
+  title: 'title',
+  body: 'body',
+  link: 'link',
+  read: 'read',
+  readAt: 'readAt',
+  event: 'event',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.NotificationBatchScalarFieldEnum = {
+  id: 'id',
+  senderId: 'senderId',
+  targetType: 'targetType',
+  targetRef: 'targetRef',
+  individualIds: 'individualIds',
+  title: 'title',
+  body: 'body',
+  link: 'link',
+  scheduledFor: 'scheduledFor',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RecipientGroupScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RecipientGroupMemberScalarFieldEnum = {
+  id: 'id',
+  groupId: 'groupId',
+  userId: 'userId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -305,6 +365,29 @@ exports.Role = exports.$Enums.Role = {
   USER: 'USER'
 };
 
+exports.EmailNotificationStatus = exports.$Enums.EmailNotificationStatus = {
+  QUEUED: 'QUEUED',
+  SENT: 'SENT',
+  DELIVERED: 'DELIVERED',
+  FAILED: 'FAILED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.NotificationTargetType = exports.$Enums.NotificationTargetType = {
+  INDIVIDUALS: 'INDIVIDUALS',
+  GROUP: 'GROUP',
+  DISTRICT: 'DISTRICT',
+  COUNCIL: 'COUNCIL'
+};
+
+exports.NotificationBatchStatus = exports.$Enums.NotificationBatchStatus = {
+  DRAFT: 'DRAFT',
+  SCHEDULED: 'SCHEDULED',
+  SENT: 'SENT',
+  CANCELLED: 'CANCELLED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Shop: 'Shop',
@@ -319,7 +402,12 @@ exports.Prisma.ModelName = {
   Vacancy: 'Vacancy',
   Service: 'Service',
   Carousel: 'Carousel',
-  ImageText: 'ImageText'
+  ImageText: 'ImageText',
+  EmailNotification: 'EmailNotification',
+  InAppNotification: 'InAppNotification',
+  NotificationBatch: 'NotificationBatch',
+  RecipientGroup: 'RecipientGroup',
+  RecipientGroupMember: 'RecipientGroupMember'
 };
 
 /**

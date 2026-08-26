@@ -48,7 +48,11 @@ interface HeaderProps {
   extraActions?: ReactElement
 }
 
-const AddNewHeader = ({ name, buttonName, extraActions }: HeaderProps): ReactElement => {
+const AddNewHeader = ({
+  name,
+  buttonName,
+  extraActions,
+}: HeaderProps): ReactElement => {
   const [isOpen, setIsOpen] = useState(false)
   const router = useRouter()
 
@@ -79,7 +83,9 @@ const AddNewHeader = ({ name, buttonName, extraActions }: HeaderProps): ReactEle
                 <UserPlus className="mr-2 h-4 w-4" />
                 Add Single User
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => router.push("/admin/users/import")}>
+              <DropdownMenuItem
+                onClick={() => router.push("/admin/users/import")}
+              >
                 <Upload className="mr-2 h-4 w-4" />
                 Bulk Import
               </DropdownMenuItem>

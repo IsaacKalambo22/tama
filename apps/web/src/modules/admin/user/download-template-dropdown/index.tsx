@@ -8,8 +8,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { UserProps } from "@/lib/api"
-import { ChevronDown, Download, FileSpreadsheet, FileText } from "lucide-react"
 import { jsPDF } from "jspdf"
+import { ChevronDown, Download, FileSpreadsheet, FileText } from "lucide-react"
 import * as XLSX from "xlsx"
 
 const TABLE_HEADERS = ["#", "Name", "Email", "Phone Number", "Role", "District"]

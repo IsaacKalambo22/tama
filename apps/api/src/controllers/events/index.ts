@@ -31,6 +31,11 @@ export const createEvent = async (
       },
     })
 
+    // Fire-and-forget: notify via InfiSend without blocking the response
+    // Recipients should come from a subscriber list in production;
+    // for now, no email is sent for event.created until a recipient list is defined.
+    // To enable: void notifyEvent("event.created", recipientEmail, { title, date, location })
+
     res.status(201).json({
       success: true,
       message: "Event created successfully",
