@@ -97,8 +97,21 @@ export const ADMIN_LINKS: SidebarProps[] = [
   },
   {
     label: "Users",
-    href: "/admin/users",
     icon: UsersIcon,
+    submenu: [
+      {
+        label: "All Users",
+        href: "/admin/users",
+      },
+      {
+        label: "Bulk Import",
+        href: "/admin/users/import",
+      },
+      {
+        label: "Phone Import",
+        href: "/admin/users/import/phone",
+      },
+    ],
   },
   {
     label: "Messaging", // New "Messaging" section
