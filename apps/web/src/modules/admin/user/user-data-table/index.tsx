@@ -22,7 +22,7 @@ const UserDataTable = async () => {
       <AddNewHeader
         name="Users List"
         buttonName="Add User"
-        extraActions={<DownloadTemplateDropdown />}
+        extraActions={<DownloadTemplateDropdown users={users} />}
       />
       <CustomDataTable
         data={users}
