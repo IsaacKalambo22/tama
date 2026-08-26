@@ -828,5 +828,4 @@ export const removeRecipientGroupMember = async (
     null,
     [fullPath, pathWithoutAdmin]
   )
->>>>>>> origin/feature/messages-and-notifications
 }
