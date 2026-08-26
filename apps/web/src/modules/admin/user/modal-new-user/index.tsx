@@ -16,6 +16,7 @@ import { toast } from "sonner"
 import * as zod from "zod"
 import { createUser } from "../../actions"
 import Modal from "../../modal"
+import { normalizeMalawiPhone } from "@/lib/phone-validation"
 
 type Props = {
   isOpen: boolean
@@ -32,7 +33,7 @@ const ModalNewUser = ({ isOpen, onClose }: Props) => {
   const toggleShowPassword = () => {
     setShowPassword(!showPassword)
   }
-  const phoneNumberRegex = /^\+?[1-9]\d{1,14}$/
+  const phoneNumberRegex = /^(\+265(9|8)\d{8}|0(9|8)\d{8})$/
 
   const formSchema = zod.object({
     firstName: zod.string().min(2, {
@@ -46,7 +47,7 @@ const ModalNewUser = ({ isOpen, onClose }: Props) => {
     }),
     phoneNumber: zod.string().regex(phoneNumberRegex, {
       message:
-        "Phone number must be a valid international format (e.g., +123456789).",
+        "Phone number must be a valid TNM or Airtel number (e.g., +2659XXXXXXXX or 09XXXXXXXX).",
     }),
     role: zod.string().min(2, {
       message: "Role must be at least 2 characters.",
@@ -67,7 +68,7 @@ const ModalNewUser = ({ isOpen, onClose }: Props) => {
     setIsLoading(true)
     const name = `${values.firstName} ${values.lastName}`.trim()
     const email = values.email
-    const phoneNumber = values.phoneNumber
+    const phoneNumber = normalizeMalawiPhone(values.phoneNumber)
     const role = values.role
     const payload = {
       name,
