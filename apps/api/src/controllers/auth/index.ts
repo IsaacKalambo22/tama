@@ -4,6 +4,7 @@ import { Request, Response } from "express"
 
 import { Role } from "../../../prisma/generated/prisma"
 import prisma from "../../config"
+import { notifyEvent } from "../../notifications/service"
 import {
   sendPasswordResetEmail,
   sendResetSuccessEmail,
@@ -12,6 +13,9 @@ import {
 } from "../../nodemailer/emails"
 import { APIResponse } from "../../types"
 import { generateTokens } from "../../utils/generate-tokens"
+
+// NOTE: Nodemailer emails above are superseded by InfiSend notifications
+// and can be removed once the InfiSend integration is fully validated.
 
 export const bootstrapAdmin = async (
   email: string,
@@ -101,6 +105,13 @@ export const registerUser = async (
       email,
       `${process.env.CLIENT_BASE_URL}/set-password/${verificationToken}`
     )
+
+    // Fire-and-forget: notify via InfiSend without blocking the response
+    void notifyEvent("user.created", email, {
+      name,
+      email,
+      phoneNumber: phoneNumber || "",
+    })
 
     res.status(201).json({
       success: true,

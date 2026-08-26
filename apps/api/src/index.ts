@@ -10,6 +10,7 @@ import { bootstrapAdmin } from "./controllers/auth"
 import auth from "./routes/auth"
 import blogs from "./routes/blog"
 import councilLists from "./routes/council-list"
+import emailAdmin from "./routes/email-admin"
 import events from "./routes/events"
 import forms from "./routes/form"
 import home from "./routes/home"
@@ -22,10 +23,16 @@ import stats from "./routes/stat"
 import team from "./routes/team"
 import users from "./routes/user"
 import vacancies from "./routes/vacancy"
+import webhooks from "./routes/webhooks"
 
 /* CONFIGURATIONS */
 dotenv.config()
 const app = express()
+
+// InfiSend webhook — mounted BEFORE global body parsers so express.raw()
+// can capture the raw bytes needed for HMAC-SHA-256 signature verification.
+app.use("/webhooks", webhooks)
+
 app.use(express.json())
 app.use(helmet())
 app.use(
@@ -65,6 +72,7 @@ app.use("/vacancies", vacancies)
 app.use("/services", services)
 app.use("/council-lists", councilLists)
 app.use("/reports-publications", reportsPublications)
+app.use("/admin/email", emailAdmin)
 
 /* SERVER */
 const PORT = Number(process.env.PORT) || 8000

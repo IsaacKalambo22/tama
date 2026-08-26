@@ -20,6 +20,15 @@ enum Role {
   USER
 }
 
+enum EmailNotificationStatus {
+  QUEUED
+  SENT
+  DELIVERED
+  FAILED
+  REJECTED
+  CANCELLED
+}
+
 model User {
   id                         String    @id @default(uuid())
   email                      String    @unique
@@ -182,4 +191,24 @@ model ImageText {
   imageUrl    String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model EmailNotification {
+  id            String                  @id @default(uuid())
+  messageId     String?                 @unique
+  event         String
+  recipient     String
+  templateId    String?
+  subject       String?
+  status        EmailNotificationStatus @default(QUEUED)
+  failureCode   String?
+  failureReason String?
+  costCharged   String?
+  providerMessageId String?
+  createdAt     DateTime                @default(now())
+  updatedAt     DateTime                @updatedAt
+
+  @@index([recipient])
+  @@index([event])
+  @@index([status])
 }
