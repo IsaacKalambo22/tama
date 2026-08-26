@@ -87,7 +87,7 @@ export const getAllCouncilLists = async (
 }
 
 export const updateCouncilList = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -160,7 +160,7 @@ export const updateCouncilList = async (
 }
 
 export const deleteCouncilList = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
