@@ -103,14 +103,6 @@ export const ADMIN_LINKS: SidebarProps[] = [
         label: "All Users",
         href: "/admin/users",
       },
-      {
-        label: "Bulk Import",
-        href: "/admin/users/import",
-      },
-      {
-        label: "Phone Import",
-        href: "/admin/users/import/phone",
-      },
     ],
   },
   {
