@@ -4,8 +4,8 @@ import { Form } from "@/components/ui/form"
 import useCustomPath from "@/hooks/use-custom-path"
 import { fetchUsers, UserProps } from "@/lib/api"
 import { createRecipientGroup } from "@/modules/admin/actions"
+import MultiUserSelect from "@/modules/admin/messaging/multi-user-select"
 import Modal from "@/modules/admin/modal"
-import MultiUserSelect from "@/modules/admin/notifications/multi-user-select"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"

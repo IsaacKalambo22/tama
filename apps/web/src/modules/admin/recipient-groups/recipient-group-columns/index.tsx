@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { RecipientGroupProps } from "@/lib/notifications"
+import { RecipientGroupProps } from "@/lib/messaging"
 import { formatDateTime } from "@/lib/utils"
 import { ColumnDef } from "@tanstack/react-table"
 import { Trash } from "lucide-react"

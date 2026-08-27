@@ -1,5 +1,5 @@
 import { auth } from "@/auth"
-import { RecipientGroupProps } from "@/lib/notifications"
+import { RecipientGroupProps } from "@/lib/messaging"
 import { BASE_URL } from "@/lib/utils"
 import { CustomDataTable } from "@/modules/common/custom-data-table"
 import { recipientGroupColumns } from "../recipient-group-columns"

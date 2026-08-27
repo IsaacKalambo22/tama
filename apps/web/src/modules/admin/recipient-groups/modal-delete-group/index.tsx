@@ -6,7 +6,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import useCustomPath from "@/hooks/use-custom-path"
-import { RecipientGroupProps } from "@/lib/notifications"
+import { RecipientGroupProps } from "@/lib/messaging"
 import { deleteRecipientGroup } from "@/modules/admin/actions"
 import Modal from "@/modules/admin/modal"
 import CustomButton, { BUTTON_VARIANT } from "@/modules/common/custom-button"
