@@ -1,23 +1,135 @@
 import crypto from "crypto"
 import { Request, Response } from "express"
+import { ProviderMessageStatus } from "../../../prisma/generated/prisma"
 import prisma from "../../config"
 
 const TOLERANCE_SECONDS = 300
 
+const VALID_STATUSES: ProviderMessageStatus[] = [
+  "QUEUED",
+  "SENT",
+  "DELIVERED",
+  "FAILED",
+  "REJECTED",
+  "CANCELLED",
+]
+
+// A message only ever moves forward through its lifecycle. Replays and
+// out-of-order webhook deliveries that would move it backwards are ignored.
+const STATUS_ORDER: Record<ProviderMessageStatus, number> = {
+  QUEUED: 0,
+  SENT: 1,
+  DELIVERED: 2,
+  FAILED: 3,
+  REJECTED: 3,
+  CANCELLED: 3,
+}
+
+interface ProviderEvent {
+  event: string
+  channel?: "EMAIL" | "SMS"
+  messageId: string
+  status: string
+  failureCode: string | null
+  failureReason: string | null
+  costCharged: string | null
+  providerMessageId: string | null
+}
+
+/**
+ * Applies a provider lifecycle event to the matching email/SMS tracking row.
+ * The `message.*` webhook is channel-agnostic — the event's `channel` field
+ * routes it to the right table.
+ */
+async function applyProviderStatus(event: ProviderEvent): Promise<void> {
+  const status = event.status as ProviderMessageStatus
+  const newPriority = STATUS_ORDER[status] ?? -1
+
+  const mutableData = {
+    status,
+    failureCode: event.failureCode,
+    failureReason: event.failureReason,
+    costCharged: event.costCharged,
+    providerMessageId: event.providerMessageId,
+  }
+
+  // Prefer the explicit channel; fall back to "whichever table has the row"
+  // for older payloads that predate the channel field.
+  const channel = event.channel
+
+  if (channel === "SMS") {
+    const existing = await prisma.smsMessage.findUnique({
+      where: { messageId: event.messageId },
+    })
+    if (!existing) {
+      console.warn(
+        `[webhook] No SmsMessage for messageId "${event.messageId}" — ignoring.`
+      )
+      return
+    }
+    if (newPriority >= (STATUS_ORDER[existing.status] ?? -1)) {
+      await prisma.smsMessage.update({
+        where: { messageId: event.messageId },
+        data: mutableData,
+      })
+    }
+    return
+  }
+
+  if (channel === "EMAIL") {
+    const existing = await prisma.emailMessage.findUnique({
+      where: { messageId: event.messageId },
+    })
+    if (!existing) {
+      console.warn(
+        `[webhook] No EmailMessage for messageId "${event.messageId}" — ignoring.`
+      )
+      return
+    }
+    if (newPriority >= (STATUS_ORDER[existing.status] ?? -1)) {
+      await prisma.emailMessage.update({
+        where: { messageId: event.messageId },
+        data: mutableData,
+      })
+    }
+    return
+  }
+
+  // No channel field — try both tables.
+  const [email, sms] = await Promise.all([
+    prisma.emailMessage.findUnique({ where: { messageId: event.messageId } }),
+    prisma.smsMessage.findUnique({ where: { messageId: event.messageId } }),
+  ])
+
+  if (email && newPriority >= (STATUS_ORDER[email.status] ?? -1)) {
+    await prisma.emailMessage.update({
+      where: { messageId: event.messageId },
+      data: mutableData,
+    })
+  } else if (sms && newPriority >= (STATUS_ORDER[sms.status] ?? -1)) {
+    await prisma.smsMessage.update({
+      where: { messageId: event.messageId },
+      data: mutableData,
+    })
+  } else if (!email && !sms) {
+    console.warn(
+      `[webhook] No email/SMS row for messageId "${event.messageId}" — ignoring.`
+    )
+  }
+}
+
 /**
  * POST /webhooks/infisend
  *
- * Must be mounted BEFORE any global express.json() body parser.
- * This route uses express.raw() so the raw bytes are available for
- * HMAC-SHA-256 signature verification.
+ * Mounted BEFORE any global express.json() body parser and using express.raw()
+ * so the raw bytes are available for HMAC-SHA-256 signature verification.
+ * Handles both EMAIL and SMS delivery events from the single InfiSend webhook.
  */
 export const handleInfiSendWebhook = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   const rawBody = req.body.toString("utf8")
-
-  // ── Signature verification ──────────────────────────────────────────────
 
   const header = req.get("x-infitech-signature") ?? ""
   if (!header) {
@@ -27,7 +139,6 @@ export const handleInfiSendWebhook = async (
     return
   }
 
-  // Parse t= and v1= from the header — tolerant of field ordering
   const parts: Record<string, string> = {}
   for (const part of header.split(",")) {
     const [key, ...rest] = part.trim().split("=")
@@ -36,7 +147,6 @@ export const handleInfiSendWebhook = async (
 
   const t = parts["t"]
   const v1 = parts["v1"]
-
   if (!t || !v1) {
     res
       .status(400)
@@ -44,7 +154,6 @@ export const handleInfiSendWebhook = async (
     return
   }
 
-  // Check freshness — reject if timestamp is >5 min old
   const timestamp = Number(t)
   if (Number.isNaN(timestamp)) {
     res
@@ -59,7 +168,6 @@ export const handleInfiSendWebhook = async (
     return
   }
 
-  // Compute expected HMAC
   const secret = process.env.INFISEND_WEBHOOK_SECRET
   if (!secret) {
     console.error("[webhook] INFISEND_WEBHOOK_SECRET is not configured")
@@ -74,10 +182,8 @@ export const handleInfiSendWebhook = async (
     .update(`${t}.${rawBody}`)
     .digest("hex")
 
-  // Constant-time comparison
   const presented = Buffer.from(v1, "utf8")
   const computed = Buffer.from(expected, "utf8")
-
   if (
     presented.length !== computed.length ||
     !crypto.timingSafeEqual(presented, computed)
@@ -86,97 +192,28 @@ export const handleInfiSendWebhook = async (
     return
   }
 
-  // ── Acknowledge first, process after ────────────────────────────────────
-
+  // Acknowledge first, process after.
   res.sendStatus(200)
 
-  // ── Process event asynchronously ─────────────────────────────────────────
-
   try {
-    const event = JSON.parse(rawBody) as {
-      event: string
-      messageId: string
-      status: string
-      failureCode: string | null
-      failureReason: string | null
-      costCharged: string | null
-      providerMessageId: string | null
-    }
+    const event = JSON.parse(rawBody) as ProviderEvent
 
     if (!event.messageId || !event.status) {
-      console.warn(
-        "[webhook] Received event with missing messageId or status — ignoring."
-      )
+      console.warn("[webhook] Event missing messageId or status — ignoring.")
       return
     }
-
-    // Only process message.* lifecycle events
     if (!event.event?.startsWith("message.")) {
       console.warn(
         `[webhook] Unhandled event type "${event.event}" — ignoring.`
       )
       return
     }
-
-    const validStatuses = [
-      "QUEUED",
-      "SENT",
-      "DELIVERED",
-      "FAILED",
-      "REJECTED",
-      "CANCELLED",
-    ]
-
-    if (!validStatuses.includes(event.status)) {
+    if (!VALID_STATUSES.includes(event.status as ProviderMessageStatus)) {
       console.warn(`[webhook] Unknown status "${event.status}" — ignoring.`)
       return
     }
 
-    // Idempotent update: find by messageId and only advance if the new status
-    // is a genuine progression. Ignore a status we've already recorded or moved past.
-    const statusOrder: Record<string, number> = {
-      QUEUED: 0,
-      SENT: 1,
-      DELIVERED: 2,
-      FAILED: 3,
-      REJECTED: 3,
-      CANCELLED: 3,
-    }
-
-    const existing = await prisma.emailNotification.findUnique({
-      where: { messageId: event.messageId },
-    })
-
-    if (!existing) {
-      console.warn(
-        `[webhook] No EmailNotification found for messageId "${event.messageId}" — ignoring.`
-      )
-      return
-    }
-
-    const currentPriority = statusOrder[existing.status] ?? -1
-    const newPriority = statusOrder[event.status] ?? -1
-
-    // Only update if the new status is a progression (higher priority)
-    // or the same status (idempotent replay — just update mutable fields)
-    if (newPriority >= currentPriority) {
-      await prisma.emailNotification.update({
-        where: { messageId: event.messageId },
-        data: {
-          status: event.status as
-            | "QUEUED"
-            | "SENT"
-            | "DELIVERED"
-            | "FAILED"
-            | "REJECTED"
-            | "CANCELLED",
-          failureCode: event.failureCode,
-          failureReason: event.failureReason,
-          costCharged: event.costCharged,
-          providerMessageId: event.providerMessageId,
-        },
-      })
-    }
+    await applyProviderStatus(event)
   } catch (error) {
     console.error("[webhook] Error processing event:", error)
   }
