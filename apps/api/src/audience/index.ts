@@ -1,8 +1,9 @@
-import { NotificationTargetType, User } from "../../prisma/generated/prisma"
+import { MessageTargetType, User } from "../../prisma/generated/prisma"
 import prisma from "../config"
+import { normalizeMany } from "../messaging/phone"
 
 export interface ResolveAudienceInput {
-  targetType: NotificationTargetType
+  targetType: MessageTargetType
   /**
    * RecipientGroup id (GROUP), a district name (DISTRICT), or a
    * CouncilList id (COUNCIL). Unused for INDIVIDUALS.
@@ -13,23 +14,22 @@ export interface ResolveAudienceInput {
 }
 
 /**
- * Resolves a notification target — individuals, a saved group, or an
- * existing district/council — to the current list of recipient users.
+ * Resolves a message target — individuals, a saved group, or an existing
+ * district/council — to the current list of recipient users.
  *
- * This is the single source of truth for "who does 'send to district X'
- * mean" so the in-app and email notification modules never diverge. Call it
- * at send/fire time (not at compose time) so a scheduled send picks up
- * membership changes that happen before it fires — see
- * apps/api/src/notifications/scheduler.ts.
+ * This is the single source of truth for "who does 'send to district X' mean"
+ * so the in-app, email and SMS channels never diverge. Call it at send/fire
+ * time (not at compose time) so a scheduled send picks up membership changes
+ * that happen before it fires — see apps/api/src/messaging/scheduler.ts.
  *
  * Districts and councils reuse the existing CouncilList table rather than
  * inventing a parallel concept, but there is no FK between User and
- * CouncilList yet — User.district is a free-text field the user sets on
- * their profile. So, until that relation exists:
+ * CouncilList yet — User.district is a free-text field the user sets on their
+ * profile. So, until that relation exists:
  *   - DISTRICT matches User.district against the given district name
  *     (case-insensitive).
- *   - COUNCIL resolves the given CouncilList row, then matches
- *     User.district against that row's `council` name (case-insensitive).
+ *   - COUNCIL resolves the given CouncilList row, then matches User.district
+ *     against that row's `council` name (case-insensitive).
  */
 export async function resolveAudience(
   input: ResolveAudienceInput
@@ -113,4 +113,38 @@ export async function countAudience(
     default:
       return 0
   }
+}
+
+export interface AudienceContacts {
+  users: User[]
+  /** De-duplicated, lower-cased email addresses. */
+  emails: string[]
+  /** De-duplicated E.164 phone numbers. */
+  phones: string[]
+  /** Raw phone strings that could not be normalized to E.164. */
+  invalidPhones: string[]
+}
+
+/**
+ * resolveAudience plus channel-ready contact lists — used by the multi-channel
+ * dispatch layer so it doesn't re-walk the user list per channel.
+ */
+export async function resolveAudienceContacts(
+  input: ResolveAudienceInput
+): Promise<AudienceContacts> {
+  const users = await resolveAudience(input)
+
+  const emails = Array.from(
+    new Set(
+      users
+        .map((u) => u.email?.trim().toLowerCase())
+        .filter((e): e is string => !!e)
+    )
+  )
+
+  const { valid: phones, invalid: invalidPhones } = normalizeMany(
+    users.map((u) => u.phoneNumber).filter((p): p is string => !!p)
+  )
+
+  return { users, emails, phones, invalidPhones }
 }
