@@ -18,7 +18,7 @@ const BlogCard = ({ blog }: BlogCardProps) => {
           alt={title}
           width={400}
           height={250}
-          unoptimized
+
           className="rounded-2xl w-full mb-4 h-[12rem]"
         />
         <h2 className="text-xl font-semibold mb-2 line-clamp-1">{title}</h2>

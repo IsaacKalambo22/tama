@@ -74,7 +74,7 @@ export const getAllReportsAndPublications = async (
 }
 
 export const updateReportAndPublication = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -150,7 +150,7 @@ export const updateReportAndPublication = async (
 }
 
 export const deleteReportAndPublication = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params

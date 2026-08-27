@@ -651,3 +651,180 @@ export const deleteStat = async (
     layout,
   ])
 }
+
+// BULK IMPORT SERVER ACTIONS
+export const bulkImportUsers = async (payload: object) => {
+  try {
+    const session = await auth()
+    if (!session) {
+      return { success: false, error: "Not signed in" }
+    }
+
+    const response = await fetch(`${BASE_URL}/users/import/bulk`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.accessToken}`,
+      },
+      body: JSON.stringify(payload),
+    })
+
+    const result = await response.json()
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: result.message || "Something went wrong",
+      }
+    }
+
+    return { success: true, data: result.data }
+  } catch (error) {
+    return {
+      success: false,
+      error:
+        error instanceof Error ? error.message : "An unexpected error occurred",
+    }
+  }
+}
+
+export const bulkImportPhoneNumbers = async (payload: object) => {
+  try {
+    const session = await auth()
+    if (!session) {
+      return { success: false, error: "Not signed in" }
+    }
+
+    const response = await fetch(`${BASE_URL}/users/import/phone/bulk`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.accessToken}`,
+      },
+      body: JSON.stringify(payload),
+    })
+
+    const result = await response.json()
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: result.message || "Something went wrong",
+      }
+    }
+
+    return { success: true, data: result.data }
+  } catch (error) {
+    return {
+      success: false,
+      error:
+        error instanceof Error ? error.message : "An unexpected error occurred",
+    }
+  }
+}
+
+// IN-APP NOTIFICATIONS SERVER ACTIONS
+export const createNotificationBatch = async (
+  payload: object,
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  return await serverAction("admin/notifications", "POST", payload, [
+    fullPath,
+    pathWithoutAdmin,
+  ])
+}
+
+export const updateNotificationBatch = async (
+  payload: object,
+  batchId: string,
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  return await serverAction(
+    `admin/notifications/batches/${batchId}`,
+    "PATCH",
+    payload,
+    [fullPath, pathWithoutAdmin]
+  )
+}
+
+export const cancelNotificationBatch = async (
+  batchId: string,
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  return await serverAction(
+    `admin/notifications/batches/${batchId}/cancel`,
+    "POST",
+    null,
+    [fullPath, pathWithoutAdmin]
+  )
+}
+
+// RECIPIENT GROUPS SERVER ACTIONS
+export const createRecipientGroup = async (
+  payload: object,
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  return await serverAction("admin/recipient-groups", "POST", payload, [
+    fullPath,
+    pathWithoutAdmin,
+  ])
+}
+
+export const updateRecipientGroup = async (
+  payload: object,
+  groupId: string,
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  return await serverAction(
+    `admin/recipient-groups/${groupId}`,
+    "PATCH",
+    payload,
+    [fullPath, pathWithoutAdmin]
+  )
+}
+
+export const deleteRecipientGroup = async (
+  groupId: string,
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  return await serverAction(
+    `admin/recipient-groups/${groupId}`,
+    "DELETE",
+    null,
+    [fullPath, pathWithoutAdmin]
+  )
+}
+
+export const addRecipientGroupMembers = async (
+  memberIds: string[],
+  groupId: string,
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  return await serverAction(
+    `admin/recipient-groups/${groupId}/members`,
+    "POST",
+    { memberIds },
+    [fullPath, pathWithoutAdmin]
+  )
+}
+
+export const removeRecipientGroupMember = async (
+  groupId: string,
+  userId: string,
+  fullPath: string,
+  pathWithoutAdmin: string
+) => {
+  return await serverAction(
+    `admin/recipient-groups/${groupId}/members/${userId}`,
+    "DELETE",
+    null,
+    [fullPath, pathWithoutAdmin]
+  )
+}

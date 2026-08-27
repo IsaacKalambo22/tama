@@ -4,6 +4,7 @@ import { Form } from "@/components/ui/form"
 import { SelectItem } from "@/components/ui/select"
 import useCustomPath from "@/hooks/use-custom-path"
 import { CouncilProps, DistrictProps, Role } from "@/lib/api"
+import { normalizeMalawiPhone } from "@/lib/phone-validation"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -43,7 +44,7 @@ const ModalNewUser = ({ isOpen, onClose }: Props) => {
   const toggleShowPassword = () => {
     setShowPassword(!showPassword)
   }
-  const phoneNumberRegex = /^\+?[1-9]\d{1,14}$/
+  const phoneNumberRegex = /^(\+265(9|8)\d{8}|0(9|8)\d{8})$/
 
   const formSchema = zod.object({
     firstName: zod.string().min(2, {
@@ -57,7 +58,7 @@ const ModalNewUser = ({ isOpen, onClose }: Props) => {
     }),
     phoneNumber: zod.string().regex(phoneNumberRegex, {
       message:
-        "Phone number must be a valid international format (e.g., +123456789).",
+        "Phone number must be a valid TNM or Airtel number (e.g., +2659XXXXXXXX or 09XXXXXXXX).",
     }),
     role: zod.string().min(1, { message: "Role is required." }),
     councilId: zod.string().optional(),
@@ -136,7 +137,7 @@ const ModalNewUser = ({ isOpen, onClose }: Props) => {
     setIsLoading(true)
     const name = `${values.firstName} ${values.lastName}`.trim()
     const email = values.email
-    const phoneNumber = values.phoneNumber
+    const phoneNumber = normalizeMalawiPhone(values.phoneNumber)
     const role = values.role
     const payload: Record<string, any> = {
       name,

@@ -31,6 +31,11 @@ export const createEvent = async (
       },
     })
 
+    // Fire-and-forget: notify via InfiSend without blocking the response
+    // Recipients should come from a subscriber list in production;
+    // for now, no email is sent for event.created until a recipient list is defined.
+    // To enable: void notifyEvent("event.created", recipientEmail, { title, date, location })
+
     res.status(201).json({
       success: true,
       message: "Event created successfully",
@@ -72,7 +77,7 @@ export const getAllEvents = async (
 
 // Get Event by ID
 export const getEventById = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -116,7 +121,7 @@ export const getEventById = async (
 
 // Update an Event
 export const updateEvent = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -176,7 +181,7 @@ export const updateEvent = async (
 
 // Delete an Event
 export const deleteEvent = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params

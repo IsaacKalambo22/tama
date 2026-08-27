@@ -1,6 +1,7 @@
 import { fetchUsers } from "@/lib/api"
 import AddNewHeader from "@/modules/admin/add-new-header"
 import { CustomDataTable } from "@/modules/common/custom-data-table"
+import DownloadTemplateDropdown from "../download-template-dropdown"
 import { userColumns } from "../user-data-columns"
 
 const UserDataTable = async () => {
@@ -18,7 +19,11 @@ const UserDataTable = async () => {
 
   return (
     <div className="flex flex-col w-full">
-      <AddNewHeader name="Users List" buttonName="Add User" />
+      <AddNewHeader
+        name="Users List"
+        buttonName="Add User"
+        extraActions={<DownloadTemplateDropdown users={users} />}
+      />
       <CustomDataTable
         data={users}
         columns={userColumns}

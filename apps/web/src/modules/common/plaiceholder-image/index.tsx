@@ -25,15 +25,12 @@ const PlaiceholderImage = async ({
       alt={alt}
       placeholder="blur"
       blurDataURL={base64}
-      unoptimized
-      {
-        ...(fill
-          ? { fill: true } // Apply `fill` only if it's true
-          : {
-              width: width || img.width,
-              height: height || img.height,
-            }) // Otherwise, use width & height
-      }
+      {...(fill
+        ? { fill: true }
+        : {
+            width: width || img.width,
+            height: height || img.height,
+          })}
       className={cn(className)}
     />
   )

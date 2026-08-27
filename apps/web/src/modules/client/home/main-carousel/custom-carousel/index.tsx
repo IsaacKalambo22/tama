@@ -40,7 +40,6 @@ export function CustomCarousel({
                   height={1600}
                   className="w-full h-full object-cover rounded-2xl brightness-105 contrast-110 saturate-105"
                   priority={index === 0}
-                  unoptimized
                 />
                 {/* No overlay as requested */}
                 {/* Centered Text */}

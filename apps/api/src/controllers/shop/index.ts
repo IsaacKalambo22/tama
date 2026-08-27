@@ -75,7 +75,7 @@ export const getAllShops = async (
 }
 
 export const updateShop = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -140,7 +140,7 @@ export const updateShop = async (
 }
 
 export const deleteShop = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params

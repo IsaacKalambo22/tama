@@ -41,7 +41,7 @@ const PostCard: React.FC<FacebookPostProps> = ({
             alt="Post Attachment"
             width={900}
             height={600}
-            unoptimized
+
             className="rounded-2xl object-fill h-auto max-h-[20rem] sm:max-h-[30rem]"
           />
         </div>

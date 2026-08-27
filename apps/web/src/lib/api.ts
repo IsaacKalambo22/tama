@@ -190,7 +190,6 @@ async function handleFetch<T>(endpoint: string, token?: string): Promise<T> {
     const response = await fetch(endpoint, {
       method: "GET",
       headers,
-      next: { revalidate: 1 },
     })
     if (!response.ok) {
       console.log(

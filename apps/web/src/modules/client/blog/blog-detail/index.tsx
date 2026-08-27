@@ -38,7 +38,7 @@ export default async function BlogDetail({ id }: { id: string }) {
           alt={blog.title}
           width={900}
           height={600}
-          unoptimized
+
           className="rounded-2xl object-fill h-auto max-h-[20rem] sm:max-h-[30rem]" // Added responsive max-height for small devices
         />
       </div>

@@ -141,3 +141,6 @@ export const verifyRole = (roles: Role[]) => {
 export const verifyAdmin = verifySuperAdmin
 export const verifyManager = verifyCouncilAdmin
 export const verifyAdminAndManager = verifySuperAdmin
+
+// Gate for composing/sending notifications
+export const verifyNotificationSender = verifyAdminAndManager

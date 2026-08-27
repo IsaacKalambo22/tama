@@ -1,4 +1,5 @@
 import {
+  Bell,
   Book,
   BookOpen,
   Images,
@@ -97,13 +98,40 @@ export const ADMIN_LINKS: SidebarProps[] = [
   },
   {
     label: "Users",
-    href: "/admin/users",
     icon: UsersIcon,
+    submenu: [
+      {
+        label: "All Users",
+        href: "/admin/users",
+      },
+    ],
   },
   {
     label: "Messaging", // New "Messaging" section
     href: "/admin/messages", // Path for the messaging section
     icon: MessageCircle, // Icon for messaging
+  },
+  {
+    label: "Notifications",
+    icon: Bell,
+    submenu: [
+      {
+        label: "Inbox",
+        href: "/admin/notifications",
+      },
+      {
+        label: "Compose",
+        href: "/admin/notifications/compose",
+      },
+      {
+        label: "Sent & Scheduled",
+        href: "/admin/notifications/batches",
+      },
+      {
+        label: "Recipient Groups",
+        href: "/admin/notifications/groups",
+      },
+    ],
   },
 ]
 

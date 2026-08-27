@@ -92,7 +92,7 @@ export const getHomeData = async (
 }
 
 export const updateCarousel = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -148,7 +148,7 @@ export const updateCarousel = async (
 }
 
 export const deleteCarousel = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -260,7 +260,7 @@ export const getImageText = async (
 }
 
 export const updateImageText = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -316,7 +316,7 @@ export const updateImageText = async (
 }
 
 export const deleteImageText = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params

@@ -4,6 +4,7 @@ import { Form } from "@/components/ui/form"
 import { SelectItem } from "@/components/ui/select"
 import useCustomPath from "@/hooks/use-custom-path"
 import { CouncilProps, DistrictProps, Role, UserProps } from "@/lib/api"
+import { normalizeMalawiPhone } from "@/lib/phone-validation"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -42,7 +43,7 @@ const ModalEditUser = ({ isOpen, onClose, user }: Props) => {
   const path = usePathname()
   const { fullPath } = useCustomPath(path)
 
-  const phoneNumberRegex = /^\+?[1-9]\d{1,14}$/
+  const phoneNumberRegex = /^(\+265(9|8)\d{8}|0(9|8)\d{8})$/
 
   const formSchema = zod.object({
     name: zod.string().min(2, "Name must be at least 2 characters.").optional(),
@@ -50,7 +51,8 @@ const ModalEditUser = ({ isOpen, onClose, user }: Props) => {
     phoneNumber: zod
       .string()
       .regex(phoneNumberRegex, {
-        message: "Phone number must be in a valid international format.",
+        message:
+          "Phone number must be a valid TNM or Airtel number (e.g., +2659XXXXXXXX or 09XXXXXXXX).",
       })
       .optional(),
     role: zod.string().optional(),
@@ -130,7 +132,9 @@ const ModalEditUser = ({ isOpen, onClose, user }: Props) => {
     const payload: Record<string, any> = {
       name: values.name || undefined,
       email: values.email || undefined,
-      phoneNumber: values.phoneNumber || undefined,
+      phoneNumber: values.phoneNumber
+        ? normalizeMalawiPhone(values.phoneNumber)
+        : undefined,
       role: values.role || undefined,
       councilId: values.councilId || null,
       districtId: values.districtId || null,

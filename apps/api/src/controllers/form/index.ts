@@ -74,7 +74,7 @@ export const getAllForms = async (
 }
 
 export const updateForm = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -141,7 +141,7 @@ export const updateForm = async (
 }
 
 export const deleteForm = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
