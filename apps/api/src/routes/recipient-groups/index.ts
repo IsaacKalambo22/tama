@@ -8,19 +8,19 @@ import {
   removeRecipientGroupMember,
   updateRecipientGroup,
 } from "../../controllers/recipient-groups"
-import { verifyNotificationSender } from "../../middlewares/verify-token"
+import { verifyMessageSender } from "../../middlewares/verify-token"
 
 const router = Router()
 
-router.get("/", verifyNotificationSender, getRecipientGroups)
-router.post("/", verifyNotificationSender, createRecipientGroup)
-router.get("/:id", verifyNotificationSender, getRecipientGroupById)
-router.patch("/:id", verifyNotificationSender, updateRecipientGroup)
-router.delete("/:id", verifyNotificationSender, deleteRecipientGroup)
-router.post("/:id/members", verifyNotificationSender, addRecipientGroupMembers)
+router.get("/", verifyMessageSender, getRecipientGroups)
+router.post("/", verifyMessageSender, createRecipientGroup)
+router.get("/:id", verifyMessageSender, getRecipientGroupById)
+router.patch("/:id", verifyMessageSender, updateRecipientGroup)
+router.delete("/:id", verifyMessageSender, deleteRecipientGroup)
+router.post("/:id/members", verifyMessageSender, addRecipientGroupMembers)
 router.delete(
   "/:id/members/:userId",
-  verifyNotificationSender,
+  verifyMessageSender,
   removeRecipientGroupMember
 )
 

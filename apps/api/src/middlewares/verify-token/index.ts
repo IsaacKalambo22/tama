@@ -142,5 +142,7 @@ export const verifyAdmin = verifySuperAdmin
 export const verifyManager = verifyCouncilAdmin
 export const verifyAdminAndManager = verifySuperAdmin
 
-// Gate for composing/sending notifications
-export const verifyNotificationSender = verifyAdminAndManager
+// Gate for composing/sending messages — SUPER_ADMIN, COUNCIL_ADMIN and
+// DISTRICT_ADMIN may compose; FARMER is receive-only. (verifyDistrictAdmin
+// already admits exactly those three roles.)
+export const verifyMessageSender = verifyDistrictAdmin
