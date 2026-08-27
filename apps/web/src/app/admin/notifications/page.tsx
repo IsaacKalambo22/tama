@@ -1,7 +1,7 @@
-import NotificationInbox from "@/modules/admin/notifications/inbox"
+import SystemNotificationFeed from "@/modules/admin/system-notifications/feed"
 
 const NotificationsPage = () => {
-  return <NotificationInbox />
+  return <SystemNotificationFeed />
 }
 
 export default NotificationsPage
