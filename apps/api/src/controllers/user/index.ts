@@ -464,6 +464,18 @@ export const IMPORT_ROLES: Role[] = [
 ]
 const ROLE_VALUES: Role[] = Object.values(Role)
 
+// The import file's `role` column accepts friendly labels as well as the raw
+// Role enum names, mapped here to the actual schema roles.
+const ROLE_ALIASES: Record<string, Role> = {
+  ADMIN: "SUPER_ADMIN",
+  SUPER_ADMIN: "SUPER_ADMIN",
+  MANAGER: "COUNCIL_ADMIN",
+  COUNCIL_ADMIN: "COUNCIL_ADMIN",
+  DISTRICT_ADMIN: "DISTRICT_ADMIN",
+  USER: "FARMER",
+  FARMER: "FARMER",
+}
+
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
@@ -536,7 +548,8 @@ export const bulkImportUsers = async (
     const email = user.email?.trim().toLowerCase() || ""
     const phoneNumber = user.phoneNumber?.trim() || ""
     const name = user.name?.trim() || ""
-    const role = (user.role?.trim().toUpperCase() || "FARMER") as string
+    const roleLabel = user.role?.trim().toUpperCase() || "USER"
+    const mappedRole = ROLE_ALIASES[roleLabel]
     const district = user.district?.trim() || ""
 
     // Validate required fields
@@ -571,7 +584,7 @@ export const bulkImportUsers = async (
       continue
     }
 
-    if (!ROLE_VALUES.includes(role as Role)) {
+    if (!mappedRole || !ROLE_VALUES.includes(mappedRole)) {
       results.push({
         row,
         email,
@@ -582,7 +595,7 @@ export const bulkImportUsers = async (
     }
 
     // Role must be assignable by the importing actor
-    const targetRole = role as Role
+    const targetRole = mappedRole
     if (actor && !canAssignRole(actor, targetRole)) {
       results.push({
         row,
