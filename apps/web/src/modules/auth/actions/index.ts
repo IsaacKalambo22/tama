@@ -36,12 +36,15 @@ export const signInWithCredentials = async (
         default:
           return {
             success: false,
-            error: "Something went wrong",
+            error: error.message || "Something went wrong",
           }
       }
     }
 
-    throw error
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Something went wrong",
+    }
   }
 }
 

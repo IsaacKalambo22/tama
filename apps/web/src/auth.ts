@@ -20,34 +20,38 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       async authorize(credentials) {
         const { email, password } = credentials
 
-        const response = await fetch(`${config.env.baseUrl}/auth/sign-in`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            password,
-          }),
-        })
+        try {
+          const response = await fetch(`${config.env.baseUrl}/auth/sign-in`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email,
+              password,
+            }),
+          })
 
-        if (!response.ok) {
+          if (!response.ok) {
+            return null
+          }
+
+          const data = await response.json()
+
+          return {
+            accessToken: data.user.accessToken,
+            id: data.user.id,
+            name: data.user.name,
+            email: data.user.email,
+            role: data.user.role,
+            image: data.user.avatar,
+            councilId: data.user.councilId,
+            districtId: data.user.districtId,
+            councilName: data.user.councilName,
+            districtName: data.user.districtName,
+          }
+        } catch {
           return null
-        }
-
-        const data = await response.json()
-
-        return {
-          accessToken: data.user.accessToken,
-          id: data.user.id,
-          name: data.user.name,
-          email: data.user.email,
-          role: data.user.role,
-          image: data.user.avatar,
-          councilId: data.user.councilId,
-          districtId: data.user.districtId,
-          councilName: data.user.councilName,
-          districtName: data.user.districtName,
         }
       },
     }),
