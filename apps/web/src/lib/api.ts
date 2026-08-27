@@ -215,11 +215,11 @@ async function handleFetch<T>(endpoint: string, token?: string): Promise<T> {
 export const fetchReportsAndPublications = async (): Promise<FileProps[]> => {
   return handleFetch<FileProps[]>(`${BASE_URL}/reports-publications`)
 }
-export const fetchUsers = async (): Promise<UserProps[]> => {
+export const fetchUsers = async (token?: string): Promise<UserProps[]> => {
   try {
     const API_URL = `${BASE_URL}/users`
 
-    return handleFetch<UserProps[]>(API_URL)
+    return handleFetch<UserProps[]>(API_URL, token)
   } catch (error: any) {
     console.log("Error during fetchUsers:", error.message || error)
     throw new Error("Unable to fetch users. Please try again later.")
@@ -284,24 +284,33 @@ export const fetchStat = async (): Promise<StatProps[]> => {
   return handleFetch<StatProps[]>(`${BASE_URL}/stats`)
 }
 
-export const fetchCouncils = async (): Promise<CouncilProps[]> => {
-  return handleFetch<CouncilProps[]>(`${BASE_URL}/councils`)
+export const fetchCouncils = async (
+  token?: string
+): Promise<CouncilProps[]> => {
+  return handleFetch<CouncilProps[]>(`${BASE_URL}/councils`, token)
 }
 
-export const fetchCouncilById = async (id: string): Promise<CouncilProps> => {
-  return handleFetch<CouncilProps>(`${BASE_URL}/councils/${id}`)
+export const fetchCouncilById = async (
+  id: string,
+  token?: string
+): Promise<CouncilProps> => {
+  return handleFetch<CouncilProps>(`${BASE_URL}/councils/${id}`, token)
 }
 
 export const fetchDistrictsByCouncil = async (
-  councilId: string
+  councilId: string,
+  token?: string
 ): Promise<DistrictProps[]> => {
   return handleFetch<DistrictProps[]>(
-    `${BASE_URL}/councils/${councilId}/districts`
+    `${BASE_URL}/councils/${councilId}/districts`,
+    token
   )
 }
 
-export const fetchAllDistricts = async (): Promise<DistrictProps[]> => {
-  return handleFetch<DistrictProps[]>(`${BASE_URL}/districts`)
+export const fetchAllDistricts = async (
+  token?: string
+): Promise<DistrictProps[]> => {
+  return handleFetch<DistrictProps[]>(`${BASE_URL}/districts`, token)
 }
 
 export const fetchCouncilListsByScope = async (

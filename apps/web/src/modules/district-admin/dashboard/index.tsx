@@ -1,5 +1,6 @@
 "use client"
 
+import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
@@ -15,6 +16,7 @@ export default function DistrictAdminDashboard() {
   const { data: session } = useSession()
   const [stats, setStats] = useState<DashboardStats[]>([])
   const [loading, setLoading] = useState(true)
+  const [recentFarmers, setRecentFarmers] = useState<any[]>([])
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -27,7 +29,7 @@ export default function DistrictAdminDashboard() {
           ...(token && { Authorization: `Bearer ${token}` }),
         }
 
-        const [councilListsRes, farmersRes, newsRes] = await Promise.all([
+        const [councilListsRes, usersRes, newsRes] = await Promise.all([
           fetch(`${baseUrl}/council-lists/scoped`, { headers }),
           fetch(`${baseUrl}/users`, { headers }),
           fetch(`${baseUrl}/news`, { headers }),
@@ -36,21 +38,22 @@ export default function DistrictAdminDashboard() {
         const councilLists = councilListsRes.ok
           ? (await councilListsRes.json()).data || []
           : []
-        const farmers = farmersRes.ok
-          ? (await farmersRes.json()).data || []
-          : []
+        const users = usersRes.ok ? (await usersRes.json()).data || [] : []
         const news = newsRes.ok ? (await newsRes.json()).data || [] : []
 
+        const farmers = users.filter((u: any) => u.role === "FARMER")
+
+        setRecentFarmers(farmers.slice(0, 5))
         setStats([
-          {
-            title: "Council List Entries",
-            count: councilLists.length,
-            icon: <FaListAlt size={30} className="text-indigo-500" />,
-          },
           {
             title: "Farmers",
             count: farmers.length,
             icon: <FaUsers size={30} className="text-purple-500" />,
+          },
+          {
+            title: "Council List Entries",
+            count: councilLists.length,
+            icon: <FaListAlt size={30} className="text-indigo-500" />,
           },
           {
             title: "News",
@@ -117,6 +120,32 @@ export default function DistrictAdminDashboard() {
             </Card>
           ))}
         </div>
+      )}
+
+      {recentFarmers.length > 0 && (
+        <Card className="shadow-none rounded-xl p-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">
+            Farmers in {districtName}
+          </h3>
+          <div className="divide-y">
+            {recentFarmers.map((farmer) => (
+              <div
+                key={farmer.id}
+                className="flex items-center justify-between py-2"
+              >
+                <div>
+                  <p className="font-medium">{farmer.name}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {farmer.email}
+                  </p>
+                </div>
+                <Badge variant="secondary">
+                  {farmer.districtName || "No district"}
+                </Badge>
+              </div>
+            ))}
+          </div>
+        </Card>
       )}
     </section>
   )

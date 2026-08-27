@@ -11,6 +11,7 @@ import CustomFormField, {
 } from "@/modules/common/custom-form-field"
 import SubmitButton from "@/modules/common/submit-button"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useSession } from "next-auth/react"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -34,16 +35,19 @@ const ModalNewGroup = ({ isOpen, onClose }: Props) => {
   const [memberIds, setMemberIds] = useState<string[]>([])
   const path = usePathname()
   const { fullPath, pathWithoutAdmin } = useCustomPath(path)
+  const { data: session } = useSession()
+  const token = session?.accessToken
 
   useEffect(() => {
+    if (!token) return
     ;(async () => {
       try {
-        setUsers(await fetchUsers())
+        setUsers(await fetchUsers(token))
       } catch (error) {
         console.error("Failed to load users:", error)
       }
     })()
-  }, [])
+  }, [token])
 
   const form = useForm<zod.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

@@ -141,7 +141,12 @@ export const verifyScope = (options: ScopeCheckOptions) => {
 }
 
 export const filterByScope = async (
-  user: { role: string; councilId?: string; districtId?: string },
+  user: {
+    id?: string
+    role: string
+    councilId?: string | null
+    districtId?: string | null
+  },
   where: Record<string, any> = {}
 ) => {
   if (user.role === Role.SUPER_ADMIN) {
@@ -162,7 +167,7 @@ export const filterByScope = async (
   }
 
   if (user.role === Role.FARMER) {
-    return { ...where, id: user.districtId }
+    return { ...where, id: user.id }
   }
 
   return where

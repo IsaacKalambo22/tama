@@ -1,9 +1,10 @@
 "use client"
 
+import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
-import { FaListAlt, FaNewspaper, FaStore, FaUsers } from "react-icons/fa"
+import { FaListAlt, FaMapMarkerAlt, FaNewspaper, FaUsers } from "react-icons/fa"
 
 interface DashboardStats {
   title: string
@@ -15,6 +16,7 @@ export default function CouncilAdminDashboard() {
   const { data: session } = useSession()
   const [stats, setStats] = useState<DashboardStats[]>([])
   const [loading, setLoading] = useState(true)
+  const [recentFarmers, setRecentFarmers] = useState<any[]>([])
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -27,43 +29,47 @@ export default function CouncilAdminDashboard() {
           ...(token && { Authorization: `Bearer ${token}` }),
         }
 
-        const [councilListsRes, farmersRes, newsRes, eventsRes] =
-          await Promise.all([
-            fetch(`${baseUrl}/council-lists/scoped`, { headers }),
-            fetch(`${baseUrl}/users`, { headers }),
-            fetch(`${baseUrl}/news`, { headers }),
-            fetch(`${baseUrl}/events`, { headers }),
-          ])
+        const [councilListsRes, usersRes, newsRes] = await Promise.all([
+          fetch(`${baseUrl}/council-lists/scoped`, { headers }),
+          fetch(`${baseUrl}/users`, { headers }),
+          fetch(`${baseUrl}/news`, { headers }),
+        ])
 
         const councilLists = councilListsRes.ok
           ? (await councilListsRes.json()).data || []
           : []
-        const farmers = farmersRes.ok
-          ? (await farmersRes.json()).data || []
-          : []
+        const users = usersRes.ok ? (await usersRes.json()).data || [] : []
         const news = newsRes.ok ? (await newsRes.json()).data || [] : []
-        const events = eventsRes.ok ? (await eventsRes.json()).data || [] : []
 
+        const farmers = users.filter((u: any) => u.role === "FARMER")
+        const districtAdmins = users.filter(
+          (u: any) => u.role === "DISTRICT_ADMIN"
+        )
+        const districts = Array.from(
+          new Set(users.map((u: any) => u.districtId).filter(Boolean))
+        )
+
+        setRecentFarmers(farmers.slice(0, 5))
         setStats([
-          {
-            title: "Council List Entries",
-            count: councilLists.length,
-            icon: <FaListAlt size={30} className="text-indigo-500" />,
-          },
           {
             title: "Farmers",
             count: farmers.length,
             icon: <FaUsers size={30} className="text-purple-500" />,
           },
           {
+            title: "District Admins",
+            count: districtAdmins.length,
+            icon: <FaListAlt size={30} className="text-indigo-500" />,
+          },
+          {
+            title: "Districts",
+            count: districts.length,
+            icon: <FaMapMarkerAlt size={30} className="text-amber-500" />,
+          },
+          {
             title: "News",
             count: news.length,
             icon: <FaNewspaper size={30} className="text-red-500" />,
-          },
-          {
-            title: "Events",
-            count: events.length,
-            icon: <FaStore size={30} className="text-blue-500" />,
           },
         ])
       } catch (error) {
@@ -122,6 +128,32 @@ export default function CouncilAdminDashboard() {
             </Card>
           ))}
         </div>
+      )}
+
+      {recentFarmers.length > 0 && (
+        <Card className="shadow-none rounded-xl p-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">
+            Recent Farmers
+          </h3>
+          <div className="divide-y">
+            {recentFarmers.map((farmer) => (
+              <div
+                key={farmer.id}
+                className="flex items-center justify-between py-2"
+              >
+                <div>
+                  <p className="font-medium">{farmer.name}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {farmer.email}
+                  </p>
+                </div>
+                <Badge variant="secondary">
+                  {farmer.districtName || "No district"}
+                </Badge>
+              </div>
+            ))}
+          </div>
+        </Card>
       )}
     </section>
   )

@@ -73,10 +73,11 @@ const NotificationComposer = () => {
   const [groups, setGroups] = useState<RecipientGroupProps[]>([])
 
   useEffect(() => {
+    if (!token) return
     ;(async () => {
       try {
         const [userList, councilList] = await Promise.all([
-          fetchUsers(),
+          fetchUsers(token),
           fetchCouncilList(),
         ])
         setUsers(userList)
@@ -85,7 +86,7 @@ const NotificationComposer = () => {
         console.error("Failed to load targeting data:", error)
       }
     })()
-  }, [])
+  }, [token])
 
   useEffect(() => {
     if (!token) return

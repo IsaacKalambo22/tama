@@ -11,6 +11,7 @@ import {
   setPasswordRequestEmail,
 } from "../../nodemailer/emails"
 import { notifyEvent } from "../../notifications/service"
+import { canAssignRole, ScopeUser } from "../../permissions"
 import { APIResponse } from "../../types"
 import { generateTokens } from "../../utils/generate-tokens"
 
@@ -87,7 +88,37 @@ export const registerUser = async (
       hashedPassword = await bcrypt.hash(password, saltRounds)
     }
 
-    const userRole = role || Role.FARMER
+    const actor = req.user ?? null
+
+    const userRole =
+      actor &&
+      role &&
+      canAssignRole(actor as unknown as ScopeUser, role as Role)
+        ? (role as Role)
+        : Role.FARMER
+
+    let targetCouncilId = councilId || null
+    let targetDistrictId = districtId || null
+
+    if (actor) {
+      if (
+        actor.role === Role.COUNCIL_ADMIN ||
+        actor.role === Role.DISTRICT_ADMIN
+      ) {
+        targetCouncilId = actor.councilId ?? null
+        if (actor.role === Role.DISTRICT_ADMIN) {
+          targetDistrictId = actor.districtId ?? null
+        } else if (targetDistrictId) {
+          const district = await prisma.district.findUnique({
+            where: { id: targetDistrictId },
+            select: { councilId: true },
+          })
+          if (!district || district.councilId !== actor.councilId) {
+            targetDistrictId = null
+          }
+        }
+      }
+    }
 
     const newUser = await prisma.user.create({
       data: {
@@ -96,8 +127,8 @@ export const registerUser = async (
         phoneNumber,
         password: hashedPassword || null,
         role: userRole,
-        councilId: councilId || null,
-        districtId: districtId || null,
+        councilId: targetCouncilId,
+        districtId: targetDistrictId,
         verificationToken: hashedToken,
         verificationTokenExpiresAt,
       },

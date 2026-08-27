@@ -104,6 +104,10 @@ export const ADMIN_LINKS: SidebarProps[] = [
         label: "All Users",
         href: "/admin/users",
       },
+      {
+        label: "Demarcations",
+        href: "/admin/demarcations",
+      },
     ],
   },
   {

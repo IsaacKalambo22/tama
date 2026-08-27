@@ -10,6 +10,7 @@ import CustomFormField, {
 } from "@/modules/common/custom-form-field"
 import SubmitButton from "@/modules/common/submit-button"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useSession } from "next-auth/react"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -22,6 +23,7 @@ type Props = {
   isOpen: boolean
   onClose: () => void
   user: UserProps
+  allowedRoles?: string[]
 }
 
 const roleLabels: Record<string, string> = {
@@ -31,7 +33,7 @@ const roleLabels: Record<string, string> = {
   FARMER: "Farmer",
 }
 
-const ModalEditUser = ({ isOpen, onClose, user }: Props) => {
+const ModalEditUser = ({ isOpen, onClose, user, allowedRoles }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const [councils, setCouncils] = useState<CouncilProps[]>([])
   const [districts, setDistricts] = useState<DistrictProps[]>([])
@@ -42,6 +44,8 @@ const ModalEditUser = ({ isOpen, onClose, user }: Props) => {
 
   const path = usePathname()
   const { fullPath } = useCustomPath(path)
+  const { data: session } = useSession()
+  const token = session?.accessToken
 
   const phoneNumberRegex = /^(\+265(9|8)\d{8}|0(9|8)\d{8})$/
 
@@ -79,7 +83,10 @@ const ModalEditUser = ({ isOpen, onClose, user }: Props) => {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_ENDPOINT}/councils`,
           {
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+              ...(token && { Authorization: `Bearer ${token}` }),
+            },
           }
         )
         const data = await res.json()
@@ -93,7 +100,7 @@ const ModalEditUser = ({ isOpen, onClose, user }: Props) => {
     if (isOpen) {
       fetchCouncils()
     }
-  }, [isOpen])
+  }, [isOpen, token])
 
   useEffect(() => {
     if (!selectedCouncil) {
@@ -105,7 +112,10 @@ const ModalEditUser = ({ isOpen, onClose, user }: Props) => {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_ENDPOINT}/councils/${selectedCouncil}/districts`,
           {
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+              ...(token && { Authorization: `Bearer ${token}` }),
+            },
           }
         )
         const data = await res.json()
@@ -117,7 +127,7 @@ const ModalEditUser = ({ isOpen, onClose, user }: Props) => {
       }
     }
     fetchDistricts()
-  }, [selectedCouncil])
+  }, [selectedCouncil, token])
 
   const showScopeFields =
     selectedRole === "COUNCIL_ADMIN" ||
@@ -150,6 +160,9 @@ const ModalEditUser = ({ isOpen, onClose, user }: Props) => {
     setIsLoading(false)
   }
 
+  const roleOptions =
+    allowedRoles && allowedRoles.length > 0 ? allowedRoles : Object.values(Role)
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} name={`Edit ${user.name}`}>
       <Form {...form}>
@@ -178,12 +191,12 @@ const ModalEditUser = ({ isOpen, onClose, user }: Props) => {
             label="Role"
             control={form.control}
             placeholder="Select a role"
-            onChange={(value) => {
+            onChange={(value: string) => {
               setSelectedRole(value)
               form.setValue("role", value)
             }}
           >
-            {Object.values(Role).map((role) => (
+            {roleOptions.map((role) => (
               <SelectItem key={role} value={role}>
                 {roleLabels[role] || role}
               </SelectItem>
@@ -197,7 +210,7 @@ const ModalEditUser = ({ isOpen, onClose, user }: Props) => {
               label="Council (Area)"
               control={form.control}
               placeholder="Select a council"
-              onChange={(value) => {
+              onChange={(value: string) => {
                 setSelectedCouncil(value)
                 form.setValue("councilId", value)
                 form.setValue("districtId", "")

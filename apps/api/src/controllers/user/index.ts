@@ -3,20 +3,38 @@ import { sendContactEmail } from "@/nodemailer/emails"
 import { APIResponse } from "@/types"
 import bcrypt from "bcryptjs"
 import { Request, Response } from "express"
+import { Role } from "../../../prisma/generated/prisma"
+import { filterByScope } from "../../middlewares/verify-scope/index"
+import {
+  canAssignRole,
+  canManageUser,
+  ScopeUser,
+  scopeWhereForUsers,
+} from "../../permissions"
 
 export const getAllUsers = async (
-  _req: Request,
+  req: Request,
   res: Response<APIResponse>
 ): Promise<void> => {
   try {
+    const actor = req.user as ScopeUser
+    const where = await filterByScope(actor, {})
+
     const users = await prisma.user.findMany({
+      where,
       orderBy: { createdAt: "desc" }, // Sort users by most recent creation date
       select: {
         id: true,
         email: true,
         phoneNumber: true,
         name: true,
+        avatar: true,
+        about: true,
         role: true,
+        councilId: true,
+        districtId: true,
+        council: { select: { id: true, name: true } },
+        districtRel: { select: { id: true, name: true } },
         lastLogin: true,
         isVerified: true,
         createdAt: true,
@@ -24,10 +42,18 @@ export const getAllUsers = async (
       },
     })
 
+    const data = users.map((u) => ({
+      ...u,
+      councilName: u.council?.name ?? null,
+      districtName: u.districtRel?.name ?? null,
+      council: undefined,
+      districtRel: undefined,
+    }))
+
     res.status(200).json({
       success: true,
       message: "Users retrieved successfully",
-      data: users,
+      data,
     })
   } catch (error: any) {
     console.error("Error fetching users:", error.message)
@@ -45,6 +71,7 @@ export const getUserById = async (
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
+  const actor = req.user as ScopeUser
 
   // Validate input
   if (!id) {
@@ -60,6 +87,23 @@ export const getUserById = async (
     // Check if the user exists
     const user = await prisma.user.findUnique({
       where: { id },
+      select: {
+        id: true,
+        email: true,
+        phoneNumber: true,
+        name: true,
+        avatar: true,
+        about: true,
+        role: true,
+        councilId: true,
+        districtId: true,
+        council: { select: { id: true, name: true } },
+        districtRel: { select: { id: true, name: true } },
+        lastLogin: true,
+        isVerified: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     })
 
     if (!user) {
@@ -70,11 +114,35 @@ export const getUserById = async (
       return
     }
 
+    const scopeCheck =
+      actor.role === Role.SUPER_ADMIN ||
+      (actor.role === Role.COUNCIL_ADMIN &&
+        user.councilId &&
+        user.councilId === actor.councilId) ||
+      (actor.role === Role.DISTRICT_ADMIN &&
+        ((user.districtId && user.districtId === actor.districtId) ||
+          (user.councilId && user.councilId === actor.councilId))) ||
+      (actor.role === Role.FARMER && actor.id === user.id)
+
+    if (!scopeCheck) {
+      res.status(403).json({
+        success: false,
+        message: "Forbidden: You cannot view this user.",
+      })
+      return
+    }
+
     // Respond with success
     res.status(200).json({
       success: true,
       message: "User retrieved successfully",
-      data: user,
+      data: {
+        ...user,
+        councilName: user.council?.name ?? null,
+        districtName: user.districtRel?.name ?? null,
+        council: undefined,
+        districtRel: undefined,
+      },
     })
   } catch (error: any) {
     console.error("Error fetching users:", error.message)
@@ -92,9 +160,19 @@ export const updateUser = async (
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
+  const actor = req.user as ScopeUser
 
-  const { name, email, password, role, phoneNumber, district, avatar, about } =
-    req.body
+  const {
+    name,
+    email,
+    password,
+    role,
+    phoneNumber,
+    district,
+    avatar,
+    about,
+    districtId,
+  } = req.body
 
   // Validate input
   if (!id) {
@@ -110,12 +188,76 @@ export const updateUser = async (
     // Check if the user exists
     const existingUser = await prisma.user.findUnique({
       where: { id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phoneNumber: true,
+        role: true,
+        councilId: true,
+        districtId: true,
+        avatar: true,
+        about: true,
+        password: true,
+        district: true,
+        isVerified: true,
+        verificationToken: true,
+        verificationTokenExpiresAt: true,
+        resetPasswordToken: true,
+        resetPasswordExpiresAt: true,
+        lastLogin: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     })
 
     if (!existingUser) {
       res.status(404).json({
         success: false,
         message: "User not found.",
+      })
+      return
+    }
+
+    const isOwnRecord = actor.id === existingUser.id
+
+    // SCOPE ENFORCEMENT
+    if (actor.role === Role.FARMER) {
+      if (!isOwnRecord) {
+        res.status(403).json({
+          success: false,
+          message: "Forbidden: You can only update your own profile.",
+        })
+        return
+      }
+      if (role || districtId || req.body.councilId !== undefined) {
+        res.status(403).json({
+          success: false,
+          message: "Forbidden: You cannot change role or assigned scope.",
+        })
+        return
+      }
+    } else if (!canManageUser(actor, existingUser)) {
+      if (!isOwnRecord) {
+        res.status(403).json({
+          success: false,
+          message: "Forbidden: You cannot update this user.",
+        })
+        return
+      }
+    }
+
+    // ROLE ESCALATION GUARD
+    const requestedRole = role?.trim()
+      ? (role.trim().toUpperCase() as Role)
+      : existingUser.role
+    if (
+      requestedRole !== existingUser.role &&
+      !canAssignRole(actor, requestedRole)
+    ) {
+      res.status(403).json({
+        success: false,
+        message: `Forbidden: Your role cannot assign ${requestedRole}.`,
       })
       return
     }
@@ -127,8 +269,58 @@ export const updateUser = async (
       avatar: avatar?.trim() || existingUser.avatar,
       about: about?.trim() || existingUser.about,
       email: email?.trim() || existingUser.email,
-      role: role?.trim() || existingUser.role,
+      role: requestedRole,
       phoneNumber: phoneNumber?.trim() || existingUser.phoneNumber,
+    }
+
+    // SCOPE REASSIGNMENT GUARD (non-super-admins stay within their scope)
+    if (actor.role === Role.COUNCIL_ADMIN) {
+      updatedData.councilId = existingUser.councilId ?? actor.councilId
+      if (req.body.councilId && req.body.councilId !== actor.councilId) {
+        res.status(403).json({
+          success: false,
+          message: "Forbidden: You cannot move a user to another council.",
+        })
+        return
+      }
+      if (districtId) {
+        const district = await prisma.district.findUnique({
+          where: { id: districtId },
+          select: { councilId: true },
+        })
+        if (!district || district.councilId !== actor.councilId) {
+          res.status(403).json({
+            success: false,
+            message: "Forbidden: District must be within your council.",
+          })
+          return
+        }
+        updatedData.districtId = districtId
+      }
+    } else if (actor.role === Role.DISTRICT_ADMIN) {
+      updatedData.councilId = existingUser.councilId ?? actor.councilId ?? null
+      if (districtId && districtId !== actor.districtId) {
+        res.status(403).json({
+          success: false,
+          message: "Forbidden: You cannot move a user to another district.",
+        })
+        return
+      }
+      if (
+        existingUser.districtId &&
+        existingUser.districtId !== actor.districtId
+      ) {
+        res.status(403).json({
+          success: false,
+          message: "Forbidden: You cannot update users outside your district.",
+        })
+        return
+      }
+    }
+    if (actor.role === Role.SUPER_ADMIN) {
+      if (req.body.councilId !== undefined)
+        updatedData.councilId = req.body.councilId || null
+      if (districtId !== undefined) updatedData.districtId = districtId || null
     }
 
     // Hash the password if it's being updated
@@ -165,6 +357,7 @@ export const deleteUser = async (
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
+  const actor = req.user as ScopeUser
 
   // Validate input
   if (!id) {
@@ -180,12 +373,21 @@ export const deleteUser = async (
     // Check if the user exists
     const existingUser = await prisma.user.findUnique({
       where: { id },
+      select: { id: true, role: true, councilId: true, districtId: true },
     })
 
     if (!existingUser) {
       res.status(404).json({
         success: false,
         message: "User not found.",
+      })
+      return
+    }
+
+    if (!canManageUser(actor, existingUser)) {
+      res.status(403).json({
+        success: false,
+        message: "Forbidden: You cannot delete this user.",
       })
       return
     }
@@ -254,7 +456,13 @@ export const sendContactMessage = async (
   }
 }
 
-const VALID_ROLES = ["ADMIN", "MANAGER", "USER"] as const
+export const IMPORT_ROLES: Role[] = [
+  Role.SUPER_ADMIN,
+  Role.COUNCIL_ADMIN,
+  Role.DISTRICT_ADMIN,
+  Role.FARMER,
+]
+const ROLE_VALUES: Role[] = Object.values(Role)
 
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
@@ -294,6 +502,7 @@ export const bulkImportUsers = async (
   req: Request,
   res: Response<APIResponse>
 ): Promise<void> => {
+  const actor = req.user as ScopeUser | undefined
   const { users } = req.body as { users: ImportRow[] }
 
   if (!Array.isArray(users) || users.length === 0) {
@@ -327,7 +536,7 @@ export const bulkImportUsers = async (
     const email = user.email?.trim().toLowerCase() || ""
     const phoneNumber = user.phoneNumber?.trim() || ""
     const name = user.name?.trim() || ""
-    const role = (user.role?.trim().toUpperCase() || "USER") as string
+    const role = (user.role?.trim().toUpperCase() || "FARMER") as string
     const district = user.district?.trim() || ""
 
     // Validate required fields
@@ -362,12 +571,24 @@ export const bulkImportUsers = async (
       continue
     }
 
-    if (!VALID_ROLES.includes(role as (typeof VALID_ROLES)[number])) {
+    if (!ROLE_VALUES.includes(role as Role)) {
       results.push({
         row,
         email,
         status: "failed",
-        reason: `Invalid role '${user.role}'. Must be one of: ADMIN, MANAGER, USER`,
+        reason: `Invalid role '${user.role}'. Must be one of: ${IMPORT_ROLES.join(", ")}`,
+      })
+      continue
+    }
+
+    // Role must be assignable by the importing actor
+    const targetRole = role as Role
+    if (actor && !canAssignRole(actor, targetRole)) {
+      results.push({
+        row,
+        email,
+        status: "failed",
+        reason: `Role '${targetRole}' is not permitted for your account scope`,
       })
       continue
     }
@@ -408,6 +629,19 @@ export const bulkImportUsers = async (
     seenEmails.add(email)
     seenPhones.add(phoneNumber)
 
+    // Scope auto-assignment from the actor
+    let councilId: string | null | undefined
+    let districtId: string | null | undefined
+    if (actor) {
+      councilId =
+        actor.role === Role.COUNCIL_ADMIN || actor.role === Role.DISTRICT_ADMIN
+          ? (actor.councilId ?? null)
+          : null
+      if (actor.role === Role.DISTRICT_ADMIN) {
+        districtId = actor.districtId ?? null
+      }
+    }
+
     // Create user
     try {
       const defaultPassword = await bcrypt.hash("Welcome@123", 10)
@@ -416,8 +650,10 @@ export const bulkImportUsers = async (
           name,
           email,
           phoneNumber: normalizePhone(phoneNumber),
-          role: role as "ADMIN" | "MANAGER" | "USER",
+          role: targetRole,
           district: district || null,
+          councilId: councilId ?? null,
+          districtId: districtId ?? null,
           password: defaultPassword,
           isVerified: false,
         },
@@ -475,6 +711,7 @@ export const bulkImportPhoneNumbers = async (
   req: Request,
   res: Response<APIResponse>
 ): Promise<void> => {
+  const actor = req.user as ScopeUser | undefined
   const { phoneUpdates } = req.body as { phoneUpdates: PhoneUpdateRow[] }
 
   if (!Array.isArray(phoneUpdates) || phoneUpdates.length === 0) {
@@ -484,6 +721,8 @@ export const bulkImportPhoneNumbers = async (
     })
     return
   }
+
+  const scopeFilter = actor ? scopeWhereForUsers(actor) : {}
 
   const results: PhoneImportResult[] = []
 
@@ -510,17 +749,38 @@ export const bulkImportPhoneNumbers = async (
     let matchedUser = null
     let matchMethod = ""
 
-    // Try exact email match first
+    // Try exact email match first (restricted to actor scope)
     if (email) {
-      matchedUser = await prisma.user.findUnique({
+      const emailMatch = await prisma.user.findUnique({
         where: { email },
       })
-      if (matchedUser) {
-        matchMethod = "email"
+      if (emailMatch) {
+        if (Object.keys(scopeFilter).length === 0) {
+          matchedUser = emailMatch
+          matchMethod = "email"
+        } else {
+          const scoped = await prisma.user.findFirst({
+            where: { email, ...scopeFilter },
+          })
+          if (scoped) {
+            matchedUser = scoped
+            matchMethod = "email"
+          } else {
+            results.push({
+              row,
+              email,
+              name,
+              phoneNumber,
+              status: "unmatched",
+              reason: `User with email '${email}' exists but is outside your scope`,
+            })
+            continue
+          }
+        }
       }
     }
 
-    // If no email match, try fuzzy name match
+    // If no email match, try fuzzy name match (restricted to actor scope)
     if (!matchedUser && name) {
       const nameMatches = await prisma.user.findMany({
         where: {
@@ -528,6 +788,7 @@ export const bulkImportPhoneNumbers = async (
             contains: name,
             mode: "insensitive",
           },
+          ...scopeFilter,
         },
       })
 

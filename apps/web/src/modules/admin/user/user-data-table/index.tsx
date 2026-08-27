@@ -1,3 +1,4 @@
+import { auth } from "@/auth"
 import { fetchUsers } from "@/lib/api"
 import AddNewHeader from "@/modules/admin/add-new-header"
 import { CustomDataTable } from "@/modules/common/custom-data-table"
@@ -5,9 +6,12 @@ import DownloadTemplateDropdown from "../download-template-dropdown"
 import { userColumns } from "../user-data-columns"
 
 const UserDataTable = async () => {
+  const session = await auth()
+  const token = session?.accessToken
+
   let users = []
   try {
-    users = await fetchUsers() // Fetch the data directly
+    users = await fetchUsers(token) // Fetch the data directly
   } catch (error) {
     console.error("Failed to fetch users:", error)
     return (

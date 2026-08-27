@@ -1,3 +1,4 @@
+import { auth } from "@/auth"
 import { Card } from "@/components/ui/card"
 import {
   fetchBlogs,
@@ -73,6 +74,9 @@ const stats: AdminStats[] = [
 ]
 
 export default async function Dashboard() {
+  const session = await auth()
+  const token = session?.accessToken
+
   // Fetch all required data
   const [blogs, shops, reports, forms, councilLists, news, users, events] =
     await Promise.all([
@@ -82,7 +86,7 @@ export default async function Dashboard() {
       fetchFormsAndDocuments(),
       fetchCouncilList(),
       fetchNews(),
-      fetchUsers(),
+      fetchUsers(token),
       fetchEvents(),
     ])
 

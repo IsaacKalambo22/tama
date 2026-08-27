@@ -24,6 +24,7 @@ import {
   Upload,
   XCircle,
 } from "lucide-react"
+import { useSession } from "next-auth/react"
 import Link from "next/link"
 import Papa from "papaparse"
 import { useCallback, useRef, useState } from "react"
@@ -63,7 +64,8 @@ interface ImportSummary {
 
 type Step = "upload" | "preview" | "processing" | "results"
 
-const VALID_ROLES = ["ADMIN", "MANAGER", "USER"]
+const VALID_ROLES = ["FARMER", "DISTRICT_ADMIN", "COUNCIL_ADMIN", "SUPER_ADMIN"]
+const DEFAULT_ROLE = "FARMER"
 
 const EXPECTED_FIELDS = ["name", "email", "phoneNumber", "role", "district"]
 const PHONE_ALIASES = ["phone", "phone_number", "phone number", "phonenumber"]
@@ -117,10 +119,10 @@ function validateRow(row: ParsedRow, rowIndex: number): ValidatedRow {
       "A valid TNM or Airtel phone number is required (e.g., +2659XXXXXXXX or 09XXXXXXXX)"
     )
   }
-  const role = row.role?.trim().toUpperCase() || "USER"
+  const role = row.role?.trim().toUpperCase() || DEFAULT_ROLE
   if (!VALID_ROLES.includes(role)) {
     errors.push(
-      `Invalid role '${row.role}'. Must be one of: ADMIN, MANAGER, USER`
+      `Invalid role '${row.role}'. Must be one of: ${VALID_ROLES.join(", ")}`
     )
   }
 
@@ -170,6 +172,18 @@ function checkDuplicates(rows: ValidatedRow[]): ValidatedRow[] {
 }
 
 export default function BulkUserImportPage() {
+  const { data: session } = useSession()
+  const actorRole = session?.role
+
+  const assignableRoles =
+    actorRole === "SUPER_ADMIN"
+      ? VALID_ROLES
+      : actorRole === "COUNCIL_ADMIN"
+        ? ["FARMER", "DISTRICT_ADMIN"]
+        : actorRole === "DISTRICT_ADMIN"
+          ? ["FARMER"]
+          : ["FARMER"]
+
   const [step, setStep] = useState<Step>("upload")
   const [fileName, setFileName] = useState<string>("")
   const [parsedRows, setParsedRows] = useState<ValidatedRow[]>([])
@@ -200,7 +214,7 @@ export default function BulkUserImportPage() {
         (row.phone_number as string) ||
         ""
       ).trim(),
-      role: ((row.role as string) || "USER").trim(),
+      role: ((row.role as string) || DEFAULT_ROLE).trim(),
       district: ((row.district as string) || "").trim(),
     }))
 
@@ -310,7 +324,7 @@ export default function BulkUserImportPage() {
           name: r.name,
           email: r.email,
           phoneNumber: normalizeMalawiPhone(r.phoneNumber),
-          role: (r.role?.toUpperCase() || "USER") as string,
+          role: (r.role?.toUpperCase() || DEFAULT_ROLE) as string,
           district: r.district || undefined,
         })),
       }
@@ -418,7 +432,7 @@ export default function BulkUserImportPage() {
             <code className="block text-xs bg-background p-2 rounded">
               name, email, phoneNumber, role, district
               <br />
-              John Doe, john@example.com, +265912345678, USER, Central
+              John Doe, john@example.com, +265912345678, FARMER, Central
             </code>
             <ul className="mt-2 text-xs text-muted-foreground list-disc list-inside space-y-1">
               <li>
@@ -432,11 +446,12 @@ export default function BulkUserImportPage() {
                 e.g., +2659XXXXXXXX or 09XXXXXXXX)
               </li>
               <li>
-                <strong>role</strong> - Optional (ADMIN, MANAGER, or USER.
-                Defaults to USER)
+                <strong>role</strong> - Optional (FARMER, DISTRICT_ADMIN,
+                COUNCIL_ADMIN, or SUPER_ADMIN. Defaults to FARMER. Roles beyond
+                your scope will be rejected.)
               </li>
               <li>
-                <strong>district</strong> - Optional
+                <strong>district</strong> - Optional (text label)
               </li>
             </ul>
           </div>
@@ -558,15 +573,17 @@ export default function BulkUserImportPage() {
                         </TableCell>
                         <TableCell>
                           <select
-                            value={row.role?.toUpperCase() || "USER"}
+                            value={row.role?.toUpperCase() || DEFAULT_ROLE}
                             onChange={(e) =>
                               updateCell(row.rowIndex, "role", e.target.value)
                             }
                             className="w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-blue-500 focus:outline-none px-1 py-0.5 text-sm"
                           >
-                            <option value="USER">USER</option>
-                            <option value="MANAGER">MANAGER</option>
-                            <option value="ADMIN">ADMIN</option>
+                            {assignableRoles.map((r) => (
+                              <option key={r} value={r}>
+                                {r}
+                              </option>
+                            ))}
                           </select>
                         </TableCell>
                         <TableCell>
