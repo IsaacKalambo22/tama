@@ -43,7 +43,9 @@ model District {
   @@unique([name, councilId])
 }
 
-enum EmailNotificationStatus {
+// Shared lifecycle for provider-dispatched messages (email + SMS), mirroring
+// InfiSend's MessageStatus vocabulary.
+enum ProviderMessageStatus {
   QUEUED
   SENT
   DELIVERED
@@ -52,14 +54,21 @@ enum EmailNotificationStatus {
   CANCELLED
 }
 
-enum NotificationTargetType {
+// Delivery channels a composed MessageBatch can fan out to.
+enum MessageChannel {
+  IN_APP
+  EMAIL
+  SMS
+}
+
+enum MessageTargetType {
   INDIVIDUALS
   GROUP
   DISTRICT
   COUNCIL
 }
 
-enum NotificationBatchStatus {
+enum MessageBatchStatus {
   DRAFT
   SCHEDULED
   SENT
@@ -89,11 +98,16 @@ model User {
   createdAt                  DateTime  @default(now())
   updatedAt                  DateTime  @updatedAt
 
+  // Narrow system-notification feed: "everything created after this moment is
+  // unseen for me". Lighter than fanning out a row per recipient — see
+  // SystemNotification below.
+  lastSeenSystemNotificationAt DateTime?
+
   @@index([role])
   @@index([createdAt])
-  sentNotifications         InAppNotification[]    @relation("NotificationSender")
-  receivedNotifications     InAppNotification[]    @relation("NotificationRecipient")
-  notificationBatches       NotificationBatch[]    @relation("NotificationBatchSender")
+  sentMessages              InAppMessage[]        @relation("InAppMessageSender")
+  receivedMessages          InAppMessage[]        @relation("InAppMessageRecipient")
+  messageBatches            MessageBatch[]        @relation("MessageBatchSender")
   recipientGroupsCreated    RecipientGroup[]       @relation("RecipientGroupCreator")
   recipientGroupMemberships RecipientGroupMember[] @relation("RecipientGroupMember")
 }
@@ -254,73 +268,140 @@ model ImageText {
   updatedAt   DateTime @updatedAt
 }
 
-model EmailNotification {
-  id            String                  @id @default(uuid())
-  messageId     String?                 @unique
-  event         String
-  recipient     String
-  templateId    String?
-  subject       String?
-  status        EmailNotificationStatus @default(QUEUED)
-  failureCode   String?
-  failureReason String?
-  costCharged   String?
+// A provider-dispatched email. `event` is set for transactional/system-triggered
+// mail (e.g. "user.created") and null for manually composed Messaging sends,
+// which instead link back through `batchId`.
+model EmailMessage {
+  id                String                @id @default(uuid())
+  messageId         String?               @unique
+  batchId           String?
+  batch             MessageBatch?         @relation(fields: [batchId], references: [id], onDelete: SetNull)
+  event             String?
+  recipient         String
+  templateId        String?
+  subject           String?
+  status            ProviderMessageStatus @default(QUEUED)
+  failureCode       String?
+  failureReason     String?
+  costCharged       String?
   providerMessageId String?
-  createdAt     DateTime                @default(now())
-  updatedAt     DateTime                @updatedAt
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
 
   @@index([recipient])
   @@index([event])
   @@index([status])
+  @@index([batchId])
 }
 
-// One row per (batch, recipient) so read state is tracked per person, even
-// for a bulk send. `event` mirrors the shared vocabulary in
-// apps/api/src/notifications/event-map.ts for system-triggered rows (e.g.
-// "user.created"); it stays null for manually composed sends.
-model InAppNotification {
-  id          String   @id @default(uuid())
+// A provider-dispatched SMS. Same shape as EmailMessage — the webhook receiver
+// routes InfiSend `message.*` events to one table or the other on the
+// event's `channel` field. `recipient` is always E.164.
+model SmsMessage {
+  id                String                @id @default(uuid())
+  messageId         String?               @unique
+  batchId           String?
+  batch             MessageBatch?         @relation(fields: [batchId], references: [id], onDelete: SetNull)
+  event             String?
+  recipient         String
+  templateId        String?
+  message           String?
+  senderId          String?
+  status            ProviderMessageStatus @default(QUEUED)
+  failureCode       String?
+  failureReason     String?
+  costCharged       String?
+  providerMessageId String?
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+
+  @@index([recipient])
+  @@index([event])
+  @@index([status])
+  @@index([batchId])
+}
+
+// One row per (batch, recipient) so in-app read state is tracked per person,
+// even for a bulk send. This is the Messaging Inbox — system-generated
+// broadcast alerts never land here (see SystemNotification).
+model InAppMessage {
+  id          String        @id @default(uuid())
   batchId     String?
-  batch       NotificationBatch? @relation(fields: [batchId], references: [id], onDelete: SetNull)
+  batch       MessageBatch? @relation(fields: [batchId], references: [id], onDelete: SetNull)
   senderId    String?
-  sender      User?    @relation("NotificationSender", fields: [senderId], references: [id], onDelete: SetNull)
+  sender      User?         @relation("InAppMessageSender", fields: [senderId], references: [id], onDelete: SetNull)
   recipientId String
-  recipient   User     @relation("NotificationRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  recipient   User          @relation("InAppMessageRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
   title       String
   body        String
   link        String?
-  read        Boolean  @default(false)
+  read        Boolean       @default(false)
   readAt      DateTime?
-  event       String?
-  createdAt   DateTime @default(now())
+  createdAt   DateTime      @default(now())
 
   @@index([recipientId, read, createdAt])
   @@index([batchId])
 }
 
-// Groups the fan-out for the sender's view ("sent to District X, 340
-// recipients, 12 read"). `targetRef` holds the RecipientGroup id, the
-// district string, or the CouncilList id depending on `targetType`;
-// `individualIds` is used only when targetType is INDIVIDUALS.
-model NotificationBatch {
-  id            String                  @id @default(uuid())
+// A single composed send across one or more channels. Groups the fan-out for
+// the sender's "sent to District X — 340 in-app, 12 read; 338 emails; 340 SMS"
+// view. `targetRef` holds the RecipientGroup id, the district name, or the
+// CouncilList id depending on `targetType`; `individualIds` is used only when
+// `targetType` is INDIVIDUALS. Per-channel composition fields are nullable —
+// only those for the selected `channels` are populated.
+model MessageBatch {
+  id            String             @id @default(uuid())
   senderId      String
-  sender        User                    @relation("NotificationBatchSender", fields: [senderId], references: [id], onDelete: Cascade)
-  targetType    NotificationTargetType
+  sender        User               @relation("MessageBatchSender", fields: [senderId], references: [id], onDelete: Cascade)
+  targetType    MessageTargetType
   targetRef     String?
-  individualIds String[]                @default([])
-  title         String
-  body          String
-  link          String?
-  scheduledFor  DateTime?
-  status        NotificationBatchStatus @default(DRAFT)
-  createdAt     DateTime                @default(now())
-  updatedAt     DateTime                @updatedAt
+  individualIds String[]           @default([])
+  channels      MessageChannel[]   @default([])
 
-  notifications InAppNotification[]
+  // In-app channel payload
+  inAppTitle String?
+  inAppBody  String?
+  inAppLink  String?
+
+  // Email channel payload (inline subject/body OR templateId + variables)
+  emailSubject    String?
+  emailText       String?
+  emailHtml       String?
+  emailTemplateId String?
+  emailVariables  Json?
+
+  // SMS channel payload (inline message OR templateId + variables)
+  smsMessage    String?
+  smsTemplateId String?
+  smsSenderId   String?
+  smsVariables  Json?
+
+  scheduledFor DateTime?
+  status       MessageBatchStatus @default(DRAFT)
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+
+  inAppMessages InAppMessage[]
+  emailMessages EmailMessage[]
+  smsMessages   SmsMessage[]
 
   @@index([senderId])
   @@index([status, scheduledFor])
+}
+
+// System-generated, broadcast-style alerts — one row per occurrence of an
+// internal event (blog.published, event.created, ...). No per-recipient rows:
+// "unseen for me" is derived from User.lastSeenSystemNotificationAt. Kept
+// deliberately separate from the Messaging models above.
+model SystemNotification {
+  id        String   @id @default(uuid())
+  event     String
+  title     String
+  body      String
+  link      String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
 }
 
 // Reusable, named recipient lists a sender can target repeatedly instead of
