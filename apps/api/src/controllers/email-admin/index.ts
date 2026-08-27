@@ -95,8 +95,8 @@ export const testSendEmail = async (
       replyTo,
     })
 
-    // Persist the notification record
-    await prisma.emailNotification.create({
+    // Persist the tracking record
+    await prisma.emailMessage.create({
       data: {
         messageId: result.messageId,
         event: "admin.test-send",
@@ -133,7 +133,7 @@ export const testSendEmail = async (
 
 /**
  * GET /admin/email/log
- * Paginated list of EmailNotification rows.
+ * Paginated list of EmailMessage rows.
  * Query params: page (default 1), limit (default 25), status, event, recipient
  */
 export const getEmailLog = async (
@@ -164,13 +164,13 @@ export const getEmailLog = async (
 
   try {
     const [notifications, total] = await Promise.all([
-      prisma.emailNotification.findMany({
+      prisma.emailMessage.findMany({
         where,
         orderBy: { createdAt: "desc" },
         skip,
         take: limit,
       }),
-      prisma.emailNotification.count({ where }),
+      prisma.emailMessage.count({ where }),
     ])
 
     res.status(200).json({
