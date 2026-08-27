@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import prisma from "../../config"
+import { emitSystemNotification } from "../../messaging/system-notifications"
 import { APIResponse } from "../../types"
 
 // Create Vacancy
@@ -54,6 +55,9 @@ export const createVacancy = async (
         howToApply,
       },
     })
+
+    // System-wide broadcast alert (fire-and-forget, never blocks the response).
+    void emitSystemNotification("vacancy.created", { title: newVacancy.title })
 
     // Respond with success
     res.status(201).json({

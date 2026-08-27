@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import prisma from "../../config"
+import { emitSystemNotification } from "../../messaging/system-notifications"
 import { APIResponse } from "../../types"
 
 export const createBlog = async (
@@ -28,6 +29,9 @@ export const createBlog = async (
         author,
       },
     })
+
+    // System-wide broadcast alert (fire-and-forget, never blocks the response).
+    void emitSystemNotification("blog.published", { title: newBlog.title })
 
     // Respond with success
     res.status(201).json({

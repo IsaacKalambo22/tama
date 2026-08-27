@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import prisma from "../../config"
+import { emitSystemNotification } from "../../messaging/system-notifications"
 import { APIResponse } from "../../types"
 
 export const createNews = async (
@@ -39,6 +40,9 @@ export const createNews = async (
         readingTime,
       },
     })
+
+    // System-wide broadcast alert (fire-and-forget, never blocks the response).
+    void emitSystemNotification("news.created", { title: newNews.title })
 
     // Respond with success
     res.status(201).json({

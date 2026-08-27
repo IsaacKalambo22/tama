@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import prisma from "../../config"
+import { emitSystemNotification } from "../../messaging/system-notifications"
 import { APIResponse } from "../../types"
 
 export const createEvent = async (
@@ -31,10 +32,8 @@ export const createEvent = async (
       },
     })
 
-    // Fire-and-forget: notify via InfiSend without blocking the response
-    // Recipients should come from a subscriber list in production;
-    // for now, no email is sent for event.created until a recipient list is defined.
-    // To enable: void notifyEvent("event.created", recipientEmail, { title, date, location })
+    // System-wide broadcast alert (fire-and-forget, never blocks the response).
+    void emitSystemNotification("event.created", { title: newEvent.title })
 
     res.status(201).json({
       success: true,
