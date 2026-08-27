@@ -14,7 +14,7 @@ import {
 
 const router = Router()
 
-router.get("/", verifyToken, getAllCouncilLists)
+router.get("/", getAllCouncilLists)
 router.get("/scoped", verifyToken, getCouncilListsByScope)
 router.post("/", verifySuperAdmin, createCouncilList)
 router.patch(
