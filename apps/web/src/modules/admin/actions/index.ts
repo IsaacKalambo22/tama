@@ -723,39 +723,39 @@ export const bulkImportPhoneNumbers = async (payload: object) => {
   }
 }
 
-// IN-APP NOTIFICATIONS SERVER ACTIONS
-export const createNotificationBatch = async (
+// MESSAGING (multi-channel compose) SERVER ACTIONS
+export const createMessageBatch = async (
   payload: object,
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
-  return await serverAction("admin/notifications", "POST", payload, [
+  return await serverAction("admin/messages", "POST", payload, [
     fullPath,
     pathWithoutAdmin,
   ])
 }
 
-export const updateNotificationBatch = async (
+export const updateMessageBatch = async (
   payload: object,
   batchId: string,
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
   return await serverAction(
-    `admin/notifications/batches/${batchId}`,
+    `admin/messages/batches/${batchId}`,
     "PATCH",
     payload,
     [fullPath, pathWithoutAdmin]
   )
 }
 
-export const cancelNotificationBatch = async (
+export const cancelMessageBatch = async (
   batchId: string,
   fullPath: string,
   pathWithoutAdmin: string
 ) => {
   return await serverAction(
-    `admin/notifications/batches/${batchId}/cancel`,
+    `admin/messages/batches/${batchId}/cancel`,
     "POST",
     null,
     [fullPath, pathWithoutAdmin]
