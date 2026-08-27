@@ -4,13 +4,13 @@ import { Request, Response } from "express"
 
 import { Role } from "../../../prisma/generated/prisma"
 import prisma from "../../config"
+import { notifyEvent } from "../../messaging/transactional-email"
 import {
   sendPasswordResetEmail,
   sendResetSuccessEmail,
   sendSetPasswordSuccessEmail,
   setPasswordRequestEmail,
 } from "../../nodemailer/emails"
-import { notifyEvent } from "../../notifications/service"
 import { canAssignRole, ScopeUser } from "../../permissions"
 import { APIResponse } from "../../types"
 import { generateTokens } from "../../utils/generate-tokens"
