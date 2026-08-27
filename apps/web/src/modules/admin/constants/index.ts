@@ -111,31 +111,31 @@ export const ADMIN_LINKS: SidebarProps[] = [
     ],
   },
   {
-    label: "Messaging", // New "Messaging" section
-    href: "/admin/messages", // Path for the messaging section
-    icon: MessageCircle, // Icon for messaging
-  },
-  {
-    label: "Notifications",
-    icon: Bell,
+    label: "Messaging",
+    icon: MessageCircle,
     submenu: [
       {
         label: "Inbox",
-        href: "/admin/notifications",
+        href: "/admin/messages/inbox",
       },
       {
         label: "Compose",
-        href: "/admin/notifications/compose",
+        href: "/admin/messages/compose",
       },
       {
         label: "Sent & Scheduled",
-        href: "/admin/notifications/batches",
+        href: "/admin/messages/batches",
       },
       {
         label: "Recipient Groups",
-        href: "/admin/notifications/groups",
+        href: "/admin/messages/groups",
       },
     ],
+  },
+  {
+    label: "Notifications",
+    href: "/admin/notifications",
+    icon: Bell,
   },
 ]
 
