@@ -67,7 +67,8 @@ export const middleware = auth(async (req) => {
   const isAuthRoute =
     authRoutes.includes(nextUrl.pathname) ||
     nextUrl.pathname.startsWith("/set-password") ||
-    nextUrl.pathname.startsWith("/reset-password")
+    nextUrl.pathname.startsWith("/reset-password") ||
+    nextUrl.pathname.startsWith("/create-password")
 
   const isAdminRoute = nextUrl.pathname.startsWith(adminRoutes)
   const isCouncilAdminRoute = nextUrl.pathname.startsWith(councilAdminRoutes)
