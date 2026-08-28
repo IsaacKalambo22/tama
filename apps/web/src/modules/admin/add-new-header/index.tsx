@@ -59,6 +59,8 @@ const AddNewHeader = ({
   const { data: session } = useSession()
   const actorRole = session?.role
 
+  const isReadOnly = actorRole === "DISTRICT_ADMIN"
+
   const bulkImportPath =
     actorRole === "COUNCIL_ADMIN"
       ? "/council-admin/farmers/import"
@@ -79,34 +81,35 @@ const AddNewHeader = ({
       <h1 className="text-lg font-semibold dark:text-white">{name}</h1>
       <div className="flex items-center gap-2">
         {extraActions}
-        {buttonName && buttonName === AddNewType.ADD_USER ? (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button>
+        {!isReadOnly &&
+          (buttonName && buttonName === AddNewType.ADD_USER ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button>
+                  <PlusSquare className="h-4 w-4" />
+                  {buttonName}
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={handleButtonClick}>
+                  <UserPlus className="mr-2 h-4 w-4" />
+                  Add Single User
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push(bulkImportPath)}>
+                  <Upload className="mr-2 h-4 w-4" />
+                  Bulk Import
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            buttonName && (
+              <Button onClick={handleButtonClick}>
                 <PlusSquare className="h-4 w-4" />
                 {buttonName}
-                <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={handleButtonClick}>
-                <UserPlus className="mr-2 h-4 w-4" />
-                Add Single User
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => router.push(bulkImportPath)}>
-                <Upload className="mr-2 h-4 w-4" />
-                Bulk Import
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        ) : (
-          buttonName && (
-            <Button onClick={handleButtonClick}>
-              <PlusSquare className="h-4 w-4" />
-              {buttonName}
-            </Button>
-          )
-        )}
+            )
+          ))}
       </div>
 
       {isOpen && buttonName === AddNewType.NEW_FORM && (
