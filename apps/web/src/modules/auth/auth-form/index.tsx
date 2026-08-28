@@ -39,6 +39,9 @@ interface AuthFormProps<T extends FieldValues> {
   onSubmit: (data: T & { verificationToken?: string }) => Promise<{
     success: boolean
     error?: string
+    requiresPasswordSetup?: boolean
+    email?: string
+    setupToken?: string
   }>
   type: FormType
   verificationToken?: string
@@ -85,6 +88,16 @@ const AuthForm = <T extends FieldValues>({
         ? { verificationToken }
         : {}),
     })
+
+    if (result.requiresPasswordSetup) {
+      const query = new URLSearchParams({
+        token: result.setupToken ?? "",
+        email: result.email ?? "",
+      })
+      router.push(`/create-password?${query.toString()}`)
+      setIsLoading(false)
+      return
+    }
 
     if (result.success) {
       toast.success(
