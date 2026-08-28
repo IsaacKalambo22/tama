@@ -60,10 +60,10 @@ export default function FarmerDashboard() {
             <p>
               <span className="font-medium">Email:</span> {session?.user?.email}
             </p>
-            <p>
+            <div>
               <span className="font-medium">Role:</span>{" "}
               <Badge variant="secondary">Farmer</Badge>
-            </p>
+            </div>
           </div>
         </Card>
 
