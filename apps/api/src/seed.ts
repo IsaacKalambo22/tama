@@ -13,19 +13,46 @@ const COUNCILS_DATA = [
   { name: "Area 9", description: "Area 9 Council" },
   { name: "Area 10", description: "Area 10 Council" },
   { name: "Area 11", description: "Area 11 Council" },
+  { name: "Area 12", description: "Area 12 Council" },
+  { name: "Area 13", description: "Area 13 Council" },
+  { name: "Area 14", description: "Area 14 Council" },
+  { name: "Area 15", description: "Area 15 Council" },
+  { name: "Area 16", description: "Area 16 Council" },
+  { name: "Area 17", description: "Area 17 Council" },
+  { name: "Area 18", description: "Area 18 Council" },
+  { name: "Area 19", description: "Area 19 Council" },
+  { name: "Area 20", description: "Area 20 Council" },
+  { name: "Area 21", description: "Area 21 Council" },
 ]
 
 const DISTRICTS_DATA: Record<string, string[]> = {
-  "Area 2": ["District 1", "District 2"],
-  "Area 3": ["District 1", "District 2"],
-  "Area 4": ["District 1", "District 2"],
-  "Area 5": ["District 1", "District 2", "District 3"],
-  "Area 6": ["District 1", "District 2"],
-  "Area 7": ["District 1", "District 2"],
-  "Area 8": ["District 1", "District 2"],
-  "Area 9": ["District 1", "District 2"],
-  "Area 10": ["District 1", "District 2"],
-  "Area 11": ["District 1", "District 2"],
+  "Area 2": [
+    "Mulanje",
+    "Phalombe",
+    "Thyolo",
+    "Blantyre",
+    "Chiradzulu",
+    "Zomba",
+  ],
+  "Area 3": ["Balaka", "Bwanje Valley", "Chilipa", "Nakhumba", "Ntcheu"],
+  "Area 4": ["Machinga"],
+  "Area 5": ["Mangochi", "Namwera", "Makanjira"],
+  "Area 6": ["Dedza", "Part Of Lilongwe East"],
+  "Area 7": ["Lilongwe South", "Lilongwe West"],
+  "Area 8": ["Lilongwe North East - Nsalu", "Kasiya"],
+  "Area 9": ["Mchinji"],
+  "Area 10": ["Dowa East"],
+  "Area 11": ["Dowa West"],
+  "Area 12": ["Nkhotakota", "Salima"],
+  "Area 13": ["Ntchisi"],
+  "Area 14": ["Kasungu West"],
+  "Area 15": ["Kasungu East"],
+  "Area 16": ["Mzimba South"],
+  "Area 17": ["Mzimba North"],
+  "Area 18": ["Rumphi"],
+  "Area 19": ["Kalonga", "Chitipa"],
+  "Area 20": ["Big Growers Central"],
+  "Area 21": ["Big Growers North"],
 }
 
 async function seed() {
@@ -61,6 +88,22 @@ async function seed() {
     }
   }
 
+  console.log("\n🧹 Pruning districts not in the canonical list...")
+
+  for (const [councilName, districtNames] of Object.entries(DISTRICTS_DATA)) {
+    const councilId = councilMap[councilName]
+    const stale = await prisma.district.findMany({
+      where: { councilId, name: { notIn: districtNames } },
+      select: { id: true, name: true },
+    })
+    for (const district of stale) {
+      await prisma.district.delete({ where: { id: district.id } })
+      console.log(
+        `  🗑️  Removed stale district: ${district.name} in ${councilName}`
+      )
+    }
+  }
+
   console.log("\n🌱 Seeding users...")
 
   const hashedUserPassword = await bcrypt.hash("User@123456", 10)
@@ -68,10 +111,10 @@ async function seed() {
   const hashedAdminPassword = await bcrypt.hash("Admin@123456", 10)
 
   const area2Id = councilMap["Area 2"]
-  const area2Districts = await prisma.district.findMany({
-    where: { councilId: area2Id },
+  const farmerDistrict = await prisma.district.findUnique({
+    where: { name_councilId: { name: "Mulanje", councilId: area2Id! } },
   })
-  const firstDistrictId = area2Districts[0]?.id
+  const firstDistrictId = farmerDistrict?.id
 
   const farmerUser = await prisma.user.upsert({
     where: { email: "user@tamalawi.com" },
@@ -112,10 +155,10 @@ async function seed() {
   console.log(`✅ Council Admin user created: ${councilAdminUser.email}`)
 
   const area5Id = councilMap["Area 5"]
-  const area5Districts = await prisma.district.findMany({
-    where: { councilId: area5Id },
+  const districtAdminDistrict = await prisma.district.findUnique({
+    where: { name_councilId: { name: "Mangochi", councilId: area5Id! } },
   })
-  const districtAdminDistrictId = area5Districts[0]?.id
+  const districtAdminDistrictId = districtAdminDistrict?.id
 
   const districtAdminUser = await prisma.user.upsert({
     where: { email: "districtadmin@tamalawi.com" },
@@ -137,15 +180,27 @@ async function seed() {
   })
   console.log(`✅ District Admin user created: ${districtAdminUser.email}`)
 
+  const area11Id = councilMap["Area 11"]
+  const superAdminDistrict = await prisma.district.findUnique({
+    where: { name_councilId: { name: "Dowa West", councilId: area11Id! } },
+  })
+  const superAdminDistrictId = superAdminDistrict?.id
+
   const superAdminUser = await prisma.user.upsert({
     where: { email: "admin@tamalawi.com" },
-    update: { role: Role.SUPER_ADMIN },
+    update: {
+      role: Role.SUPER_ADMIN,
+      councilId: area11Id,
+      districtId: superAdminDistrictId,
+    },
     create: {
       name: "Super Admin",
       email: "admin@tamalawi.com",
       password: hashedAdminPassword,
       phoneNumber: "+265884567890",
       role: Role.SUPER_ADMIN,
+      councilId: area11Id,
+      districtId: superAdminDistrictId,
       isVerified: true,
     },
   })
