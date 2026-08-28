@@ -7,6 +7,7 @@ import {
   MessageCircle,
   NewspaperIcon,
   ShoppingBag,
+  User,
   UsersIcon,
   Wrench,
 } from "lucide-react"
@@ -17,6 +18,11 @@ export const COUNCIL_ADMIN_LINKS: SidebarProps[] = [
     label: "Dashboard",
     href: "/council-admin",
     icon: LayoutGrid,
+  },
+  {
+    label: "My Profile",
+    href: "/council-admin/profile",
+    icon: User,
   },
   {
     label: "Farmers",
