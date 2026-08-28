@@ -36,6 +36,16 @@ const Navbar = () => {
   }, [session])
 
   const roleLabel = ROLE_LABELS[session?.role as string] || session?.role
+
+  const profileHref: Record<string, string> = {
+    SUPER_ADMIN: "/admin/profile",
+    COUNCIL_ADMIN: "/council-admin/profile",
+    DISTRICT_ADMIN: "/district-admin/profile",
+    FARMER: "/farmer/profile",
+  }
+  const profilePath =
+    profileHref[(session?.role as string) || "FARMER"] || "/farmer/profile"
+
   const scopeInfo = (session as any)?.councilName
     ? (session as any)?.districtName
       ? `${(session as any).districtName}, ${(session as any).councilName}`
@@ -87,7 +97,7 @@ const Navbar = () => {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
-                <Link href="/admin/profile">
+                <Link href={profilePath}>
                   Profile
                   <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                 </Link>
