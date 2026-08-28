@@ -7,6 +7,7 @@ import {
   MessageCircle,
   NewspaperIcon,
   ShoppingBag,
+  User,
   UsersIcon,
   Wrench,
 } from "lucide-react"
@@ -17,6 +18,11 @@ export const DISTRICT_ADMIN_LINKS: SidebarProps[] = [
     label: "Dashboard",
     href: "/district-admin",
     icon: LayoutGrid,
+  },
+  {
+    label: "My Profile",
+    href: "/district-admin/profile",
+    icon: User,
   },
   {
     label: "Farmers",
