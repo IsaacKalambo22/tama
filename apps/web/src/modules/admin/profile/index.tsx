@@ -106,6 +106,7 @@ const Profile = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         refetch={refetchUserDetails} // Pass the refetch function here
+        user={userDetails}
       />
     </div>
   )
