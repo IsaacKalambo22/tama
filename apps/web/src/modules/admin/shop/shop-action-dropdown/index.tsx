@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 import { ShopProps } from "@/lib/api"
+import { useSession } from "next-auth/react"
 import Image from "next/image"
 import { useState } from "react"
 import { adminActionsDropdownItems } from "../../constants"
@@ -24,6 +25,8 @@ const ShopActionDropdown = ({ shop }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [action, setAction] = useState<ActionType | null>(null)
+  const { data: session } = useSession()
+  const isReadOnly = session?.role === "DISTRICT_ADMIN"
 
   const renderDialogContent = () => {
     if (!action) return null
@@ -77,31 +80,39 @@ const ShopActionDropdown = ({ shop }: Props) => {
             {shop.name}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {adminActionsDropdownItems.map((actionItem) => (
-            <DropdownMenuItem
-              key={actionItem.value}
-              className="shad-dropdown-item"
-              onClick={() => {
-                setAction(actionItem)
+          {adminActionsDropdownItems
+            .filter(
+              (item) =>
+                !isReadOnly ||
+                (item.value !== "edit" && item.value !== "delete")
+            )
+            .map((actionItem) => (
+              <DropdownMenuItem
+                key={actionItem.value}
+                className="shad-dropdown-item"
+                onClick={() => {
+                  setAction(actionItem)
 
-                if (["edit", "delete", "details"].includes(actionItem.value)) {
-                  setIsModalOpen(true)
-                }
-              }}
-            >
-              {actionItem.value && (
-                <div className="flex items-center gap-2">
-                  <Image
-                    src={actionItem.icon}
-                    alt={actionItem.label}
-                    width={30}
-                    height={30}
-                  />
-                  {actionItem.label}
-                </div>
-              )}
-            </DropdownMenuItem>
-          ))}
+                  if (
+                    ["edit", "delete", "details"].includes(actionItem.value)
+                  ) {
+                    setIsModalOpen(true)
+                  }
+                }}
+              >
+                {actionItem.value && (
+                  <div className="flex items-center gap-2">
+                    <Image
+                      src={actionItem.icon}
+                      alt={actionItem.label}
+                      width={30}
+                      height={30}
+                    />
+                    {actionItem.label}
+                  </div>
+                )}
+              </DropdownMenuItem>
+            ))}
         </DropdownMenuContent>
       </DropdownMenu>
 
