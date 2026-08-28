@@ -17,6 +17,7 @@ import ModalNewShop from "@/modules/admin/shop/modal-new-shop"
 import ModalNewUser from "@/modules/admin/user/modal-new-user"
 import ModalNewVacancy from "@/modules/admin/vacancy/modal-new-vacancy"
 import { ChevronDown, PlusSquare, Upload, UserPlus } from "lucide-react"
+import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { ReactElement, useState } from "react"
 import ModalNewHomeCarousel from "../home-carousel/modal-new-home-carousel"
@@ -55,6 +56,15 @@ const AddNewHeader = ({
 }: HeaderProps): ReactElement => {
   const [isOpen, setIsOpen] = useState(false)
   const router = useRouter()
+  const { data: session } = useSession()
+  const actorRole = session?.role
+
+  const bulkImportPath =
+    actorRole === "COUNCIL_ADMIN"
+      ? "/council-admin/farmers/import"
+      : actorRole === "DISTRICT_ADMIN"
+        ? "/district-admin/farmers/import"
+        : "/admin/users/import"
 
   const handleButtonClick = () => {
     setIsOpen((prev) => !prev)
@@ -83,9 +93,7 @@ const AddNewHeader = ({
                 <UserPlus className="mr-2 h-4 w-4" />
                 Add Single User
               </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => router.push("/admin/users/import")}
-              >
+              <DropdownMenuItem onClick={() => router.push(bulkImportPath)}>
                 <Upload className="mr-2 h-4 w-4" />
                 Bulk Import
               </DropdownMenuItem>
