@@ -84,7 +84,7 @@ export const serverAction = async (
       revalidatePath(path)
     }
 
-    return { success: true }
+    return { success: true, data: result.data }
   } catch (error) {
     // General error handling
     console.log(error)

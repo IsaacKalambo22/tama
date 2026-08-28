@@ -12,9 +12,7 @@ import {
 } from "@/lib/api"
 import {
   ComposeMessagePayload,
-  CostPreview,
   fetchRecipientGroups,
-  previewMessageCost,
   RecipientGroupProps,
 } from "@/lib/messaging"
 import { createMessageBatch } from "@/modules/admin/actions"
@@ -41,6 +39,27 @@ const TARGET_TYPE_LABELS: Record<string, string> = {
 const SMS_SINGLE_LIMIT = 160
 const SMS_CONCAT_PART = 153
 
+/**
+ * Builds a printable cost summary from the send result. Each channel that
+ * InfiSend charged for is shown as "Email MWK X" / "SMS MWK Y"; returns null
+ * when no cost is known yet (e.g. scheduled sends that haven't run).
+ */
+function formatSentCost(data: unknown): string | null {
+  const channels = (
+    data as { channels?: { channel: string; status: string; cost?: string }[] }
+  )?.channels
+  if (!channels) return null
+
+  const parts = channels
+    .filter((c) => c.status === "sent" && c.cost)
+    .map((c) => {
+      const label = c.channel === "EMAIL" ? "Email" : c.channel === "SMS" ? "SMS" : c.channel
+      return `${label} ${c.cost}`
+    })
+
+  return parts.length > 0 ? parts.join(" · ") : null
+}
+
 const formSchema = zod
   .object({
     targetType: zod.enum(["INDIVIDUALS", "GROUP", "DISTRICT", "COUNCIL"]),
@@ -53,6 +72,7 @@ const formSchema = zod
 
     emailSubject: zod.string().optional(),
     emailBody: zod.string().optional(),
+    emailFromName: zod.string().max(80).optional(),
 
     inAppTitle: zod.string().optional(),
     inAppBody: zod.string().optional(),
@@ -119,8 +139,6 @@ const MessageComposer = () => {
   const [users, setUsers] = useState<UserProps[]>([])
   const [councilLists, setCouncilLists] = useState<CouncilListProps[]>([])
   const [groups, setGroups] = useState<RecipientGroupProps[]>([])
-  const [preview, setPreview] = useState<CostPreview | null>(null)
-  const [isPreviewing, setIsPreviewing] = useState(false)
 
   useEffect(() => {
     if (!token) return
@@ -173,6 +191,7 @@ const MessageComposer = () => {
       channelSms: false,
       emailSubject: "",
       emailBody: "",
+      emailFromName: "",
       inAppTitle: "",
       inAppBody: "",
       inAppLink: "",
@@ -183,22 +202,12 @@ const MessageComposer = () => {
   })
 
   const targetType = form.watch("targetType")
-  const targetRef = form.watch("targetRef")
   const individualIds = form.watch("individualIds")
   const isScheduled = form.watch("isScheduled")
   const channelEmail = form.watch("channelEmail")
   const channelInApp = form.watch("channelInApp")
   const channelSms = form.watch("channelSms")
   const smsMessage = form.watch("smsMessage") ?? ""
-  const selectedIdsKey = individualIds.join(",")
-
-  // Any audience/channel change invalidates a prior cost preview.
-  useEffect(() => {
-    setPreview(null)
-  }, [targetType, targetRef, channelEmail, channelSms, selectedIdsKey])
-
-  const hasPaidChannel = channelEmail || channelSms
-  const needsPreview = hasPaidChannel && !preview
 
   const smsParts =
     smsMessage.length === 0
@@ -234,6 +243,7 @@ const MessageComposer = () => {
           ? {
               subject: (values.emailSubject ?? "").trim(),
               text: (values.emailBody ?? "").trim(),
+              fromName: (values.emailFromName ?? "").trim() || undefined,
             }
           : undefined,
         sms: values.channelSms
@@ -247,33 +257,7 @@ const MessageComposer = () => {
     }
   }
 
-  const handlePreview = async () => {
-    const values = form.getValues()
-    setIsPreviewing(true)
-    try {
-      const payload = buildPayload(values)
-      const result = await previewMessageCost(token, {
-        targetType: payload.targetType,
-        targetRef: payload.targetRef,
-        individualIds: payload.individualIds,
-        channels: payload.channels,
-      })
-      setPreview(result)
-    } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Failed to preview cost."
-      )
-    } finally {
-      setIsPreviewing(false)
-    }
-  }
-
   const onSubmit = async (values: FormValues) => {
-    if (needsPreview) {
-      await handlePreview()
-      return
-    }
-
     setIsLoading(true)
     const result = await createMessageBatch(
       buildPayload(values),
@@ -282,13 +266,15 @@ const MessageComposer = () => {
     )
 
     if (result.success) {
+      const costSummary = formatSentCost(result.data)
       toast.success(
         values.isScheduled
           ? "Message scheduled successfully"
-          : "Message sent successfully"
+          : costSummary
+            ? `Message sent · ${costSummary}`
+            : "Message sent successfully"
       )
       form.reset()
-      setPreview(null)
       router.push("/admin/messages/batches")
     } else {
       toast.error(result.error ?? "An error occurred.")
@@ -461,6 +447,13 @@ const MessageComposer = () => {
               control={form.control}
               placeholder="Write the email..."
             />
+            <CustomFormField
+              fieldType={FormFieldType.INPUT}
+              name="emailFromName"
+              label="From name (optional)"
+              control={form.control}
+              placeholder='Defaults to "TaMalawi"'
+            />
           </Card>
         )}
 
@@ -503,50 +496,13 @@ const MessageComposer = () => {
           />
         )}
 
-        {preview && (
-          <Card className="flex flex-col gap-1 p-4 text-sm">
-            <p className="font-medium">Reach &amp; cost preview</p>
-            <p className="text-muted-foreground">
-              {preview.reach} recipient{preview.reach === 1 ? "" : "s"} in this
-              audience.
-            </p>
-            {channelEmail && (
-              <p className="text-muted-foreground">
-                Email: {preview.emailReach ?? 0} addresses
-                {preview.email?.available && preview.email.estimatedCost
-                  ? ` · est. ${preview.email.estimatedCost}`
-                  : preview.email && !preview.email.available
-                    ? " · cost preview unavailable"
-                    : ""}
-              </p>
-            )}
-            {channelSms && (
-              <p className="text-muted-foreground">
-                SMS: {preview.smsReach ?? 0} numbers
-                {preview.invalidPhones?.length
-                  ? ` · ${preview.invalidPhones.length} invalid skipped`
-                  : ""}
-                {preview.sms?.available && preview.sms.estimatedCost
-                  ? ` · est. ${preview.sms.estimatedCost}`
-                  : preview.sms && !preview.sms.available
-                    ? " · cost preview unavailable"
-                    : ""}
-              </p>
-            )}
-          </Card>
-        )}
-
         <SubmitButton
-          disabled={isLoading || isPreviewing || !form.formState.isValid}
-          isLoading={isLoading || isPreviewing}
+          disabled={isLoading || !form.formState.isValid}
+          isLoading={isLoading}
           className="w-full h-10"
-          loadingText={needsPreview ? "Checking..." : "Sending..."}
+          loadingText="Sending..."
         >
-          {needsPreview
-            ? "Preview reach & cost"
-            : isScheduled
-              ? "Schedule message"
-              : "Send message"}
+          {isScheduled ? "Schedule message" : "Send message"}
         </SubmitButton>
       </form>
     </Form>

@@ -61,6 +61,7 @@ export interface MessageContent {
     html?: string
     templateId?: string
     variables?: Record<string, string>
+    fromName?: string
   }
   sms?: {
     message?: string
