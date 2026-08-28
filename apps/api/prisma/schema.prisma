@@ -73,6 +73,9 @@ enum MessageBatchStatus {
   SCHEDULED
   SENT
   CANCELLED
+  // Farmer support threads reuse MessageBatch (sender.role == FARMER).
+  // SENT = open request, RESOLVED = handled by a manager.
+  RESOLVED
 }
 
 model User {
