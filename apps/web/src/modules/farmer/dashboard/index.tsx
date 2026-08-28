@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card"
 import { NewsProps } from "@/lib/api"
 import { formatDateTime } from "@/lib/utils"
 import { useSession } from "next-auth/react"
+import Link from "next/link"
 import { useEffect, useState } from "react"
 import { FaBell, FaMapMarkerAlt, FaNewspaper, FaUser } from "react-icons/fa"
 
@@ -48,24 +49,32 @@ export default function FarmerDashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="p-6 rounded-xl shadow-none hover:shadow-lg transition-shadow">
-          <div className="flex items-center gap-3 mb-4">
-            <FaUser size={24} className="text-green-600" />
-            <h3 className="text-lg font-semibold text-gray-800">My Profile</h3>
-          </div>
-          <div className="space-y-2 text-gray-600">
-            <p>
-              <span className="font-medium">Name:</span> {session?.user?.name}
-            </p>
-            <p>
-              <span className="font-medium">Email:</span> {session?.user?.email}
-            </p>
-            <div>
-              <span className="font-medium">Role:</span>{" "}
-              <Badge variant="secondary">Farmer</Badge>
+        <Link href="/farmer/profile" className="block">
+          <Card className="p-6 rounded-xl shadow-none hover:shadow-lg transition-shadow h-full">
+            <div className="flex items-center gap-3 mb-4">
+              <FaUser size={24} className="text-green-600" />
+              <h3 className="text-lg font-semibold text-gray-800">
+                My Profile
+              </h3>
             </div>
-          </div>
-        </Card>
+            <div className="space-y-2 text-gray-600">
+              <p>
+                <span className="font-medium">Name:</span> {session?.user?.name}
+              </p>
+              <p>
+                <span className="font-medium">Email:</span>{" "}
+                {session?.user?.email}
+              </p>
+              <div>
+                <span className="font-medium">Role:</span>{" "}
+                <Badge variant="secondary">Farmer</Badge>
+              </div>
+            </div>
+            <p className="mt-4 text-sm font-medium text-green-600">
+              View & edit your profile →
+            </p>
+          </Card>
+        </Link>
 
         <Card className="p-6 rounded-xl shadow-none hover:shadow-lg transition-shadow">
           <div className="flex items-center gap-3 mb-4">
