@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs"
 import crypto from "crypto"
 import { Request, Response } from "express"
+import jwt from "jsonwebtoken"
 
 import { Role } from "../../../prisma/generated/prisma"
 import prisma from "../../config"
@@ -194,6 +195,24 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       return
     }
 
+    // First-login: the account has not had a password set yet (created by an
+    // admin). Prompt the user to create their password instead of failing.
+    if (!user.password) {
+      const setupToken = jwt.sign(
+        { id: user.id, email: user.email, purpose: "first-login" },
+        process.env.JWT_ACCESS_SECRET_KEY as string,
+        { expiresIn: "15m", algorithm: "HS256" }
+      )
+      res.status(200).json({
+        success: true,
+        requiresPasswordSetup: true,
+        email: user.email,
+        name: user.name,
+        setupToken,
+      })
+      return
+    }
+
     const isPasswordValid = await bcrypt.compare(password, user.password!)
     if (!isPasswordValid) {
       res.status(401).json({
@@ -242,6 +261,90 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({
       success: false,
       message: "An error occurred while logging in. Please try again later.",
+    })
+  }
+}
+
+export const setFirstLoginPassword = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { setupToken, password } = req.body
+
+  if (!setupToken || !password) {
+    res.status(400).json({
+      success: false,
+      message: "Setup token and new password are required.",
+    })
+    return
+  }
+
+  let payload: { id: string; email: string; purpose?: string }
+
+  try {
+    payload = jwt.verify(
+      setupToken,
+      process.env.JWT_ACCESS_SECRET_KEY as string
+    ) as { id: string; email: string; purpose?: string }
+  } catch {
+    res.status(400).json({
+      success: false,
+      message: "Invalid or expired setup token.",
+    })
+    return
+  }
+
+  if (payload.purpose !== "first-login") {
+    res.status(400).json({
+      success: false,
+      message: "Invalid setup token.",
+    })
+    return
+  }
+
+  try {
+    const user = await prisma.user.findUnique({ where: { id: payload.id } })
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        message: "User not found.",
+      })
+      return
+    }
+
+    if (user.password) {
+      res.status(400).json({
+        success: false,
+        message: "This account has already set a password.",
+      })
+      return
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        password: hashedPassword,
+        verificationToken: null,
+        verificationTokenExpiresAt: null,
+      },
+    })
+
+    await sendSetPasswordSuccessEmail(user.email)
+
+    res.status(200).json({
+      success: true,
+      message: "Password created successfully. You can now log in.",
+      email: user.email,
+    })
+  } catch (error) {
+    console.error("Error creating password:", error)
+
+    res.status(500).json({
+      success: false,
+      message:
+        "An error occurred while creating the password. Please try again later.",
     })
   }
 }
