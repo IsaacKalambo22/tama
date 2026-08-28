@@ -2,6 +2,15 @@ import { Request, Response } from "express"
 import prisma from "../../config"
 import { APIResponse } from "../../types"
 
+const numericSort = (a: { name: string }, b: { name: string }) => {
+  const numA = parseInt(a.name.replace(/\D/g, ""), 10)
+  const numB = parseInt(b.name.replace(/\D/g, ""), 10)
+  const aIsNum = !Number.isNaN(numA)
+  const bIsNum = !Number.isNaN(numB)
+  if (aIsNum && bIsNum && numA !== numB) return numA - numB
+  return a.name.localeCompare(b.name)
+}
+
 export const getAllCouncils = async (
   _req: Request,
   res: Response<APIResponse>
@@ -11,8 +20,9 @@ export const getAllCouncils = async (
       include: {
         _count: { select: { districts: true, users: true } },
       },
-      orderBy: { name: "asc" },
     })
+
+    councils.sort(numericSort)
 
     res.status(200).json({
       success: true,
