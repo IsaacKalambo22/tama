@@ -4,6 +4,7 @@ import {
   BookOpen,
   Images,
   LayoutGrid,
+  LifeBuoy,
   MessageCircle,
   NewspaperIcon,
   ShoppingBag,
@@ -136,6 +137,11 @@ export const ADMIN_LINKS: SidebarProps[] = [
     label: "Notifications",
     href: "/admin/notifications",
     icon: Bell,
+  },
+  {
+    label: "Farmer Support",
+    href: "/admin/support",
+    icon: LifeBuoy,
   },
 ]
 

@@ -1,4 +1,4 @@
-import { LayoutGrid, UsersIcon } from "lucide-react"
+import { LayoutGrid, LifeBuoy, UsersIcon } from "lucide-react"
 import { SidebarProps } from "../sidebar"
 
 export const COUNCIL_ADMIN_LINKS: SidebarProps[] = [
@@ -11,5 +11,10 @@ export const COUNCIL_ADMIN_LINKS: SidebarProps[] = [
     label: "Farmers",
     href: "/council-admin/farmers",
     icon: UsersIcon,
+  },
+  {
+    label: "Support Requests",
+    href: "/council-admin/support",
+    icon: LifeBuoy,
   },
 ]

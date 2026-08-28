@@ -20,6 +20,7 @@ import { AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai"
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
 import MessageBell from "@/modules/admin/message-bell"
 import SystemNotificationBell from "@/modules/admin/system-notification-bell"
+import SupportBell from "@/modules/common/support/support-bell"
 import Link from "next/link"
 import { useEffect } from "react"
 
@@ -64,6 +65,7 @@ const Navbar = () => {
       </div>
 
       <div className="flex items-center gap-2 mr-5">
+        <SupportBell />
         <MessageBell />
         <SystemNotificationBell />
         <DropdownMenu>

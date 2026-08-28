@@ -1,4 +1,4 @@
-import { LayoutGrid, User } from "lucide-react"
+import { LayoutGrid, LifeBuoy, User } from "lucide-react"
 import { SidebarProps } from "../sidebar"
 
 export const FARMER_LINKS: SidebarProps[] = [
@@ -11,5 +11,10 @@ export const FARMER_LINKS: SidebarProps[] = [
     label: "My Profile",
     href: "/farmer/profile",
     icon: User,
+  },
+  {
+    label: "Support & Help",
+    href: "/farmer/support",
+    icon: LifeBuoy,
   },
 ]

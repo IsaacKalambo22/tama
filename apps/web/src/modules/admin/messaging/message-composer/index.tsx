@@ -123,19 +123,22 @@ const MessageComposer = () => {
   const [isPreviewing, setIsPreviewing] = useState(false)
 
   useEffect(() => {
+    if (!token) return
     ;(async () => {
       try {
-        const [userList, councilList] = await Promise.all([
-          fetchUsers(),
-          fetchCouncilList(),
-        ])
-        setUsers(userList)
-        setCouncilLists(councilList)
+        setUsers(await fetchUsers(token))
       } catch (error) {
-        console.error("Failed to load targeting data:", error)
+        console.error("Failed to load recipients:", error)
       }
     })()
-  }, [])
+    ;(async () => {
+      try {
+        setCouncilLists(await fetchCouncilList())
+      } catch (error) {
+        console.error("Failed to load councils:", error)
+      }
+    })()
+  }, [token])
 
   useEffect(() => {
     if (!token) return
