@@ -32,9 +32,9 @@ export const userColumns: ColumnDef<UserProps>[] = [
           <Card className="flex justify-center items-center rounded-full w-10 h-10 bg-gray-200 text-gray-800 font-bold text-lg">
             {firstLetter}
           </Card>
-          <div>
-            <p>{userName}</p>
-            <p className="text-muted-foreground text-sm w-5">
+          <div className="min-w-0">
+            <p className="truncate">{userName}</p>
+            <p className="text-muted-foreground text-sm truncate">
               {row.original.email}
             </p>
           </div>
