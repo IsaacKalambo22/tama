@@ -10,6 +10,7 @@ declare global {
     email: string
     password?: string
     verificationToken?: string
+    setupToken?: string
     phoneNumber?: string
     role?: string
     councilId?: string
