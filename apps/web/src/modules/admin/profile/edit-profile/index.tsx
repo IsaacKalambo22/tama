@@ -4,6 +4,7 @@ import useCustomPath from "@/hooks/use-custom-path"
 import { useFileUpload } from "@/hooks/use-file-upload"
 import { toast } from "@/hooks/use-toast"
 import { UserProps } from "@/lib/api"
+import { passwordRegex } from "@/modules/auth/validation"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
@@ -21,57 +22,51 @@ import Modal from "../../modal"
 type Props = {
   isOpen: boolean
   onClose: () => void
-  refetch: () => void // Accept refetch function as prop
+  refetch: () => void
+  user?: UserProps | null
 }
 
-const ModalEditProfile = ({ isOpen, onClose, refetch }: Props) => {
-  const { data: session } = useSession() // Get session data
+const profileRedirect: Record<string, string> = {
+  SUPER_ADMIN: "/admin/profile",
+  COUNCIL_ADMIN: "/council-admin/profile",
+  DISTRICT_ADMIN: "/district-admin/profile",
+  FARMER: "/farmer/profile",
+}
+
+const ModalEditProfile = ({ isOpen, onClose, refetch, user }: Props) => {
+  const { data: session } = useSession()
 
   const path = usePathname()
-  const { fullPath, pathWithoutAdmin } = useCustomPath(path)
-  useState<UserProps | null>(null) // State to hold user details
+  const { fullPath } = useCustomPath(path)
   const [isLoading, setIsLoading] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
 
-  // Initialize the file upload hook
   const {
     uploadFile,
     status: uploadStatus,
     progress: uploadProgress,
-    result: uploadResult,
     error: uploadError,
   } = useFileUpload({
     path: "profile",
   })
   const router = useRouter()
-  const phoneNumberRegex = /^\+?[1-9]\d{1,14}$/
+
+  const currentValues = {
+    name: user?.name || "",
+    email: user?.email || "",
+    phoneNumber: user?.phoneNumber || "",
+    district: user?.district || "",
+    about: user?.about || "",
+  }
 
   const formSchema = zod.object({
-    name: zod
-      .string()
-
-      .optional(),
-    district: zod
-      .string()
-
-      .optional(),
-
-    about: zod
-      .string()
-
-      .optional(),
-    email: zod
-      .string()
-      //   .email('Invalid email address.')
-      .optional(),
-
-    phoneNumber: zod
-      .string()
-      //   .regex(phoneNumberRegex, {
-      //     message:
-      //       'Phone number must be in a valid international format.',
-      //   })
-      .optional(),
+    name: zod.string().optional(),
+    district: zod.string().optional(),
+    about: zod.string().optional(),
+    email: zod.string().optional(),
+    phoneNumber: zod.string().optional(),
+    newPassword: zod.string().optional(),
+    confirmPassword: zod.string().optional(),
     files: zod.custom<File[]>(),
   })
 
@@ -79,35 +74,51 @@ const ModalEditProfile = ({ isOpen, onClose, refetch }: Props) => {
     resolver: zodResolver(formSchema),
     mode: "onTouched",
     defaultValues: {
-      name: "",
-      email: "",
-      phoneNumber: "",
-      district: "",
-      about: "",
+      ...currentValues,
+      newPassword: "",
+      confirmPassword: "",
       files: [],
     },
   })
 
+  const control = form.control as any
+
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
+    let avatar = ""
+
     try {
-      let avatar = ""
-      let size = undefined
+      const newPassword = values.newPassword
+      const confirmPassword = values.confirmPassword
+
+      if (newPassword || confirmPassword) {
+        if (newPassword !== confirmPassword) {
+          toast({
+            title: "Error",
+            description: "Passwords do not match.",
+            variant: "destructive",
+          })
+          return
+        }
+        if (newPassword && !passwordRegex.test(newPassword)) {
+          toast({
+            title: "Error",
+            description:
+              "Password must be at least 8 characters long, include one uppercase letter, one number, and one special character.",
+            variant: "destructive",
+          })
+          return
+        }
+      }
 
       if (values.files.length > 0) {
         const file = values.files[0]
 
-        // Set uploading state to true to show progress bar
         setIsUploading(true)
-
-        // Upload file to Supabase Storage
-        console.log("Uploading profile image:", file.name)
         const result = await uploadFile(file).catch((error) => {
           console.error("Error during file upload:", error)
           throw new Error(`Upload failed: ${error.message || "Unknown error"}`)
         })
-
-        // Set uploading state to false after upload completes
         setIsUploading(false)
 
         if (!result) {
@@ -117,7 +128,7 @@ const ModalEditProfile = ({ isOpen, onClose, refetch }: Props) => {
         avatar = result.url
       }
 
-      const payload = {
+      const payload: Record<string, unknown> = {
         name: values.name ?? "",
         email: values.email ?? "",
         district: values.district ?? "",
@@ -125,11 +136,21 @@ const ModalEditProfile = ({ isOpen, onClose, refetch }: Props) => {
         phoneNumber: values.phoneNumber ?? "",
         avatar,
       }
-      await updateUser(
-        payload,
-        session?.id || "", // Pass the session user ID
-        fullPath
-      )
+
+      if (newPassword) {
+        payload.password = newPassword
+      }
+
+      const result = await updateUser(payload, session?.id || "", fullPath)
+
+      if (!result.success) {
+        toast({
+          title: "Error",
+          description: result.error || "An error occurred while updating.",
+          variant: "destructive",
+        })
+        return
+      }
 
       toast({
         title: "Success",
@@ -137,7 +158,9 @@ const ModalEditProfile = ({ isOpen, onClose, refetch }: Props) => {
       })
       refetch()
       onClose()
-      router.push("/admin/profile")
+      const role = (session?.role as string) || "FARMER"
+      router.push(profileRedirect[role] || "/farmer/profile")
+      router.refresh()
     } catch (error) {
       console.error("Error updating user:", error)
       toast({
@@ -147,6 +170,7 @@ const ModalEditProfile = ({ isOpen, onClose, refetch }: Props) => {
       })
     } finally {
       setIsLoading(false)
+      setIsUploading(false)
     }
   }
 
@@ -161,7 +185,7 @@ const ModalEditProfile = ({ isOpen, onClose, refetch }: Props) => {
             fieldType={FormFieldType.INPUT}
             name="name"
             label="Full name"
-            control={form.control}
+            control={control}
             placeholder="John Doe"
           />
 
@@ -169,7 +193,7 @@ const ModalEditProfile = ({ isOpen, onClose, refetch }: Props) => {
             fieldType={FormFieldType.INPUT}
             name="email"
             label="Email"
-            control={form.control}
+            control={control}
             placeholder="johndoe@gmail.com"
           />
 
@@ -177,27 +201,49 @@ const ModalEditProfile = ({ isOpen, onClose, refetch }: Props) => {
             fieldType={FormFieldType.PHONE_INPUT}
             name="phoneNumber"
             label="Phone Number"
-            control={form.control}
+            control={control}
             placeholder="Enter phone number"
           />
           <CustomFormField
             fieldType={FormFieldType.INPUT}
             name="district"
             label="District"
-            control={form.control}
+            control={control}
             placeholder="Enter your district"
           />
           <CustomFormField
             fieldType={FormFieldType.TEXTAREA}
             name="about"
             label="About"
-            control={form.control}
+            control={control}
             placeholder="Write something about yourself..."
           />
 
+          <div className="border-t pt-4">
+            <p className="mb-3 text-sm font-medium text-gray-700 dark:text-gray-200">
+              Change Password
+            </p>
+            <div className="flex flex-col gap-5">
+              <CustomFormField
+                fieldType={FormFieldType.PASSWORD}
+                name="newPassword"
+                label="New password"
+                control={control}
+                placeholder="Leave blank to keep current password"
+              />
+              <CustomFormField
+                fieldType={FormFieldType.PASSWORD}
+                name="confirmPassword"
+                label="Confirm new password"
+                control={control}
+                placeholder="Re-enter new password"
+              />
+            </div>
+          </div>
+
           <CustomFormField
             fieldType={FormFieldType.SKELETON}
-            control={form.control}
+            control={control}
             name="files"
             label="Profile image"
             renderSkeleton={(field) => (
@@ -216,7 +262,7 @@ const ModalEditProfile = ({ isOpen, onClose, refetch }: Props) => {
           />
 
           <SubmitButton
-            disabled={isLoading || !form.formState.isValid}
+            disabled={isLoading || isUploading}
             isLoading={isLoading}
             className="w-full  h-9"
             loadingText="Updating..."
