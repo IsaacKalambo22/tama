@@ -6,6 +6,8 @@ import {
   fetchMyMessages,
   InAppMessageProps,
   markAllMessagesRead,
+  markMessageRead,
+  messagesBasePath,
 } from "@/lib/messaging"
 import { cn, formatDateTime } from "@/lib/utils"
 import { useSession } from "next-auth/react"
@@ -18,6 +20,7 @@ const PAGE_SIZE = 20
 const MessageInbox = () => {
   const { data: session } = useSession()
   const token = session?.accessToken
+  const basePath = messagesBasePath(session?.role)
 
   const [messages, setMessages] = useState<InAppMessageProps[]>([])
   const [cursor, setCursor] = useState<string | null>(null)
@@ -75,6 +78,16 @@ const MessageInbox = () => {
     }
   }
 
+  const handleOpen = (message: InAppMessageProps) => {
+    if (message.read || !token) return
+    // Optimistic — the detail page's GET also marks it read, but updating here
+    // keeps the list correct when the user navigates back to a cached view.
+    setMessages((prev) =>
+      prev.map((m) => (m.id === message.id ? { ...m, read: true } : m))
+    )
+    markMessageRead(token, message.id).catch(() => {})
+  }
+
   const hasUnread = messages.some((m) => !m.read)
 
   return (
@@ -100,7 +113,11 @@ const MessageInbox = () => {
       ) : (
         <div className="flex flex-col gap-2">
           {messages.map((message) => (
-            <Link key={message.id} href={`/admin/messages/inbox/${message.id}`}>
+            <Link
+              key={message.id}
+              href={`${basePath}/inbox/${message.id}`}
+              onClick={() => handleOpen(message)}
+            >
               <Card
                 className={cn(
                   "flex items-start gap-3 p-4 hover:bg-gray-50 transition-colors",

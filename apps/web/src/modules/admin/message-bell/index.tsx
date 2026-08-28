@@ -15,6 +15,7 @@ import {
   fetchUnreadCount,
   InAppMessageProps,
   markMessageRead,
+  messagesBasePath,
 } from "@/lib/messaging"
 import { formatDateTime } from "@/lib/utils"
 import { Mail } from "lucide-react"
@@ -29,6 +30,7 @@ const RECENT_LIMIT = 5
 const MessageBell = () => {
   const { data: session } = useSession()
   const token = session?.accessToken
+  const basePath = messagesBasePath(session?.role)
 
   const [unreadCount, setUnreadCount] = useState(0)
   const [recent, setRecent] = useState<InAppMessageProps[]>([])
@@ -92,7 +94,7 @@ const MessageBell = () => {
         <DropdownMenuLabel className="flex items-center justify-between">
           <span>Inbox</span>
           <Link
-            href="/admin/messages/inbox"
+            href={`${basePath}/inbox`}
             className="text-xs font-normal text-muted-foreground hover:underline"
             onClick={() => setIsOpen(false)}
           >
@@ -108,7 +110,7 @@ const MessageBell = () => {
           recent.map((message) => (
             <DropdownMenuItem key={message.id} asChild>
               <Link
-                href={`/admin/messages/inbox/${message.id}`}
+                href={`${basePath}/inbox/${message.id}`}
                 onClick={() => handleItemClick(message)}
                 className="flex flex-col items-start gap-1 whitespace-normal py-2"
               >
