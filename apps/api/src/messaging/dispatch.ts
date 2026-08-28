@@ -254,7 +254,11 @@ export async function sendMessage(
           sentRows.push({ recipient: emails[0], messageId: r.messageId })
           channelCost = r.estimatedCost
         } else {
-          const r = await sendBulkEmail({ recipients: emails, ...shared })
+          const r = await sendBulkEmail({
+            recipients: emails,
+            idempotencyKey: `batch_${batch.id}_email`,
+            ...shared,
+          })
           for (const m of r.messages) {
             sentRows.push({ recipient: m.to, messageId: m.messageId })
           }
@@ -279,6 +283,10 @@ export async function sendMessage(
           ...(channelCost ? { cost: channelCost } : {}),
         })
       } catch (error) {
+        console.error(
+          `[messaging] EMAIL send failed for batch ${batch.id}:`,
+          error instanceof Error ? error.message : error
+        )
         results.push({
           channel: "EMAIL",
           status: "failed",
@@ -319,7 +327,11 @@ export async function sendMessage(
           sentRows.push({ recipient: phones[0], messageId: r.messageId })
           channelCost = r.estimatedCost
         } else {
-          const r = await sendBulkSms({ recipients: phones, ...shared })
+          const r = await sendBulkSms({
+            recipients: phones,
+            idempotencyKey: `batch_${batch.id}_sms`,
+            ...shared,
+          })
           for (const m of r.messages) {
             sentRows.push({ recipient: m.to, messageId: m.messageId })
           }
@@ -345,6 +357,10 @@ export async function sendMessage(
           ...(channelCost ? { cost: channelCost } : {}),
         })
       } catch (error) {
+        console.error(
+          `[messaging] SMS send failed for batch ${batch.id}:`,
+          error instanceof Error ? error.message : error
+        )
         results.push({
           channel: "SMS",
           status: "failed",

@@ -80,6 +80,7 @@ export interface BulkSendEmailParams {
   replyTo?: string
   fromName?: string
   scheduledFor?: string
+  idempotencyKey?: string
 }
 
 export interface BulkSendEmailResponse {
@@ -123,6 +124,7 @@ export interface BulkSendSmsParams {
   variables?: Record<string, string>
   senderId?: string
   scheduledFor?: string
+  idempotencyKey?: string
 }
 
 export interface BulkSendSmsResponse {
@@ -289,6 +291,7 @@ export async function sendBulkEmail(
     replyTo,
     fromName,
     scheduledFor,
+    idempotencyKey,
   } = params
 
   const hasInline = !!(subject || text || html)
@@ -319,6 +322,7 @@ export async function sendBulkEmail(
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${getApiKey()}`,
+      "Idempotency-Key": idempotencyKey || generateIdempotencyKey(),
     },
     body: JSON.stringify(body),
   })
@@ -386,6 +390,7 @@ export async function sendBulkSms(
     variables,
     senderId,
     scheduledFor,
+    idempotencyKey,
   } = params
 
   if (!recipients && !recipientsCsv) {
@@ -419,6 +424,7 @@ export async function sendBulkSms(
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${getApiKey()}`,
+      "Idempotency-Key": idempotencyKey || generateIdempotencyKey(),
     },
     body: JSON.stringify(body),
   })
