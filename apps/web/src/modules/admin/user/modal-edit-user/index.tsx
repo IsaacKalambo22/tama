@@ -129,14 +129,6 @@ const ModalEditUser = ({ isOpen, onClose, user, allowedRoles }: Props) => {
     fetchDistricts()
   }, [selectedCouncil, token])
 
-  const showScopeFields =
-    selectedRole === "COUNCIL_ADMIN" ||
-    selectedRole === "DISTRICT_ADMIN" ||
-    selectedRole === "FARMER"
-
-  const showDistrictField =
-    selectedRole === "DISTRICT_ADMIN" || selectedRole === "FARMER"
-
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
     const payload: Record<string, any> = {
@@ -203,30 +195,28 @@ const ModalEditUser = ({ isOpen, onClose, user, allowedRoles }: Props) => {
             ))}
           </CustomFormField>
 
-          {showScopeFields && (
-            <CustomFormField
-              fieldType={FormFieldType.SELECT}
-              name="councilId"
-              label="Council (Area)"
-              control={form.control}
-              placeholder="Select a council"
-              onChange={(value: string) => {
-                setSelectedCouncil(value)
-                form.setValue("councilId", value)
-                form.setValue("districtId", "")
-              }}
-            >
-              {councils.map((council) => (
-                <SelectItem key={council.id} value={council.id}>
-                  <div className="flex cursor-pointer items-center gap-2">
-                    <p>{council.name}</p>
-                  </div>
-                </SelectItem>
-              ))}
-            </CustomFormField>
-          )}
+          <CustomFormField
+            fieldType={FormFieldType.SELECT}
+            name="councilId"
+            label="Council (Area)"
+            control={form.control}
+            placeholder="Select a council"
+            onChange={(value: string) => {
+              setSelectedCouncil(value)
+              form.setValue("councilId", value)
+              form.setValue("districtId", "")
+            }}
+          >
+            {councils.map((council) => (
+              <SelectItem key={council.id} value={council.id}>
+                <div className="flex cursor-pointer items-center gap-2">
+                  <p>{council.name}</p>
+                </div>
+              </SelectItem>
+            ))}
+          </CustomFormField>
 
-          {showDistrictField && selectedCouncil && (
+          {selectedCouncil && (
             <CustomFormField
               fieldType={FormFieldType.SELECT}
               name="districtId"
