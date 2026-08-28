@@ -27,6 +27,7 @@ import services from "./routes/service"
 import shops from "./routes/shop"
 import smsAdmin from "./routes/sms-admin"
 import stats from "./routes/stat"
+import support from "./routes/support"
 import notifications from "./routes/system-notifications"
 import team from "./routes/team"
 import users from "./routes/user"
@@ -104,6 +105,7 @@ app.use("/admin/messages", adminMessages)
 app.use("/admin/recipient-groups", recipientGroups)
 app.use("/inbox", inbox)
 app.use("/notifications", notifications)
+app.use("/support", support)
 
 /* SERVER */
 const PORT = Number(process.env.PORT) || 8000
