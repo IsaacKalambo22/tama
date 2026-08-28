@@ -140,7 +140,10 @@ export const verifyRole = (roles: Role[]) => {
 // Backward-compatible aliases for existing routes
 export const verifyAdmin = verifySuperAdmin
 export const verifyManager = verifyCouncilAdmin
-export const verifyAdminAndManager = verifySuperAdmin
+// Content-module write access: SUPER_ADMIN and COUNCIL_ADMIN (managers) may
+// create/edit/delete; DISTRICT_ADMIN is intentionally excluded so they stay
+// read-only on these modules.
+export const verifyAdminAndManager = verifyCouncilAdmin
 
 // Gate for composing/sending messages — SUPER_ADMIN, COUNCIL_ADMIN and
 // DISTRICT_ADMIN may compose; FARMER is receive-only. (verifyDistrictAdmin
