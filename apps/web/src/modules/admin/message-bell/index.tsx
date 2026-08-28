@@ -14,6 +14,7 @@ import {
   fetchMyMessages,
   fetchUnreadCount,
   InAppMessageProps,
+  markMessageRead,
 } from "@/lib/messaging"
 import { formatDateTime } from "@/lib/utils"
 import { Mail } from "lucide-react"
@@ -66,7 +67,12 @@ const MessageBell = () => {
   }, [isOpen, token])
 
   const handleItemClick = (message: InAppMessageProps) => {
-    if (!message.read) setUnreadCount((count) => Math.max(0, count - 1))
+    if (!message.read) {
+      // Mark read immediately so the badge reflects it even before the detail
+      // page's GET (which also marks read) completes.
+      markMessageRead(token, message.id).catch(() => {})
+      setUnreadCount((count) => Math.max(0, count - 1))
+    }
     setIsOpen(false)
   }
 
