@@ -3,13 +3,14 @@
 import { Form } from "@/components/ui/form"
 import { SelectItem } from "@/components/ui/select"
 import useCustomPath from "@/hooks/use-custom-path"
-import { CouncilProps, DistrictProps, Role } from "@/lib/api"
+import { CouncilProps, DistrictProps } from "@/lib/api"
 import { normalizeMalawiPhone } from "@/lib/phone-validation"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
 import SubmitButton from "@/modules/common/submit-button"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useSession } from "next-auth/react"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -38,8 +39,25 @@ const ModalNewUser = ({ isOpen, onClose }: Props) => {
   const [showPassword, setShowPassword] = useState(false)
   const [councils, setCouncils] = useState<CouncilProps[]>([])
   const [districts, setDistricts] = useState<DistrictProps[]>([])
-  const [selectedRole, setSelectedRole] = useState<string>("")
   const [selectedCouncil, setSelectedCouncil] = useState<string>("")
+
+  const { data: session } = useSession()
+  const actorRole = session?.role
+  const actorCouncilId = session?.councilId
+  const actorDistrictId = session?.districtId
+
+  const isSuperAdmin = actorRole === "SUPER_ADMIN"
+  const isDistrictAdmin = actorRole === "DISTRICT_ADMIN"
+
+  // Roles an admin may assign, matching backend `canAssignRole`
+  const assignableRoles =
+    actorRole === "SUPER_ADMIN"
+      ? ["SUPER_ADMIN", "COUNCIL_ADMIN", "DISTRICT_ADMIN", "FARMER"]
+      : actorRole === "COUNCIL_ADMIN"
+        ? ["DISTRICT_ADMIN", "FARMER"]
+        : actorRole === "DISTRICT_ADMIN"
+          ? ["FARMER"]
+          : ["FARMER"]
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword)
@@ -80,58 +98,62 @@ const ModalNewUser = ({ isOpen, onClose }: Props) => {
   })
 
   useEffect(() => {
-    const fetchCouncils = async () => {
+    const fetchScopedData = async () => {
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/councils`,
-          {
-            headers: { "Content-Type": "application/json" },
+        if (isSuperAdmin) {
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_ENDPOINT}/councils`,
+            {
+              headers: { "Content-Type": "application/json" },
+            }
+          )
+          const data = await res.json()
+          if (data.success) {
+            setCouncils(data.data)
           }
-        )
-        const data = await res.json()
-        if (data.success) {
-          setCouncils(data.data)
+        } else if (actorCouncilId) {
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_ENDPOINT}/councils/${actorCouncilId}`,
+            {
+              headers: { "Content-Type": "application/json" },
+            }
+          )
+          const data = await res.json()
+          if (data.success) {
+            setCouncils(
+              data.data
+                ? ([
+                    {
+                      id: data.data.id,
+                      name: data.data.name,
+                      description: data.data.description,
+                    },
+                  ] as CouncilProps[])
+                : []
+            )
+            setSelectedCouncil(data.data.id)
+            form.setValue("councilId", data.data.id)
+
+            if (isDistrictAdmin && actorDistrictId) {
+              setDistricts(
+                data.data.districts?.filter(
+                  (d: DistrictProps) => d.id === actorDistrictId
+                ) || []
+              )
+              form.setValue("districtId", actorDistrictId)
+            } else {
+              setDistricts(data.data.districts || [])
+            }
+          }
         }
       } catch (error) {
-        console.error("Failed to fetch councils:", error)
+        console.error("Failed to fetch council/district data:", error)
       }
     }
     if (isOpen) {
-      fetchCouncils()
+      fetchScopedData()
     }
-  }, [isOpen])
-
-  useEffect(() => {
-    if (!selectedCouncil) {
-      setDistricts([])
-      return
-    }
-    const fetchDistricts = async () => {
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/councils/${selectedCouncil}/districts`,
-          {
-            headers: { "Content-Type": "application/json" },
-          }
-        )
-        const data = await res.json()
-        if (data.success) {
-          setDistricts(data.data)
-        }
-      } catch (error) {
-        console.error("Failed to fetch districts:", error)
-      }
-    }
-    fetchDistricts()
-  }, [selectedCouncil])
-
-  const showScopeFields =
-    selectedRole === "COUNCIL_ADMIN" ||
-    selectedRole === "DISTRICT_ADMIN" ||
-    selectedRole === "FARMER"
-
-  const showDistrictField =
-    selectedRole === "DISTRICT_ADMIN" || selectedRole === "FARMER"
+  }, [isOpen, actorRole, actorCouncilId, actorDistrictId])
 
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
@@ -153,7 +175,14 @@ const ModalNewUser = ({ isOpen, onClose }: Props) => {
       payload.districtId = values.districtId
     }
 
-    const result = await createUser(payload, fullPath, "/admin")
+    const layoutPath =
+      actorRole === "COUNCIL_ADMIN"
+        ? "/council-admin/farmers"
+        : actorRole === "DISTRICT_ADMIN"
+          ? "/district-admin/farmers"
+          : "/admin"
+
+    const result = await createUser(payload, fullPath, layoutPath)
 
     onClose()
     if (result.success) {
@@ -199,13 +228,14 @@ const ModalNewUser = ({ isOpen, onClose }: Props) => {
             control={form.control}
             placeholder="Select a role"
             onChange={(value) => {
-              setSelectedRole(value)
               form.setValue("role", value)
-              form.setValue("councilId", "")
-              form.setValue("districtId", "")
+              if (isSuperAdmin) {
+                form.setValue("councilId", "")
+                form.setValue("districtId", "")
+              }
             }}
           >
-            {Object.values(Role).map((role) => (
+            {assignableRoles.map((role) => (
               <SelectItem key={role} value={role}>
                 <div className="flex cursor-pointer items-center gap-2">
                   <p>{roleLabels[role] || role}</p>
@@ -214,30 +244,28 @@ const ModalNewUser = ({ isOpen, onClose }: Props) => {
             ))}
           </CustomFormField>
 
-          {showScopeFields && (
-            <CustomFormField
-              fieldType={FormFieldType.SELECT}
-              name="councilId"
-              label="Council (Area)"
-              control={form.control}
-              placeholder="Select a council"
-              onChange={(value) => {
-                setSelectedCouncil(value)
-                form.setValue("councilId", value)
-                form.setValue("districtId", "")
-              }}
-            >
-              {councils.map((council) => (
-                <SelectItem key={council.id} value={council.id}>
-                  <div className="flex cursor-pointer items-center gap-2">
-                    <p>{council.name}</p>
-                  </div>
-                </SelectItem>
-              ))}
-            </CustomFormField>
-          )}
+          <CustomFormField
+            fieldType={FormFieldType.SELECT}
+            name="councilId"
+            label="Council (Area)"
+            control={form.control}
+            placeholder="Select a council"
+            onChange={(value) => {
+              setSelectedCouncil(value)
+              form.setValue("councilId", value)
+              form.setValue("districtId", "")
+            }}
+          >
+            {councils.map((council) => (
+              <SelectItem key={council.id} value={council.id}>
+                <div className="flex cursor-pointer items-center gap-2">
+                  <p>{council.name}</p>
+                </div>
+              </SelectItem>
+            ))}
+          </CustomFormField>
 
-          {showDistrictField && selectedCouncil && (
+          {selectedCouncil && (
             <CustomFormField
               fieldType={FormFieldType.SELECT}
               name="districtId"
