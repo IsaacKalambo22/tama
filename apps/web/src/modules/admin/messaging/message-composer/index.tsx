@@ -5,8 +5,10 @@ import { Form } from "@/components/ui/form"
 import { SelectItem } from "@/components/ui/select"
 import useCustomPath from "@/hooks/use-custom-path"
 import {
-  CouncilListProps,
-  fetchCouncilList,
+  CouncilProps,
+  DistrictProps,
+  fetchAllDistricts,
+  fetchCouncils,
   fetchUsers,
   UserProps,
 } from "@/lib/api"
@@ -23,7 +25,7 @@ import SubmitButton from "@/modules/common/submit-button"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useSession } from "next-auth/react"
 import { usePathname, useRouter } from "next/navigation"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import * as zod from "zod"
@@ -53,7 +55,12 @@ function formatSentCost(data: unknown): string | null {
   const parts = channels
     .filter((c) => c.status === "sent" && c.cost)
     .map((c) => {
-      const label = c.channel === "EMAIL" ? "Email" : c.channel === "SMS" ? "SMS" : c.channel
+      const label =
+        c.channel === "EMAIL"
+          ? "Email"
+          : c.channel === "SMS"
+            ? "SMS"
+            : c.channel
       return `${label} ${c.cost}`
     })
 
@@ -137,7 +144,8 @@ const MessageComposer = () => {
 
   const [isLoading, setIsLoading] = useState(false)
   const [users, setUsers] = useState<UserProps[]>([])
-  const [councilLists, setCouncilLists] = useState<CouncilListProps[]>([])
+  const [districts, setDistricts] = useState<DistrictProps[]>([])
+  const [councils, setCouncils] = useState<CouncilProps[]>([])
   const [groups, setGroups] = useState<RecipientGroupProps[]>([])
 
   useEffect(() => {
@@ -151,7 +159,14 @@ const MessageComposer = () => {
     })()
     ;(async () => {
       try {
-        setCouncilLists(await fetchCouncilList())
+        setDistricts(await fetchAllDistricts(token))
+      } catch (error) {
+        console.error("Failed to load districts:", error)
+      }
+    })()
+    ;(async () => {
+      try {
+        setCouncils(await fetchCouncils(token))
       } catch (error) {
         console.error("Failed to load councils:", error)
       }
@@ -168,16 +183,6 @@ const MessageComposer = () => {
       }
     })()
   }, [token])
-
-  const districtOptions = useMemo(
-    () =>
-      Array.from(
-        new Set(
-          users.map((user) => user.district).filter((d): d is string => !!d)
-        )
-      ).sort(),
-    [users]
-  )
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -352,11 +357,17 @@ const MessageComposer = () => {
             control={form.control}
             placeholder="Select a district"
           >
-            {districtOptions.map((district) => (
-              <SelectItem key={district} value={district}>
-                {district}
-              </SelectItem>
-            ))}
+            {districts.length === 0 ? (
+              <p className="px-2 py-1.5 text-sm text-muted-foreground">
+                No districts found.
+              </p>
+            ) : (
+              districts.map((district) => (
+                <SelectItem key={district.id} value={district.name}>
+                  {district.name}
+                </SelectItem>
+              ))
+            )}
           </CustomFormField>
         )}
 
@@ -368,11 +379,17 @@ const MessageComposer = () => {
             control={form.control}
             placeholder="Select a council"
           >
-            {councilLists.map((council) => (
-              <SelectItem key={council.id} value={council.id}>
-                {council.council} — {council.councilArea}
-              </SelectItem>
-            ))}
+            {councils.length === 0 ? (
+              <p className="px-2 py-1.5 text-sm text-muted-foreground">
+                No councils found.
+              </p>
+            ) : (
+              councils.map((council) => (
+                <SelectItem key={council.id} value={council.name}>
+                  {council.name}
+                </SelectItem>
+              ))
+            )}
           </CustomFormField>
         )}
 
