@@ -25,6 +25,8 @@ export interface SendMessageContent {
     html?: string
     templateId?: string
     variables?: Record<string, string>
+    /** Optional sender display name; falls back to the env default. */
+    fromName?: string
   }
   sms?: {
     message?: string
@@ -47,6 +49,8 @@ export interface ChannelResult {
   status: "sent" | "scheduled" | "skipped" | "failed"
   recipientCount: number
   detail?: string
+  /** Actual cost charged by InfiSend for this channel, when known. */
+  cost?: string
 }
 
 export interface SendMessageResult {
@@ -235,18 +239,26 @@ export async function sendMessage(
           html: email.html,
           templateId: email.templateId,
           variables: email.variables,
+          replyTo: process.env.INFISEND_DEFAULT_REPLY_TO || undefined,
+          fromName:
+            email.fromName?.trim() ||
+            process.env.INFISEND_DEFAULT_FROM_NAME ||
+            "TaMalawi",
           scheduledFor: scheduledForIso,
         }
 
         const sentRows: { recipient: string; messageId: string }[] = []
+        let channelCost: string | undefined
         if (emails.length === 1 && target.targetType === "INDIVIDUALS") {
           const r = await sendEmail({ to: emails[0], ...shared })
           sentRows.push({ recipient: emails[0], messageId: r.messageId })
+          channelCost = r.estimatedCost
         } else {
           const r = await sendBulkEmail({ recipients: emails, ...shared })
           for (const m of r.messages) {
             sentRows.push({ recipient: m.to, messageId: m.messageId })
           }
+          channelCost = r.totalCost
         }
 
         await prisma.emailMessage.createMany({
@@ -264,6 +276,7 @@ export async function sendMessage(
           channel: "EMAIL",
           status: isScheduled ? "scheduled" : "sent",
           recipientCount: sentRows.length,
+          ...(channelCost ? { cost: channelCost } : {}),
         })
       } catch (error) {
         results.push({
@@ -300,14 +313,17 @@ export async function sendMessage(
         }
 
         const sentRows: { recipient: string; messageId: string }[] = []
+        let channelCost: string | undefined
         if (phones.length === 1 && target.targetType === "INDIVIDUALS") {
           const r = await sendSms({ to: phones[0], ...shared })
           sentRows.push({ recipient: phones[0], messageId: r.messageId })
+          channelCost = r.estimatedCost
         } else {
           const r = await sendBulkSms({ recipients: phones, ...shared })
           for (const m of r.messages) {
             sentRows.push({ recipient: m.to, messageId: m.messageId })
           }
+          channelCost = r.totalCost
         }
 
         await prisma.smsMessage.createMany({
@@ -326,6 +342,7 @@ export async function sendMessage(
           channel: "SMS",
           status: isScheduled ? "scheduled" : "sent",
           recipientCount: sentRows.length,
+          ...(channelCost ? { cost: channelCost } : {}),
         })
       } catch (error) {
         results.push({
