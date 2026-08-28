@@ -130,6 +130,22 @@ async function authorizedFetch<T>(
   return result.data
 }
 
+/**
+ * Messaging lives under a different path per dashboard. The inbox/detail pages
+ * and the bell all build their links from this so a click stays inside the
+ * routes the middleware allows for the current role (a COUNCIL_ADMIN hitting
+ * `/admin/...` gets bounced to their dashboard).
+ */
+export const MESSAGES_BASE_PATH_BY_ROLE: Record<string, string> = {
+  SUPER_ADMIN: "/admin/messages",
+  COUNCIL_ADMIN: "/council-admin/messages",
+  DISTRICT_ADMIN: "/district-admin/messages",
+  FARMER: "/farmer/messages",
+}
+
+export const messagesBasePath = (role?: string | null): string =>
+  (role && MESSAGES_BASE_PATH_BY_ROLE[role]) || "/admin/messages"
+
 // ── RECEIVE-SIDE (Inbox) — identity-scoped, any authenticated dashboard ──
 
 export const fetchUnreadCount = async (token?: string): Promise<number> => {
