@@ -6,7 +6,7 @@ export interface ResolveAudienceInput {
   targetType: MessageTargetType
   /**
    * RecipientGroup id (GROUP), a district name (DISTRICT), or a
-   * CouncilList id (COUNCIL). Unused for INDIVIDUALS.
+   * council/district name (COUNCIL). Unused for INDIVIDUALS.
    */
   targetRef?: string | null
   /** User ids to target directly. Only used when targetType is INDIVIDUALS. */
@@ -22,14 +22,11 @@ export interface ResolveAudienceInput {
  * time (not at compose time) so a scheduled send picks up membership changes
  * that happen before it fires — see apps/api/src/messaging/scheduler.ts.
  *
- * Districts and councils reuse the existing CouncilList table rather than
- * inventing a parallel concept, but there is no FK between User and
- * CouncilList yet — User.district is a free-text field the user sets on their
- * profile. So, until that relation exists:
- *   - DISTRICT matches User.district against the given district name
- *     (case-insensitive).
- *   - COUNCIL resolves the given CouncilList row, then matches User.district
- *     against that row's `council` name (case-insensitive).
+ *
+ * There is no FK between User and District/Council yet — User.district is a
+ * free-text field the user sets on their profile. So, until that relation
+ * exists, DISTRICT and COUNCIL both match User.district against the given
+ * district/council name (case-insensitive).
  */
 export async function resolveAudience(
   input: ResolveAudienceInput
@@ -61,13 +58,9 @@ export async function resolveAudience(
 
     case "COUNCIL": {
       if (!input.targetRef) return []
-      const council = await prisma.councilList.findUnique({
-        where: { id: input.targetRef },
-      })
-      if (!council) return []
       return prisma.user.findMany({
         where: {
-          district: { equals: council.council, mode: "insensitive" },
+          district: { equals: input.targetRef, mode: "insensitive" },
         },
       })
     }
@@ -100,13 +93,9 @@ export async function countAudience(
     }
     case "COUNCIL": {
       if (!input.targetRef) return 0
-      const council = await prisma.councilList.findUnique({
-        where: { id: input.targetRef },
-      })
-      if (!council) return 0
       return prisma.user.count({
         where: {
-          district: { equals: council.council, mode: "insensitive" },
+          district: { equals: input.targetRef, mode: "insensitive" },
         },
       })
     }

@@ -77,8 +77,7 @@ export const testSendEmail = async (
     return
   }
 
-  const fromName =
-    process.env.INFISEND_DEFAULT_FROM_NAME || "TaMalawi"
+  const fromName = process.env.INFISEND_DEFAULT_FROM_NAME || "TaMalawi"
   const replyTo = process.env.INFISEND_DEFAULT_REPLY_TO
 
   try {
