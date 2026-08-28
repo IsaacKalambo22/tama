@@ -98,6 +98,18 @@ cd apps/api
 pnpm db:seed
 ```
 
+### After Pulling Demarcation Changes
+
+The seed is only re-run automatically when migrations apply. If a pull updates
+the demarcation data (councils/districts in `apps/api/src/seed.ts`) but not the
+schema, run the seed once to sync your database — it upserts new/renamed entries
+and prunes removed ones:
+
+```bash
+cd apps/api
+pnpm db:seed
+```
+
 ### 5. Start Development Servers
 
 ```bash
