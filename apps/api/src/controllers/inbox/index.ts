@@ -1,6 +1,16 @@
 import { Request, Response } from "express"
+import { Role } from "../../../prisma/generated/prisma"
 import prisma from "../../config"
 import { APIResponse } from "../../types"
+
+/**
+ * Farmer support-desk conversations reuse InAppMessage rows (their batch's
+ * sender is a FARMER — see controllers/support). Those belong in /support only,
+ * never the general Messaging inbox, so every inbox read filters them out.
+ */
+const EXCLUDE_SUPPORT_THREADS = {
+  NOT: { batch: { is: { sender: { is: { role: Role.FARMER } } } } },
+} as const
 
 /**
  * GET /inbox?cursor=&limit=&unreadOnly=
@@ -22,7 +32,11 @@ export const getInbox = async (
 
   try {
     const messages = await prisma.inAppMessage.findMany({
-      where: { recipientId, ...(unreadOnly ? { read: false } : {}) },
+      where: {
+        recipientId,
+        ...EXCLUDE_SUPPORT_THREADS,
+        ...(unreadOnly ? { read: false } : {}),
+      },
       orderBy: [{ createdAt: "desc" }, { id: "desc" }],
       take: limit + 1,
       ...(cursor ? { skip: 1, cursor: { id: cursor } } : {}),
@@ -56,7 +70,7 @@ export const getUnreadCount = async (
 
   try {
     const count = await prisma.inAppMessage.count({
-      where: { recipientId, read: false },
+      where: { recipientId, read: false, ...EXCLUDE_SUPPORT_THREADS },
     })
     res.status(200).json({
       success: true,
@@ -87,9 +101,16 @@ export const getInboxMessage = async (
   const { id } = req.params
 
   try {
-    const message = await prisma.inAppMessage.findUnique({ where: { id } })
+    const message = await prisma.inAppMessage.findUnique({
+      where: { id },
+      include: { batch: { select: { sender: { select: { role: true } } } } },
+    })
 
-    if (!message || message.recipientId !== recipientId) {
+    if (
+      !message ||
+      message.recipientId !== recipientId ||
+      message.batch?.sender?.role === Role.FARMER
+    ) {
       res.status(404).json({ success: false, message: "Message not found." })
       return
     }
@@ -125,9 +146,16 @@ export const markRead = async (
   const { id } = req.params
 
   try {
-    const message = await prisma.inAppMessage.findUnique({ where: { id } })
+    const message = await prisma.inAppMessage.findUnique({
+      where: { id },
+      include: { batch: { select: { sender: { select: { role: true } } } } },
+    })
 
-    if (!message || message.recipientId !== recipientId) {
+    if (
+      !message ||
+      message.recipientId !== recipientId ||
+      message.batch?.sender?.role === Role.FARMER
+    ) {
       res.status(404).json({ success: false, message: "Message not found." })
       return
     }
@@ -160,8 +188,14 @@ export const markAllRead = async (
   const recipientId = req.user!.id
 
   try {
+    // updateMany can't filter by a relation, so resolve the ids first.
+    const unread = await prisma.inAppMessage.findMany({
+      where: { recipientId, read: false, ...EXCLUDE_SUPPORT_THREADS },
+      select: { id: true },
+    })
+
     const result = await prisma.inAppMessage.updateMany({
-      where: { recipientId, read: false },
+      where: { id: { in: unread.map((m) => m.id) } },
       data: { read: true, readAt: new Date() },
     })
 
