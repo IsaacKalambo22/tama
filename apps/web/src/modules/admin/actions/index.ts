@@ -723,6 +723,27 @@ export const bulkImportPhoneNumbers = async (payload: object) => {
   }
 }
 
+// DISTRICTS SERVER ACTIONS (Demarcation Console)
+export const createDistrict = async (payload: object, fullPath: string) => {
+  return await serverAction("districts", "POST", payload, [fullPath])
+}
+
+export const updateDistrict = async (
+  payload: object,
+  districtId: string,
+  fullPath: string
+) => {
+  return await serverAction(`districts/${districtId}`, "PATCH", payload, [
+    fullPath,
+  ])
+}
+
+export const deleteDistrict = async (districtId: string, fullPath: string) => {
+  return await serverAction(`districts/${districtId}`, "DELETE", null, [
+    fullPath,
+  ])
+}
+
 // MESSAGING (multi-channel compose) SERVER ACTIONS
 export const createMessageBatch = async (
   payload: object,
