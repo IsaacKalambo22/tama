@@ -11,10 +11,14 @@
     "format:check": "prettier --check ./src",
     "format": "prettier --write ./src ",
     "studio": "pnpm prisma studio",
-    "db:migrate": "pnpm prisma migrate dev",
+    "db:migrate": "pnpm prisma migrate dev && pnpm prisma generate && pnpm prisma db seed",
+    "db:seed": "pnpm prisma db seed",
     "generate": "pnpm prisma generate",
-    "migrate": "pnpm prisma migrate dev && pnpm prisma generate",
+    "migrate": "pnpm prisma migrate dev && pnpm prisma generate && pnpm prisma db seed",
     "db:deploy": "pnpm prisma migrate deploy && pnpm prisma generate"
+  },
+  "prisma": {
+    "seed": "node -r esbuild-register ./src/seed.ts"
   },
   "keywords": [],
   "author": "",
