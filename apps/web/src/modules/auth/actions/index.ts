@@ -10,6 +10,29 @@ export const signInWithCredentials = async (
   const { email, password } = params
 
   try {
+    // First check whether this account still needs a password to be created
+    // (created by an admin, no password set yet). If so, prompt the user to
+    // create one instead of showing an invalid-credentials error.
+    const checkResponse = await fetch(`${config.env.baseUrl}/auth/sign-in`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    })
+
+    if (checkResponse.ok) {
+      const checkData = await checkResponse.json()
+      if (checkData?.requiresPasswordSetup) {
+        return {
+          success: false,
+          requiresPasswordSetup: true,
+          email: checkData.email,
+          setupToken: checkData.setupToken,
+        }
+      }
+    }
+
     const result = await signIn("credentials", {
       email,
       password,
@@ -219,6 +242,60 @@ export const setPassword = async (
         error instanceof Error
           ? error.message
           : "An unexpected error occurred during password set.",
+    }
+  }
+}
+
+export const setFirstLoginPassword = async (
+  params: Pick<AuthCredentials, "setupToken" | "password" | "email">
+) => {
+  const { setupToken, password } = params
+
+  try {
+    const response = await fetch(
+      `${config.env.baseUrl}/auth/first-login-set-password`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ setupToken, password }),
+      }
+    )
+
+    const result = await response.json()
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: result.message || "Failed to create password, please try again",
+      }
+    }
+
+    const email = result.email
+
+    const signInResult = await signInWithCredentials({
+      email,
+      password,
+    })
+
+    if (!signInResult.success) {
+      return {
+        success: false,
+        error:
+          signInResult.error ||
+          "Sign-in failed. Please check your credentials.",
+      }
+    }
+
+    return { success: true }
+  } catch (error) {
+    return {
+      success: false,
+      error:
+        error instanceof Error
+          ? error.message
+          : "An unexpected error occurred during password setup.",
     }
   }
 }
