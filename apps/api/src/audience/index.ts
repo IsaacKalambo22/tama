@@ -23,10 +23,9 @@ export interface ResolveAudienceInput {
  * that happen before it fires — see apps/api/src/messaging/scheduler.ts.
  *
  *
- * There is no FK between User and District/Council yet — User.district is a
- * free-text field the user sets on their profile. So, until that relation
- * exists, DISTRICT and COUNCIL both match User.district against the given
- * district/council name (case-insensitive).
+ * DISTRICT matches User.districtRel.name (falling back to the legacy free-text
+ * User.district), and COUNCIL matches User.council.name — both case-insensitive
+ * against the district/council *name* sent by the compose UI.
  */
 export async function resolveAudience(
   input: ResolveAudienceInput
@@ -49,18 +48,29 @@ export async function resolveAudience(
 
     case "DISTRICT": {
       if (!input.targetRef) return []
+      // Users are linked to a District via districtId/districtRel. Fall back to
+      // the legacy free-text `district` field for users that were never linked.
       return prisma.user.findMany({
         where: {
-          district: { equals: input.targetRef, mode: "insensitive" },
+          OR: [
+            {
+              districtRel: {
+                name: { equals: input.targetRef, mode: "insensitive" },
+              },
+            },
+            { district: { equals: input.targetRef, mode: "insensitive" } },
+          ],
         },
       })
     }
 
     case "COUNCIL": {
       if (!input.targetRef) return []
+      // Users belong to a Council via councilId. Match the selected council name
+      // against the linked Council relation (not the legacy free-text field).
       return prisma.user.findMany({
         where: {
-          district: { equals: input.targetRef, mode: "insensitive" },
+          council: { name: { equals: input.targetRef, mode: "insensitive" } },
         },
       })
     }
@@ -87,7 +97,14 @@ export async function countAudience(
       if (!input.targetRef) return 0
       return prisma.user.count({
         where: {
-          district: { equals: input.targetRef, mode: "insensitive" },
+          OR: [
+            {
+              districtRel: {
+                name: { equals: input.targetRef, mode: "insensitive" },
+              },
+            },
+            { district: { equals: input.targetRef, mode: "insensitive" } },
+          ],
         },
       })
     }
@@ -95,7 +112,7 @@ export async function countAudience(
       if (!input.targetRef) return 0
       return prisma.user.count({
         where: {
-          district: { equals: input.targetRef, mode: "insensitive" },
+          council: { name: { equals: input.targetRef, mode: "insensitive" } },
         },
       })
     }

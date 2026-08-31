@@ -1,6 +1,5 @@
 "use client"
 
-import { Card } from "@/components/ui/card"
 import { Form } from "@/components/ui/form"
 import { SelectItem } from "@/components/ui/select"
 import useCustomPath from "@/hooks/use-custom-path"
@@ -295,7 +294,9 @@ const MessageComposer = () => {
       >
         {/* Header - Clean & Minimal */}
         <div className="pb-3 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-900">Compose message</h2>
+          <h2 className="text-xl font-semibold text-gray-900">
+            Compose message
+          </h2>
           <p className="text-sm text-gray-500 mt-0.5">
             {isScheduled ? "Scheduled" : "Instant send"}
           </p>
@@ -309,7 +310,9 @@ const MessageComposer = () => {
               <button
                 key={value}
                 type="button"
-                onClick={() => form.setValue("targetType", value as FormValues["targetType"])}
+                onClick={() =>
+                  form.setValue("targetType", value as FormValues["targetType"])
+                }
                 className={`px-4 py-2 text-sm font-medium rounded-full border transition-all ${
                   targetType === value
                     ? "bg-gray-900 text-white border-gray-900"
@@ -469,7 +472,9 @@ const MessageComposer = () => {
         {channelInApp && (
           <div className="w-full self-stretch border border-gray-200 rounded-xl p-4 bg-white space-y-4 min-h-[220px]">
             <div className="flex items-center justify-between">
-              <p className="text-sm font-medium text-gray-700">In-app message</p>
+              <p className="text-sm font-medium text-gray-700">
+                In-app message
+              </p>
               <span className="text-xs text-gray-400">Inbox</span>
             </div>
             <CustomFormField

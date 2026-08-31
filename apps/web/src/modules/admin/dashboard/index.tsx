@@ -155,7 +155,8 @@ export default async function Dashboard() {
                 Welcome back, admin
               </h1>
               <p className="mt-2 max-w-xl text-sm text-slate-600 sm:text-base">
-                Track the latest platform activity, content updates, and member growth in one place.
+                Track the latest platform activity, content updates, and member
+                growth in one place.
               </p>
             </div>
           </div>
@@ -164,7 +165,9 @@ export default async function Dashboard() {
             <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
               Total records
             </p>
-            <p className="text-3xl font-bold text-slate-900">{formatCount(totalRecords)}</p>
+            <p className="text-3xl font-bold text-slate-900">
+              {formatCount(totalRecords)}
+            </p>
           </div>
         </div>
       </div>
@@ -177,7 +180,9 @@ export default async function Dashboard() {
           >
             <div className="p-5">
               <div className="mb-5 flex items-start justify-between">
-                <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${stat.accent}`}>
+                <div
+                  className={`flex h-12 w-12 items-center justify-center rounded-xl ${stat.accent}`}
+                >
                   {stat.icon}
                 </div>
                 <span className="rounded-full bg-white/80 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
@@ -186,7 +191,9 @@ export default async function Dashboard() {
               </div>
 
               <div>
-                <p className="text-sm font-medium text-slate-500">{stat.title}</p>
+                <p className="text-sm font-medium text-slate-500">
+                  {stat.title}
+                </p>
                 <p className="mt-3 text-3xl font-bold tracking-tight text-slate-900">
                   {formatCount(stat.count)}
                 </p>
