@@ -290,26 +290,42 @@ const MessageComposer = () => {
   return (
     <Form {...form}>
       <form
-        className="flex flex-col gap-5 w-full max-w-2xl"
+        className="mx-auto flex w-full max-w-5xl flex-col gap-5"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <CustomFormField
-          fieldType={FormFieldType.SELECT}
-          name="targetType"
-          label="Send to"
-          control={form.control}
-          placeholder="Select a target type"
-        >
-          {Object.entries(TARGET_TYPE_LABELS).map(([value, label]) => (
-            <SelectItem key={value} value={value}>
-              {label}
-            </SelectItem>
-          ))}
-        </CustomFormField>
+        {/* Header - Clean & Minimal */}
+        <div className="pb-3 border-b border-gray-200">
+          <h2 className="text-xl font-semibold text-gray-900">Compose message</h2>
+          <p className="text-sm text-gray-500 mt-0.5">
+            {isScheduled ? "Scheduled" : "Instant send"}
+          </p>
+        </div>
 
+        {/* Target Type - Modern pill buttons */}
+        <div className="space-y-3">
+          <label className="text-sm font-medium text-gray-700">Send to</label>
+          <div className="flex flex-wrap gap-2">
+            {Object.entries(TARGET_TYPE_LABELS).map(([value, label]) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => form.setValue("targetType", value as FormValues["targetType"])}
+                className={`px-4 py-2 text-sm font-medium rounded-full border transition-all ${
+                  targetType === value
+                    ? "bg-gray-900 text-white border-gray-900"
+                    : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Target Selection - Clean cards */}
         {targetType === "INDIVIDUALS" && (
-          <div className="flex-1">
-            <label className="form_input shad-input-label mb-2 block">
+          <div className="border border-gray-200 rounded-xl p-4 bg-white">
+            <label className="form_input shad-input-label mb-2 block text-sm font-medium text-gray-700">
               Recipients
             </label>
             <MultiUserSelect
@@ -320,7 +336,7 @@ const MessageComposer = () => {
               }
             />
             {form.formState.errors.individualIds && (
-              <p className="shad-error mt-1">
+              <p className="text-sm text-red-600 mt-1">
                 {form.formState.errors.individualIds.message as string}
               </p>
             )}
@@ -328,101 +344,134 @@ const MessageComposer = () => {
         )}
 
         {targetType === "GROUP" && (
-          <CustomFormField
-            fieldType={FormFieldType.SELECT}
-            name="targetRef"
-            label="Saved group"
-            control={form.control}
-            placeholder="Select a group"
-          >
-            {groups.length === 0 ? (
-              <p className="px-2 py-1.5 text-sm text-muted-foreground">
-                No saved groups yet.
-              </p>
-            ) : (
-              groups.map((group) => (
-                <SelectItem key={group.id} value={group.id}>
-                  {group.name} ({group.memberCount ?? 0})
-                </SelectItem>
-              ))
-            )}
-          </CustomFormField>
+          <div className="border border-gray-200 rounded-xl p-4 bg-white">
+            <CustomFormField
+              fieldType={FormFieldType.SELECT}
+              name="targetRef"
+              label="Saved group"
+              control={form.control}
+              placeholder="Select a group"
+            >
+              {groups.length === 0 ? (
+                <p className="px-2 py-1.5 text-sm text-gray-500">
+                  No saved groups yet.
+                </p>
+              ) : (
+                groups.map((group) => (
+                  <SelectItem key={group.id} value={group.id}>
+                    {group.name} ({group.memberCount ?? 0})
+                  </SelectItem>
+                ))
+              )}
+            </CustomFormField>
+          </div>
         )}
 
         {targetType === "DISTRICT" && (
-          <CustomFormField
-            fieldType={FormFieldType.SELECT}
-            name="targetRef"
-            label="District"
-            control={form.control}
-            placeholder="Select a district"
-          >
-            {districts.length === 0 ? (
-              <p className="px-2 py-1.5 text-sm text-muted-foreground">
-                No districts found.
-              </p>
-            ) : (
-              districts.map((district) => (
-                <SelectItem key={district.id} value={district.name}>
-                  {district.name}
-                </SelectItem>
-              ))
-            )}
-          </CustomFormField>
+          <div className="border border-gray-200 rounded-xl p-4 bg-white">
+            <CustomFormField
+              fieldType={FormFieldType.SELECT}
+              name="targetRef"
+              label="District"
+              control={form.control}
+              placeholder="Select a district"
+            >
+              {districts.length === 0 ? (
+                <p className="px-2 py-1.5 text-sm text-gray-500">
+                  No districts found.
+                </p>
+              ) : (
+                districts.map((district) => (
+                  <SelectItem key={district.id} value={district.name}>
+                    {district.name}
+                  </SelectItem>
+                ))
+              )}
+            </CustomFormField>
+          </div>
         )}
 
         {targetType === "COUNCIL" && (
-          <CustomFormField
-            fieldType={FormFieldType.SELECT}
-            name="targetRef"
-            label="Council"
-            control={form.control}
-            placeholder="Select a council"
-          >
-            {councils.length === 0 ? (
-              <p className="px-2 py-1.5 text-sm text-muted-foreground">
-                No councils found.
-              </p>
-            ) : (
-              councils.map((council) => (
-                <SelectItem key={council.id} value={council.name}>
-                  {council.name}
-                </SelectItem>
-              ))
-            )}
-          </CustomFormField>
+          <div className="w-full self-stretch border border-gray-200 rounded-xl p-4 bg-white min-h-[170px]">
+            <CustomFormField
+              fieldType={FormFieldType.SELECT}
+              name="targetRef"
+              label="Council"
+              control={form.control}
+              placeholder="Select a council"
+            >
+              {councils.length === 0 ? (
+                <p className="px-2 py-1.5 text-sm text-gray-500">
+                  No councils found.
+                </p>
+              ) : (
+                councils.map((council) => (
+                  <SelectItem key={council.id} value={council.name}>
+                    {council.name}
+                  </SelectItem>
+                ))
+              )}
+            </CustomFormField>
+          </div>
         )}
 
-        <Card className="flex flex-col gap-2 p-4">
-          <p className="text-sm font-medium">Channels</p>
-          <CustomFormField
-            fieldType={FormFieldType.CHECKBOX}
-            name="channelEmail"
-            label="Email"
-            control={form.control}
-          />
-          <CustomFormField
-            fieldType={FormFieldType.CHECKBOX}
-            name="channelInApp"
-            label="In-App (Inbox)"
-            control={form.control}
-          />
-          <CustomFormField
-            fieldType={FormFieldType.CHECKBOX}
-            name="channelSms"
-            label="SMS"
-            control={form.control}
-          />
+        {/* Channels - Modern toggle buttons */}
+        <div className="w-full self-stretch border border-gray-200 rounded-xl p-4 bg-white space-y-3">
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium text-gray-700">Channels</p>
+            <span className="text-xs text-gray-400">Select one or more</span>
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => form.setValue("channelEmail", !channelEmail)}
+              className={`px-4 py-2 text-sm font-medium rounded-full border transition-all ${
+                channelEmail
+                  ? "bg-gray-900 text-white border-gray-900"
+                  : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+              }`}
+            >
+              Email
+            </button>
+            <button
+              type="button"
+              onClick={() => form.setValue("channelInApp", !channelInApp)}
+              className={`px-4 py-2 text-sm font-medium rounded-full border transition-all ${
+                channelInApp
+                  ? "bg-gray-900 text-white border-gray-900"
+                  : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+              }`}
+            >
+              In-App
+            </button>
+            <button
+              type="button"
+              onClick={() => form.setValue("channelSms", !channelSms)}
+              className={`px-4 py-2 text-sm font-medium rounded-full border transition-all ${
+                channelSms
+                  ? "bg-gray-900 text-white border-gray-900"
+                  : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+              }`}
+            >
+              SMS
+            </button>
+          </div>
+
           {form.formState.errors.channelInApp && (
-            <p className="shad-error">
+            <p className="text-sm text-red-600">
               {form.formState.errors.channelInApp.message as string}
             </p>
           )}
-        </Card>
+        </div>
 
+        {/* In-App Message */}
         {channelInApp && (
-          <Card className="flex flex-col gap-4 p-4">
-            <p className="text-sm font-medium">In-app message</p>
+          <div className="w-full self-stretch border border-gray-200 rounded-xl p-4 bg-white space-y-4 min-h-[220px]">
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-medium text-gray-700">In-app message</p>
+              <span className="text-xs text-gray-400">Inbox</span>
+            </div>
             <CustomFormField
               fieldType={FormFieldType.INPUT}
               name="inAppTitle"
@@ -444,12 +493,16 @@ const MessageComposer = () => {
               control={form.control}
               placeholder="/admin/tobacco-business/events"
             />
-          </Card>
+          </div>
         )}
 
+        {/* Email */}
         {channelEmail && (
-          <Card className="flex flex-col gap-4 p-4">
-            <p className="text-sm font-medium">Email</p>
+          <div className="w-full self-stretch border border-gray-200 rounded-xl p-4 bg-white space-y-4 min-h-[220px]">
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-medium text-gray-700">Email</p>
+              <span className="text-xs text-gray-400">Email</span>
+            </div>
             <CustomFormField
               fieldType={FormFieldType.INPUT}
               name="emailSubject"
@@ -471,12 +524,16 @@ const MessageComposer = () => {
               control={form.control}
               placeholder='Defaults to "TaMalawi"'
             />
-          </Card>
+          </div>
         )}
 
+        {/* SMS */}
         {channelSms && (
-          <Card className="flex flex-col gap-4 p-4">
-            <p className="text-sm font-medium">SMS</p>
+          <div className="w-full self-stretch border border-gray-200 rounded-xl p-4 bg-white space-y-4 min-h-[220px]">
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-medium text-gray-700">SMS</p>
+              <span className="text-xs text-gray-400">SMS</span>
+            </div>
             <CustomFormField
               fieldType={FormFieldType.TEXTAREA}
               name="smsMessage"
@@ -484,39 +541,45 @@ const MessageComposer = () => {
               control={form.control}
               placeholder="Write the SMS text..."
             />
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-gray-500">
               {smsMessage.length} characters ·{" "}
               {smsParts === 0
                 ? "0 parts"
                 : `${smsParts} SMS part${smsParts > 1 ? "s" : ""} per recipient`}
               . Longer messages cost more — each part is billed separately.
             </p>
-          </Card>
+          </div>
         )}
 
-        <CustomFormField
-          fieldType={FormFieldType.CHECKBOX}
-          name="isScheduled"
-          label="Schedule for later instead of sending now"
-          control={form.control}
-        />
-
-        {isScheduled && (
+        {/* Schedule */}
+        <div className="w-full self-stretch border border-gray-200 rounded-xl p-4 bg-white space-y-4">
           <CustomFormField
-            fieldType={FormFieldType.DATE_PICKER}
-            name="scheduledFor"
-            label="Send at"
+            fieldType={FormFieldType.CHECKBOX}
+            name="isScheduled"
+            label="Schedule for later instead of sending now"
             control={form.control}
-            placeholder="Select date and time"
-            showTimeSelect
-            dateFormat="MM/dd/yyyy h:mm aa"
           />
-        )}
 
+          {isScheduled && (
+            <div className="mt-2">
+              <CustomFormField
+                fieldType={FormFieldType.DATE_PICKER}
+                name="scheduledFor"
+                label="Send at"
+                control={form.control}
+                placeholder="Select date and time"
+                showTimeSelect
+                dateFormat="MM/dd/yyyy h:mm aa"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Submit Button */}
         <SubmitButton
           disabled={isLoading || !form.formState.isValid}
           isLoading={isLoading}
-          className="w-full h-10"
+          className="h-11 w-full rounded-lg bg-gray-900 text-sm font-medium text-white shadow-sm transition hover:bg-gray-800 disabled:opacity-50"
           loadingText="Sending..."
         >
           {isScheduled ? "Schedule message" : "Send message"}
