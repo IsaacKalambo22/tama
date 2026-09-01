@@ -6,15 +6,12 @@ import {
   getDistrictById,
   updateDistrict,
 } from "../../controllers/district"
-import {
-  verifySuperAdmin,
-  verifyToken,
-} from "../../middlewares/verify-token/index"
+import { verifySuperAdmin } from "../../middlewares/verify-token/index"
 
 const router = Router()
 
-router.get("/", verifyToken, getAllDistricts)
-router.get("/:id", verifyToken, getDistrictById)
+router.get("/", getAllDistricts)
+router.get("/:id", getDistrictById)
 router.post("/", verifySuperAdmin, createDistrict)
 router.patch("/:id", verifySuperAdmin, updateDistrict)
 router.delete("/:id", verifySuperAdmin, deleteDistrict)

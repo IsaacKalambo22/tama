@@ -7,16 +7,13 @@ import {
   getCouncilDistricts,
   updateCouncil,
 } from "../../controllers/council"
-import {
-  verifySuperAdmin,
-  verifyToken,
-} from "../../middlewares/verify-token/index"
+import { verifySuperAdmin } from "../../middlewares/verify-token/index"
 
 const router = Router()
 
-router.get("/", verifyToken, getAllCouncils)
-router.get("/:id", verifyToken, getCouncilById)
-router.get("/:id/districts", verifyToken, getCouncilDistricts)
+router.get("/", getAllCouncils)
+router.get("/:id", getCouncilById)
+router.get("/:id/districts", getCouncilDistricts)
 router.post("/", verifySuperAdmin, createCouncil)
 router.patch("/:id", verifySuperAdmin, updateCouncil)
 router.delete("/:id", verifySuperAdmin, deleteCouncil)

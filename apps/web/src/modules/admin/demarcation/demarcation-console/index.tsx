@@ -277,11 +277,11 @@ const DemarcationConsole = ({
 
       {stats.unassigned.length > 0 && (
         <Card className="shadow-none rounded-xl p-5">
-          <p className="flex items-center gap-2 font-semibold">
+          <div className="flex items-center gap-2 font-semibold">
             <Users className="h-4 w-4" />
             Unassigned Users
             <Badge variant="destructive">{stats.unassigned.length}</Badge>
-          </p>
+          </div>
           <p className="mt-1 text-sm text-muted-foreground">
             Users without a council or district assignment.
           </p>
