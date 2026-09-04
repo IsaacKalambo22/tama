@@ -5,7 +5,7 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="/pnpm:/pnpm/bin:$PATH"
 
 RUN corepack enable
-RUN corepack prepare pnpm@latest --activate
+RUN corepack prepare pnpm@10.6.5 --activate
 
 FROM base AS builder
 RUN apk update
@@ -13,7 +13,7 @@ RUN apk add --no-cache libc6-compat
 
 # Set working directory
 WORKDIR /app
-RUN pnpm install turbo --global
+RUN npm install -g turbo@^2.5.0
 COPY . .
 RUN turbo prune web --docker
 
