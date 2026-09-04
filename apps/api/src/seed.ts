@@ -110,6 +110,12 @@ async function seed() {
   const hashedManagerPassword = await bcrypt.hash("Manager@123456", 10)
   const hashedAdminPassword = await bcrypt.hash("Admin@123456", 10)
 
+  const superAdminEmail = process.env.ADMIN_EMAIL || "admin@tamalawi.com"
+  const superAdminPhone = process.env.ADMIN_PHONE_NUMBER || "+265884567890"
+  const hashedSuperAdminPassword = process.env.ADMIN_PASSWORD
+    ? await bcrypt.hash(process.env.ADMIN_PASSWORD, 10)
+    : hashedAdminPassword
+
   const area2Id = councilMap["Area 2"]
   const farmerDistrict = await prisma.district.findUnique({
     where: { name_councilId: { name: "Mulanje", councilId: area2Id! } },
@@ -187,17 +193,19 @@ async function seed() {
   const superAdminDistrictId = superAdminDistrict?.id
 
   const superAdminUser = await prisma.user.upsert({
-    where: { email: "admin@tamalawi.com" },
+    where: { email: superAdminEmail },
     update: {
       role: Role.SUPER_ADMIN,
+      password: hashedSuperAdminPassword,
       councilId: area11Id,
       districtId: superAdminDistrictId,
+      isVerified: true,
     },
     create: {
       name: "Super Admin",
-      email: "admin@tamalawi.com",
-      password: hashedAdminPassword,
-      phoneNumber: "+265884567890",
+      email: superAdminEmail,
+      password: hashedSuperAdminPassword,
+      phoneNumber: superAdminPhone,
       role: Role.SUPER_ADMIN,
       councilId: area11Id,
       districtId: superAdminDistrictId,
@@ -218,8 +226,12 @@ async function seed() {
   console.log("  Email: districtadmin@tamalawi.com")
   console.log("  Password: Admin@123456")
   console.log("\nSuper Admin:")
-  console.log("  Email: admin@tamalawi.com")
-  console.log("  Password: Admin@123456")
+  console.log(`  Email: ${superAdminEmail}`)
+  console.log(
+    process.env.ADMIN_PASSWORD
+      ? "  Password: (from ADMIN_PASSWORD)"
+      : "  Password: Admin@123456"
+  )
 }
 
 seed()
