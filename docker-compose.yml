@@ -1,3 +1,5 @@
+version: "3"
+
 services:
   tama-web:
     container_name: tama-web
@@ -5,33 +7,92 @@ services:
       context: .
       dockerfile: ./apps/web/Dockerfile
       args:
-        NEXT_PUBLIC_API_ENDPOINT: http://tama-api:8004
+        NEXT_PUBLIC_API_ENDPOINT: http://tama-api:8003
 
     image: tama-web
     restart: unless-stopped
-    ports:
-      - 3004:3004
+
     networks:
-      - app_network
+      - dokploy-network
+
     env_file:
       - ./apps/web/.env.prod
+
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=dokploy-network
+
+      # =========================
+      # WEB ROUTER PRIORITY (HIGHEST)
+      # =========================
+      - traefik.http.routers.tama-web.priority=1000
+      - traefik.http.routers.tama-websecure.priority=1000
+
+      # =========================
+      # HTTP (redirect only)
+      # =========================
+      - traefik.http.routers.tama-web.rule=Host(`tamalawi.com`) || Host(`www.tamalawi.com`)
+      - traefik.http.routers.tama-web.entrypoints=web
+      - traefik.http.routers.tama-web.middlewares=redirect-to-https@file
+
+      # =========================
+      # HTTPS (main web entry)
+      # =========================
+      - traefik.http.routers.tama-websecure.rule=Host(`tamalawi.com`) || Host(`www.tamalawi.com`)
+      - traefik.http.routers.tama-websecure.entrypoints=websecure
+      - traefik.http.routers.tama-websecure.tls.certresolver=letsencrypt
+
+      # =========================
+      # SERVICE
+      # =========================
+      - traefik.http.services.tama-web.loadbalancer.server.port=3019
+
 
   tama-api:
     container_name: tama-api
     build:
       context: .
       dockerfile: ./apps/api/Dockerfile
+
     image: tama-api
     restart: unless-stopped
-    ports:
-      - 8004:8004
+
     networks:
-      - app_network
+      - dokploy-network
+
     env_file:
       - ./apps/api/.env.prod
 
-# Define a network, which allows containers to communicate
-# with each other, by using their container name as a hostname
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=dokploy-network
+
+      # =========================
+      # API ROUTER PRIORITY
+      # =========================
+      - traefik.http.routers.tama-api.priority=1000
+      - traefik.http.routers.tama-apisecure.priority=1000
+
+      # =========================
+      # HTTP (redirect)
+      # =========================
+      - traefik.http.routers.tama-api.rule=Host(`api.tamalawi.com`)
+      - traefik.http.routers.tama-api.entrypoints=web
+      - traefik.http.routers.tama-api.middlewares=redirect-to-https@file
+
+      # =========================
+      # HTTPS API
+      # =========================
+      - traefik.http.routers.tama-apisecure.rule=Host(`api.tamalawi.com`)
+      - traefik.http.routers.tama-apisecure.entrypoints=websecure
+      - traefik.http.routers.tama-apisecure.tls.certresolver=letsencrypt
+
+      # =========================
+      # SERVICE
+      # =========================
+      - traefik.http.services.tama-api.loadbalancer.server.port=8003
+
+
 networks:
-  app_network:
+  dokploy-network:
     external: true
