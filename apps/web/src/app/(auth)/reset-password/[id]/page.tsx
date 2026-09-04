@@ -2,9 +2,8 @@ import ResetPassword from "@/modules/auth/reset-password"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Reset Password - Pacific Diagnostics",
-  description:
-    "Access your account and manage your activities with Pacific Diagnostics.",
+  title: "Reset Password | TAMA Farmers Trust",
+  description: "Access your TAMA Farmers Trust account.",
 }
 
 interface ResetPasswordProps {

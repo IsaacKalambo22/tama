@@ -7,12 +7,13 @@ import {
   setFirstLoginPassword,
   setPassword,
 } from "../../controllers/auth"
-import { optionalAuth } from "../../middlewares/optional-auth"
+import { verifyToken } from "../../middlewares/verify-token"
 
 const router = Router()
 
-router.post("/sign-up", optionalAuth, registerUser)
-router.post("/register", optionalAuth, registerUser)
+// Self-service sign-up is not offered; accounts are created by an
+// authenticated admin only.
+router.post("/register", verifyToken, registerUser)
 router.post("/sign-in", login)
 router.post("/set-password", setPassword)
 router.post("/first-login-set-password", setFirstLoginPassword)

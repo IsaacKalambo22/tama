@@ -2,9 +2,8 @@ import SetPassword from "@/modules/auth/set-password"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Set Password - Pacific Diagnostics",
-  description:
-    "Access your account and manage your activities with Pacific Diagnostics.",
+  title: "Set Password | TAMA Farmers Trust",
+  description: "Access your TAMA Farmers Trust account.",
 }
 
 interface SetPasswordProps {

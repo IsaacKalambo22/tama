@@ -71,50 +71,6 @@ export const signInWithCredentials = async (
   }
 }
 
-export const signUp = async (params: AuthCredentials) => {
-  const { fullName, email, phoneNumber, councilId, districtId } = params
-
-  try {
-    const registrationResponse = await fetch(
-      `${config.env.baseUrl}/auth/register`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          name: fullName,
-          phoneNumber: phoneNumber || "",
-          role: "FARMER",
-          councilId: councilId || undefined,
-          districtId: districtId || undefined,
-        }),
-      }
-    )
-
-    if (!registrationResponse.ok) {
-      const registrationError = await registrationResponse.json()
-      return {
-        success: false,
-        error:
-          registrationError.message || "Registration failed. Please try again.",
-      }
-    }
-
-    return { success: true }
-  } catch (error) {
-    console.log(error, "Signup error")
-    return {
-      success: false,
-      error:
-        error instanceof Error
-          ? error.message
-          : "An unexpected error occurred during signup.",
-    }
-  }
-}
-
 export const setPassword = async (
   params: Pick<AuthCredentials, "verificationToken" | "password">
 ) => {

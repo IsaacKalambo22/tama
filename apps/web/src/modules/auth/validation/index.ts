@@ -3,26 +3,6 @@ import { z } from "zod"
 export const passwordRegex =
   /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
 
-export const signUpSchema = z.object({
-  fullName: z.string().min(2, {
-    message: "Full name must be at least 2 characters.",
-  }),
-
-  email: z.string().email({
-    message: "Invalid email address.",
-  }),
-
-  phoneNumber: z
-    .string()
-    .min(10, {
-      message: "Phone number must be at least 10 characters.",
-    })
-    .optional(),
-
-  councilId: z.string().optional(),
-  districtId: z.string().optional(),
-})
-
 export const signInSchema = z.object({
   email: z
     .string()

@@ -1,7 +1,6 @@
 "use client"
 
 import { Form } from "@/components/ui/form"
-import { SelectItem } from "@/components/ui/select"
 import { CouncilProps, DistrictProps } from "@/lib/api"
 import CustomFormField, {
   FormFieldType,
@@ -34,7 +33,6 @@ const ROLE_LANDING_ROUTES: Record<string, string> = {
 
 export enum FormType {
   SIGN_IN = "SIGN_IN",
-  SIGN_UP = "SIGN_UP",
   SET_PASSWORD = "SET_PASSWORD",
   RESET_PASSWORD = "RESET_PASSWORD",
   FORGOT_PASSWORD = "FORGOT_PASSWORD",
@@ -76,7 +74,6 @@ const AuthForm = <T extends FieldValues>({
   const [isRedirecting, setIsRedirecting] = useState(false)
 
   const isSignIn = type === FormType.SIGN_IN
-  const isSignUp = type === FormType.SIGN_UP
   const isSetPassword = type === FormType.SET_PASSWORD
   const isResetPassword = type === FormType.RESET_PASSWORD
   const isForgotPassword = type === FormType.FORGOT_PASSWORD
@@ -111,19 +108,16 @@ const AuthForm = <T extends FieldValues>({
       toast.success(
         isSignIn
           ? "Signed in successfully"
-          : isSignUp
-            ? "Account created! Please check your email to set your password."
-            : isResetPassword
-              ? "Password has been reset successfully"
-              : isForgotPassword
-                ? "Verification details sent to your email."
-                : "Password has been set successfully."
+          : isResetPassword
+            ? "Password has been reset successfully"
+            : isForgotPassword
+              ? "Verification details sent to your email."
+              : "Password has been set successfully."
       )
 
       setIsRedirecting(true)
-      if (isForgotPassword) router.push("/")
-      if (isSignUp) {
-        router.push("/sign-in")
+      if (isForgotPassword) {
+        router.push("/")
       } else {
         // Navigate to the landing route for the signed-in role. Relying on
         // router.refresh() alone leaves the user where they are, since the
@@ -158,20 +152,12 @@ const AuthForm = <T extends FieldValues>({
       <h1 className="text-2xl text-center font-semibold">
         {isSignIn
           ? "Welcome back"
-          : isSignUp
-            ? "Create a Farmer Account"
-            : isSetPassword
-              ? "Set Your Password"
-              : isResetPassword
-                ? "Reset Your Password"
-                : "Forgot Your Password"}
+          : isSetPassword
+            ? "Set Your Password"
+            : isResetPassword
+              ? "Reset Your Password"
+              : "Forgot Your Password"}
       </h1>
-
-      {isSignUp && (
-        <p className="text-center text-muted-foreground text-sm">
-          Register as a farmer to access your dashboard
-        </p>
-      )}
 
       {isForgotPassword && (
         <p className="text-center text-muted-foreground text-sm">
@@ -185,48 +171,6 @@ const AuthForm = <T extends FieldValues>({
           className="w-full min-w-full flex flex-col gap-2"
         >
           {Object.entries(defaultValues).map(([field]) => {
-            if (field === "councilId" && isSignUp) {
-              return (
-                <CustomFormField
-                  key={field}
-                  fieldType={FormFieldType.SELECT}
-                  name={field as Path<T>}
-                  label={getFieldLabel(field)}
-                  control={form.control}
-                  placeholder="Select your council"
-                  onChange={(value) => {
-                    form.setValue(field as Path<T>, value as any)
-                    onCouncilChange?.(value)
-                  }}
-                >
-                  {councils.map((council) => (
-                    <SelectItem key={council.id} value={council.id}>
-                      {council.name}
-                    </SelectItem>
-                  ))}
-                </CustomFormField>
-              )
-            }
-
-            if (field === "districtId" && isSignUp && selectedCouncil) {
-              return (
-                <CustomFormField
-                  key={field}
-                  fieldType={FormFieldType.SELECT}
-                  name={field as Path<T>}
-                  label={getFieldLabel(field)}
-                  control={form.control}
-                  placeholder="Select your district"
-                >
-                  {districts.map((district) => (
-                    <SelectItem key={district.id} value={district.id}>
-                      {district.name}
-                    </SelectItem>
-                  ))}
-                </CustomFormField>
-              )
-            }
-
             if (field === "councilId" || field === "districtId") {
               return null
             }
@@ -250,14 +194,6 @@ const AuthForm = <T extends FieldValues>({
             </Link>
           )}
 
-          {isSignIn && (
-            <Link className="mt-1" href="/sign-up">
-              <p className="text-gray-600 hover:text-primary text-sm font-semibold transition duration-200">
-                Don&apos;t have an account? Sign up
-              </p>
-            </Link>
-          )}
-
           <SubmitButton
             disabled={isLoading || isRedirecting || !form.formState.isValid}
             isLoading={isLoading || isRedirecting}
@@ -267,24 +203,20 @@ const AuthForm = <T extends FieldValues>({
                 ? "Redirecting..."
                 : isSignIn
                   ? "Signing in..."
-                  : isSignUp
-                    ? "Creating account..."
-                    : isResetPassword
-                      ? "Resetting..."
-                      : isForgotPassword
-                        ? "Sending reset link..."
-                        : "Setting password..."
+                  : isResetPassword
+                    ? "Resetting..."
+                    : isForgotPassword
+                      ? "Sending reset link..."
+                      : "Setting password..."
             }
           >
             {isSignIn
               ? "Sign In"
-              : isSignUp
-                ? "Create Account"
-                : isResetPassword
-                  ? "Reset Password"
-                  : isForgotPassword
-                    ? "Send Reset Link"
-                    : "Set Password"}
+              : isResetPassword
+                ? "Reset Password"
+                : isForgotPassword
+                  ? "Send Reset Link"
+                  : "Set Password"}
           </SubmitButton>
         </form>
       </Form>

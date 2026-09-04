@@ -2,27 +2,27 @@ import SignIn from "@/modules/auth/sign-in"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Sign In | Pacific Diagnostics",
+  title: "Sign In | TAMA Farmers Trust",
   description:
-    "Access your Pacific Diagnostics account and connect with a global community of changemakers and innovators.",
+    "Sign in to your TAMA Farmers Trust account to access your dashboard.",
   keywords: [
-    "Pacific Diagnostics Login",
-    "Sign In Pacific Diagnostics",
-    "Social Impact Network",
-    "Entrepreneurship Platform",
-    "Leadership Community",
+    "TAMA Farmers Trust Login",
+    "Sign In TAMA Farmers Trust",
+    "Malawi Farmers",
+    "Tobacco Farming",
+    "Agriculture in Malawi",
   ],
   openGraph: {
-    title: "Sign In | Pacific Diagnostics",
+    title: "Sign In | TAMA Farmers Trust",
     description:
-      "Log in to your Pacific Diagnostics account and continue your journey of impact and innovation.",
-    url: "https://identityimpacthub.com/signin",
+      "Sign in to your TAMA Farmers Trust account to access your dashboard.",
+    url: "https://tamalawi.com/sign-in",
     images: [
       {
-        url: "https://identityimpacthub.com/assets/images/signin-og.png",
+        url: "https://tamalawi.com/assets/images/logo.png",
         width: 1200,
         height: 630,
-        alt: "Sign In - Pacific Diagnostics",
+        alt: "Sign In - TAMA Farmers Trust",
       },
     ],
     type: "website",
