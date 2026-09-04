@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import prisma from "../../config"
+import { filterByScope } from "../../middlewares/verify-scope/index"
 import { APIResponse } from "../../types"
 
 export const createCouncilList = async (
@@ -87,10 +88,10 @@ export const getAllCouncilLists = async (
 }
 
 export const updateCouncilList = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
-  const { id } = req.params
+  const id = String(req.params.id)
   const {
     demarcation,
     councilArea,
@@ -160,10 +161,10 @@ export const updateCouncilList = async (
 }
 
 export const deleteCouncilList = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
-  const { id } = req.params
+  const id = String(req.params.id)
 
   // Validate input
   if (!id) {
@@ -206,6 +207,41 @@ export const deleteCouncilList = async (
       message:
         "An error occurred while deleting the councilList. Please try again later.",
       error: error.message,
+    })
+  }
+}
+
+export const getCouncilListsByScope = async (
+  req: Request,
+  res: Response<APIResponse>
+): Promise<void> => {
+  try {
+    const user = req.user
+    if (!user) {
+      res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      })
+      return
+    }
+
+    const where = await filterByScope(user)
+
+    const councilLists = await prisma.councilList.findMany({
+      where,
+      orderBy: { createdAt: "asc" },
+    })
+
+    res.status(200).json({
+      success: true,
+      message: "CouncilLists retrieved successfully",
+      data: councilLists,
+    })
+  } catch (error: any) {
+    console.error("Error fetching scoped councilLists:", error.message)
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while fetching councilLists.",
     })
   }
 }

@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import prisma from "../../config"
+import { emitSystemNotification } from "../../messaging/system-notifications"
 import { APIResponse } from "../../types"
 
 export const createBlog = async (
@@ -28,6 +29,9 @@ export const createBlog = async (
         author,
       },
     })
+
+    // System-wide broadcast alert (fire-and-forget, never blocks the response).
+    void emitSystemNotification("blog.published", { title: newBlog.title })
 
     // Respond with success
     res.status(201).json({
@@ -73,7 +77,7 @@ export const getAllBlogs = async (
   }
 }
 export const getBlogById = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -120,7 +124,7 @@ export const getBlogById = async (
 }
 
 export const updateBlog = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -188,7 +192,7 @@ export const updateBlog = async (
 }
 
 export const deleteBlog = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params

@@ -1,8 +1,10 @@
 import {
+  Bell,
   Book,
   BookOpen,
   Images,
   LayoutGrid,
+  LifeBuoy,
   MessageCircle,
   NewspaperIcon,
   ShoppingBag,
@@ -97,13 +99,49 @@ export const ADMIN_LINKS: SidebarProps[] = [
   },
   {
     label: "Users",
-    href: "/admin/users",
     icon: UsersIcon,
+    submenu: [
+      {
+        label: "All Users",
+        href: "/admin/users",
+      },
+      {
+        label: "Demarcations",
+        href: "/admin/demarcations",
+      },
+    ],
   },
   {
-    label: "Messaging", // New "Messaging" section
-    href: "/admin/messages", // Path for the messaging section
-    icon: MessageCircle, // Icon for messaging
+    label: "Messaging",
+    icon: MessageCircle,
+    submenu: [
+      {
+        label: "Inbox",
+        href: "/admin/messages/inbox",
+      },
+      {
+        label: "Compose",
+        href: "/admin/messages/compose",
+      },
+      {
+        label: "Sent & Scheduled",
+        href: "/admin/messages/batches",
+      },
+      {
+        label: "Recipient Groups",
+        href: "/admin/messages/groups",
+      },
+    ],
+  },
+  {
+    label: "Notifications",
+    href: "/admin/notifications",
+    icon: Bell,
+  },
+  {
+    label: "Farmer Support",
+    href: "/admin/support",
+    icon: LifeBuoy,
   },
 ]
 
@@ -193,3 +231,10 @@ export const avatarPlaceholderUrl =
   "https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg"
 
 export const MAX_FILE_SIZE = 50 * 1024 * 1024 // 50MB
+
+export const ROLE_LABELS: Record<string, string> = {
+  SUPER_ADMIN: "Super Admin",
+  COUNCIL_ADMIN: "Council Admin",
+  DISTRICT_ADMIN: "District Admin",
+  FARMER: "Farmer",
+}

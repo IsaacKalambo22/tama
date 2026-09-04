@@ -174,6 +174,10 @@ pnpm -F api generate
 # Run database migrations
 pnpm -F api db:migrate
 
+# Re-run the seed (demarcations + sample users) manually —
+# also run after pulling seed.ts changes to sync demarcation updates
+pnpm -F api db:seed
+
 # Open Prisma Studio
 pnpm -F api studio
 ```

@@ -9,4 +9,6 @@ export interface TokenPayloadProps {
   id: string
   email: string
   role: string
+  councilId?: string
+  districtId?: string
 }

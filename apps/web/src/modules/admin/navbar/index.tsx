@@ -12,16 +12,19 @@ import {
 
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { useSidebarStore } from "@/providers/sidebar-state" // Import Zustand store
+import { ROLE_LABELS } from "@/modules/admin/constants"
+import { useSidebarStore } from "@/providers/sidebar-state"
 import { useSession } from "next-auth/react"
 import { AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai"
 
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
+import MessageBell from "@/modules/admin/message-bell"
+import SystemNotificationBell from "@/modules/admin/system-notification-bell"
+import SupportBell from "@/modules/common/support/support-bell"
 import Link from "next/link"
 import { useEffect } from "react"
 
 const Navbar = () => {
-  // Access isSidebarCollapsed state from Zustand store
   const isSidebarCollapsed = useSidebarStore(
     (state) => state.isSidebarCollapsed
   )
@@ -32,30 +35,49 @@ const Navbar = () => {
     ;(async () => {})()
   }, [session])
 
+  const roleLabel = ROLE_LABELS[session?.role as string] || session?.role
+
+  const profileHref: Record<string, string> = {
+    SUPER_ADMIN: "/admin/profile",
+    COUNCIL_ADMIN: "/council-admin/profile",
+    DISTRICT_ADMIN: "/district-admin/profile",
+    FARMER: "/farmer/profile",
+  }
+  const profilePath =
+    profileHref[(session?.role as string) || "FARMER"] || "/farmer/profile"
+
+  const scopeInfo = (session as any)?.councilName
+    ? (session as any)?.districtName
+      ? `${(session as any).districtName}, ${(session as any).councilName}`
+      : (session as any).councilName
+    : null
+
   return (
     <Card className="flex w-full items-center justify-between rounded-none bg-white px-4 py-3 shadow-none dark:bg-black">
-      {/* Search Bar */}
       <div className="flex items-center gap-8">
         {!isSidebarCollapsed ? (
-          <Button
-            size="icon"
-            variant="ghost"
-            onClick={toggleSidebar} // Use the Zustand toggleSidebar function
-          >
+          <Button size="icon" variant="ghost" onClick={toggleSidebar}>
             <AiOutlineMenuFold className="h-5 w-5 dark:text-white" />
           </Button>
         ) : (
-          <Button
-            size="icon"
-            variant="ghost"
-            onClick={toggleSidebar} // Use the Zustand toggleSidebar function
-          >
+          <Button size="icon" variant="ghost" onClick={toggleSidebar}>
             <AiOutlineMenuUnfold className="h-5 w-5 dark:text-white" />
           </Button>
         )}
+        <div className="hidden md:flex items-center gap-2 text-sm text-gray-500">
+          <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-green-100 text-green-800">
+            {roleLabel}
+          </span>
+          {scopeInfo && (
+            <span className="text-xs text-gray-400">| {scopeInfo}</span>
+          )}
+        </div>
       </div>
 
-      <div className="mr-5">
+      <div className="flex items-center gap-2 mr-5">
+        <SupportBell />
+        <MessageBell />
+        <SystemNotificationBell />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button className="h-10 " variant="outline">
@@ -75,21 +97,12 @@ const Navbar = () => {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
-                <Link href="/admin/profile">
+                <Link href={profilePath}>
                   Profile
                   <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
-            {/* <DropdownMenuSeparator /> */}
-
-            {/* <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              Log out
-              <DropdownMenuShortcut>
-                ⇧⌘Q
-              </DropdownMenuShortcut>
-            </DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

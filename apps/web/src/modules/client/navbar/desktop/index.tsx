@@ -122,34 +122,31 @@ const Desktop = () => {
                     </>
                   ) : (
                     <>
-                      <NavigationMenuItem>
-                        {section.external ? (
-                          <a
+                      {section.external ? (
+                        <a
+                          href={section.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={cn(
+                            "text-gray-600 hover:text-green-600 group inline-flex h-9 w-max items-center justify-center  px-3 py-2 text-sm font-medium transition-colors   focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50",
+                            pathname === section.href && "text-green-600"
+                          )}
+                        >
+                          {section.title}
+                        </a>
+                      ) : (
+                        <NavigationMenuLink asChild>
+                          <Link
                             href={section.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
                             className={cn(
                               "text-gray-600 hover:text-green-600 group inline-flex h-9 w-max items-center justify-center  px-3 py-2 text-sm font-medium transition-colors   focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50",
                               pathname === section.href && "text-green-600"
                             )}
                           >
                             {section.title}
-                          </a>
-                        ) : (
-                          <Link href={section.href} legacyBehavior passHref>
-                            <NavigationMenuLink
-                              className={cn(
-                                // navigationMenuTriggerStyle()
-                                "text-gray-600 hover:text-green-600 group inline-flex h-9 w-max items-center justify-center  px-3 py-2 text-sm font-medium transition-colors   focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50",
-                                pathname === section.href && "text-green-600"
-                              )}
-                              // className={navigationMenuTriggerStyle()}
-                            >
-                              {section.title}
-                            </NavigationMenuLink>
                           </Link>
-                        )}
-                      </NavigationMenuItem>
+                        </NavigationMenuLink>
+                      )}
                       {/* <Link
                         href={section.href}
                         legacyBehavior

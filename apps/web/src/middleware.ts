@@ -15,8 +15,41 @@ export const apiAuthPrefix = "/api/auth"
 
 export const DEFAULT_LOGIN_REDIRECT = "/"
 
-export const userRoutes = "/user"
 export const adminRoutes = "/admin"
+export const councilAdminRoutes = "/council-admin"
+export const districtAdminRoutes = "/district-admin"
+export const farmerRoutes = "/farmer"
+
+const roleRouteMap: Record<string, string> = {
+  SUPER_ADMIN: adminRoutes,
+  COUNCIL_ADMIN: councilAdminRoutes,
+  DISTRICT_ADMIN: districtAdminRoutes,
+  FARMER: farmerRoutes,
+}
+
+const isRoleAllowedOnRoute = (role: string, pathname: string): boolean => {
+  if (role === "SUPER_ADMIN") {
+    return (
+      pathname.startsWith(adminRoutes) ||
+      pathname.startsWith(councilAdminRoutes) ||
+      pathname.startsWith(districtAdminRoutes) ||
+      pathname.startsWith(farmerRoutes)
+    )
+  }
+  if (role === "COUNCIL_ADMIN") {
+    return (
+      pathname.startsWith(councilAdminRoutes) ||
+      pathname.startsWith(districtAdminRoutes)
+    )
+  }
+  if (role === "DISTRICT_ADMIN") {
+    return pathname.startsWith(districtAdminRoutes)
+  }
+  if (role === "FARMER") {
+    return pathname.startsWith(farmerRoutes)
+  }
+  return false
+}
 
 export const middleware = auth(async (req) => {
   const secretKey = process.env.AUTH_SECRET
@@ -29,16 +62,19 @@ export const middleware = auth(async (req) => {
 
   const { nextUrl } = req
   const isLoggedIn = !!token
-  console.log({ isLoggedIn })
 
-  // Route checks
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
   const isAuthRoute =
     authRoutes.includes(nextUrl.pathname) ||
     nextUrl.pathname.startsWith("/set-password") ||
-    nextUrl.pathname.startsWith("/reset-password")
+    nextUrl.pathname.startsWith("/reset-password") ||
+    nextUrl.pathname.startsWith("/create-password")
 
   const isAdminRoute = nextUrl.pathname.startsWith(adminRoutes)
+  const isCouncilAdminRoute = nextUrl.pathname.startsWith(councilAdminRoutes)
+  const isDistrictAdminRoute = nextUrl.pathname.startsWith(districtAdminRoutes)
+  const isFarmerRoute = nextUrl.pathname.startsWith(farmerRoutes)
+
   const isPublicRoute =
     publicRoutes.includes(nextUrl.pathname) ||
     nextUrl.pathname.startsWith("/tobacco-business") ||
@@ -46,66 +82,51 @@ export const middleware = auth(async (req) => {
     nextUrl.pathname.startsWith("/resources") ||
     nextUrl.pathname.startsWith("/api")
 
-  // Skip API auth routes
   if (isApiAuthRoute) return
   if (isPublicRoute) return
 
-  // Allow public access to the login page without redirecting if not logged in
   if (isAuthRoute && !isLoggedIn) return
 
-  // Redirect logged-in users away from sign-in/up pages
   if (isAuthRoute && isLoggedIn) {
-    const redirectTo =
-      token.role === "ADMIN" || token.role === "MANAGER" ? "/admin" : "/user"
+    const role = token?.role || "FARMER"
+    const redirectTo = roleRouteMap[role] || farmerRoutes
     return NextResponse.redirect(new URL(redirectTo, nextUrl))
   }
 
-  // Redirect to login if not logged in and accessing a protected route
   if (!isLoggedIn && !isPublicRoute) {
     return NextResponse.redirect(new URL("/sign-in", nextUrl))
   }
 
-  // Restrict access to admin routes
-  if (isAdminRoute) {
-    if (!isLoggedIn) {
-      return NextResponse.redirect(new URL("/sign-in", nextUrl))
-    }
+  if (
+    isLoggedIn &&
+    token &&
+    (isAdminRoute ||
+      isCouncilAdminRoute ||
+      isDistrictAdminRoute ||
+      isFarmerRoute)
+  ) {
+    const role = token.role as string
 
-    if (token.role !== "ADMIN" && token.role !== "MANAGER") {
-      return NextResponse.redirect(new URL("/current-dashboard", nextUrl)) // Prevent non-admin users from accessing
+    if (!isRoleAllowedOnRoute(role, nextUrl.pathname)) {
+      const redirectTo = roleRouteMap[role] || farmerRoutes
+      return NextResponse.redirect(new URL(redirectTo, nextUrl))
     }
 
     return
   }
 
-  // Role-based redirection if logged in and accessing the wrong route
   if (isLoggedIn && token) {
-    switch (token?.role) {
-      case "USER":
-        if (!nextUrl.pathname.startsWith("/user")) {
-          return NextResponse.redirect(new URL("/user", nextUrl))
-        }
-        break
+    const role = token.role as string
+    const defaultRoute = roleRouteMap[role] || farmerRoutes
 
-      case "ADMIN":
-      case "MANAGER":
-        if (!nextUrl.pathname.startsWith("/admin")) {
-          return NextResponse.redirect(new URL("/admin", nextUrl))
-        }
-        break
-
-      default:
-        if (nextUrl.pathname !== DEFAULT_LOGIN_REDIRECT) {
-          return NextResponse.redirect(new URL("/", nextUrl))
-        }
+    if (!nextUrl.pathname.startsWith(defaultRoute)) {
+      return NextResponse.redirect(new URL(defaultRoute, nextUrl))
     }
   }
 
-  // No redirect needed
   return
 })
 
-// Configure the middleware to match specific routes
 export const config = {
   matcher: [
     "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",

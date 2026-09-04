@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import prisma from "../../config"
+import { emitSystemNotification } from "../../messaging/system-notifications"
 import { APIResponse } from "../../types"
 
 // Create Vacancy
@@ -55,6 +56,9 @@ export const createVacancy = async (
       },
     })
 
+    // System-wide broadcast alert (fire-and-forget, never blocks the response).
+    void emitSystemNotification("vacancy.created", { title: newVacancy.title })
+
     // Respond with success
     res.status(201).json({
       success: true,
@@ -102,7 +106,7 @@ export const getAllVacancies = async (
 
 // Get Vacancy By ID
 export const getVacancyById = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -150,7 +154,7 @@ export const getVacancyById = async (
 
 // Update Vacancy
 export const updateVacancy = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -237,7 +241,7 @@ export const updateVacancy = async (
 
 // Delete Vacancy
 export const deleteVacancy = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params

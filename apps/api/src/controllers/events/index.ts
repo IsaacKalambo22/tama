@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import prisma from "../../config"
+import { emitSystemNotification } from "../../messaging/system-notifications"
 import { APIResponse } from "../../types"
 
 export const createEvent = async (
@@ -30,6 +31,9 @@ export const createEvent = async (
         location: location || null, // Optional location
       },
     })
+
+    // System-wide broadcast alert (fire-and-forget, never blocks the response).
+    void emitSystemNotification("event.created", { title: newEvent.title })
 
     res.status(201).json({
       success: true,
@@ -72,7 +76,7 @@ export const getAllEvents = async (
 
 // Get Event by ID
 export const getEventById = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -116,7 +120,7 @@ export const getEventById = async (
 
 // Update an Event
 export const updateEvent = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -176,7 +180,7 @@ export const updateEvent = async (
 
 // Delete an Event
 export const deleteEvent = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params

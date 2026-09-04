@@ -10,6 +10,11 @@ declare global {
     email: string
     password?: string
     verificationToken?: string
+    setupToken?: string
+    phoneNumber?: string
+    role?: string
+    councilId?: string
+    districtId?: string
   }
   type FileState = {
     file: File
@@ -54,9 +59,10 @@ declare global {
   }
 
   enum Role {
-    ADMIN = "ADMIN",
-    MANAGER = "MANAGER",
-    USER = "USER",
+    SUPER_ADMIN = "SUPER_ADMIN",
+    COUNCIL_ADMIN = "COUNCIL_ADMIN",
+    DISTRICT_ADMIN = "DISTRICT_ADMIN",
+    FARMER = "FARMER",
   }
 
   interface User {

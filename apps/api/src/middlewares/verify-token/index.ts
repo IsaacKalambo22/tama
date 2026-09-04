@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken"
 import { Role } from "../../../prisma/generated/prisma"
 import { TokenPayloadProps } from "../../types"
 
-// Extend Express Request interface to include user information
 declare global {
   namespace Express {
     interface Request {
@@ -12,7 +11,6 @@ declare global {
   }
 }
 
-// Middleware to verify JWT and add user information to the request object
 export const verifyToken = (
   req: Request,
   res: Response,
@@ -40,56 +38,114 @@ export const verifyToken = (
           message: "Forbidden: Invalid or expired token",
         })
       }
-      const { id, email, role } = decoded as TokenPayloadProps
+      const { id, email, role, councilId, districtId } =
+        decoded as TokenPayloadProps
 
-      req.user = { id, email, role }
+      req.user = { id, email, role, councilId, districtId }
       next()
     }
   )
 }
 
-export const verifyAdmin = (
+export const verifySuperAdmin = (
   req: Request,
   res: Response,
   next: NextFunction
 ): void => {
   verifyToken(req, res, () => {
-    if (req.user?.role === Role.ADMIN) {
+    if (req.user?.role === Role.SUPER_ADMIN) {
       return next()
     } else {
       return res.status(403).json({
-        message: "Forbidden: Admin access required",
+        message: "Forbidden: Super Admin access required",
       })
     }
   })
 }
-export const verifyManager = (
+
+export const verifyCouncilAdmin = (
   req: Request,
   res: Response,
   next: NextFunction
 ): void => {
   verifyToken(req, res, () => {
-    if (req.user?.role === Role.MANAGER) {
+    if (
+      req.user?.role === Role.COUNCIL_ADMIN ||
+      req.user?.role === Role.SUPER_ADMIN
+    ) {
       return next()
     } else {
       return res.status(403).json({
-        message: "Forbidden: Managers access required",
+        message: "Forbidden: Council Admin access required",
       })
     }
   })
 }
-export const verifyAdminAndManager = (
+
+export const verifyDistrictAdmin = (
   req: Request,
   res: Response,
   next: NextFunction
 ): void => {
   verifyToken(req, res, () => {
-    if (req.user?.role === Role.MANAGER || req.user?.role === Role.ADMIN) {
+    if (
+      req.user?.role === Role.DISTRICT_ADMIN ||
+      req.user?.role === Role.COUNCIL_ADMIN ||
+      req.user?.role === Role.SUPER_ADMIN
+    ) {
       return next()
     } else {
       return res.status(403).json({
-        message: "Forbidden: Admin or Manager access required",
+        message: "Forbidden: District Admin access required",
       })
     }
   })
 }
+
+export const verifyFarmer = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  verifyToken(req, res, () => {
+    if (
+      req.user?.role === Role.FARMER ||
+      req.user?.role === Role.DISTRICT_ADMIN ||
+      req.user?.role === Role.COUNCIL_ADMIN ||
+      req.user?.role === Role.SUPER_ADMIN
+    ) {
+      return next()
+    } else {
+      return res.status(403).json({
+        message: "Forbidden: Farmer access required",
+      })
+    }
+  })
+}
+
+export const verifyRole = (roles: Role[]) => {
+  return (req: Request, res: Response, next: NextFunction): void => {
+    verifyToken(req, res, () => {
+      if (roles.includes(req.user?.role as Role)) {
+        return next()
+      } else {
+        return res.status(403).json({
+          message: `Forbidden: One of [${roles.join(", ")}] roles required`,
+        })
+      }
+    })
+  }
+}
+
+// Backward-compatible aliases for existing routes
+export const verifyAdmin = verifySuperAdmin
+export const verifyManager = verifyCouncilAdmin
+// Content-module write access: SUPER_ADMIN and COUNCIL_ADMIN (managers) may
+// create/edit/delete; DISTRICT_ADMIN is intentionally excluded so they stay
+// read-only on these modules.
+export const verifyAdminAndManager = verifyCouncilAdmin
+
+// Gate for composing/sending messages — SUPER_ADMIN, COUNCIL_ADMIN and
+// DISTRICT_ADMIN may compose; FARMER is receive-only. (verifyDistrictAdmin
+// already admits exactly those three roles.)
+export const verifyMessageSender = verifyDistrictAdmin

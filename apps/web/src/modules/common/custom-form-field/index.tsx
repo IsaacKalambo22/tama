@@ -220,6 +220,7 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
       return (
         <FormControl>
           <Select
+            disabled={props.disabled}
             onValueChange={(value) => {
               // Convert value to number if it's a valid number string
               const parsedValue = isNaN(Number(value)) ? value : Number(value)
@@ -232,7 +233,10 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
             } // Handle default values
           >
             <FormControl>
-              <SelectTrigger className="shad-select-trigger">
+              <SelectTrigger
+                disabled={props.disabled}
+                className="shad-select-trigger"
+              >
                 <SelectValue placeholder={props.placeholder} />
               </SelectTrigger>
             </FormControl>

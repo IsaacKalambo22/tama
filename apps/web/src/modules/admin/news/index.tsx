@@ -49,7 +49,7 @@ const News = async () => {
             </div>
             <Image
               src={mostRecent.imageUrl}
-              unoptimized
+
               alt={mostRecent.title}
               width={400}
               height={350}

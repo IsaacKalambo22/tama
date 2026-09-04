@@ -18,7 +18,6 @@ const ShopCard = ({ shop }: Props) => {
         alt={shop.name}
         width={200}
         height={150}
-        unoptimized
         className="rounded-2xl w-full mb-4 h-[12rem]"
       />
       <div className="flex flex-col items-start">

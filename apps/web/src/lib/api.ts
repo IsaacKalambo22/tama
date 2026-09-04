@@ -64,9 +64,10 @@ export interface ShopProps {
   updatedAt: string
 }
 export enum Role {
-  ADMIN = "ADMIN",
-  MANAGER = "MANAGER",
-  USER = "USER",
+  SUPER_ADMIN = "SUPER_ADMIN",
+  COUNCIL_ADMIN = "COUNCIL_ADMIN",
+  DISTRICT_ADMIN = "DISTRICT_ADMIN",
+  FARMER = "FARMER",
 }
 
 export interface UserProps {
@@ -78,14 +79,18 @@ export interface UserProps {
   district?: string
   about?: string
   role: Role
-  lastLogin: string | null // ISO date string or null if never logged in
+  councilId?: string
+  districtId?: string
+  councilName?: string
+  districtName?: string
+  lastLogin: string | null
   isVerified: boolean
   resetPasswordToken: string | null
   resetPasswordExpiresAt: string | null
   verificationToken: string | null
   verificationTokenExpiresAt: string | null
-  createdAt: string // ISO date string
-  updatedAt: string // ISO date string
+  createdAt: string
+  updatedAt: string
 }
 
 export interface EventProps {
@@ -124,6 +129,26 @@ export interface ApiResponse<T> {
   success: boolean
   message: string
   data: T
+}
+
+export interface CouncilProps {
+  id: string
+  name: string
+  description?: string
+  createdAt: string
+  updatedAt: string
+  districts?: DistrictProps[]
+  _count?: { districts: number; users: number }
+}
+
+export interface DistrictProps {
+  id: string
+  name: string
+  councilId: string
+  council?: CouncilProps
+  createdAt: string
+  updatedAt: string
+  _count?: { users: number }
 }
 
 export interface TeamProps {
@@ -165,7 +190,6 @@ async function handleFetch<T>(endpoint: string, token?: string): Promise<T> {
     const response = await fetch(endpoint, {
       method: "GET",
       headers,
-      next: { revalidate: 1 },
     })
     if (!response.ok) {
       console.log(
@@ -191,11 +215,11 @@ async function handleFetch<T>(endpoint: string, token?: string): Promise<T> {
 export const fetchReportsAndPublications = async (): Promise<FileProps[]> => {
   return handleFetch<FileProps[]>(`${BASE_URL}/reports-publications`)
 }
-export const fetchUsers = async (): Promise<UserProps[]> => {
+export const fetchUsers = async (token?: string): Promise<UserProps[]> => {
   try {
     const API_URL = `${BASE_URL}/users`
 
-    return handleFetch<UserProps[]>(API_URL)
+    return handleFetch<UserProps[]>(API_URL, token)
   } catch (error: any) {
     console.log("Error during fetchUsers:", error.message || error)
     throw new Error("Unable to fetch users. Please try again later.")
@@ -258,4 +282,48 @@ export const fetchTeamById = async (id: string): Promise<TeamProps> => {
 
 export const fetchStat = async (): Promise<StatProps[]> => {
   return handleFetch<StatProps[]>(`${BASE_URL}/stats`)
+}
+
+export const fetchCouncils = async (
+  token?: string
+): Promise<CouncilProps[]> => {
+  return handleFetch<CouncilProps[]>(`${BASE_URL}/councils`, token)
+}
+
+export const fetchCouncilById = async (
+  id: string,
+  token?: string
+): Promise<CouncilProps> => {
+  return handleFetch<CouncilProps>(`${BASE_URL}/councils/${id}`, token)
+}
+
+export const fetchDistrictsByCouncil = async (
+  councilId: string,
+  token?: string
+): Promise<DistrictProps[]> => {
+  return handleFetch<DistrictProps[]>(
+    `${BASE_URL}/councils/${councilId}/districts`,
+    token
+  )
+}
+
+export const fetchAllDistricts = async (
+  token?: string
+): Promise<DistrictProps[]> => {
+  return handleFetch<DistrictProps[]>(`${BASE_URL}/districts`, token)
+}
+
+export const fetchCouncilListsByScope = async (
+  token?: string
+): Promise<CouncilListProps[]> => {
+  return handleFetch<CouncilListProps[]>(
+    `${BASE_URL}/council-lists/scoped`,
+    token
+  )
+}
+
+export const fetchUsersByScope = async (
+  token?: string
+): Promise<UserProps[]> => {
+  return handleFetch<UserProps[]>(`${BASE_URL}/users`, token)
 }

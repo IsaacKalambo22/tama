@@ -1,17 +1,23 @@
 import bcrypt from "bcryptjs"
 import crypto from "crypto"
 import { Request, Response } from "express"
+import jwt from "jsonwebtoken"
 
 import { Role } from "../../../prisma/generated/prisma"
 import prisma from "../../config"
+import { notifyEvent } from "../../messaging/transactional-email"
 import {
   sendPasswordResetEmail,
   sendResetSuccessEmail,
   sendSetPasswordSuccessEmail,
   setPasswordRequestEmail,
 } from "../../nodemailer/emails"
+import { canAssignRole, ScopeUser } from "../../permissions"
 import { APIResponse } from "../../types"
 import { generateTokens } from "../../utils/generate-tokens"
+
+// NOTE: Nodemailer emails above are superseded by InfiSend notifications
+// and can be removed once the InfiSend integration is fully validated.
 
 export const bootstrapAdmin = async (
   email: string,
@@ -19,7 +25,7 @@ export const bootstrapAdmin = async (
   phoneNumber: string
 ): Promise<void> => {
   const existingAdmin = await prisma.user.findFirst({
-    where: { role: Role.ADMIN },
+    where: { role: Role.SUPER_ADMIN },
   })
 
   if (!existingAdmin) {
@@ -29,7 +35,7 @@ export const bootstrapAdmin = async (
         name: "Admin",
         email,
         password: hashedPassword,
-        role: Role.ADMIN,
+        role: Role.SUPER_ADMIN,
         phoneNumber,
       },
     })
@@ -44,19 +50,18 @@ export const registerUser = async (
   req: Request,
   res: Response<APIResponse>
 ): Promise<void> => {
-  const { name, email, role, phoneNumber, password } = req.body
+  const { name, email, role, phoneNumber, password, councilId, districtId } =
+    req.body
 
-  // Validate user input
   if (!name || !email || !phoneNumber) {
     res.status(400).json({
       success: false,
       message: "Name, email, phoneNumber and password are required.",
     })
-    return // Ensure early exit after sending response
+    return
   }
 
   try {
-    // Check if the email already exists
     const existingUser = await prisma.user.findUnique({
       where: { email },
     })
@@ -65,7 +70,7 @@ export const registerUser = async (
         success: false,
         message: "Email already in use. Please use a different email.",
       })
-      return // Ensure early exit after sending response
+      return
     }
 
     const verificationToken = crypto.randomBytes(32).toString("hex")
@@ -77,23 +82,56 @@ export const registerUser = async (
 
     const verificationTokenExpiresAt = new Date(
       Date.now() + 24 * 60 * 60 * 1000
-    ) // 24 hours from now
+    )
     let hashedPassword = ""
-    // Hash the password if it's being updated
     if (password) {
       const saltRounds = 10
       hashedPassword = await bcrypt.hash(password, saltRounds)
     }
-    // Create the user
+
+    const actor = req.user ?? null
+
+    const userRole =
+      actor &&
+      role &&
+      canAssignRole(actor as unknown as ScopeUser, role as Role)
+        ? (role as Role)
+        : Role.FARMER
+
+    let targetCouncilId = councilId || null
+    let targetDistrictId = districtId || null
+
+    if (actor) {
+      if (
+        actor.role === Role.COUNCIL_ADMIN ||
+        actor.role === Role.DISTRICT_ADMIN
+      ) {
+        targetCouncilId = actor.councilId ?? null
+        if (actor.role === Role.DISTRICT_ADMIN) {
+          targetDistrictId = actor.districtId ?? null
+        } else if (targetDistrictId) {
+          const district = await prisma.district.findUnique({
+            where: { id: targetDistrictId },
+            select: { councilId: true },
+          })
+          if (!district || district.councilId !== actor.councilId) {
+            targetDistrictId = null
+          }
+        }
+      }
+    }
+
     const newUser = await prisma.user.create({
       data: {
         name,
         email,
         phoneNumber,
         password: hashedPassword || null,
-        role: role || Role.USER,
+        role: userRole,
+        councilId: targetCouncilId,
+        districtId: targetDistrictId,
         verificationToken: hashedToken,
-        verificationTokenExpiresAt, // 24 hours
+        verificationTokenExpiresAt,
       },
     })
 
@@ -101,6 +139,13 @@ export const registerUser = async (
       email,
       `${process.env.CLIENT_BASE_URL}/set-password/${verificationToken}`
     )
+
+    // Fire-and-forget: notify via InfiSend without blocking the response
+    void notifyEvent("user.created", email, {
+      name,
+      email,
+      phoneNumber: phoneNumber || "",
+    })
 
     res.status(201).json({
       success: true,
@@ -124,8 +169,7 @@ export const registerUser = async (
 
 export const login = async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body
-  console.log(email, password)
-  // Validate user input
+
   if (!email || !password) {
     res.status(400).json({
       success: false,
@@ -135,11 +179,14 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   }
 
   try {
-    // Check if the user exists
     const user = await prisma.user.findUnique({
       where: { email },
+      include: {
+        council: { select: { id: true, name: true } },
+        districtRel: { select: { id: true, name: true } },
+      },
     })
-    console.log({ user })
+
     if (!user) {
       res.status(404).json({
         success: false,
@@ -148,7 +195,24 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       return
     }
 
-    // Compare the provided password with the stored hash
+    // First-login: the account has not had a password set yet (created by an
+    // admin). Prompt the user to create their password instead of failing.
+    if (!user.password) {
+      const setupToken = jwt.sign(
+        { id: user.id, email: user.email, purpose: "first-login" },
+        process.env.JWT_ACCESS_SECRET_KEY as string,
+        { expiresIn: "15m", algorithm: "HS256" }
+      )
+      res.status(200).json({
+        success: true,
+        requiresPasswordSetup: true,
+        email: user.email,
+        name: user.name,
+        setupToken,
+      })
+      return
+    }
+
     const isPasswordValid = await bcrypt.compare(password, user.password!)
     if (!isPasswordValid) {
       res.status(401).json({
@@ -161,15 +225,16 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     const { access_token, refresh_token } = generateTokens(
       user.id,
       user.email,
-      user.role
+      user.role,
+      user.councilId,
+      user.districtId
     )
 
-    // Update the user's last login timestamp
     await prisma.user.update({
       where: { id: user.id },
       data: { lastLogin: new Date() },
     })
-    // Set the refresh token as an HTTP-only cookie for secure token refreshing
+
     res.cookie("jwt-refresh", refresh_token, {
       httpOnly: true,
       secure: true,
@@ -177,7 +242,6 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       maxAge: 1000 * 60 * 60 * 1,
     })
 
-    // Return a success response with the generated token
     res.status(200).json({
       user: {
         id: user.id,
@@ -186,6 +250,10 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         role: user.role,
         accessToken: access_token,
         avatar: user.avatar,
+        councilId: user.councilId,
+        districtId: user.districtId,
+        councilName: user.council?.name,
+        districtName: user.districtRel?.name,
       },
     })
   } catch (error) {
@@ -197,13 +265,96 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   }
 }
 
+export const setFirstLoginPassword = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { setupToken, password } = req.body
+
+  if (!setupToken || !password) {
+    res.status(400).json({
+      success: false,
+      message: "Setup token and new password are required.",
+    })
+    return
+  }
+
+  let payload: { id: string; email: string; purpose?: string }
+
+  try {
+    payload = jwt.verify(
+      setupToken,
+      process.env.JWT_ACCESS_SECRET_KEY as string
+    ) as { id: string; email: string; purpose?: string }
+  } catch {
+    res.status(400).json({
+      success: false,
+      message: "Invalid or expired setup token.",
+    })
+    return
+  }
+
+  if (payload.purpose !== "first-login") {
+    res.status(400).json({
+      success: false,
+      message: "Invalid setup token.",
+    })
+    return
+  }
+
+  try {
+    const user = await prisma.user.findUnique({ where: { id: payload.id } })
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        message: "User not found.",
+      })
+      return
+    }
+
+    if (user.password) {
+      res.status(400).json({
+        success: false,
+        message: "This account has already set a password.",
+      })
+      return
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        password: hashedPassword,
+        verificationToken: null,
+        verificationTokenExpiresAt: null,
+      },
+    })
+
+    await sendSetPasswordSuccessEmail(user.email)
+
+    res.status(200).json({
+      success: true,
+      message: "Password created successfully. You can now log in.",
+      email: user.email,
+    })
+  } catch (error) {
+    console.error("Error creating password:", error)
+
+    res.status(500).json({
+      success: false,
+      message:
+        "An error occurred while creating the password. Please try again later.",
+    })
+  }
+}
+
 export const setPassword = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   const { verificationToken, password } = req.body
 
-  // Validate input
   if (!verificationToken || !password) {
     res.status(400).json({
       success: false,
@@ -213,18 +364,16 @@ export const setPassword = async (
   }
 
   try {
-    // Hash the token to match database storage
     const hashedToken = crypto
       .createHash("sha256")
       .update(verificationToken)
       .digest("hex")
 
-    // Find the user with the matching token and ensure it's not expired
     const user = await prisma.user.findFirst({
       where: {
         verificationToken: hashedToken,
         verificationTokenExpiresAt: {
-          gte: new Date(), // Ensure the token has not expired
+          gte: new Date(),
         },
       },
     })
@@ -237,22 +386,19 @@ export const setPassword = async (
       return
     }
 
-    // Hash the new password
     const hashedPassword = await bcrypt.hash(password, 10)
 
-    // Update the user's record
     await prisma.user.update({
       where: { id: user.id },
       data: {
         password: hashedPassword,
-        verificationToken: null, // Clear the token
+        verificationToken: null,
         verificationTokenExpiresAt: null,
       },
     })
 
     await sendSetPasswordSuccessEmail(user.email)
 
-    // Return success response
     res.status(200).json({
       success: true,
       message: "Password updated successfully. You can now log in.",
@@ -274,7 +420,6 @@ export const resetPassword = async (
 ): Promise<void> => {
   const { verificationToken, password } = req.body
 
-  // Validate input
   if (!verificationToken || !password) {
     res.status(400).json({
       success: false,
@@ -284,23 +429,20 @@ export const resetPassword = async (
   }
 
   try {
-    // Hash the token to match database storage
     const hashedToken = crypto
       .createHash("sha256")
       .update(verificationToken)
       .digest("hex")
 
-    // Find the user with the matching token and ensure it's not expired
     const user = await prisma.user.findFirst({
       where: {
         resetPasswordToken: hashedToken,
         resetPasswordExpiresAt: {
-          gte: new Date(), // Ensure the token has not expired
+          gte: new Date(),
         },
       },
     })
 
-    console.log({ user })
     if (!user) {
       res.status(400).json({
         success: false,
@@ -309,22 +451,19 @@ export const resetPassword = async (
       return
     }
 
-    // Hash the new password
     const hashedPassword = await bcrypt.hash(password, 10)
 
-    // Update the user's record
     await prisma.user.update({
       where: { id: user.id },
       data: {
         password: hashedPassword,
-        resetPasswordToken: null, // Clear the token
+        resetPasswordToken: null,
         resetPasswordExpiresAt: null,
       },
     })
 
     await sendResetSuccessEmail(user.email)
 
-    // Return success response
     res.status(200).json({
       success: true,
       message: "Password reset successfully. You can now log in.",
@@ -336,7 +475,7 @@ export const resetPassword = async (
     res.status(500).json({
       success: false,
       message:
-        "An error occurred while updating the password. Please try again later.",
+        "An error occurred while resetting the password. Please try again later.",
     })
   }
 }
@@ -346,7 +485,6 @@ export const forgotPassword = async (
 ): Promise<void> => {
   const { email } = req.body
 
-  // Validate input
   if (!email) {
     res.status(400).json({
       success: false,
@@ -363,9 +501,8 @@ export const forgotPassword = async (
       .update(verificationToken)
       .digest("hex")
 
-    const resetPasswordExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours from now
+    const resetPasswordExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000)
 
-    // Find the user with the matching token and ensure it's not expired
     const user = await prisma.user.findFirst({
       where: {
         email: email,
@@ -380,11 +517,10 @@ export const forgotPassword = async (
       return
     }
 
-    // Update the user's record
     await prisma.user.update({
       where: { id: user.id },
       data: {
-        resetPasswordToken: hashedToken, // Clear the token
+        resetPasswordToken: hashedToken,
         resetPasswordExpiresAt,
       },
     })
@@ -394,7 +530,6 @@ export const forgotPassword = async (
       `${process.env.CLIENT_BASE_URL}/reset-password/${verificationToken}`
     )
 
-    // Return success response
     res.status(200).json({
       success: true,
       message: "Password reset link sent to your email",

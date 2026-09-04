@@ -81,6 +81,35 @@ cd apps/api
 pnpm db:migrate
 ```
 
+#### Seeded Data (automatic)
+
+Migrations seed the database automatically. No extra step is needed. The seed
+populates:
+
+- **Demarcations** – all councils (Areas 2–21) and their districts, so the
+  Demarcations console and messaging district/council targeting work out of the
+  box for every clone.
+- **Sample users** with demo credentials (see output of the seed run).
+
+To re-run the seed manually at any time:
+
+```bash
+cd apps/api
+pnpm db:seed
+```
+
+### After Pulling Demarcation Changes
+
+The seed is only re-run automatically when migrations apply. If a pull updates
+the demarcation data (councils/districts in `apps/api/src/seed.ts`) but not the
+schema, run the seed once to sync your database — it upserts new/renamed entries
+and prunes removed ones:
+
+```bash
+cd apps/api
+pnpm db:seed
+```
+
 ### 5. Start Development Servers
 
 ```bash

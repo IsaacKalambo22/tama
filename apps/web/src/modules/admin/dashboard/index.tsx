@@ -1,3 +1,4 @@
+import { auth } from "@/auth"
 import { Card } from "@/components/ui/card"
 import {
   fetchBlogs,
@@ -26,54 +27,73 @@ interface AdminStats {
   title: string
   count: number
   icon: React.ReactNode
+  accent: string
+  cardClass: string
 }
 
 const stats: AdminStats[] = [
   {
     title: "Shops",
-    count: 23, // Mocked value will be replaced by fetched data
-    icon: <FaStore size={30} className="text-blue-500" />,
+    count: 23,
+    icon: <FaStore size={22} className="text-sky-600" />,
+    accent: "bg-sky-100",
+    cardClass: "from-sky-50/80 via-sky-50/60 to-white/80",
   },
   {
     title: "Forms",
-    count: 12, // Mocked value will be replaced by fetched data
-    icon: <FaClipboard size={30} className="text-green-500" />,
+    count: 12,
+    icon: <FaClipboard size={22} className="text-emerald-600" />,
+    accent: "bg-emerald-100",
+    cardClass: "from-emerald-50/80 via-emerald-50/60 to-white/80",
   },
   {
     title: "Blogs",
-    count: 7, // Mocked value will be replaced by fetched data
-    icon: <FaRegCommentDots size={30} className="text-orange-500" />,
+    count: 7,
+    icon: <FaRegCommentDots size={22} className="text-amber-600" />,
+    accent: "bg-amber-100",
+    cardClass: "from-amber-50/80 via-amber-50/60 to-white/80",
   },
   {
     title: "News",
-    count: 15, // Mocked value will be replaced by fetched data
-    icon: <FaNewspaper size={30} className="text-red-500" />,
+    count: 15,
+    icon: <FaNewspaper size={22} className="text-rose-600" />,
+    accent: "bg-rose-100",
+    cardClass: "from-rose-50/80 via-rose-50/60 to-white/80",
   },
   {
     title: "Users",
-    count: 1024, // Mocked value will be replaced by fetched data
-    icon: <FaUsers size={30} className="text-purple-500" />,
+    count: 1024,
+    icon: <FaUsers size={22} className="text-violet-600" />,
+    accent: "bg-violet-100",
+    cardClass: "from-violet-50/80 via-violet-50/60 to-white/80",
   },
-
   {
-    title: " Publications",
-    count: 8, // Mocked value will be replaced by fetched data
-    icon: <FaBook size={30} className="text-yellow-500" />,
+    title: "Publications",
+    count: 8,
+    icon: <FaBook size={22} className="text-orange-600" />,
+    accent: "bg-orange-100",
+    cardClass: "from-orange-50/80 via-orange-50/60 to-white/80",
   },
   {
     title: "Council Lists",
-    count: 5, // Mocked value will be replaced by fetched data
-    icon: <FaListAlt size={30} className="text-indigo-500" />,
+    count: 5,
+    icon: <FaListAlt size={22} className="text-indigo-600" />,
+    accent: "bg-indigo-100",
+    cardClass: "from-indigo-50/80 via-indigo-50/60 to-white/80",
   },
   {
     title: "Events",
-    count: 5, // Mocked value will be replaced by fetched data
-    icon: <Calendar size={30} className="text-green-500" />,
+    count: 5,
+    icon: <Calendar size={22} className="text-teal-600" />,
+    accent: "bg-teal-100",
+    cardClass: "from-teal-50/80 via-teal-50/60 to-white/80",
   },
 ]
 
 export default async function Dashboard() {
-  // Fetch all required data
+  const session = await auth()
+  const token = session?.accessToken
+
   const [blogs, shops, reports, forms, councilLists, news, users, events] =
     await Promise.all([
       fetchBlogs(),
@@ -82,11 +102,10 @@ export default async function Dashboard() {
       fetchFormsAndDocuments(),
       fetchCouncilList(),
       fetchNews(),
-      fetchUsers(),
+      fetchUsers(token),
       fetchEvents(),
     ])
 
-  // Update the stats with fetched data or fallback to the mocked value
   const updatedStats = stats.map((stat) => {
     switch (stat.title) {
       case "Shops":
@@ -104,7 +123,7 @@ export default async function Dashboard() {
       case "Users":
         stat.count = users?.length || 0
         break
-      case " Publications":
+      case "Publications":
         stat.count = reports?.length || 0
         break
       case "Council Lists":
@@ -119,22 +138,63 @@ export default async function Dashboard() {
     return stat
   })
 
+  const totalRecords = updatedStats.reduce((sum, stat) => sum + stat.count, 0)
+
   return (
-    <section className="flex flex-col">
+    <section className="space-y-6">
       <AddNewHeader name="Dashboard" />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
+      <div className="overflow-hidden rounded-[24px] border border-slate-200 bg-white/80 p-6 text-slate-900 shadow-sm backdrop-blur-sm">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="space-y-3">
+            <span className="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-slate-500">
+              Overview
+            </span>
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                Welcome back, admin
+              </h1>
+              <p className="mt-2 max-w-xl text-sm text-slate-600 sm:text-base">
+                Track the latest platform activity, content updates, and member
+                growth in one place.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid min-w-[220px] gap-3 rounded-2xl border border-slate-200 bg-slate-50/80 p-4 shadow-sm">
+            <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+              Total records
+            </p>
+            <p className="text-3xl font-bold text-slate-900">
+              {formatCount(totalRecords)}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
         {updatedStats.map((stat, index) => (
           <Card
-            key={index}
-            className="shadow-none rounded-xl overflow-hidden hover:shadow-xl transition-shadow duration-300 p-6 flex items-center justify-between"
+            key={`${stat.title}-${index}`}
+            className={`overflow-hidden rounded-2xl border border-slate-200/80 bg-white/55 bg-gradient-to-br ${stat.cardClass} p-0 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md`}
           >
-            <div className="flex items-center space-x-4">
-              <div className="p-4 bg-blue-50 rounded-lg">{stat.icon}</div>
+            <div className="p-5">
+              <div className="mb-5 flex items-start justify-between">
+                <div
+                  className={`flex h-12 w-12 items-center justify-center rounded-xl ${stat.accent}`}
+                >
+                  {stat.icon}
+                </div>
+                <span className="rounded-full bg-white/80 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                  Live
+                </span>
+              </div>
+
               <div>
-                <h3 className="text-xl font-semibold text-gray-800">
+                <p className="text-sm font-medium text-slate-500">
                   {stat.title}
-                </h3>
-                <p className="text-2xl font-bold text-gray-600">
+                </p>
+                <p className="mt-3 text-3xl font-bold tracking-tight text-slate-900">
                   {formatCount(stat.count)}
                 </p>
               </div>

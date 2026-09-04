@@ -3,14 +3,16 @@
 import { Form } from "@/components/ui/form"
 import { SelectItem } from "@/components/ui/select"
 import useCustomPath from "@/hooks/use-custom-path"
-import { Role, UserProps } from "@/lib/api"
+import { CouncilProps, DistrictProps, Role, UserProps } from "@/lib/api"
+import { normalizeMalawiPhone } from "@/lib/phone-validation"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
 import SubmitButton from "@/modules/common/submit-button"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useSession } from "next-auth/react"
 import { usePathname } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import * as zod from "zod"
@@ -21,17 +23,31 @@ type Props = {
   isOpen: boolean
   onClose: () => void
   user: UserProps
+  allowedRoles?: string[]
 }
 
-const ModalEditUser = ({ isOpen, onClose, user }: Props) => {
+const roleLabels: Record<string, string> = {
+  SUPER_ADMIN: "Super Admin",
+  COUNCIL_ADMIN: "Council Admin",
+  DISTRICT_ADMIN: "District Admin",
+  FARMER: "Farmer",
+}
+
+const ModalEditUser = ({ isOpen, onClose, user, allowedRoles }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
+  const [councils, setCouncils] = useState<CouncilProps[]>([])
+  const [districts, setDistricts] = useState<DistrictProps[]>([])
+  const [selectedRole, setSelectedRole] = useState<string>(user.role)
+  const [selectedCouncil, setSelectedCouncil] = useState<string>(
+    user.councilId || ""
+  )
 
   const path = usePathname()
   const { fullPath } = useCustomPath(path)
+  const { data: session } = useSession()
+  const token = session?.accessToken
 
-  const roleOptions = Object.values(Role)
-
-  const phoneNumberRegex = /^\+?[1-9]\d{1,14}$/
+  const phoneNumberRegex = /^(\+265(9|8)\d{8}|0(9|8)\d{8})$/
 
   const formSchema = zod.object({
     name: zod.string().min(2, "Name must be at least 2 characters.").optional(),
@@ -39,16 +55,13 @@ const ModalEditUser = ({ isOpen, onClose, user }: Props) => {
     phoneNumber: zod
       .string()
       .regex(phoneNumberRegex, {
-        message: "Phone number must be in a valid international format.",
+        message:
+          "Phone number must be a valid TNM or Airtel number (e.g., +2659XXXXXXXX or 09XXXXXXXX).",
       })
       .optional(),
-    role: zod
-      .nativeEnum(Role, {
-        errorMap: () => ({
-          message: "Invalid role.",
-        }),
-      })
-      .optional(),
+    role: zod.string().optional(),
+    councilId: zod.string().optional(),
+    districtId: zod.string().optional(),
   })
 
   const form = useForm<zod.infer<typeof formSchema>>({
@@ -59,16 +72,74 @@ const ModalEditUser = ({ isOpen, onClose, user }: Props) => {
       email: user.email || "",
       phoneNumber: user.phoneNumber || "",
       role: user.role,
+      councilId: user.councilId || "",
+      districtId: user.districtId || "",
     },
   })
 
+  useEffect(() => {
+    const fetchCouncils = async () => {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/councils`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              ...(token && { Authorization: `Bearer ${token}` }),
+            },
+          }
+        )
+        const data = await res.json()
+        if (data.success) {
+          setCouncils(data.data)
+        }
+      } catch (error) {
+        console.error("Failed to fetch councils:", error)
+      }
+    }
+    if (isOpen) {
+      fetchCouncils()
+    }
+  }, [isOpen, token])
+
+  useEffect(() => {
+    if (!selectedCouncil) {
+      setDistricts([])
+      return
+    }
+    const fetchDistricts = async () => {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/councils/${selectedCouncil}/districts`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              ...(token && { Authorization: `Bearer ${token}` }),
+            },
+          }
+        )
+        const data = await res.json()
+        if (data.success) {
+          setDistricts(data.data)
+        }
+      } catch (error) {
+        console.error("Failed to fetch districts:", error)
+      }
+    }
+    fetchDistricts()
+  }, [selectedCouncil, token])
+
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
-    const payload = {
+    const payload: Record<string, any> = {
       name: values.name || undefined,
       email: values.email || undefined,
-      phoneNumber: values.phoneNumber || undefined,
+      phoneNumber: values.phoneNumber
+        ? normalizeMalawiPhone(values.phoneNumber)
+        : undefined,
       role: values.role || undefined,
+      councilId: values.councilId || null,
+      districtId: values.districtId || null,
     }
     const result = await updateUser(payload, user.id, fullPath)
 
@@ -80,6 +151,9 @@ const ModalEditUser = ({ isOpen, onClose, user }: Props) => {
     }
     setIsLoading(false)
   }
+
+  const roleOptions =
+    allowedRoles && allowedRoles.length > 0 ? allowedRoles : Object.values(Role)
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} name={`Edit ${user.name}`}>
@@ -109,13 +183,57 @@ const ModalEditUser = ({ isOpen, onClose, user }: Props) => {
             label="Role"
             control={form.control}
             placeholder="Select a role"
+            onChange={(value: string) => {
+              setSelectedRole(value)
+              form.setValue("role", value)
+            }}
           >
             {roleOptions.map((role) => (
               <SelectItem key={role} value={role}>
-                {role}
+                {roleLabels[role] || role}
               </SelectItem>
             ))}
           </CustomFormField>
+
+          <CustomFormField
+            fieldType={FormFieldType.SELECT}
+            name="councilId"
+            label="Council (Area)"
+            control={form.control}
+            placeholder="Select a council"
+            onChange={(value: string) => {
+              setSelectedCouncil(value)
+              form.setValue("councilId", value)
+              form.setValue("districtId", "")
+            }}
+          >
+            {councils.map((council) => (
+              <SelectItem key={council.id} value={council.id}>
+                <div className="flex cursor-pointer items-center gap-2">
+                  <p>{council.name}</p>
+                </div>
+              </SelectItem>
+            ))}
+          </CustomFormField>
+
+          {selectedCouncil && (
+            <CustomFormField
+              fieldType={FormFieldType.SELECT}
+              name="districtId"
+              label="District"
+              control={form.control}
+              placeholder="Select a district"
+            >
+              {districts.map((district) => (
+                <SelectItem key={district.id} value={district.id}>
+                  <div className="flex cursor-pointer items-center gap-2">
+                    <p>{district.name}</p>
+                  </div>
+                </SelectItem>
+              ))}
+            </CustomFormField>
+          )}
+
           <CustomFormField
             fieldType={FormFieldType.PHONE_INPUT}
             name="phoneNumber"

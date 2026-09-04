@@ -68,12 +68,12 @@ export const getStat = async (
   res: Response<APIResponse>
 ): Promise<void> => {
   try {
-    const stat = await prisma.stat.findMany()
+    const stat = await prisma.stat.findFirst()
 
     res.status(200).json({
       success: true,
       message: "Stat retrieved successfully",
-      data: stat,
+      data: stat ? [stat] : [],
     })
   } catch (error: any) {
     console.error("Error fetching stat:", error.message)
@@ -87,7 +87,7 @@ export const getStat = async (
 }
 
 export const updateStat = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -147,7 +147,7 @@ export const updateStat = async (
 }
 
 export const deleteStat = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params

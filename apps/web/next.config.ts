@@ -3,6 +3,7 @@ import type { NextConfig } from "next"
 const nextConfig: NextConfig = {
   output: "standalone", // ✅ REQUIRED for Docker standalone builds
 
+  // TypeScript settings
   typescript: {
     ignoreBuildErrors: true,
   },

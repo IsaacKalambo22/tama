@@ -3,14 +3,16 @@
 import { Form } from "@/components/ui/form"
 import { SelectItem } from "@/components/ui/select"
 import useCustomPath from "@/hooks/use-custom-path"
-import { Role } from "@/lib/api"
+import { CouncilProps, DistrictProps } from "@/lib/api"
+import { normalizeMalawiPhone } from "@/lib/phone-validation"
 import CustomFormField, {
   FormFieldType,
 } from "@/modules/common/custom-form-field"
 import SubmitButton from "@/modules/common/submit-button"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useSession } from "next-auth/react"
 import { usePathname } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import * as zod from "zod"
@@ -23,16 +25,44 @@ type Props = {
   id?: string | null
 }
 
+const roleLabels: Record<string, string> = {
+  SUPER_ADMIN: "Super Admin",
+  COUNCIL_ADMIN: "Council Admin",
+  DISTRICT_ADMIN: "District Admin",
+  FARMER: "Farmer",
+}
+
 const ModalNewUser = ({ isOpen, onClose }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const path = usePathname()
   const { fullPath } = useCustomPath(path)
-  const roleOptions = Object.values(Role) // Get the values of the Role enum
   const [showPassword, setShowPassword] = useState(false)
+  const [councils, setCouncils] = useState<CouncilProps[]>([])
+  const [districts, setDistricts] = useState<DistrictProps[]>([])
+  const [selectedCouncil, setSelectedCouncil] = useState<string>("")
+
+  const { data: session } = useSession()
+  const actorRole = session?.role
+  const actorCouncilId = session?.councilId
+  const actorDistrictId = session?.districtId
+
+  const isSuperAdmin = actorRole === "SUPER_ADMIN"
+  const isDistrictAdmin = actorRole === "DISTRICT_ADMIN"
+
+  // Roles an admin may assign, matching backend `canAssignRole`
+  const assignableRoles =
+    actorRole === "SUPER_ADMIN"
+      ? ["SUPER_ADMIN", "COUNCIL_ADMIN", "DISTRICT_ADMIN", "FARMER"]
+      : actorRole === "COUNCIL_ADMIN"
+        ? ["DISTRICT_ADMIN", "FARMER"]
+        : actorRole === "DISTRICT_ADMIN"
+          ? ["FARMER"]
+          : ["FARMER"]
+
   const toggleShowPassword = () => {
     setShowPassword(!showPassword)
   }
-  const phoneNumberRegex = /^\+?[1-9]\d{1,14}$/
+  const phoneNumberRegex = /^(\+265(9|8)\d{8}|0(9|8)\d{8})$/
 
   const formSchema = zod.object({
     firstName: zod.string().min(2, {
@@ -46,11 +76,11 @@ const ModalNewUser = ({ isOpen, onClose }: Props) => {
     }),
     phoneNumber: zod.string().regex(phoneNumberRegex, {
       message:
-        "Phone number must be a valid international format (e.g., +123456789).",
+        "Phone number must be a valid TNM or Airtel number (e.g., +2659XXXXXXXX or 09XXXXXXXX).",
     }),
-    role: zod.string().min(2, {
-      message: "Role must be at least 2 characters.",
-    }),
+    role: zod.string().min(1, { message: "Role is required." }),
+    councilId: zod.string().optional(),
+    districtId: zod.string().optional(),
   })
 
   const form = useForm<zod.infer<typeof formSchema>>({
@@ -61,22 +91,98 @@ const ModalNewUser = ({ isOpen, onClose }: Props) => {
       lastName: "",
       email: "",
       phoneNumber: "",
+      role: "",
+      councilId: "",
+      districtId: "",
     },
   })
+
+  useEffect(() => {
+    const fetchScopedData = async () => {
+      try {
+        if (isSuperAdmin) {
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_ENDPOINT}/councils`,
+            {
+              headers: { "Content-Type": "application/json" },
+            }
+          )
+          const data = await res.json()
+          if (data.success) {
+            setCouncils(data.data)
+          }
+        } else if (actorCouncilId) {
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_ENDPOINT}/councils/${actorCouncilId}`,
+            {
+              headers: { "Content-Type": "application/json" },
+            }
+          )
+          const data = await res.json()
+          if (data.success) {
+            setCouncils(
+              data.data
+                ? ([
+                    {
+                      id: data.data.id,
+                      name: data.data.name,
+                      description: data.data.description,
+                    },
+                  ] as CouncilProps[])
+                : []
+            )
+            setSelectedCouncil(data.data.id)
+            form.setValue("councilId", data.data.id)
+
+            if (isDistrictAdmin && actorDistrictId) {
+              setDistricts(
+                data.data.districts?.filter(
+                  (d: DistrictProps) => d.id === actorDistrictId
+                ) || []
+              )
+              form.setValue("districtId", actorDistrictId)
+            } else {
+              setDistricts(data.data.districts || [])
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch council/district data:", error)
+      }
+    }
+    if (isOpen) {
+      fetchScopedData()
+    }
+  }, [isOpen, actorRole, actorCouncilId, actorDistrictId])
+
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     setIsLoading(true)
     const name = `${values.firstName} ${values.lastName}`.trim()
     const email = values.email
-    const phoneNumber = values.phoneNumber
+    const phoneNumber = normalizeMalawiPhone(values.phoneNumber)
     const role = values.role
-    const payload = {
+    const payload: Record<string, any> = {
       name,
       email,
       phoneNumber,
       role,
     }
 
-    const result = await createUser(payload, fullPath, "/admin")
+    if (values.councilId) {
+      payload.councilId = values.councilId
+    }
+    if (values.districtId) {
+      payload.districtId = values.districtId
+    }
+
+    const layoutPath =
+      actorRole === "COUNCIL_ADMIN"
+        ? "/council-admin/farmers"
+        : actorRole === "DISTRICT_ADMIN"
+          ? "/district-admin/farmers"
+          : "/admin"
+
+    const result = await createUser(payload, fullPath, layoutPath)
 
     onClose()
     if (result.success) {
@@ -121,15 +227,62 @@ const ModalNewUser = ({ isOpen, onClose }: Props) => {
             label="Role"
             control={form.control}
             placeholder="Select a role"
+            onChange={(value) => {
+              form.setValue("role", value)
+              if (isSuperAdmin) {
+                form.setValue("councilId", "")
+                form.setValue("districtId", "")
+              }
+            }}
           >
-            {roleOptions.map((role) => (
+            {assignableRoles.map((role) => (
               <SelectItem key={role} value={role}>
                 <div className="flex cursor-pointer items-center gap-2">
-                  <p>{role}</p>
+                  <p>{roleLabels[role] || role}</p>
                 </div>
               </SelectItem>
             ))}
           </CustomFormField>
+
+          <CustomFormField
+            fieldType={FormFieldType.SELECT}
+            name="councilId"
+            label="Council (Area)"
+            control={form.control}
+            placeholder="Select a council"
+            onChange={(value) => {
+              setSelectedCouncil(value)
+              form.setValue("councilId", value)
+              form.setValue("districtId", "")
+            }}
+          >
+            {councils.map((council) => (
+              <SelectItem key={council.id} value={council.id}>
+                <div className="flex cursor-pointer items-center gap-2">
+                  <p>{council.name}</p>
+                </div>
+              </SelectItem>
+            ))}
+          </CustomFormField>
+
+          {selectedCouncil && (
+            <CustomFormField
+              fieldType={FormFieldType.SELECT}
+              name="districtId"
+              label="District"
+              control={form.control}
+              placeholder="Select a district"
+            >
+              {districts.map((district) => (
+                <SelectItem key={district.id} value={district.id}>
+                  <div className="flex cursor-pointer items-center gap-2">
+                    <p>{district.name}</p>
+                  </div>
+                </SelectItem>
+              ))}
+            </CustomFormField>
+          )}
+
           <CustomFormField
             fieldType={FormFieldType.PHONE_INPUT}
             name="phoneNumber"
@@ -141,7 +294,7 @@ const ModalNewUser = ({ isOpen, onClose }: Props) => {
           <SubmitButton
             disabled={isLoading || !form.formState.isValid}
             isLoading={isLoading}
-            className="w-full  h-9"
+            className="w-full h-9"
             loadingText="Saving..."
           >
             Save

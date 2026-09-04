@@ -70,7 +70,7 @@ export const getAllService = async (
 }
 
 export const updateService = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params
@@ -126,7 +126,7 @@ export const updateService = async (
 }
 
 export const deleteService = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response<APIResponse>
 ): Promise<void> => {
   const { id } = req.params

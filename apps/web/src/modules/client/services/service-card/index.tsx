@@ -18,7 +18,6 @@ const ServiceCard = ({ service }: ServiceCardProps) => {
           layout="fill"
           objectFit="cover"
           className="rounded-2xl"
-          unoptimized
         />
       </div>
       <div className="pt-3">

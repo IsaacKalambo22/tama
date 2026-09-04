@@ -18,7 +18,7 @@ const NewsCard = ({ newsItem }: Props) => {
       </div>
       <Image
         src={imageUrl}
-        unoptimized
+
         alt={title}
         width={200}
         height={150}

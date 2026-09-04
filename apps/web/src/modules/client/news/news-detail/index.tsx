@@ -36,7 +36,7 @@ export default async function NewsDetail({ id }: { id: string }) {
           alt={news.title}
           width={900}
           height={600}
-          unoptimized
+
           className="rounded-2xl object-contain w-full h-auto max-h-[20rem] sm:max-h-[30rem]"
         />
       </div>
