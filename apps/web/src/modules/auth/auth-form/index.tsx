@@ -24,6 +24,14 @@ import { toast } from "sonner"
 import { ZodType } from "zod"
 import { FIELD_NAMES } from "../constants"
 
+// Keep in sync with roleRouteMap in src/middleware.ts
+const ROLE_LANDING_ROUTES: Record<string, string> = {
+  SUPER_ADMIN: "/admin",
+  COUNCIL_ADMIN: "/council-admin",
+  DISTRICT_ADMIN: "/district-admin",
+  FARMER: "/farmer",
+}
+
 export enum FormType {
   SIGN_IN = "SIGN_IN",
   SIGN_UP = "SIGN_UP",
@@ -117,7 +125,12 @@ const AuthForm = <T extends FieldValues>({
       if (isSignUp) {
         router.push("/sign-in")
       } else {
-        await getSession()
+        // Navigate to the landing route for the signed-in role. Relying on
+        // router.refresh() alone leaves the user where they are, since the
+        // middleware returns early for public routes before it can redirect.
+        const session = await getSession()
+        const role = (session as { role?: string } | null)?.role
+        router.push(ROLE_LANDING_ROUTES[role ?? ""] ?? "/farmer")
         router.refresh()
       }
     } else {
