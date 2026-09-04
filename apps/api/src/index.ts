@@ -75,7 +75,10 @@ app.use((req, res, next) => {
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL!
 const ADMIN_PHONE_NUMBER = process.env.ADMIN_PHONE_NUMBER!
-void bootstrapAdmin(ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_PHONE_NUMBER)
+// A failure here must not take the whole API down.
+bootstrapAdmin(ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_PHONE_NUMBER).catch((e) => {
+  console.error("❌ Admin bootstrap failed:", e)
+})
 
 /* ROUTES */
 app.get("/", (_req, res) => {

@@ -39,14 +39,14 @@ COPY --from=builder /app/out/full/ .
 
 # ARG TURBO_TOKEN
 # ENV TURBO_TOKEN=$TURBO_TOKEN
-EXPOSE 8003
-ENV PORT 8003
-
 FROM base AS runner
 WORKDIR /app
 
 
 COPY --from=installer /app .
+
+EXPOSE 8003
+ENV PORT 8003
 
 
 
