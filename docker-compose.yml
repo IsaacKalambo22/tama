@@ -68,8 +68,12 @@ services:
       # =========================
       # HTTP (redirect only)
       # =========================
+      # Dokploy's Domains UI adds extra services to this container, so every
+      # router MUST name its service explicitly — Traefik drops routers it
+      # cannot link automatically when more than one service is defined.
       - traefik.http.routers.tama-web.rule=Host(`tamalawi.infi-tech.cloud`) || Host(`www.tamalawi.infi-tech.cloud`)
       - traefik.http.routers.tama-web.entrypoints=web
+      - traefik.http.routers.tama-web.service=tama-web
       - traefik.http.routers.tama-web.middlewares=redirect-to-https@file
 
       # =========================
@@ -77,6 +81,7 @@ services:
       # =========================
       - traefik.http.routers.tama-websecure.rule=Host(`tamalawi.infi-tech.cloud`) || Host(`www.tamalawi.infi-tech.cloud`)
       - traefik.http.routers.tama-websecure.entrypoints=websecure
+      - traefik.http.routers.tama-websecure.service=tama-web
       - traefik.http.routers.tama-websecure.tls.certresolver=letsencrypt
 
       # =========================
@@ -130,8 +135,10 @@ services:
       # =========================
       # HTTP (redirect)
       # =========================
+      # As above: the service must be named explicitly on every router.
       - traefik.http.routers.tama-api.rule=Host(`api.tamalawi.infi-tech.cloud`)
       - traefik.http.routers.tama-api.entrypoints=web
+      - traefik.http.routers.tama-api.service=tama-api
       - traefik.http.routers.tama-api.middlewares=redirect-to-https@file
 
       # =========================
@@ -139,6 +146,7 @@ services:
       # =========================
       - traefik.http.routers.tama-apisecure.rule=Host(`api.tamalawi.infi-tech.cloud`)
       - traefik.http.routers.tama-apisecure.entrypoints=websecure
+      - traefik.http.routers.tama-apisecure.service=tama-api
       - traefik.http.routers.tama-apisecure.tls.certresolver=letsencrypt
 
       # =========================
