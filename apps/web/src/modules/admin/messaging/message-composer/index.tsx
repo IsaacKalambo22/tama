@@ -315,7 +315,7 @@ const MessageComposer = () => {
                 }
                 className={`px-4 py-2 text-sm font-medium rounded-full border transition-all ${
                   targetType === value
-                    ? "bg-gray-900 text-white border-gray-900"
+                    ? "bg-primary text-primary-foreground border-primary"
                     : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
                 }`}
               >
@@ -431,7 +431,7 @@ const MessageComposer = () => {
               onClick={() => form.setValue("channelEmail", !channelEmail)}
               className={`px-4 py-2 text-sm font-medium rounded-full border transition-all ${
                 channelEmail
-                  ? "bg-gray-900 text-white border-gray-900"
+                  ? "bg-primary text-primary-foreground border-primary"
                   : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
               }`}
             >
@@ -442,7 +442,7 @@ const MessageComposer = () => {
               onClick={() => form.setValue("channelInApp", !channelInApp)}
               className={`px-4 py-2 text-sm font-medium rounded-full border transition-all ${
                 channelInApp
-                  ? "bg-gray-900 text-white border-gray-900"
+                  ? "bg-primary text-primary-foreground border-primary"
                   : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
               }`}
             >
@@ -453,7 +453,7 @@ const MessageComposer = () => {
               onClick={() => form.setValue("channelSms", !channelSms)}
               className={`px-4 py-2 text-sm font-medium rounded-full border transition-all ${
                 channelSms
-                  ? "bg-gray-900 text-white border-gray-900"
+                  ? "bg-primary text-primary-foreground border-primary"
                   : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
               }`}
             >
@@ -584,7 +584,7 @@ const MessageComposer = () => {
         <SubmitButton
           disabled={isLoading || !form.formState.isValid}
           isLoading={isLoading}
-          className="h-11 w-full rounded-lg bg-gray-900 text-sm font-medium text-white shadow-sm transition hover:bg-gray-800 disabled:opacity-50"
+          className="h-11 w-full rounded-lg bg-primary text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90 disabled:opacity-50"
           loadingText="Sending..."
         >
           {isScheduled ? "Schedule message" : "Send message"}
